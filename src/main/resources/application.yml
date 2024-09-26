@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: timeToast
+
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
