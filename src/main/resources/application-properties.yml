@@ -1,0 +1,6 @@
+oauth2 :
+  client :
+    kakao :
+      client-id : 00ce444e267ef1ea9be3e011dd832941
+      client-secret: JJoUV7upQAS8h0t3IyDeJalj3Kim5ON2
+      redirect-uri: http://localhost:8080/login/oauth2/code/kakao
