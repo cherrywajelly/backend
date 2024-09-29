@@ -19,3 +19,6 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+
+  jwt:
+    key: b06a03df1e61f3347288ad580a55904f3e7c2367179d5727e779b3ef63207bc8
