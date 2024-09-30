@@ -1,11 +1,14 @@
 package com.timeToast.timeToast.global.config;
 
+import com.timeToast.timeToast.global.jwt.JwtFilter;
+import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,6 +18,12 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -29,13 +38,14 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers("/","/api/v1/login/kakao","/api/v1/login/google").permitAll();
+                            request.requestMatchers("/","/h2-console/**", "/swagger-ui/**", "/api/v1/login/kakao","/api/v1/login/google").permitAll();
                             request.anyRequest().authenticated();
 
                         }
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
+                .addFilterAt( new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 
 //                .oauth2Login(
 //                        oauth -> oauth.userInfoEndpoint( c -> c.userService(oAut))
