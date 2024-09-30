@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService{
-    private final KakaoLoginServiceImpl kakaoLoginService;
+    private final KakaoLoginServiceImpl kakaoLoginServiceImpl;
 
     public String getAccessToken(String social, String code) {
         if (social.equals("kakao")){
-            return kakaoLoginService.getKakaoAccessToken(code);
+            return loginToService(kakaoLoginServiceImpl.getKakaoAccessToken(code));
         }
         else {
             return "hey";
         }
+    }
+
+    public String loginToService(String email) {
+        return "곧 개발 예정 ,,";
     }
 }

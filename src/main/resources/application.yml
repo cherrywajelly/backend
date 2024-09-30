@@ -14,8 +14,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
     open-in-view: false
+
+
+  profiles:
+    include: oauth

@@ -1,27 +1,30 @@
 package com.timeToast.timeToast.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.dto.OAuthResponseDto;
 import com.timeToast.timeToast.dto.KakaoUserDataDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import io.jsonwebtoken.impl.Base64UrlCodec;
+import org.springframework.http.HttpHeaders;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class KakaoLoginServiceImpl {
-    private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/authorize";
-
+    private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/token";
 
     @Value("${oauth2.client.kakao.client-id}")
     private String clientId;
@@ -34,18 +37,22 @@ public class KakaoLoginServiceImpl {
 
     public String getKakaoAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, String> params = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-        params.put("code", accessToken);
-        params.put("client_id", clientId);
-        params.put("client_secret", clientSecret);
-        params.put("redirect_uri", redirectUrl);
-        params.put("grant_type", "authorization_code");
-        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, params, OAuthResponseDto.class);
+        params.add("code", accessToken);
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUrl);
+        params.add("grant_type", "authorization_code");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
         Optional<KakaoUserDataDto> decodeInfo = decodeToken(responseEntity.getBody().getId_token().split("\\.")[1]);
-
-        return loginToService(decodeInfo.get().getEmail());
+        return decodeInfo.get().getEmail();
     }
 
     public Optional<KakaoUserDataDto> decodeToken(String jwtToken) {
@@ -56,13 +63,9 @@ public class KakaoLoginServiceImpl {
             KakaoUserDataDto userDataDto = objectMapper.readValue(decode_data, KakaoUserDataDto.class);
             return Optional.ofNullable(userDataDto);
         }
-        catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+        catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public String loginToService(String email) {
-        return "곧 개발 예정 ,,";
     }
 }
