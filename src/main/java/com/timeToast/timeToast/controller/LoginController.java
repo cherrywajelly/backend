@@ -16,6 +16,12 @@ public class LoginController {
 
     private final LoginService loginService;
 
+//     for test
+     @GetMapping("")
+     public RedirectView loadUrl () {
+        return new RedirectView(loginService.loadToKakaoLogin());
+     }
+
     @GetMapping("/kakao")
     public ResponseEntity<?> loginWithKakao(@RequestParam("code") String code) {
         return ResponseEntity.ok().body(loginService.getAccessToken("kakao", code));

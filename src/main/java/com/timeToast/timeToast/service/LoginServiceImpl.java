@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService{
     private final KakaoLoginServiceImpl kakaoLoginServiceImpl;
 
+    // for login test
+    public String loadToKakaoLogin() {
+        return kakaoLoginServiceImpl.loadToLogin();
+    }
+
     public String getAccessToken(String social, String code) {
         if (social.equals("kakao")){
             return loginToService(kakaoLoginServiceImpl.getKakaoAccessToken(code));

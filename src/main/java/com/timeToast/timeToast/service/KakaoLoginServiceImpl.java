@@ -35,6 +35,14 @@ public class KakaoLoginServiceImpl {
     @Value("${oauth2.client.kakao.redirect-uri}")
     private String redirectUrl;
 
+    // for login test
+    public String loadToLogin() {
+        String loginUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + clientId + "&redirect_uri=" + redirectUrl
+                + "&response_type=code";
+
+        return loginUrl;
+    }
+
     public String getKakaoAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
