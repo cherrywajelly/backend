@@ -16,8 +16,10 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/kakao")
-    public ResponseEntity<?> loginWithGoogle(@RequestParam("code") String code) {
-        return ResponseEntity.ok().body(loginService.loginToSocialService(code));
+    public ResponseEntity<?> loginWithKakao(@RequestParam("code") String code) {
+        return ResponseEntity.ok().body(loginService.getAccessToken("kakao", code));
     }
+
+
 
 }
