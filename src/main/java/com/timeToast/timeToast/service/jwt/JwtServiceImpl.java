@@ -11,7 +11,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.timeToast.timeToast.global.constant.JwtKey.Jwt_Key;
+import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_HOUR;
 import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_DAY;
 
@@ -40,7 +40,7 @@ public class JwtServiceImpl implements JwtService {
         Date now = new Date();
         Date expiredDate = new Date( now.getTime() + expired);
 
-        SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(Jwt_Key));
+        SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
 
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())

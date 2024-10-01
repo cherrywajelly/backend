@@ -50,15 +50,13 @@ public class LoginServiceImpl implements LoginService {
             member = memberRepository.save(
                     Member.builder()
                             .email(email)
-                            .loginType(LoginType.KAKAO)
+                            .loginType(loginType)
                             .memberRole(MemberRole.ROLE_USER)
                             .is_delete(false)
                             .build()
             );
         }
 
-
-
-        return new LoginResponse("accessToken","refreshToken");
+        return jwtService.createJwts(member.getId());
     }
 }

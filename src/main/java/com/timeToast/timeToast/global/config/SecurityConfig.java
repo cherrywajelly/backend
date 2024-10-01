@@ -36,9 +36,10 @@ public class SecurityConfig {
                 .cors(
                         cors -> cors.configurationSource(corsConfigurationSource())
                 )
+                .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers("/","/h2-console/**", "/swagger-ui/**", "/api/v1/login/kakao","/api/v1/login/google").permitAll();
+                            request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**").permitAll();
                             request.anyRequest().authenticated();
 
                         }
@@ -46,6 +47,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .addFilterAt( new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+
 
 //                .oauth2Login(
 //                        oauth -> oauth.userInfoEndpoint( c -> c.userService(oAut))
