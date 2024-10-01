@@ -1,14 +1,13 @@
 package com.timeToast.timeToast.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserDataDto {
+public class KakaoUserDataDto {
     private String iss;
     private String aud;
     private String sub;

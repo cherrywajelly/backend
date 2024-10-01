@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/api/v1/login")
 @RestController
@@ -15,9 +16,15 @@ public class LoginController {
 
     private final LoginService loginService;
 
+//     for test
+     @GetMapping("")
+     public RedirectView loadUrl () {
+        return new RedirectView(loginService.loadToKakaoLogin());
+     }
+
     @GetMapping("/kakao")
-    public ResponseEntity<?> loginWithGoogle(@RequestParam("code") String code) {
-        return ResponseEntity.ok().body(loginService.loginToSocialService(code));
+    public ResponseEntity<?> loginWithKakao(@RequestParam("code") String code) {
+        return ResponseEntity.ok().body(loginService.getAccessToken("kakao", code));
     }
 
 }
