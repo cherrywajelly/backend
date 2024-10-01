@@ -27,23 +27,6 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    public String createToken(final long memberId, final long expired){
-
-        Date now = new Date();
-        Date expiredDate = new Date( now.getTime() + expired);
-
-        SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(Jwt_Key));
-
-        return Jwts.builder()
-                .setId(UUID.randomUUID().toString())
-                .setIssuer("timeToast.com")
-                .setSubject(String.valueOf(memberId))
-                .setIssuedAt(now)
-                .setExpiration(expiredDate)
-                .signWith(tokenKey)
-                .compact();
-
-    }
 
     public String resolveToken(HttpServletRequest request){
         return request.getHeader(AUTHORIZATION);
