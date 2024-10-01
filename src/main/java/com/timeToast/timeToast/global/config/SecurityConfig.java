@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -33,10 +35,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 //cookie 사용 안하면 끔.
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(
-                        cors -> cors.configurationSource(corsConfigurationSource())
-                )
-                .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                //h2-console
+                .headers(httpSecurityHeaders -> httpSecurityHeaders.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
                             request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**").permitAll();
@@ -47,10 +48,9 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .addFilterAt( new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-
-
-//                .oauth2Login(
-//                        oauth -> oauth.userInfoEndpoint( c -> c.userService(oAut))
+//                .exceptionHandling( exceptionHandling -> exceptionHandling
+//                                        .authenticationEntryPoint()
+//                                        .accessDeniedHandler()
 //                )
                 .build();
     }
@@ -61,11 +61,21 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+//    @Bean
+//    public AuthenticationEntryPoint authenticationEntryPoint() {
+//        return new JwtAuthenticationEntryPoint();
+//    }
+//
+//    @Bean
+//    public AccessDeniedHandler accessDeniedHandler() {
+//        return new CustomAccessDeniedHandler();
+//    }
 }

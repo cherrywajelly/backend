@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.global.custom_exception;
+package com.timeToast.timeToast.global.exception;
 
 import com.timeToast.timeToast.global.constant.StatusCode;
 import lombok.Getter;

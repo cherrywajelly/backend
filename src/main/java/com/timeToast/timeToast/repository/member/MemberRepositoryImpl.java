@@ -1,9 +1,7 @@
 package com.timeToast.timeToast.repository.member;
 
 import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.global.custom_exception.NotFoundException;
-import com.timeToast.timeToast.repository.member.MemberJpaRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
