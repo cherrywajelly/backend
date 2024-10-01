@@ -1,6 +1,7 @@
-package com.timeToast.timeToast.controller;
+package com.timeToast.timeToast.controller.oauth;
 
-import com.timeToast.timeToast.service.LoginService;
+import com.timeToast.timeToast.dto.member.LoginResponse;
+import com.timeToast.timeToast.service.oauth.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public class LoginController {
      }
 
     @GetMapping("/kakao")
-    public ResponseEntity<?> loginWithKakao(@RequestParam("code") String code) {
-        return ResponseEntity.ok().body(loginService.getAccessToken("kakao", code));
+    public LoginResponse loginWithKakao(@RequestParam("code") String code) {
+        return loginService.getAccessToken("kakao", code);
     }
 
 }

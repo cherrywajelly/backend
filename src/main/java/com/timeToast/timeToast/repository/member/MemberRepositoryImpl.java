@@ -1,13 +1,17 @@
-package com.timeToast.timeToast.repository;
+package com.timeToast.timeToast.repository.member;
 
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.global.custom_exception.NotFoundException;
+import com.timeToast.timeToast.repository.member.MemberJpaRepository;
+import com.timeToast.timeToast.repository.member.MemberRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 @Repository
-public class MemberRepositoryImpl implements MemberRepository{
+public class MemberRepositoryImpl implements MemberRepository {
 
     private MemberJpaRepository memberJpaRepository;
 
@@ -19,6 +23,11 @@ public class MemberRepositoryImpl implements MemberRepository{
     @Override
     public Member getById(final long memberId) {
         return memberJpaRepository.findById(memberId).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND.getMessage()));
+    }
+
+    @Override
+    public Optional<Member> findByEmail(final String email) {
+        return memberJpaRepository.findByEmail(email);
     }
 
     @Override

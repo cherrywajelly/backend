@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto;
+package com.timeToast.timeToast.dto.oauth;
 
 import lombok.AccessLevel;
 import lombok.Getter;

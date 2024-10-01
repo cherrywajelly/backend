@@ -1,9 +1,9 @@
-package com.timeToast.timeToast.service;
+package com.timeToast.timeToast.service.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeToast.timeToast.dto.OAuthResponseDto;
-import com.timeToast.timeToast.dto.KakaoUserDataDto;
+import com.timeToast.timeToast.dto.oauth.OAuthResponseDto;
+import com.timeToast.timeToast.dto.oauth.KakaoUserDataDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

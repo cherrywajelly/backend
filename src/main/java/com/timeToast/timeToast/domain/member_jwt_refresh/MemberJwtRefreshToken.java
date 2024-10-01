@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.jwt;
+package com.timeToast.timeToast.domain.member_jwt_refresh;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;
