@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.controller.oauth;
 
+import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.service.oauth.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class LoginController {
 
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
-        return loginService.getAccessToken("kakao", code);
+        return loginService.getAccessToken(LoginType.KAKAO, code);
     }
 
 }

@@ -28,13 +28,12 @@ public class LoginServiceImpl implements LoginService {
         return kakaoLoginServiceImpl.loadToLogin();
     }
 
-    public LoginResponse getAccessToken(String social, String code) {
-        if (social.equals("kakao")){
-            //TODO 일단 타입만 맞춰놓음. 로직에 따라 수정 바람.
+    public LoginResponse getAccessToken(LoginType social, String code) {
+        if (social.equals(LoginType.KAKAO)){
             return loginToService(kakaoLoginServiceImpl.getKakaoAccessToken(code), LoginType.KAKAO);
         }
         else {
-            //TODO 일단 타입만 맞춰놓음. 로직에 따라 수정 바람.
+            //TODO google social login.
             return new LoginResponse("accessToken", "refreshToken");
         }
     }
