@@ -28,5 +28,4 @@ public class LoginController {
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
         return loginService.getAccessToken(LoginType.KAKAO, code);
     }
-
 }
