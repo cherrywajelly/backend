@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class KakaoLoginServiceImpl {
+public class KakaoLoginImpl {
     private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/token";
 
     @Value("${oauth2.client.kakao.client-id}")

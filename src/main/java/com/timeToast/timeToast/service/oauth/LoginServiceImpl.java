@@ -6,8 +6,6 @@ import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
-import com.timeToast.timeToast.service.oauth.KakaoLoginServiceImpl;
-import com.timeToast.timeToast.service.oauth.LoginService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
-    private final KakaoLoginServiceImpl kakaoLoginServiceImpl;
+    private final KakaoLoginImpl kakaoLoginServiceImpl;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
