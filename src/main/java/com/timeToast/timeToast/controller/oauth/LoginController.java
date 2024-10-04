@@ -21,11 +21,18 @@ public class LoginController {
 //     for test
      @GetMapping("")
      public RedirectView loadUrl () {
-        return new RedirectView(loginService.loadToKakaoLogin());
+        return new RedirectView(loginService.loadToGoogleLogin());
      }
+
+
 
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
         return loginService.getAccessToken(LoginType.KAKAO, code);
+    }
+
+    @GetMapping("/google")
+    public LoginResponse loginWithGoogle(@RequestParam("code") String code) {
+        return loginService.getAccessToken(LoginType.GOOGLE, code);
     }
 }

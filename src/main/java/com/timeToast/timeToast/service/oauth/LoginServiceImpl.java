@@ -18,6 +18,7 @@ import java.util.Optional;
 public class LoginServiceImpl implements LoginService {
 
     private final KakaoLoginImpl kakaoLoginServiceImpl;
+    private final GoogleLoginImpl googleLoginImpl;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
@@ -25,14 +26,16 @@ public class LoginServiceImpl implements LoginService {
     public String loadToKakaoLogin() {
         return kakaoLoginServiceImpl.loadToLogin();
     }
+    public String loadToGoogleLogin() {
+        return googleLoginImpl.loadToLogin();
+    }
 
     public LoginResponse getAccessToken(LoginType social, String code) {
         if (social.equals(LoginType.KAKAO)){
             return loginToService(kakaoLoginServiceImpl.getKakaoAccessToken(code), LoginType.KAKAO);
         }
         else {
-            //TODO google social login.
-            return new LoginResponse("accessToken", "refreshToken");
+            return loginToService(googleLoginImpl.getGoogleAccessToken(code), LoginType.GOOGLE);
         }
     }
 

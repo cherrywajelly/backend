@@ -8,6 +8,8 @@ public interface LoginService {
     //for login test
      String loadToKakaoLogin();
 
+     String loadToGoogleLogin();
+
     LoginResponse getAccessToken(LoginType social, String code);
 
 }
