@@ -25,6 +25,12 @@ public class JwtFilter extends OncePerRequestFilter {
         //get jwt token to header
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
+//        if(token != null){
+//            if(token.startsWith("Bearer ")){
+//                token = token.substring(7);
+//            }
+//        }
+
         //token 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
             // 토큰으로부터 유저 정보를 받아

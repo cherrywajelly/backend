@@ -21,7 +21,7 @@ public class LoginController {
 //     for test
      @GetMapping("")
      public RedirectView loadUrl () {
-        return new RedirectView(loginService.loadToKakaoLogin());
+        return new RedirectView(loginService.loadToGoogleLogin());
      }
 
 
@@ -36,8 +36,4 @@ public class LoginController {
         return loginService.getAccessToken(LoginType.GOOGLE, code);
     }
 
-    @GetMapping("/test")
-    public String test(){
-         return "test";
-    }
 }

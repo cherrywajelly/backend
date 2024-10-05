@@ -36,7 +36,6 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        System.out.println("user details: " + userDetails.toString());
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
@@ -49,7 +48,6 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
-
             // Bearer 검증
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(tokenKey).build().parseClaimsJws(token);
 
