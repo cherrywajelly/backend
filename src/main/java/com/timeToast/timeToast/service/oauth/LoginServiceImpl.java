@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
                     Member.builder()
                             .email(email)
                             .loginType(loginType)
-                            .memberRole(MemberRole.ROLE_USER)
+                            .memberRole(MemberRole.USER)
                             .is_delete(false)
                             .build()
             );

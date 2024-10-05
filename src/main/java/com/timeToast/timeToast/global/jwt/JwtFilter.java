@@ -2,18 +2,16 @@ package com.timeToast.timeToast.global.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.filter.GenericFilterBean;
-
+import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
-
-public class JwtFilter extends GenericFilterBean {
+@Slf4j
+public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -21,9 +19,10 @@ public class JwtFilter extends GenericFilterBean {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //jwt token
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //get jwt token to header
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
         //token 유효성 검사
@@ -35,6 +34,6 @@ public class JwtFilter extends GenericFilterBean {
         }
 
         // 다음 Filter 실행
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }

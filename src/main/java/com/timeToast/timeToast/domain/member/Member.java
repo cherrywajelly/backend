@@ -25,8 +25,10 @@ public class Member extends BaseTime {
 
     private String memberProfileUrl;
 
+    @Enumerated(EnumType.STRING)
     private LoginType loginType;
 
+    @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
     private boolean is_delete;

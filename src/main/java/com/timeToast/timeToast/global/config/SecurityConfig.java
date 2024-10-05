@@ -1,15 +1,16 @@
 package com.timeToast.timeToast.global.config;
 
+import com.timeToast.timeToast.global.jwt.JwtAccessDeniedHandler;
+import com.timeToast.timeToast.global.jwt.JwtAuthenticationEntryPoint;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
+import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -47,11 +48,11 @@ public class SecurityConfig {
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
-                .addFilterAt( new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling( exceptionHandling -> exceptionHandling
-//                                        .authenticationEntryPoint()
-//                                        .accessDeniedHandler()
-//                )
+                .addFilterAt((Filter) new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling( exceptionHandling -> exceptionHandling
+                                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                                        .accessDeniedHandler(new JwtAccessDeniedHandler())
+                )
                 .build();
     }
 
@@ -69,13 +70,4 @@ public class SecurityConfig {
         return source;
     }
 
-//    @Bean
-//    public AuthenticationEntryPoint authenticationEntryPoint() {
-//        return new JwtAuthenticationEntryPoint();
-//    }
-//
-//    @Bean
-//    public AccessDeniedHandler accessDeniedHandler() {
-//        return new CustomAccessDeniedHandler();
-//    }
 }
