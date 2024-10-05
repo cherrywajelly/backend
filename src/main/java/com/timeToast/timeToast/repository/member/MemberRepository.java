@@ -10,4 +10,5 @@ public interface MemberRepository {
     Optional<Member> findByEmail(final String email);
     Member save(final Member member);
     void delete(final Member member);
+    Optional<Member> existsByNickname(final String nickname);
 }

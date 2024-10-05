@@ -8,6 +8,10 @@ import com.timeToast.timeToast.repository.member.MemberRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -58,5 +62,25 @@ public class LoginServiceImpl implements LoginService {
         }
 
         return jwtService.createJwts(member.getId());
+    }
+
+    public ResponseEntity<String> postNickname(String nickname){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) authentication.getCredentials(); //email
+
+        //이메일로 유저 찾기
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+
+        // 이메일 중복 검증 로직
+        Member existName = memberRepository.existsByNickname(nickname).orElseThrow();
+
+        if (existName.getNickname() == null) {
+            member.updateNickname(nickname);
+            memberRepository.save(member);
+            return ResponseEntity.ok().body("닉네임이 등록되었습니다.");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 닉네임입니다. 다시 입력해주세요.");
+        }
     }
 }
