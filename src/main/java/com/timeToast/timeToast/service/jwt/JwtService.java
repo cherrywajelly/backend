@@ -1,11 +1,11 @@
 package com.timeToast.timeToast.service.jwt;
 
+import com.timeToast.timeToast.domain.member.LoginMember;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 
 public interface JwtService {
 
-    LoginResponse createJwts(final long memberId);
+    LoginResponse createJwts(final LoginMember member);
 
-    String createToken(final long memberId, final long expired);
-
+    String createToken(final LoginMember loginMember, final long expired);
 }

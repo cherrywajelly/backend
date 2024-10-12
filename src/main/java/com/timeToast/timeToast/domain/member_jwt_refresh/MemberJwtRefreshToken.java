@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+
 @Entity
 @Getter
 @Table(name = "member_jwt_refresh_token")
@@ -17,6 +18,7 @@ public class MemberJwtRefreshToken extends BaseTime {
 
     private long memberId;
 
+    @Column(length = 350)
     private String jwt_refresh_token;
 
     public MemberJwtRefreshToken() {

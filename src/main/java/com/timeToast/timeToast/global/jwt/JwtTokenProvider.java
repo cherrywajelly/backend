@@ -1,5 +1,9 @@
 package com.timeToast.timeToast.global.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.global.exception.InternalServerException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.*;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -24,6 +29,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
+
 
     public JwtTokenProvider(final UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -35,13 +41,14 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserClaims(token));
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public String getUserPk(String token) {
+    public String getUserClaims(String token) {
         SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
         return Jwts.parser().setSigningKey(tokenKey).parseClaimsJws(token).getBody().getSubject();
+
     }
 
 

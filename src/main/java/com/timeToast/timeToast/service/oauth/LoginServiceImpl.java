@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.oauth;
 
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.member.LoginMember;
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.repository.member.MemberRepository;
@@ -58,6 +59,6 @@ public class LoginServiceImpl implements LoginService {
             );
         }
 
-        return jwtService.createJwts(member.getId());
+        return jwtService.createJwts(LoginMember.from(member));
     }
 }
