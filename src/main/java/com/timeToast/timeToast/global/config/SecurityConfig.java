@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .headers(httpSecurityHeaders -> httpSecurityHeaders.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**").permitAll();
+                            request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**", "/actuator/**").permitAll();
                             request.anyRequest().authenticated();
 
                         }

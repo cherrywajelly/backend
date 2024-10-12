@@ -20,6 +20,16 @@ spring:
         format_sql: true
     open-in-view: false
 
+  management:
+    endpoint:
+      health:
+        probes:
+          enabled: true
+    health:
+      livenessState:
+        enabled: true
+      readinessState:
+        enabled: true
 
   profiles:
     include: oauth
