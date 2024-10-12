@@ -37,4 +37,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void delete(final Member member) {
         memberJpaRepository.delete(member);
     }
+
+    @Override
+    public Optional<Member> existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname); }
 }
