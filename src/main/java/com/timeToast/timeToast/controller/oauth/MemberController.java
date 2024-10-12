@@ -19,7 +19,8 @@ public class MemberController {
     @PostMapping("")
     public ResponseEntity<String> postNickname(@RequestParam("nickname") String nickname) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        long userId = (long)authentication.getPrincipal();
+        System.out.println(authentication);
+        long userId = Long.parseLong(authentication.getName());
         return memberService.postNickname(nickname, userId);
     }
 }

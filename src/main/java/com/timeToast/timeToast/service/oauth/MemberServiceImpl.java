@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,11 +21,10 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.getById(userId);
 
         // 이메일 중복 검증 로직
-        Member existName = memberRepository.existsByNickname(nickname).orElseThrow();
+        Optional<Member> findMember = memberRepository.findByNickname(nickname);
 
-        if (existName.getNickname() == null) {
+        if (findMember.isEmpty()) {
             member.updateNickname(nickname);
-            memberRepository.save(member);
             return ResponseEntity.ok().body("닉네임이 등록되었습니다.");
         }
         else {

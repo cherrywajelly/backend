@@ -39,5 +39,5 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname); }
+    public Optional<Member> findByNickname(final String nickname) { return memberJpaRepository.findByNickname(nickname); }
 }
