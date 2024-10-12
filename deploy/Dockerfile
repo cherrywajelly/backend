@@ -9,13 +9,13 @@ RUN chmod +x gradlew
 RUN ./gradlew bootJar
 
 FROM eclipse-temurin:17.0.12_7-jre-jammy AS extractor
-ARG APPLICATION_FILE=time-toast.jar
+ARG APPLICATION_FILE=timeToast.jar
 WORKDIR /workspace
 COPY --from=builder /workspace/build/libs/${APPLICATION_FILE} .
 RUN java -Djarmode=tools -jar ${APPLICATION_FILE} extract --layers --destination extracted
 
 FROM eclipse-temurin:17.0.12_7-jre-jammy AS runner
-ENV APPLICATION_FILE=time-toast.jar
+ENV APPLICATION_FILE=timeToast.jar
 WORKDIR /workspace
 COPY --from=extractor /workspace/extracted/dependencies ./
 COPY --from=extractor /workspace/extracted/spring-boot-loader ./
