@@ -27,12 +27,12 @@ public class LoginController {
 
 
 
-    @PostMapping("/kakao")
+    @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
         return loginService.getAccessToken(LoginType.KAKAO, code);
     }
 
-    @PostMapping("/google")
+    @GetMapping("/google")
     public LoginResponse loginWithGoogle(@RequestParam("code") String code) {
         return loginService.getAccessToken(LoginType.GOOGLE, code);
     }
