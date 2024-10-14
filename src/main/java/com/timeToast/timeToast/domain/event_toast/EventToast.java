@@ -1,8 +1,7 @@
 package com.timeToast.timeToast.domain.event_toast;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.enums.member.LoginType;
-import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -32,13 +31,12 @@ public class EventToast extends BaseTime {
 
     private boolean is_deleted;
 
-    //    @OneToOne
-//    @JoinColumn(name = "icon_id", nullable = false)
-//    private Icon icon;
-
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @OneToMany(mappedBy = "event_toast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<Jam> jams = new HashSet<>();
 
     @Builder
     public EventToast(final String title, final LocalDateTime opened_date, final boolean is_opened, final boolean is_deleted){
