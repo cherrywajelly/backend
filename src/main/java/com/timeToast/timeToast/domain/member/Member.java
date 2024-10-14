@@ -3,8 +3,12 @@ package com.timeToast.timeToast.domain.member;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "member")
@@ -29,6 +33,9 @@ public class Member extends BaseTime {
     private MemberRole memberRole;
 
     private boolean is_delete;
+
+    @OneToMany(mappedBy = "event_toast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<EventToast> eventToasts = new HashSet<>();
 
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
