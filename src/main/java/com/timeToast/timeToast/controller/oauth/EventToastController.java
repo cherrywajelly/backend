@@ -6,10 +6,7 @@ import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/eventToast")
 @RestController
@@ -22,4 +19,5 @@ public class EventToastController {
     public void postEventToast(@Login LoginMember loginMember, @RequestBody @Valid EventToastPostRequest eventToastPostRequest) {
         eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
     }
+
 }
