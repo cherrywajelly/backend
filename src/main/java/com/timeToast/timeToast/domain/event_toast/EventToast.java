@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.domain.event_toast;
 
 import com.timeToast.timeToast.domain.BaseTime;
+import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
@@ -38,6 +39,10 @@ public class EventToast extends BaseTime {
 
     @OneToMany(mappedBy = "eventToast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Jam> jams = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "icon_id", nullable = false)
+    private Icon icon;
 
     @Builder
     public EventToast(final String title, final LocalDate opened_date, Member member){
