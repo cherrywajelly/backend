@@ -33,7 +33,8 @@ public class Icon extends BaseTime {
     private Jam jam;
 
     @Builder
-    public Icon(String icon_image_url){
+    public Icon(final long id, final String icon_image_url){
+        this.id = id;
         this.icon_image_url = icon_image_url;
     }
 }

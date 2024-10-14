@@ -45,10 +45,12 @@ public class EventToast extends BaseTime {
     private Icon icon;
 
     @Builder
-    public EventToast(final String title, final LocalDate opened_date, Member member){
+    public EventToast(final long id, final String title, final LocalDate opened_date, Member member, Icon icon){
+        this.id = id;
         this.title = title;
         this.opened_date = opened_date;
         this.member = member;
+        this.icon = icon;
     }
 
     public void updateIsDelete(final boolean is_delete){
