@@ -1,6 +1,5 @@
 import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 
-
 buildscript {
 	ext {
 		restdocsApiSpecVersion = '0.17.1'
@@ -48,7 +47,7 @@ openapi3 {
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
 	version = '1.0.0'
-	format = 'json'
+	format = 'yaml'
 }
 
 dependencies {

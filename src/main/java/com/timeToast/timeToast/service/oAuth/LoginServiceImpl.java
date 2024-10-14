@@ -10,7 +10,6 @@ import com.timeToast.timeToast.service.jwt.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 
@@ -19,28 +18,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
-    private final KakaoLoginImpl kakaoLoginServiceImpl;
-    private final GoogleLoginImpl googleLoginImpl;
+//    private final KakaoLoginImpl kakaoLoginServiceImpl;
+//    private final GoogleLoginImpl googleLoginImpl;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
     // for login test
-    public String loadToKakaoLogin() {
-        return kakaoLoginServiceImpl.loadToLogin();
-    }
-    public String loadToGoogleLogin() {
-        return googleLoginImpl.loadToLogin();
-    }
+//    public String loadToKakaoLogin() {
+//        return kakaoLoginServiceImpl.loadToLogin();
+//    }
+//    public String loadToGoogleLogin() {
+//        return googleLoginImpl.loadToLogin();
+//    }
 
-    public LoginResponse getAccessToken(LoginType social, String code) {
-        if (social.equals(LoginType.KAKAO)){
-            return loginToService(kakaoLoginServiceImpl.getAccessToken(code), LoginType.KAKAO);
-        }
-        else {
-            return loginToService(googleLoginImpl.getAccessToken(code), LoginType.GOOGLE);
-        }
-    }
+//    public LoginResponse getAccessToken(LoginType social, String code) {
+//        if (social.equals(LoginType.KAKAO)){
+//            return loginToService(kakaoLoginServiceImpl.getAccessToken(code), LoginType.KAKAO);
+//        }
+//        else {
+//            return loginToService(googleLoginImpl.getAccessToken(code), LoginType.GOOGLE);
+//        }
+//    }
 
+    @Override
     public LoginResponse loginToService(String email, LoginType loginType) {
 
         Optional<Member> findMember = memberRepository.findByEmail(email);

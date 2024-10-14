@@ -5,7 +5,6 @@ public enum TestConstant {
     TEST_ACCESS_TOKEN("test accessToken"),
     TEST_REFRESH_TOKEN("test refreshToken"),
     TEST_AUTH_CODE("test authCode"),
-
     TEST_EMAIL("test email");
 
 

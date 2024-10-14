@@ -1,6 +1,10 @@
 package com.timeToast.timeToast.service.oAuth;
 
-public interface OAuthService {
+import com.timeToast.timeToast.dto.member.LoginResponse;
 
-    String getAccessToken(String accessToken);
+public interface OAuthService {
+    LoginResponse getKakaoAccessToken(String accessToken);
+
+    LoginResponse getGoogleAccessToken(String accessToken);
+
 }

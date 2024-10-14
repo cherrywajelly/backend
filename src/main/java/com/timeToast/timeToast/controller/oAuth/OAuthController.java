@@ -1,35 +1,33 @@
 package com.timeToast.timeToast.controller.oAuth;
 
-import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.dto.member.LoginResponse;
-import com.timeToast.timeToast.service.oAuth.LoginService;
-import lombok.RequiredArgsConstructor;
+import com.timeToast.timeToast.service.oAuth.OAuthService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/api/v1/login")
 @RestController
-@RequiredArgsConstructor
 public class OAuthController {
 
-    private final LoginService loginService;
+    private final OAuthService oAuthService;
 
+    public OAuthController(final OAuthService oAuthService) {
+        this.oAuthService = oAuthService;
+    }
 //     for test
 //     @GetMapping("")
 //     public RedirectView loadUrl () {
 //        return new RedirectView(loginService.loadToGoogleLogin());
 //     }
 
-
-
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
-        return loginService.getAccessToken(LoginType.KAKAO, code);
+        return oAuthService.getKakaoAccessToken(code);
     }
 
     @GetMapping("/google")
     public LoginResponse loginWithGoogle(@RequestParam("code") String code) {
-        return loginService.getAccessToken(LoginType.GOOGLE, code);
+        return oAuthService.getGoogleAccessToken(code);
     }
 
 }
