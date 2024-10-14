@@ -34,7 +34,7 @@ public class Member extends BaseTime {
 
     private boolean is_delete;
 
-    @OneToMany(mappedBy = "event_toast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<EventToast> eventToasts = new HashSet<>();
 
     @Builder

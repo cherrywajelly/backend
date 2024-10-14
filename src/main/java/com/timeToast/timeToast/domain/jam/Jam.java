@@ -30,7 +30,7 @@ public class Jam extends BaseTime {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "event_toast_id", nullable = false)
+    @JoinColumn(name = "event_toast_id")
     private EventToast eventToast;
 
     @Builder

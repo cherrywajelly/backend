@@ -4,12 +4,13 @@ import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class EventToast extends BaseTime {
 
     private String title;
 
-    private LocalDateTime opened_date;
+    private LocalDate opened_date;
 
     private boolean is_opened;
 
@@ -35,15 +36,14 @@ public class EventToast extends BaseTime {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @OneToMany(mappedBy = "event_toast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "eventToast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Jam> jams = new HashSet<>();
 
     @Builder
-    public EventToast(final String title, final LocalDateTime opened_date, final boolean is_opened, final boolean is_deleted){
+    public EventToast(final String title, final LocalDate opened_date, Member member){
         this.title = title;
         this.opened_date = opened_date;
-        this.is_opened = is_opened;
-        this.is_deleted = is_deleted;
+        this.member = member;
     }
 
     public void updateIsDelete(final boolean is_delete){
