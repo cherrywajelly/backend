@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.oauth;
+package com.timeToast.timeToast.service.oAuth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class KakaoLoginImpl {
+public class KakaoLoginImpl implements OAuthService {
     private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/token";
 
     @Value("${oauth2.client.kakao.client-id}")
@@ -43,7 +43,7 @@ public class KakaoLoginImpl {
         return loginUrl;
     }
 
-    public String getKakaoAccessToken(String accessToken) {
+    public String getAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 

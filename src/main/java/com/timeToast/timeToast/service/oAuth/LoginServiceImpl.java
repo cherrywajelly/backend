@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.oauth;
+package com.timeToast.timeToast.service.oAuth;
 
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
@@ -34,10 +34,10 @@ public class LoginServiceImpl implements LoginService {
 
     public LoginResponse getAccessToken(LoginType social, String code) {
         if (social.equals(LoginType.KAKAO)){
-            return loginToService(kakaoLoginServiceImpl.getKakaoAccessToken(code), LoginType.KAKAO);
+            return loginToService(kakaoLoginServiceImpl.getAccessToken(code), LoginType.KAKAO);
         }
         else {
-            return loginToService(googleLoginImpl.getGoogleAccessToken(code), LoginType.GOOGLE);
+            return loginToService(googleLoginImpl.getAccessToken(code), LoginType.GOOGLE);
         }
     }
 
@@ -61,4 +61,5 @@ public class LoginServiceImpl implements LoginService {
 
         return jwtService.createJwts(LoginMember.from(member));
     }
+
 }

@@ -1,21 +1,15 @@
-package com.timeToast.timeToast.service.oauth;
+package com.timeToast.timeToast.service.oAuth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.dto.oauth.GoogleUserDataDto;
-import com.timeToast.timeToast.dto.oauth.KakaoUserDataDto;
 import com.timeToast.timeToast.dto.oauth.OAuthResponseDto;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -26,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class GoogleLoginImpl {
+public class GoogleLoginImpl  implements OAuthService {
 
     private final String googleTokenUrl = "https://oauth2.googleapis.com/token";
 
@@ -47,7 +41,7 @@ public class GoogleLoginImpl {
         return loginUrl;
     }
 
-    public String getGoogleAccessToken(String accessToken) {
+    public String getAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> params = new HashMap<>();
 

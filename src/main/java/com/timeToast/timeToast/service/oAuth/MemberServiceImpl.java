@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.oauth;
+package com.timeToast.timeToast.service.oAuth;
 
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.repository.member.MemberRepository;
