@@ -26,8 +26,6 @@ public class JwtFilter extends OncePerRequestFilter {
         //get jwt token to header
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
-        System.out.println("jwt token: " + token);
-
         if(token != null){
             if(token.startsWith("Bearer ")){
                 token = token.substring(7);

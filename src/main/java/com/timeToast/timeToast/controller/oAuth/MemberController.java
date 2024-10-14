@@ -1,16 +1,10 @@
-package com.timeToast.timeToast.controller.oauth;
+package com.timeToast.timeToast.controller.oAuth;
 
 import com.timeToast.timeToast.domain.member.LoginMember;
 import com.timeToast.timeToast.global.annotation.Login;
-import com.timeToast.timeToast.global.jwt.CustomUserDetails;
-import com.timeToast.timeToast.service.oauth.LoginService;
-import com.timeToast.timeToast.service.oauth.MemberService;
+import com.timeToast.timeToast.service.oAuth.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/member")
