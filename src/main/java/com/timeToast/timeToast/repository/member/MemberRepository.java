@@ -12,4 +12,6 @@ public interface MemberRepository {
     Member save(final Member member);
     void delete(final Member member);
     Optional<Member> findByNickname(final String nickname);
+
+    boolean existsByNickname(final String nickname);
 }

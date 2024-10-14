@@ -21,9 +21,9 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.getById(userId);
 
         // 이메일 중복 검증 로직
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+        boolean exist = memberRepository.existsByNickname(nickname);
 
-        if (findMember.isEmpty()) {
+        if (!exist) {
             member.updateNickname(nickname);
             return ResponseEntity.ok().body("닉네임이 등록되었습니다.");
         }
@@ -31,4 +31,6 @@ public class MemberServiceImpl implements MemberService{
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 닉네임입니다. 다시 입력해주세요.");
         }
     }
+
+
 }

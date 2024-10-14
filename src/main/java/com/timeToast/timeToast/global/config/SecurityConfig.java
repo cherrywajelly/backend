@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .headers(httpSecurityHeaders -> httpSecurityHeaders.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**", "/actuator/**").permitAll();
+                            request.requestMatchers("/h2-console/**", "/swagger-ui/**", "/api/v1/login/**", "/actuator/**", "/v3/api-docs/**").permitAll();
                             request.anyRequest().authenticated();
 
                         }
@@ -59,7 +59,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("https://52.79.224.203","*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
