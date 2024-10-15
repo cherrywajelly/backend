@@ -30,6 +30,7 @@ public class FollowServiceImpl implements FollowService{
 
     @Override
     public void saveFollow(final long followingId, final long memberId) {
+        System.out.println("real service");
 
         Optional<Follow> findFollow = followRepository.findByFollowingIdAndFollowerId(followingId,memberId);
 
@@ -49,23 +50,36 @@ public class FollowServiceImpl implements FollowService{
     public FollowResponses findFollowerList(final long memberId) {
 
         List<Follow> follows = followRepository.findAllByFollowingId(memberId);
-        return getFollowResponses(memberId, follows);
+        return getFollowerResponses(follows);
     }
 
     @Override
     public FollowResponses findFollowingList(final long memberId) {
 
         List<Follow> follows = followRepository.findAllByFollowerId(memberId);
-        return getFollowResponses(memberId, follows);
+        return getFollowingResponses(follows);
 
     }
 
-    private FollowResponses getFollowResponses(long memberId, List<Follow> follows) {
+    private FollowResponses getFollowingResponses(final List<Follow> follows) {
         List<FollowResponse> followResponses = new ArrayList<>();
 
         follows.forEach(
                 follow -> {
-                    Optional<Member> findMember = memberRepository.findById(memberId);
+                    Optional<Member> findMember = memberRepository.findById(follow.getFollowingId());
+                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
+                }
+        );
+
+        return new FollowResponses(followResponses);
+    }
+
+    private FollowResponses getFollowerResponses(final List<Follow> follows) {
+        List<FollowResponse> followResponses = new ArrayList<>();
+
+        follows.forEach(
+                follow -> {
+                    Optional<Member> findMember = memberRepository.findById(follow.getFollowerId());
                     findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
 
                 }
