@@ -58,7 +58,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     // for login test
 //    public String loadToLogin() {
-//        String loginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + "client_id=" + clientId + "&redirect_uri=" + redirectUrl
+//        String loginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + "client_id=" + googleClientId + "&redirect_uri=" + googleRedirectUrl
 //                + "&response_type=code&scope=email&access_type=offline";
 //
 //        return loginUrl;

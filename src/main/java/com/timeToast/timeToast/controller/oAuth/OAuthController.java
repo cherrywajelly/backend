@@ -4,6 +4,7 @@ import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.service.oAuth.OAuthService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/api/v1/login")
 @RestController
@@ -17,7 +18,7 @@ public class OAuthController {
 //     for test
 //     @GetMapping("")
 //     public RedirectView loadUrl () {
-//        return new RedirectView(loginService.loadToGoogleLogin());
+//        return new RedirectView(oAuthService);
 //     }
 
     @GetMapping("/kakao")

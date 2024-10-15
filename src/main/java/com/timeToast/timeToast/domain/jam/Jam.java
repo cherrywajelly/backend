@@ -2,6 +2,7 @@ package com.timeToast.timeToast.domain.jam;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -32,6 +33,10 @@ public class Jam extends BaseTime {
     @ManyToOne
     @JoinColumn(name = "event_toast_id")
     private EventToast eventToast;
+
+    @OneToOne
+    @JoinColumn(name = "icon_id", nullable = false)
+    private Icon icon;
 
     @Builder
     public Jam(final String title, final String contents_url, final String image_url){

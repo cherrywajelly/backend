@@ -5,7 +5,6 @@ import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +40,7 @@ public class EventToast extends BaseTime {
     private final Set<Jam> jams = new HashSet<>();
 
     @OneToOne
-    @JoinColumn(name = "icon_id", nullable = false)
+    @JoinColumn(name = "icon_id")
     private Icon icon;
 
     @Builder

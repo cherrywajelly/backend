@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,21 +40,17 @@ public class EventToastServiceImpl implements EventToastService{
     public List<EventToastResponse> getEventToastList(long userId){
         Member member = memberRepository.getById(userId);
 
-
         //TODO 팔로우 연동 후 팔로워만 필터링해서 매핑되도록 로직 변경
-        //미완성 코드
-//        List<EventToast> eventToastResponses = eventToastRepository.findAll();
-//
-//        List<EventToastResponse> eventToastList = eventToastResponses.stream()
-//                .map(eventToast -> new EventToast(
-//                        eventToast.getId(),
-//                        eventToast.getTitle(),
-//                        eventToast.getOpened_date(),
-//                        eventToast.getMember().getNickname(),
-//                        new Icon(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url())
-//                ))
-//                .collect(Collectors.toList());
+        List<EventToast> eventToasts = eventToastRepository.findAll();
+        List<EventToastResponse> eventToastResponseList = new ArrayList<>();
 
+        for (EventToast eventToast : eventToasts) {
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
+                    new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
+            eventToastResponseList.add(eventToastResponse);
+        }
+
+        return eventToastResponseList;
     }
 }
 
