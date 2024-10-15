@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.oauth;
+package com.timeToast.timeToast.service.oAuth;
 
 import org.springframework.http.ResponseEntity;
 
