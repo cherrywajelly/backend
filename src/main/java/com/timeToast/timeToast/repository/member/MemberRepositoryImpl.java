@@ -24,6 +24,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findById(final long memberId) {
+        return memberJpaRepository.findById(memberId);
+    }
+
+    @Override
     public Optional<Member> findByEmail(final String email) {
         return memberJpaRepository.findByEmail(email);
     }
@@ -40,4 +45,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Optional<Member> findByNickname(final String nickname) { return memberJpaRepository.findByNickname(nickname); }
+
+    @Override
+    public boolean existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname);}
 }
