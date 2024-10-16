@@ -38,19 +38,23 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        //token 유효성 검사
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            // 토큰으로부터 유저 정보를 받아
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            // SecurityContext 에 객체 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(token != null){
+            //token 유효성 검사
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                // 토큰으로부터 유저 정보를 받아
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                // SecurityContext 에 객체 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            request.setAttribute("LoginMember", LoginMember.from(customUserDetails.getMember()));
+                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+                request.setAttribute("LoginMember", LoginMember.from(customUserDetails.getMember()));
 
-        }else {
-            throw new UnauthorizedException(ACCESS_TOKEN_EXPIRED.getMessage());
+            }else {
+                throw new UnauthorizedException(ACCESS_TOKEN_EXPIRED.getMessage());
+            }
         }
+
+
 
         // 다음 Filter 실행
         filterChain.doFilter(request, response);
