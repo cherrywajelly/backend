@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.global.jwt;
 
 import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.ACCESS_TOKEN_EXPIRED;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TOKEN_FORMAT;
 
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -29,6 +33,8 @@ public class JwtFilter extends OncePerRequestFilter {
         if(token != null){
             if(token.startsWith("Bearer ")){
                 token = token.substring(7);
+            }else{
+                throw new UnauthorizedException(INVALID_TOKEN_FORMAT.getMessage());
             }
         }
 
@@ -42,6 +48,8 @@ public class JwtFilter extends OncePerRequestFilter {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             request.setAttribute("LoginMember", LoginMember.from(customUserDetails.getMember()));
 
+        }else {
+            throw new UnauthorizedException(ACCESS_TOKEN_EXPIRED.getMessage());
         }
 
         // 다음 Filter 실행
