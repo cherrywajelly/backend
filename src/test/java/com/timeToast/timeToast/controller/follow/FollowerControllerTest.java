@@ -2,7 +2,7 @@ package com.timeToast.timeToast.controller.follow;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.service.follow.FollowService;
-import com.timeToast.timeToast.service.follow.FollowServiceTemp;
+import com.timeToast.timeToast.service.follow.FollowServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class FollowerControllerTest extends BaseControllerTests {
 
-    private final FollowService followService = new FollowServiceTemp();
+    private final FollowService followService = new FollowServiceTest();
 
     @Override
     protected Object initController() {

@@ -8,7 +8,6 @@ public class OAuthServiceTest implements OAuthService {
 
     @Override
     public LoginResponse getKakaoAccessToken(String accessToken) {
-        System.out.println("get kakao access token");
         return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value());
     }
 
