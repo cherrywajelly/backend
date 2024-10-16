@@ -41,8 +41,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             request.setAttribute("LoginMember", LoginMember.from(customUserDetails.getMember()));
-            System.out.println(request.getAttributeNames());
-
 
         }
 
