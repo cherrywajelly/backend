@@ -26,7 +26,7 @@ public class IconGroup extends BaseTime {
     private long id;
 
     @Column(nullable = false)
-    private IconType icon_type;
+    private IconType iconType;
 
     @Column(nullable = false)
     private String name;
@@ -50,7 +50,7 @@ public class IconGroup extends BaseTime {
     public IconGroup(final String name, final long price, final IconType iconType, Member member){
         this.name = name;
         this.price = price;
-        this.icon_type = iconType;
+        this.iconType = iconType;
         this.member = member;
     }
 

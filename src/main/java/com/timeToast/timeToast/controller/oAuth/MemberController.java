@@ -20,5 +20,5 @@ public class MemberController {
         return memberService.postNickname(nickname, loginMember.id());
     }
 
-    // TODO 닉네임 중복 검증
+    // 닉네임 검증 로직
 }

@@ -15,13 +15,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    private final LoginService loginService;
 
     public ResponseEntity<String> postNickname(String nickname, long userId){
 
         Member member = memberRepository.getById(userId);
 
-        // 이메일 중복 검증 로직
+        // TODO db 병합 후 지울것
+        loginService.addBuiltInIconTest(member);
+
+        // 닉네임 중복 검증 로직
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
+
+
 
         if (findMember.isEmpty()) {
             member.updateNickname(nickname);

@@ -1,21 +1,23 @@
 package com.timeToast.timeToast.service.oAuth;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.icon.Icon;
+import com.timeToast.timeToast.domain.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.LoginMember;
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import com.timeToast.timeToast.dto.member.LoginResponse;
-import com.timeToast.timeToast.repository.icon.IconRepository;
+import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import com.timeToast.timeToast.repository.member_icon.MemberIconRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -27,8 +29,8 @@ public class LoginServiceImpl implements LoginService {
 //    private final GoogleLoginImpl googleLoginImpl;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
+    private final IconGroupRepository iconGroupRepository;
     private final MemberIconRepository memberIconRepository;
-    private final IconRepository iconRepository;
 
     // for login test
 //    public String loadToKakaoLogin() {
@@ -67,6 +69,20 @@ public class LoginServiceImpl implements LoginService {
         }
 
         return jwtService.createJwts(LoginMember.from(member));
+    }
+
+
+    // TODO db 연결 후 loginToService 랑 병합
+    @Override
+    public void addBuiltInIconTest(Member member) {
+        List<IconGroup> iconGroups = iconGroupRepository.findByIconType(IconType.BUILTIN);
+        for (IconGroup iconGroup : iconGroups) {
+            memberIconRepository.save(MemberIcon.builder()
+                    .member(member)
+                    .iconGroup(iconGroup)
+                    .build());
+        }
+        System.out.println("기본 이미지가 등록되었습니다");
     }
 
 }
