@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.controller.oauth;
+package com.timeToast.timeToast.controller;
 
 import com.timeToast.timeToast.domain.member.LoginMember;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;

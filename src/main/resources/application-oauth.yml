@@ -8,4 +8,4 @@ oauth2 :
     google :
       client-id : 456598169342-am0dppiqr6an8ea9unrcrqum7p3dner8.apps.googleusercontent.com
       client-secret: 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
-      redirect-uri: http://localhost:8080/api/v1/login/google
+      redirect-uri: http://localhost:3000/api/v1/login/google

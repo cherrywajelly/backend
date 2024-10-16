@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,22 +24,31 @@ public class IconGroup extends BaseTime {
     @Column(name = "icon_group_id")
     private long id;
 
+    @Column(nullable = false)
     private IconType icon_type;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private long price;
 
-    private IconState state;
+    private IconState iconState;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @OneToMany(mappedBy = "iconGroup", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private final Set<Icon> icons = new HashSet<>();
+    private Set<Icon> icons = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "icon_id", nullable = false)
-    private Icon icon;
+    @Builder
+    public IconGroup(final String name, final long price, final IconType iconType, Member member){
+        this.name = name;
+        this.price = price;
+        this.icon_type = iconType;
+        this.member = member;
+    }
+
+    public void updateIconState(IconState iconState) { this.iconState = iconState; }
 }

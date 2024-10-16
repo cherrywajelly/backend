@@ -18,7 +18,7 @@ public class OAuthController {
 //     for test
 //     @GetMapping("")
 //     public RedirectView loadUrl () {
-//        return new RedirectView(oAuthService);
+//        return new RedirectView(oAuthService.loadToLogin());
 //     }
 
     @GetMapping("/kakao")
