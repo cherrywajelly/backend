@@ -4,5 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface MemberService {
 
-    ResponseEntity<String> postNickname(String nickname, long userId);
+    void postNickname(String nickname, long userId);
+
+    void isNicknameAvailable(String nickname);
 }

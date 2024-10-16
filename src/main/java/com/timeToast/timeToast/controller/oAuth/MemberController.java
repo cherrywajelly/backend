@@ -15,10 +15,13 @@ public class MemberController {
 
     // 닉네임 등록
     @PostMapping("")
-    public ResponseEntity<String> postNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
+    public void postNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
 
-        return memberService.postNickname(nickname, loginMember.id());
+        memberService.postNickname(nickname, loginMember.id());
     }
 
-    // 닉네임 검증 로직
+    @PostMapping("/exists")
+    public void isNicknameAvailable(@RequestParam("nickname") String nickname) {
+        memberService.isNicknameAvailable(nickname);
+    }
 }
