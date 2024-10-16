@@ -1,31 +1,41 @@
 package com.timeToast.timeToast.service.icon_group;
 
-import com.timeToast.timeToast.domain.enums.icon_group.IconState;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member_icon.MemberIconRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class IconGroupServiceImpl implements IconGroupService{
+    private final MemberIconRepository memberIconRepository;
     private final IconGroupRepository iconGroupRepository;
-    private  final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    public void postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public void buyIconGroup(long memberId, long iconGroupId){
         Member member = memberRepository.getById(memberId);
+        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
-        IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, member);
-        iconGroup.updateIconState(IconState.UNREGISTERED);
-        iconGroupRepository.save(iconGroup);
-        System.out.println("아이콘 그룹 등록 완료");
+        // 중복 구매 방지
+        if(memberIconRepository.findByMemberAndIconGroup(memberId, iconGroupId).isEmpty()) {
+            memberIconRepository.save(MemberIcon.builder()
+                    .member(member)
+                    .iconGroup(iconGroup)
+                    .build());
+
+            System.out.println("아이콘 그룹을 구입하였습니다");
+        }else {
+            // TODO 예외처리
+            System.out.println("아이콘 그룹 구입 못함");
+        }
     }
+
 
 }

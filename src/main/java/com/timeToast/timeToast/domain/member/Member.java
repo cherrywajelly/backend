@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,9 @@ public class Member extends BaseTime {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<EventToast> eventToasts = new HashSet<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<MemberIcon> memberIcons = new HashSet<>();
 
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,

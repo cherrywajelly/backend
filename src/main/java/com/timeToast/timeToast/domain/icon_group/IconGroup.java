@@ -5,6 +5,7 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,6 +42,9 @@ public class IconGroup extends BaseTime {
 
     @OneToMany(mappedBy = "iconGroup", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Icon> icons = new HashSet<>();
+
+    @OneToMany(mappedBy = "iconGroup", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final Set<MemberIcon> memberIcons = new HashSet<>();
 
     @Builder
     public IconGroup(final String name, final long price, final IconType iconType, Member member){

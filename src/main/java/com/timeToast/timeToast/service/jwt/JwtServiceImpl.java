@@ -38,6 +38,7 @@ public class JwtServiceImpl implements JwtService {
         String accessToken = createToken(loginMember, ONE_HOUR.time());
         String refreshToken = createToken(loginMember, ONE_DAY.time());
         System.out.println("login member: " + loginMember.id());
+//        System.out.println("access: "+ accessToken);
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
 
         return LoginResponse.of(accessToken, refreshToken);
