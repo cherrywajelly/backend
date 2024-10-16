@@ -3,6 +3,8 @@ package com.timeToast.timeToast.dto.icon.request;
 import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.icon_group.IconGroup;
 
+import java.util.Set;
+
 public record IconPostRequest(
         String icon_image_url
 ) {

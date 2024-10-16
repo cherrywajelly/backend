@@ -1,10 +1,10 @@
 package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.dto.icon.request.IconPostRequest;
-import com.timeToast.timeToast.dto.icon.response.IconDto;
 
-import java.util.Set;
+import java.util.List;
 
 public interface IconService {
-    void postIconSet(Set<IconPostRequest> iconPostRequestSet, long memberId);
+    // TODO multipartFile로 변경
+    void postIconSet(List<IconPostRequest> images, long iconGroupId);
 }

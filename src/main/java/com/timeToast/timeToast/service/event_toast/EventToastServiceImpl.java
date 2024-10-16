@@ -4,7 +4,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
-import com.timeToast.timeToast.dto.icon.response.IconDto;
+import com.timeToast.timeToast.dto.icon.response.IconResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -43,7 +43,7 @@ public class EventToastServiceImpl implements EventToastService{
 
         for (EventToast eventToast : eventToasts) {
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
-                    new IconDto(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
+                    new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
             eventToastResponseList.add(eventToastResponse);
         }
 
