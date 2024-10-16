@@ -8,6 +8,7 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.FOLLOW_A
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.FOLLOW_NOT_FOUND;
 
 @Service
+@Slf4j
 public class FollowServiceImpl implements FollowService{
 
     private final FollowRepository followRepository;
@@ -30,17 +32,16 @@ public class FollowServiceImpl implements FollowService{
 
     @Override
     public void saveFollow(final long followingId, final long memberId) {
-        System.out.println("real service");
-
         Optional<Follow> findFollow = followRepository.findByFollowingIdAndFollowerId(followingId,memberId);
 
         if(findFollow.isEmpty()){
-            followRepository.save(
+            Follow saveFollow = followRepository.save(
                     Follow.builder()
                             .followingId(followingId)
                             .followerId(memberId)
                             .build()
             );
+            log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
         }else{
             new BadRequestException(FOLLOW_ALREADY_EXISTS.getMessage());
         }
@@ -95,6 +96,7 @@ public class FollowServiceImpl implements FollowService{
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);
+        log.info("delete follow {} by {} ", findFollow.getFollowingId(), findFollow.getFollowerId());
 
 
     }
@@ -106,6 +108,7 @@ public class FollowServiceImpl implements FollowService{
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);
+        log.info("delete follower {} by {}", findFollow.getFollowerId(), findFollow.getFollowingId());
 
     }
 
