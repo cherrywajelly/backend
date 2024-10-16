@@ -16,10 +16,10 @@ public class OAuthController {
         this.oAuthService = oAuthService;
     }
 //     for test
-//     @GetMapping("")
-//     public RedirectView loadUrl () {
-//        return new RedirectView(oAuthService.loadToLogin());
-//     }
+     @GetMapping("")
+     public RedirectView loadUrl () {
+        return new RedirectView(oAuthService.loadToLogin());
+     }
 
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {

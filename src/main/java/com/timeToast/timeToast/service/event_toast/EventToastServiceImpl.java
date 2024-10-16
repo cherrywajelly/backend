@@ -1,11 +1,15 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.icon.response.IconResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.icon.IconRepository;
+import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,16 +26,15 @@ public class EventToastServiceImpl implements EventToastService{
 
     private final EventToastRepository eventToastRepository;
     private final MemberRepository memberRepository;
+    private final IconRepository iconRepository;
+    private final IconGroupRepository iconGroupRepository;
 
     public void postEventToast(EventToastPostRequest eventToastPostRequest, long memberId) {
         Member member = memberRepository.getById(memberId);
 
-        if (eventToastPostRequest.title().isBlank()) {
-            // 에러 메세지 반환
-        } else {
-            EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, member));
-            // 성공 response 반환
-        }
+        Icon icon = iconRepository.getById(eventToastPostRequest.icon_id());
+        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, member, icon));
+        System.out.println("이벤트 토스트 등록");
 
     }
 

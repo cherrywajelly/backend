@@ -14,7 +14,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_N
 public class EventToastRepositoryImpl implements EventToastRepository{
     private final EventToastJpaRepository eventToastJpaRepository;
 
-    //TODO 사용자가 팔로우 하는 대상만 조회
+    // TODO 사용자가 팔로우 하는 대상만 조회
     @Override
     public List<EventToast> findAll() {
         return eventToastJpaRepository.findAll();

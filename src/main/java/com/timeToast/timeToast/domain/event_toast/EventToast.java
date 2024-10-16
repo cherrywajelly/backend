@@ -24,8 +24,10 @@ public class EventToast extends BaseTime {
     @Column(name = "event_toast_id")
     private long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private LocalDate opened_date;
 
     private boolean is_opened;
