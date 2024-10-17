@@ -10,6 +10,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class FollowServiceImpl implements FollowService{
         this.followRepository = followRepository;
         this.memberRepository = memberRepository;
     }
-
+    @Transactional
     @Override
     public void saveFollow(final long followingId, final long memberId) {
         Optional<Follow> findFollow = followRepository.findByFollowingIdAndFollowerId(followingId,memberId);
@@ -47,6 +48,7 @@ public class FollowServiceImpl implements FollowService{
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FollowResponses findFollowerList(final long memberId) {
 
@@ -54,6 +56,7 @@ public class FollowServiceImpl implements FollowService{
         return getFollowerResponses(follows);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FollowResponses findFollowingList(final long memberId) {
 
@@ -61,6 +64,7 @@ public class FollowServiceImpl implements FollowService{
         return getFollowingResponses(follows);
 
     }
+
 
     private FollowResponses getFollowingResponses(final List<Follow> follows) {
         List<FollowResponse> followResponses = new ArrayList<>();
@@ -89,6 +93,7 @@ public class FollowServiceImpl implements FollowService{
         return new FollowResponses(followResponses);
     }
 
+    @Transactional
     @Override
     public void deleteFollowing(final long followingId, final long memberId) {
 
@@ -101,6 +106,7 @@ public class FollowServiceImpl implements FollowService{
 
     }
 
+    @Transactional
     @Override
     public void deleteFollower(final long memberId, final long followerId) {
 
