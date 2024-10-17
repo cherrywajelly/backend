@@ -28,8 +28,6 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    private boolean is_delete;
-
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
                   final LoginType loginType, final MemberRole memberRole, final boolean is_delete){
@@ -38,7 +36,6 @@ public class Member extends BaseTime {
         this.memberProfileUrl = memberProfileUrl;
         this.loginType = loginType;
         this.memberRole = memberRole;
-        this.is_delete = is_delete;
     }
 
     public void updateMemberProfileUrl(final String memberProfileUrl){
@@ -49,8 +46,5 @@ public class Member extends BaseTime {
         this.nickname = nickname;
     }
 
-    public void updateIsDelete(final boolean is_delete){
-        this.is_delete = is_delete;
-    }
 
 }
