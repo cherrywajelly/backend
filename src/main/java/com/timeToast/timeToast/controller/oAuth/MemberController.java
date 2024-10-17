@@ -20,6 +20,7 @@ public class MemberController {
         memberService.postNickname(nickname, loginMember.id());
     }
 
+    // 닉네임 중복 검증
     @PostMapping("/exists")
     public void isNicknameAvailable(@RequestParam("nickname") String nickname) {
         memberService.isNicknameAvailable(nickname);
