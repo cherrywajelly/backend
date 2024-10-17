@@ -26,11 +26,10 @@ public class MemberServiceImpl implements MemberService{
 
         // TODO db 병합 후 지울것
         loginService.addBuiltInIconTest(member);
+        // 이메일 중복 검증 로직
+        boolean exist = memberRepository.existsByNickname(nickname);
 
-        // 닉네임 중복 검증 로직
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
-
-        if (findMember.isEmpty()) {
+        if (!exist) {
             member.updateNickname(nickname);
         }
         else {
@@ -45,4 +44,6 @@ public class MemberServiceImpl implements MemberService{
             new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
     }
+
+
 }
