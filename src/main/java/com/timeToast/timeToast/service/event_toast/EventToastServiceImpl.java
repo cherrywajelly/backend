@@ -13,6 +13,7 @@ import com.timeToast.timeToast.repository.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class EventToastServiceImpl implements EventToastService{
@@ -35,7 +37,7 @@ public class EventToastServiceImpl implements EventToastService{
 
         Icon icon = iconRepository.getById(eventToastPostRequest.icon_id());
         eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, member, icon));
-        System.out.println("이벤트 토스트 등록");
+        log.info("save event toast");
 
     }
 

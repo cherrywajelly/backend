@@ -8,9 +8,11 @@ import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class IconGroupAdminServiceImpl implements IconGroupAdminService {
@@ -23,7 +25,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, member);
         iconGroup.updateIconState(IconState.UNREGISTERED);
         iconGroupRepository.save(iconGroup);
-        System.out.println("아이콘 그룹 등록 완료");
+        log.info("save icon group");
     }
 
 }

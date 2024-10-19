@@ -28,4 +28,5 @@ public class EventToastController {
     public List<EventToastResponse> getEventToast(@Login LoginMember loginMember) {
         return eventToastService.getEventToastList(loginMember.id());
     }
+
 }

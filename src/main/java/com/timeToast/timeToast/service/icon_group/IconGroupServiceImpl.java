@@ -3,15 +3,20 @@ package com.timeToast.timeToast.service.icon_group;
 import com.timeToast.timeToast.domain.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.Member;
 import com.timeToast.timeToast.domain.member_icon.MemberIcon;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import com.timeToast.timeToast.repository.member_icon.MemberIconRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICONGROUP_ALREADY_EXISTS;
+
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class IconGroupServiceImpl implements IconGroupService{
@@ -30,10 +35,9 @@ public class IconGroupServiceImpl implements IconGroupService{
                     .iconGroup(iconGroup)
                     .build());
 
-            System.out.println("아이콘 그룹을 구입하였습니다");
+            log.info("buy new icon group");
         }else {
-            // TODO 예외처리
-            System.out.println("아이콘 그룹 구입 못함");
+            throw new BadRequestException(ICONGROUP_ALREADY_EXISTS.getMessage());
         }
     }
 

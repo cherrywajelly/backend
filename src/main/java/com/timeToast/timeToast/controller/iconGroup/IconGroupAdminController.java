@@ -33,11 +33,9 @@ public class IconGroupAdminController {
         if (loginMember.role().equals(MemberRole.CREATOR)) {
             iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
         } else {
-            // 역할 검증 안됨 메세지 반환
-            new ForbiddenException(ROLE_FORBIDDEN.getMessage());
+            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
         }
         iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
-
     }
 
     // TODO s3 이미지 처리
@@ -45,6 +43,8 @@ public class IconGroupAdminController {
     public void postIconGroupImages(@Login LoginMember loginMember, @PathVariable("icon_group_id") long iconGroupId, @RequestBody List<IconPostRequest> images) {
         if (loginMember.role().equals(MemberRole.CREATOR)) {
             iconService.postIconSet(images, iconGroupId);
+        } else {
+            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
         }
         iconService.postIconSet(images, iconGroupId);
     }
