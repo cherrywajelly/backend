@@ -21,7 +21,7 @@ public record EventToastResponse (
         return EventToastResponse.builder()
                 .event_toast_id(eventToast.getId())
                 .title(eventToast.getTitle())
-                .opened_date(eventToast.getOpened_date())
+                .opened_date(eventToast.getOpenedDate())
                 .nickname(member.getNickname())
                 .icon(icon)
                 .build();

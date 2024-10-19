@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import jakarta.persistence.*;
 import lombok.*;

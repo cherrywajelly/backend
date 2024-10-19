@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventToastRepository {
-
-    List<EventToast> findAll();
+    List<EventToast> findEventToastsByMemberId(final long memberId);
     EventToast save(final EventToast eventToast);
 }

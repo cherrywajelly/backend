@@ -22,9 +22,9 @@ public class Jam extends BaseTime {
 
     private String title;
 
-    private String contents_url;
+    private String contentsUrl;
 
-    private String image_url;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -41,7 +41,7 @@ public class Jam extends BaseTime {
     @Builder
     public Jam(final String title, final String contents_url, final String image_url){
         this.title = title;
-        this.contents_url = contents_url;
-        this.image_url = image_url;
+        this.contentsUrl = contents_url;
+        this.imageUrl = image_url;
     }
 }

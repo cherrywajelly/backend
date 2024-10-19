@@ -36,6 +36,7 @@ public class IconGroupAdminController {
             // 역할 검증 안됨 메세지 반환
             new ForbiddenException(ROLE_FORBIDDEN.getMessage());
         }
+        iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
 
     }
 
@@ -45,6 +46,7 @@ public class IconGroupAdminController {
         if (loginMember.role().equals(MemberRole.CREATOR)) {
             iconService.postIconSet(images, iconGroupId);
         }
+        iconService.postIconSet(images, iconGroupId);
     }
 
 }

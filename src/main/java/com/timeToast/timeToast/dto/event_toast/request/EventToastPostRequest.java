@@ -14,7 +14,7 @@ public record EventToastPostRequest(
 ){
     public EventToast toEntity(EventToastPostRequest eventToastPostRequest, Member member, Icon icon){
         return EventToast.builder()
-                .opened_date(eventToastPostRequest.opened_date)
+                .openedDate(eventToastPostRequest.opened_date)
                 .title(eventToastPostRequest.title)
                 .icon(icon)
                 .member(member)

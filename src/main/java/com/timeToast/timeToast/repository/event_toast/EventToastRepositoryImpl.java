@@ -3,6 +3,8 @@ package com.timeToast.timeToast.repository.event_toast;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,11 +16,11 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_N
 public class EventToastRepositoryImpl implements EventToastRepository{
     private final EventToastJpaRepository eventToastJpaRepository;
 
-    // TODO 사용자가 팔로우 하는 대상만 조회
     @Override
-    public List<EventToast> findAll() {
-        return eventToastJpaRepository.findAll();
+    public List<EventToast> findEventToastsByMemberId(final long memberId) {
+        return eventToastJpaRepository.findEventToastsByMemberId(memberId);
     }
+
 
     @Override
     public EventToast save(final EventToast eventToast) {

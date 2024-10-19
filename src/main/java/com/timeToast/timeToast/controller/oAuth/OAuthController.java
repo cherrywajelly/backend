@@ -22,6 +22,11 @@ public class OAuthController {
         return new RedirectView(oAuthService.loadToLogin());
      }
 
+     @GetMapping("/test")
+     public RedirectView loadKakaoUrl () {
+         return new RedirectView(oAuthService.loadToKakaoLogin());
+     }
+
 
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {

@@ -4,6 +4,7 @@ import com.timeToast.timeToast.dto.member.LoginResponse;
 
 public interface OAuthService {
     String loadToLogin();
+//    String loadToKakaoLogin();
     LoginResponse getKakaoAccessToken(String accessToken);
 
     LoginResponse getGoogleAccessToken(String accessToken);

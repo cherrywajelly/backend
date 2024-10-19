@@ -1,23 +1,23 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.Icon;
 import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.domain.member_icon.MemberIcon;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.icon.response.IconResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.IconRepository;
-import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,7 +27,8 @@ public class EventToastServiceImpl implements EventToastService{
     private final EventToastRepository eventToastRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
-    private final IconGroupRepository iconGroupRepository;
+    private final FollowRepository followRepository;
+
 
     public void postEventToast(EventToastPostRequest eventToastPostRequest, long memberId) {
         Member member = memberRepository.getById(memberId);
@@ -38,18 +39,43 @@ public class EventToastServiceImpl implements EventToastService{
 
     }
 
-    public List<EventToastResponse> getEventToastList(long memberId){
-        Member member = memberRepository.getById(memberId);
+    // opened_date 가 지난 이벤트 토스트만 검증해서 반환
+    public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
+        List<EventToast> openedEventToasts = new ArrayList<>();
 
-        //TODO 팔로우 연동 후 팔로워만 필터링해서 매핑되도록 로직 변경
-        List<EventToast> eventToasts = eventToastRepository.findAll();
+        eventToasts.forEach(
+                eventToast -> {
+                    if (eventToast.getOpenedDate().isBefore(LocalDate.now())){
+                        eventToast.updateIsOpened(true);
+                        eventToastRepository.save(eventToast);
+                        openedEventToasts.add(eventToast);
+                    }
+                }
+        );
+
+        return openedEventToasts;
+    }
+
+
+    public List<EventToastResponse> getEventToastList(long memberId){
         List<EventToastResponse> eventToastResponseList = new ArrayList<>();
 
-        for (EventToast eventToast : eventToasts) {
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
-                    new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
-            eventToastResponseList.add(eventToastResponse);
-        }
+        List<Follow> follows = followRepository.findAllByFollowerId(memberId);
+
+        follows.forEach(
+                follow -> {
+                    // 팔로우하고 있는 사용자의 이벤트 토스트 조회
+                    List<EventToast> eventToasts = eventToastRepository.findEventToastsByMemberId(follow.getFollowingId());
+
+                    checkEventToastOpened(eventToasts).forEach(
+                            eventToast -> {
+                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
+                                        new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
+                                eventToastResponseList.add(eventToastResponse);
+                            }
+                    );
+                }
+        );
 
         return eventToastResponseList;
     }

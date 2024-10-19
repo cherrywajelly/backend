@@ -28,11 +28,11 @@ public class EventToast extends BaseTime {
     private String title;
 
     @Column(nullable = false)
-    private LocalDate opened_date;
+    private LocalDate openedDate;
 
-    private boolean is_opened;
+    private boolean isOpened;
 
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -46,16 +46,18 @@ public class EventToast extends BaseTime {
     private Icon icon;
 
     @Builder
-    public EventToast(final long id, final String title, final LocalDate opened_date, Member member, Icon icon){
+    public EventToast(final long id, final String title, final LocalDate openedDate, Member member, Icon icon){
         this.id = id;
         this.title = title;
-        this.opened_date = opened_date;
+        this.openedDate = openedDate;
         this.member = member;
         this.icon = icon;
     }
 
-    public void updateIsDelete(final boolean is_delete){
-        this.is_deleted = !is_deleted;
+    public void updateIsDelete(final boolean isDelete){
+        this.isDeleted = !isDeleted;
     }
+
+    public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }
 
 }
