@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.group;
 
-import com.timeToast.timeToast.domain.group.Group;
+import com.timeToast.timeToast.domain.group.group.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

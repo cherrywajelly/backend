@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.group;
 
-import com.timeToast.timeToast.domain.group.Group;
+import com.timeToast.timeToast.domain.group.group.Group;
 import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.domain.member_group.MemberGroup;
+import com.timeToast.timeToast.domain.group.member_group.MemberGroup;
 import com.timeToast.timeToast.dto.group.request.GroupSaveRequest;
 import com.timeToast.timeToast.dto.group.response.GroupResponse;
 import com.timeToast.timeToast.dto.group.response.GroupResponses;

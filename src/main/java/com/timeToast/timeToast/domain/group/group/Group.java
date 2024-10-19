@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.group;
+package com.timeToast.timeToast.domain.group.group;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;

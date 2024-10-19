@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.member_group;
 
-import com.timeToast.timeToast.domain.member_group.MemberGroup;
+import com.timeToast.timeToast.domain.group.member_group.MemberGroup;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

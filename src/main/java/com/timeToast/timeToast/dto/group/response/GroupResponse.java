@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.group.response;
 
-import com.timeToast.timeToast.domain.group.Group;
+import com.timeToast.timeToast.domain.group.group.Group;
 import lombok.Builder;
 
 @Builder
