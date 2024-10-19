@@ -34,6 +34,7 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
+<<<<<<< HEAD
     private boolean is_delete;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -50,7 +51,6 @@ public class Member extends BaseTime {
         this.memberProfileUrl = memberProfileUrl;
         this.loginType = loginType;
         this.memberRole = memberRole;
-        this.is_delete = is_delete;
     }
 
     public void updateMemberProfileUrl(final String memberProfileUrl){
@@ -61,8 +61,5 @@ public class Member extends BaseTime {
         this.nickname = nickname;
     }
 
-    public void updateIsDelete(final boolean is_delete){
-        this.is_delete = is_delete;
-    }
 
 }

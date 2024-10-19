@@ -17,6 +17,9 @@ public enum ExceptionConstant {
     FOLLOW_NOT_FOUND("해당 팔로우 정보를 찾을 수 없습니다."),
     FOLLOW_ALREADY_EXISTS("이미 등록된 팔로우 정보입니다."),
 
+    GROUP_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
+    MEMBER_GROUP_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
+
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
 
     private final String message;
