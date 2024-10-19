@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.domain.follow;
 
 import com.timeToast.timeToast.domain.BaseTime;
+import com.timeToast.timeToast.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
