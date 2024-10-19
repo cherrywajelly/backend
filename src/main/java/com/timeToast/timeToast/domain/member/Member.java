@@ -34,7 +34,6 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-<<<<<<< HEAD
     private boolean is_delete;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

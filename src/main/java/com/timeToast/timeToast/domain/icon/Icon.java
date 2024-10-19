@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "icon")
 @Getter
@@ -26,11 +29,11 @@ public class Icon extends BaseTime {
     @JoinColumn(name = "icon_group_id", nullable = false)
     private IconGroup iconGroup;
 
-    @OneToOne(mappedBy = "icon", fetch = FetchType.LAZY)
-    private EventToast eventToast;
+    @OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
+    private final Set<EventToast> eventToasts = new HashSet<>();
 
-    @OneToOne(mappedBy = "icon", fetch = FetchType.LAZY)
-    private Jam jam;
+    @OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
+    private final Set<Jam> jams = new HashSet<>();
 
     @Builder
     public Icon(final String icon_image_url, IconGroup iconGroup){

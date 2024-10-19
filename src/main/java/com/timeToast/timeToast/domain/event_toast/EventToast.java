@@ -41,8 +41,8 @@ public class EventToast extends BaseTime {
     @OneToMany(mappedBy = "eventToast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private final Set<Jam> jams = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "icon_id")
+    @ManyToOne
+    @JoinColumn(name = "icon_id", nullable = false)
     private Icon icon;
 
     @Builder

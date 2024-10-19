@@ -34,7 +34,7 @@ public class Jam extends BaseTime {
     @JoinColumn(name = "event_toast_id")
     private EventToast eventToast;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private Icon icon;
 
