@@ -9,7 +9,7 @@ import java.util.List;
 
 @Builder
 public record GiftToastResponse(
-
+        long giftToastId,
         String title,
         Long iconId,
         Long groupId,
@@ -19,11 +19,12 @@ public record GiftToastResponse(
         LocalDate openedDate,
         Boolean isAgree,
         Boolean isOpened,
-        List<Long> giftToastMembers
+        List<GiftToastOwnerResponse> giftToastOwnerResponses
 
 ) {
-    public static GiftToastResponse from(final GiftToast giftToast, List<Long> giftToastMembers, String groupName){
+    public static GiftToastResponse from(final GiftToast giftToast, List<GiftToastOwnerResponse> giftToastOwnerResponses, String groupName){
         return GiftToastResponse.builder()
+                .giftToastId(giftToast.getId())
                 .title(giftToast.getTitle())
                 .groupId(giftToast.getGroupId())
                 .iconId(giftToast.getIconId())
@@ -33,7 +34,7 @@ public record GiftToastResponse(
                 .openedDate(giftToast.getOpenedDate())
                 .isAgree(giftToast.getIsAgree())
                 .isOpened(giftToast.getIsOpened())
-                .giftToastMembers(giftToastMembers)
+                .giftToastOwnerResponses(giftToastOwnerResponses)
                 .build();
     }
 

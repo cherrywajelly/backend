@@ -6,12 +6,15 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner
 import com.timeToast.timeToast.domain.group.group.Group;
 import com.timeToast.timeToast.domain.group.member_group.MemberGroup;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
+import com.timeToast.timeToast.dto.gift_toast.response.GiftToastOwnerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponse;
+import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.gift_toast.toast_piece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.group.GroupRepository;
+import com.timeToast.timeToast.repository.member.MemberRepository;
 import com.timeToast.timeToast.repository.member_group.MemberGroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,106 +34,155 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final GroupRepository groupRepository;
     private final ToastPieceRepository toastPieceRepository;
     private final MemberGroupRepository memberGroupRepository;
+    private final MemberRepository memberRepository;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final GroupRepository groupRepository, final ToastPieceRepository toastPieceRepository,
-                                final MemberGroupRepository memberGroupRepository) {
+                                final MemberGroupRepository memberGroupRepository, final MemberRepository memberRepository) {
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.groupRepository = groupRepository;
         this.toastPieceRepository = toastPieceRepository;
         this.memberGroupRepository = memberGroupRepository;
+        this.memberRepository = memberRepository;
     }
 
 
     @Transactional
     @Override
     public GiftToastResponse saveGiftToast(long memberId, GiftToastRequest giftToastRequest) {
+        List<GiftToastOwnerResponse> giftToastOwnerResponses = new ArrayList<>();
+        String groupName = null;
 
         //TODO 아이콘 확인
 
-        GiftToast giftToast = GiftToastRequest.to(giftToastRequest);
+        //giftToast save
+        GiftToast giftToast = giftToastRepository.save(GiftToastRequest.to(giftToastRequest));
 
+        //giftToastOwner save
         if(giftToastRequest.giftToastType() == GiftToastType.GROUP){
-            Group group = groupRepository.findById(giftToast.getGroupId()).orElseThrow(() -> new BadRequestException(INVALID_GIFT_TOAST.getMessage()));
-
-            List<MemberGroup> memberGroups = memberGroupRepository.findAllByGroupId(group.getId());
-            List<Long> giftToastOwnerMembers = new ArrayList<>();
-
-            memberGroups.forEach(
-                    memberGroup -> {
-                        if(giftToastRequest.giftToastMembers().contains(memberGroup.getMemberId())){
-
-                            GiftToastOwner giftToastOwner = giftToastOwnerRepository.save(
-                                        GiftToastOwner
-                                                .builder()
-                                                .memberId(memberGroup.getMemberId())
-                                                .giftToastId(giftToast.getId())
-                                                .isVisible(true)
-                                                .build());
-
-                                giftToastOwnerMembers.add(giftToastOwner.getMemberId());
-
-
-                        }else{
-                            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
-                        }
-                    }
-            );
-
-            return GiftToastResponse.from(giftToast, giftToastOwnerMembers,group.getName());
-
+            giftToastOwnerResponses = saveGroupGiftToast(giftToast.getId(),giftToastRequest);
+            groupName = groupRepository.getById(giftToastRequest.groupId()).getName();
         }else if (giftToastRequest.giftToastType() == GiftToastType.FRIEND) {
-
-            if(giftToastRequest.giftToastMembers().size() != 1){
+            if(!giftToastRequest.giftToastMembers().contains(memberId) && giftToastRequest.giftToastMembers().size()!=2){
                 throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
             }
+            giftToastOwnerResponses = saveFriendGiftToast(giftToast.getId(),giftToastRequest.giftToastMembers());
+        }else if(giftToastRequest.giftToastType() == GiftToastType.MINE){
+            giftToastOwnerResponses = saveMineGiftToast(giftToast.getId(), memberId);
+        }
 
-            List<Long> giftToastOwnerMembers = new ArrayList<>();
+        return GiftToastResponse.from(giftToast,giftToastOwnerResponses,groupName);
+    }
 
-            GiftToastOwner owner = giftToastOwnerRepository.save(
+    @Override
+    public GiftToastResponses getGiftToast(final long memberId) {
+        List<GiftToast> giftToasts = giftToastRepository.getGiftToastByMemberId(memberId);
+        List<GiftToastResponse> giftToastResponses = new ArrayList<>();
+
+        giftToasts.forEach(
+                giftToast -> {
+
+                }
+        );
+
+        return new GiftToastResponses(giftToastResponses);
+    }
+
+    @Override
+    public GiftToastResponses getGiftToastIncomplete(final long memberId) {
+        return null;
+    }
+
+    @Override
+    public void deleteGiftToast(final long memberId,final long giftToastId) {
+        List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findByGiftToastId(giftToastId);
+        GiftToastOwner myGiftToast = giftToastOwners.stream().filter(giftToastOwner -> giftToastOwner.getMemberId() == memberId).findFirst().get();
+        myGiftToast.updateIsVisible(false);
+        if(giftToastOwners.stream().filter(giftToastOwner -> giftToastOwner.getIsVisible()==true).count() == 0){
+            //giftToast
+            giftToastOwners.forEach(
+                    giftToastOwner -> giftToastOwnerRepository.delete(giftToastOwner)
+            );
+
+
+
+            //ToastPieceImage
+
+
+            //ToastPiece
+
+            //giftToast
+        }
+    }
+
+    private List<GiftToastOwnerResponse> saveGroupGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest){
+
+        List<MemberGroup> memberGroups = memberGroupRepository.findAllByGroupId(giftToastRequest.groupId());
+
+        if(memberGroups.isEmpty()){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+
+        List<GiftToastOwnerResponse> giftToastOwnerResponses = new ArrayList<>();
+
+        memberGroups.forEach(
+                memberGroup -> {
+                    if(giftToastRequest.giftToastMembers().contains(memberGroup.getMemberId())){
+
+                        GiftToastOwner giftToastOwner = giftToastOwnerRepository.save(
+                                GiftToastOwner
+                                        .builder()
+                                        .memberId(memberGroup.getMemberId())
+                                        .giftToastId(giftToastId)
+                                        .isVisible(true)
+                                        .build());
+
+                        giftToastOwnerResponses.add(
+                                GiftToastOwnerResponse.from(memberRepository.getById(giftToastOwner.getMemberId()), false));
+
+                    }else{
+                        throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+                    }
+                }
+        );
+
+        return giftToastOwnerResponses;
+    }
+
+    private List<GiftToastOwnerResponse> saveFriendGiftToast(final long giftToastId, final List<Long> giftToastMembers){
+
+        List<GiftToastOwnerResponse> giftToastOwnerResponses = new ArrayList<>();
+
+        giftToastMembers.forEach( giftToastMemberId -> {
+
+            GiftToastOwner giftToastOwner = giftToastOwnerRepository.save(
                     GiftToastOwner
-                        .builder()
-                        .memberId(memberId)
-                        .giftToastId(giftToast.getId())
-                        .isVisible(true)
-                        .build());
-
-            giftToastOwnerMembers.add(owner.getMemberId());
-
-            giftToastRequest.giftToastMembers().forEach( giftToastMemberId -> {
-
-
-                GiftToastOwner giftToastOwner = giftToastOwnerRepository.save(
-                        GiftToastOwner
-                                .builder()
+                            .builder()
                             .memberId(giftToastMemberId)
-                            .giftToastId(giftToast.getId())
+                            .giftToastId(giftToastId)
                             .isVisible(true)
                             .build());
 
-                giftToastOwnerMembers.add(giftToastOwner.getMemberId());
+            giftToastOwnerResponses.add(
+                    GiftToastOwnerResponse.from(memberRepository.getById(giftToastOwner.getMemberId()),false));
 
-            });
-
-            return GiftToastResponse.from(giftToast, giftToastOwnerMembers,null);
-
-
-        }else if(giftToastRequest.giftToastType() == GiftToastType.MINE){
-
-            GiftToastOwner giftToastOwner = GiftToastOwner
-                    .builder()
-                    .memberId(memberId)
-                    .giftToastId(giftToast.getId())
-                    .isVisible(true)
-                    .build();
-
-            giftToastOwnerRepository.save(giftToastOwner);
-
-            return GiftToastResponse.from(giftToast, List.of(memberId),null);
-
-        }else{
-            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
-        }
+        });
+        return giftToastOwnerResponses;
     }
+
+    private List<GiftToastOwnerResponse> saveMineGiftToast(final long giftToastId, final long memberId){
+
+        GiftToastOwner giftToastOwner = GiftToastOwner
+                .builder()
+                .memberId(memberId)
+                .giftToastId(giftToastId)
+                .isVisible(true)
+                .build();
+
+        giftToastOwnerRepository.save(giftToastOwner);
+
+        return List.of(GiftToastOwnerResponse.from(memberRepository.getById(memberId), false));
+    }
+
 }

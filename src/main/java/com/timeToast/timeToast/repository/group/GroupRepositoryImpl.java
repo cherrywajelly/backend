@@ -20,6 +20,11 @@ public class GroupRepositoryImpl implements GroupRepository{
     }
 
     @Override
+    public Group getById(final long groupId) {
+        return groupJpaRepository.getGroupById(groupId);
+    }
+
+    @Override
     public Optional<Group> findById(final long groupId){
         return groupJpaRepository.findById(groupId);
     }
