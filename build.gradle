@@ -64,6 +64,12 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	//tunelling
+	implementation 'com.jcraft:jsch:0.1.55'
+
+	//mysql
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	//actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
