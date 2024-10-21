@@ -45,7 +45,7 @@ public class JwtServiceImpl implements JwtService {
     public LoginResponse createJwts(final LoginMember loginMember) {
         String accessToken = createToken(loginMember, ONE_HOUR.time());
         String refreshToken = createToken(loginMember, ONE_DAY.time());
-
+        System.out.println("login member: " + loginMember.id());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
 
