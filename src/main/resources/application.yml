@@ -1,11 +1,9 @@
 spring:
   config:
     import:
-      - classpath:/application-prod.yml
-      - classpath:/application-dev.yml
       - classpath:/application-oauth.yml
     profiles:
-      active: dev
+      active: local
 
 
 

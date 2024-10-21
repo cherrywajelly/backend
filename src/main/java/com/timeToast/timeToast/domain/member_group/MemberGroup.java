@@ -18,14 +18,18 @@ public class MemberGroup extends BaseTime {
     @Column(name = "member_group_id")
     private Long id;
 
-    private Long groupId;
+    private String name;
 
-    private Long memberId;
+    private String groupProfileUrl;
 
     @Builder
-    public MemberGroup(final long groupId, final long memberId){
-        this.groupId = groupId;
-        this.memberId = memberId;
+    public MemberGroup(final String name, final String groupProfileUrl){
+        this.name = name;
+        this.groupProfileUrl = groupProfileUrl;
+    }
+
+    public void updateGroupProfileUrl(final String groupProfileUrl){
+        this.groupProfileUrl = groupProfileUrl;
     }
 
 }

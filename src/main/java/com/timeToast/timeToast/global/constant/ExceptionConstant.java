@@ -19,6 +19,7 @@ public enum ExceptionConstant {
 
     GROUP_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
     MEMBER_GROUP_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
+    INVALID_GIFT_TOAST("잘못된 선물 토스트 형식입니다."),
 
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
 
