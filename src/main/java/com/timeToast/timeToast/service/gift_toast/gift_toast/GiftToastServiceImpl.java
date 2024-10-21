@@ -3,8 +3,7 @@ package com.timeToast.timeToast.service.gift_toast.gift_toast;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
-import com.timeToast.timeToast.domain.group.group.Group;
-import com.timeToast.timeToast.domain.group.member_group.MemberGroup;
+import com.timeToast.timeToast.domain.group_member.GroupMember;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastOwnerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponse;
@@ -13,9 +12,9 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.gift_toast.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.group.GroupRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.group_member.GroupMemberRepository;
 import com.timeToast.timeToast.repository.member_group.MemberGroupRepository;
+import com.timeToast.timeToast.repository.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,14 +30,14 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private final GiftToastRepository giftToastRepository;
     private final GiftToastOwnerRepository giftToastOwnerRepository;
-    private final GroupRepository groupRepository;
+    private final MemberGroupRepository groupRepository;
     private final ToastPieceRepository toastPieceRepository;
-    private final MemberGroupRepository memberGroupRepository;
+    private final GroupMemberRepository memberGroupRepository;
     private final MemberRepository memberRepository;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
-                                final GroupRepository groupRepository, final ToastPieceRepository toastPieceRepository,
-                                final MemberGroupRepository memberGroupRepository, final MemberRepository memberRepository) {
+                                final MemberGroupRepository groupRepository, final ToastPieceRepository toastPieceRepository,
+                                final GroupMemberRepository memberGroupRepository, final MemberRepository memberRepository) {
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.groupRepository = groupRepository;
@@ -118,15 +117,15 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private List<GiftToastOwnerResponse> saveGroupGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest){
 
-        List<MemberGroup> memberGroups = memberGroupRepository.findAllByGroupId(giftToastRequest.groupId());
+        List<GroupMember> groupMembers = memberGroupRepository.findAllByGroupId(giftToastRequest.groupId());
 
-        if(memberGroups.isEmpty()){
+        if(groupMembers.isEmpty()){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
 
         List<GiftToastOwnerResponse> giftToastOwnerResponses = new ArrayList<>();
 
-        memberGroups.forEach(
+        groupMembers.forEach(
                 memberGroup -> {
                     if(giftToastRequest.giftToastMembers().contains(memberGroup.getMemberId())){
 

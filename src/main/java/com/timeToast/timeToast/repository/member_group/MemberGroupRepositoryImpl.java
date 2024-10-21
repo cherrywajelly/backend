@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.repository.member_group;
 
-import com.timeToast.timeToast.domain.group.member_group.MemberGroup;
+import com.timeToast.timeToast.domain.member_group.MemberGroup;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemberGroupRepositoryImpl implements MemberGroupRepository {
@@ -15,22 +15,23 @@ public class MemberGroupRepositoryImpl implements MemberGroupRepository {
     }
 
     @Override
-    public MemberGroup save(final MemberGroup memberGroup) {
+    public MemberGroup save(final MemberGroup memberGroup){
         return memberGroupJpaRepository.save(memberGroup);
     }
 
     @Override
-    public List<MemberGroup> findAllByMemberId(final long memberId) {
-        return memberGroupJpaRepository.findAllByMemberId(memberId);
+    public MemberGroup getById(final long groupId) {
+        return memberGroupJpaRepository.getGroupById(groupId);
     }
 
     @Override
-    public List<MemberGroup> findAllByGroupId(final long groupId) {
-        return memberGroupJpaRepository.findAllByGroupId(groupId);
+    public Optional<MemberGroup> findById(final long groupId){
+        return memberGroupJpaRepository.findById(groupId);
     }
 
     @Override
-    public void delete(final MemberGroup memberGroup) {
-        memberGroupJpaRepository.delete(memberGroup);
+    public void deleteByGroupId(final long groupId) {
+        memberGroupJpaRepository.deleteById(groupId);
     }
+
 }

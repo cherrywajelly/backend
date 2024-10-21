@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.group.group;
+package com.timeToast.timeToast.domain.member_group;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;
@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "group")
+@Table(name = "member_group")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Group extends BaseTime {
+public class MemberGroup extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
+    @Column(name = "member_group_id")
     private Long id;
 
     private String name;
@@ -23,7 +23,7 @@ public class Group extends BaseTime {
     private String groupProfileUrl;
 
     @Builder
-    public Group(final String name, final String groupProfileUrl){
+    public MemberGroup(final String name, final String groupProfileUrl){
         this.name = name;
         this.groupProfileUrl = groupProfileUrl;
     }
