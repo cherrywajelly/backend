@@ -4,7 +4,7 @@ import java.util.List;
 
 public record MemberGroupResponses(
 
-        List<MemberGroupResponse> memberGroupRespons
+        List<MemberGroupResponse> memberGroupResponses
 ){
 
 }

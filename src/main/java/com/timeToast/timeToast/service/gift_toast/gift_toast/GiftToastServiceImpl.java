@@ -117,7 +117,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private List<GiftToastOwnerResponse> saveGroupGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest){
 
-        List<GroupMember> groupMembers = memberGroupRepository.findAllByGroupId(giftToastRequest.groupId());
+        List<GroupMember> groupMembers = memberGroupRepository.findAllByMemberGroupId(giftToastRequest.groupId());
 
         if(groupMembers.isEmpty()){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());

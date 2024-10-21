@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberGroupJpaRepository extends JpaRepository<MemberGroup, Long> {
 
-    MemberGroup getGroupById(final long groupId);
+    MemberGroup getMemberGroupById(final long memberGroupId);
 }

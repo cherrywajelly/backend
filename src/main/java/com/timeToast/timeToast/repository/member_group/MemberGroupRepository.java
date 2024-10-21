@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface MemberGroupRepository {
     MemberGroup save(final MemberGroup memberGroup);
-    MemberGroup getById(final long groupId);
-    Optional<MemberGroup> findById(final long groupId);
-    void deleteByGroupId(final long groupId);
+    MemberGroup getById(final long memberGroupId);
+    Optional<MemberGroup> findById(final long memberGroupId);
+    void deleteByMemberGroupId(final long memberGroupId);
 }

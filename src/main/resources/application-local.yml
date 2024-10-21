@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: timeToast
+
+  config:
+    activate:
+      on-profile: local
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:timeToast
+    username: sa
+    password:
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    open-in-view: false
+
+  management:
+    endpoint:
+      health:
+        probes:
+          enabled: true
+    health:
+      livenessState:
+        enabled: true
+      readinessState:
+        enabled: true
+
+
+  jwt:
+    key: b06a03df1e61f3347288ad580a55904f3e7c2367179d5727e779b3ef63207bc8

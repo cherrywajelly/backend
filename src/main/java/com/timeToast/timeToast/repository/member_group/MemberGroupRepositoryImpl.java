@@ -20,18 +20,18 @@ public class MemberGroupRepositoryImpl implements MemberGroupRepository {
     }
 
     @Override
-    public MemberGroup getById(final long groupId) {
-        return memberGroupJpaRepository.getGroupById(groupId);
+    public MemberGroup getById(final long memberGroupId) {
+        return memberGroupJpaRepository.getMemberGroupById(memberGroupId);
     }
 
     @Override
-    public Optional<MemberGroup> findById(final long groupId){
-        return memberGroupJpaRepository.findById(groupId);
+    public Optional<MemberGroup> findById(final long memberGroupId){
+        return memberGroupJpaRepository.findById(memberGroupId);
     }
 
     @Override
-    public void deleteByGroupId(final long groupId) {
-        memberGroupJpaRepository.deleteById(groupId);
+    public void deleteByMemberGroupId(final long memberGroupId) {
+        memberGroupJpaRepository.deleteById(memberGroupId);
     }
 
 }

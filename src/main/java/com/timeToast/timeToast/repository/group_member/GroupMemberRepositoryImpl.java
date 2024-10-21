@@ -8,29 +8,29 @@ import java.util.List;
 @Repository
 public class GroupMemberRepositoryImpl implements GroupMemberRepository {
 
-    private final GroupMemberJpaRepository memberGroupJpaRepository;
+    private final GroupMemberJpaRepository groupMemberJpaRepository;
 
-    public GroupMemberRepositoryImpl(GroupMemberJpaRepository memberGroupJpaRepository) {
-        this.memberGroupJpaRepository = memberGroupJpaRepository;
+    public GroupMemberRepositoryImpl(GroupMemberJpaRepository groupMemberJpaRepository) {
+        this.groupMemberJpaRepository = groupMemberJpaRepository;
     }
 
     @Override
     public GroupMember save(final GroupMember groupMember) {
-        return memberGroupJpaRepository.save(groupMember);
+        return groupMemberJpaRepository.save(groupMember);
     }
 
     @Override
     public List<GroupMember> findAllByMemberId(final long memberId) {
-        return memberGroupJpaRepository.findAllByMemberId(memberId);
+        return groupMemberJpaRepository.findAllByMemberId(memberId);
     }
 
     @Override
-    public List<GroupMember> findAllByGroupId(final long groupId) {
-        return memberGroupJpaRepository.findAllByGroupId(groupId);
+    public List<GroupMember> findAllByMemberGroupId(final long memberGroupId) {
+        return groupMemberJpaRepository.findAllByMemberGroupId(memberGroupId);
     }
 
     @Override
     public void delete(final GroupMember groupMember) {
-        memberGroupJpaRepository.delete(groupMember);
+        groupMemberJpaRepository.delete(groupMember);
     }
 }

@@ -26,15 +26,15 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 @Slf4j
 public class MemberGroupServiceImpl implements MemberGroupService {
 
-    private final MemberGroupRepository groupRepository;
+    private final MemberGroupRepository memberGroupRepository;
     private final MemberRepository memberRepository;
     private final GroupMemberRepository groupMemberRepository;
 
-    public MemberGroupServiceImpl(final MemberGroupRepository groupRepository, final MemberRepository memberRepository,
-                                  final GroupMemberRepository memberGroupRepository) {
-        this.groupRepository = groupRepository;
+    public MemberGroupServiceImpl(final MemberGroupRepository memberGroupRepository, final MemberRepository memberRepository,
+                                  final GroupMemberRepository groupMemberRepository) {
+        this.memberGroupRepository = memberGroupRepository;
         this.memberRepository = memberRepository;
-        this.groupMemberRepository = memberGroupRepository;
+        this.groupMemberRepository = groupMemberRepository;
     }
 
     @Transactional
@@ -46,12 +46,12 @@ public class MemberGroupServiceImpl implements MemberGroupService {
                 .name(groupSaveRequest.groupName())
                 .build();
 
-        MemberGroup saveMemberGroup = groupRepository.save(memberGroup);
+        MemberGroup saveMemberGroup = memberGroupRepository.save(memberGroup);
 
         //save member_group
         groupMemberRepository.save(
                 GroupMember.builder()
-                        .groupId(saveMemberGroup.getId())
+                        .memberGroupId(saveMemberGroup.getId())
                         .memberId(memberId)
                         .build()
         );
@@ -64,7 +64,7 @@ public class MemberGroupServiceImpl implements MemberGroupService {
 
                     groupMemberRepository.save(
                             GroupMember.builder()
-                                    .groupId(saveMemberGroup.getId())
+                                    .memberGroupId(saveMemberGroup.getId())
                                     .memberId(findMember.getId())
                                     .build()
                     );
@@ -81,7 +81,7 @@ public class MemberGroupServiceImpl implements MemberGroupService {
         //s3 로직
         String groupProfileUrl = "";
 
-        MemberGroup memberGroup = groupRepository.findById(groupId).orElseThrow(()->
+        MemberGroup memberGroup = memberGroupRepository.findById(groupId).orElseThrow(()->
                 new NotFoundException(GROUP_NOT_FOUND.getMessage())
         );
 
@@ -95,13 +95,13 @@ public class MemberGroupServiceImpl implements MemberGroupService {
     public MemberGroupResponses findLoginMemberGroups(final long memberId) {
 
         List<GroupMember> groupMembers = groupMemberRepository.findAllByMemberId(memberId);
-        List<MemberGroupResponse> memberGroupRespons = new ArrayList<>();
+        List<MemberGroupResponse> memberGroupResponses = new ArrayList<>();
 
         groupMembers.forEach(
                 memberGroup -> {
-                    Optional<MemberGroup> findGroup= groupRepository.findById(memberGroup.getGroupId());
+                    Optional<MemberGroup> findGroup= memberGroupRepository.findById(memberGroup.getMemberGroupId());
                     if(findGroup.isPresent()){
-                        memberGroupRespons.add(
+                        memberGroupResponses.add(
                                 MemberGroupResponse.from(findGroup.get())
                         );
                     }
@@ -109,13 +109,13 @@ public class MemberGroupServiceImpl implements MemberGroupService {
                 }
         );
 
-        return new MemberGroupResponses(memberGroupRespons);
+        return new MemberGroupResponses(memberGroupResponses);
     }
 
     @Transactional
     @Override
-    public void deleteMemberGroup(final long memberId, final long groupId) {
-        List<GroupMember> groupMembers = groupMemberRepository.findAllByGroupId(groupId);
+    public void deleteMemberGroup(final long memberId, final long memberGroupId) {
+        List<GroupMember> groupMembers = groupMemberRepository.findAllByMemberGroupId(memberGroupId);
 
         groupMembers.stream()
                         .filter((memberGroup -> memberGroup.getMemberId() == memberId))
@@ -125,7 +125,7 @@ public class MemberGroupServiceImpl implements MemberGroupService {
                 memberGroup -> groupMemberRepository.delete(memberGroup)
         );
 
-        groupRepository.deleteByGroupId(groupId);
+        memberGroupRepository.deleteByMemberGroupId(memberGroupId);
 
     }
 

@@ -9,7 +9,7 @@ import com.timeToast.timeToast.service.member_group.MemberGroupService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/api/v1/group")
+@RequestMapping("/api/v1/groups")
 @RestController
 public class MemberGroupController {
 
@@ -29,7 +29,7 @@ public class MemberGroupController {
         return memberGroupService.saveGroupImage(groupId, groupImage);
     }
 
-    @GetMapping("/groups")
+    @GetMapping("")
     public MemberGroupResponses findGroupList(@Login final LoginMember loginMember){
         return memberGroupService.findLoginMemberGroups(loginMember.id());
     }

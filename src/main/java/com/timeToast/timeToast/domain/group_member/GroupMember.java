@@ -18,13 +18,13 @@ public class GroupMember extends BaseTime {
     @Column(name = "group_member_id")
     private Long id;
 
-    private Long groupId;
+    private Long memberGroupId;
 
     private Long memberId;
 
     @Builder
-    public GroupMember(final long groupId, final long memberId){
-        this.groupId = groupId;
+    public GroupMember(final long memberGroupId, final long memberId){
+        this.memberGroupId = memberGroupId;
         this.memberId = memberId;
     }
 
