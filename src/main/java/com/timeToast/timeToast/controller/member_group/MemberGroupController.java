@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.controller.member_group;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.member_group.request.MemberGroupSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.MemberGroupResponse;
 import com.timeToast.timeToast.dto.member_group.response.MemberGroupResponses;

@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.controller.iconGroup;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.icon_group.IconGroupService;
 import lombok.RequiredArgsConstructor;

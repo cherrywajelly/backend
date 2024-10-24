@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.util;
 
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.jwt.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;

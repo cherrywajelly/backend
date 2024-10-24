@@ -1,12 +1,10 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.follow.Follow;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.util.BaseServiceTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

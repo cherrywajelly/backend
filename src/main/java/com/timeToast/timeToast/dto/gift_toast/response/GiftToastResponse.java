@@ -11,7 +11,7 @@ import java.util.List;
 public record GiftToastResponse(
         long giftToastId,
         String title,
-        Long iconId,
+        String iconImageUrl,
         Long groupId,
         String groupName,
         GiftToastType giftToastType,
@@ -22,12 +22,13 @@ public record GiftToastResponse(
         List<GiftToastOwnerResponse> giftToastOwnerResponses
 
 ) {
-    public static GiftToastResponse from(final GiftToast giftToast, List<GiftToastOwnerResponse> giftToastOwnerResponses, String groupName){
+    public static GiftToastResponse from(final GiftToast giftToast,final String iconImageUrl,
+                                         final List<GiftToastOwnerResponse> giftToastOwnerResponses,final String groupName){
         return GiftToastResponse.builder()
                 .giftToastId(giftToast.getId())
                 .title(giftToast.getTitle())
                 .groupId(giftToast.getGroupId())
-                .iconId(giftToast.getIconId())
+                .iconImageUrl(iconImageUrl)
                 .groupName(groupName)
                 .giftToastType(giftToast.getGiftToastType())
                 .memorizedDate(giftToast.getMemorizedDate())

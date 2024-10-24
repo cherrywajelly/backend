@@ -2,13 +2,11 @@ package com.timeToast.timeToast.global.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.exception.InternalServerException;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;

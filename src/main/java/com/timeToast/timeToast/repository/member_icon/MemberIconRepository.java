@@ -1,14 +1,13 @@
 package com.timeToast.timeToast.repository.member_icon;
 
-import com.timeToast.timeToast.domain.icon.Icon;
-import com.timeToast.timeToast.domain.icon_group.IconGroup;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.domain.member_icon.MemberIcon;
+import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 
 import java.util.Optional;
 
 public interface MemberIconRepository {
-    MemberIcon getById(final long memberIconId);
-    Optional<MemberIcon> findByMemberAndIconGroup(Member member, IconGroup iconGroup);
-    MemberIcon save(final MemberIcon memberIcon);
+    IconMember getById(final long memberIconId);
+    Optional<IconMember> findByMemberAndIconGroup(Member member, IconGroup iconGroup);
+    IconMember save(final IconMember memberIcon);
 }
