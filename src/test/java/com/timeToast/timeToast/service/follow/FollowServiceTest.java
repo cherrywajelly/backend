@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.dto.follow.FollowResponse;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.dto.follow.response.FollowResponse;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 
 import java.util.ArrayList;
 import java.util.List;

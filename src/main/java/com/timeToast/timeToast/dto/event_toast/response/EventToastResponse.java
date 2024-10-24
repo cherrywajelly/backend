@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.dto.event_toast.response;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.dto.icon.response.IconResponse;
+import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import lombok.Builder;
 
 import java.time.LocalDate;

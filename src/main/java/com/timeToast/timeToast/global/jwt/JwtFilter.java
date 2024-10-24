@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.global.jwt;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

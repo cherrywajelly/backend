@@ -3,13 +3,13 @@ package com.timeToast.timeToast.service.oAuth;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.icon_group.IconGroup;
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.domain.member_icon.MemberIcon;
-import com.timeToast.timeToast.dto.member.LoginResponse;
-import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
+import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member_icon.MemberIconRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import jakarta.transaction.Transactional;
@@ -77,7 +77,7 @@ public class LoginServiceImpl implements LoginService {
     public void addBuiltInIconTest(Member member) {
         List<IconGroup> iconGroups = iconGroupRepository.findByIconType(IconType.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
-            memberIconRepository.save(MemberIcon.builder()
+            memberIconRepository.save(IconMember.builder()
                     .member(member)
                     .iconGroup(iconGroup)
                     .build());

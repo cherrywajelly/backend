@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.icon;
 
-import com.timeToast.timeToast.dto.icon.request.IconPostRequest;
+import com.timeToast.timeToast.dto.icon.icon.request.IconPostRequest;
 
 import java.util.List;
 

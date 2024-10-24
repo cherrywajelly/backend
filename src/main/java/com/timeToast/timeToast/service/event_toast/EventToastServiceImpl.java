@@ -1,16 +1,16 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
-import com.timeToast.timeToast.domain.icon.Icon;
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
-import com.timeToast.timeToast.dto.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.icon.IconRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

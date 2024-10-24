@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.follow;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.follow.FollowService;
 import org.springframework.web.bind.annotation.*;

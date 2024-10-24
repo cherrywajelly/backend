@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.dto.event_toast.request;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.icon.Icon;
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
+import com.timeToast.timeToast.domain.member.member.Member;
 
 import java.time.LocalDate;
 

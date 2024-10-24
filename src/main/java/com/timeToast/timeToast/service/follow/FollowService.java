@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 
 public interface FollowService {
 

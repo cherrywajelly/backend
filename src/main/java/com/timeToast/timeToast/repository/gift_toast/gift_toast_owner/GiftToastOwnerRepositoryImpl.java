@@ -1,17 +1,20 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast_owner;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastOwnerResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceMember;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
-import static com.timeToast.timeToast.domain.gift_toast.toast_piece.QToastPiece.toastPiece;
-import static com.timeToast.timeToast.domain.member.QMember.member;
+import static com.timeToast.timeToast.domain.member.member.QMember.member;
 
 @Repository
 public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
@@ -35,23 +38,28 @@ public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
     }
 
     @Override
-    public List<GiftToastOwnerResponse> findGiftToastOwnerResponsesByGiftToastId(final long giftToastId){
-
-        BooleanExpression toastPieceExists = JPAExpressions
-                .selectOne()
-                .from(toastPiece)
-                .where(toastPiece.memberId.eq(member.id))
-                .exists();
-
-         queryFactory
-                .select(member.nickname, member.id,
-                        toastPieceExists.when(true).then(true).otherwise(false))// 서브쿼리 결과를 이용해 true/false 반환
-                .from(giftToastOwner)
-                .join(member).on(giftToastOwner.memberId.eq(member.id)) // giftToastOwner와 member 테이블 조인
-                .where(giftToastOwner.giftToastId.eq(giftToastId)) // giftToastId 조건
+    public List<ToastPieceMember> findToastPieceMemberByGiftToastId(final long giftToastId) {
+        return queryFactory
+                .select(Projections.constructor(ToastPieceMember.class, member.id, member.nickname, member.memberProfileUrl))
+                .from(member)
+                .where(member.id.in(
+                        JPAExpressions.select(giftToastOwner.memberId)
+                                .from(giftToastOwner)
+                                .where(giftToastOwner.giftToastId.eq(giftToastId), giftToastOwner.isVisible.isTrue())
+                ))
                 .fetch();
+    }
 
-        return null;
+    @Override
+    public List<GiftToastOwnerResponse> findAllGiftToastMemberByGiftToastId(final long giftToastId){
+        return queryFactory
+                .select(Projections.constructor(GiftToastOwnerResponse.class, member.id, member.nickname))
+                .from(member)
+                .rightJoin(giftToastOwner)
+                .on(giftToastOwner.memberId.eq(member.id))
+                .where(giftToastOwner.id.eq(giftToastId),
+                         giftToastOwner.isVisible.isTrue())
+                .fetch();
     }
 
     @Override

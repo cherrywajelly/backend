@@ -1,16 +1,16 @@
 package com.timeToast.timeToast.service.member_group;
 
-import com.timeToast.timeToast.domain.member_group.MemberGroup;
-import com.timeToast.timeToast.domain.group_member.GroupMember;
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.team.team.Team;
+import com.timeToast.timeToast.domain.team.team_member.TeamMember;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.member_group.request.MemberGroupSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.MemberGroupResponse;
 import com.timeToast.timeToast.dto.member_group.response.MemberGroupResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
-import com.timeToast.timeToast.repository.group_member.GroupMemberRepository;
-import com.timeToast.timeToast.repository.member_group.MemberGroupRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member_group.group_member.GroupMemberRepository;
+import com.timeToast.timeToast.repository.member_group.member_group.MemberGroupRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,15 +42,15 @@ public class MemberGroupServiceImpl implements MemberGroupService {
     public MemberGroupResponse saveGroup(final long memberId, final MemberGroupSaveRequest groupSaveRequest) {
 
         //save group
-        MemberGroup memberGroup = MemberGroup.builder()
+        Team memberGroup = Team.builder()
                 .name(groupSaveRequest.groupName())
                 .build();
 
-        MemberGroup saveMemberGroup = memberGroupRepository.save(memberGroup);
+        Team saveMemberGroup = memberGroupRepository.save(memberGroup);
 
         //save member_group
         groupMemberRepository.save(
-                GroupMember.builder()
+                TeamMember.builder()
                         .memberGroupId(saveMemberGroup.getId())
                         .memberId(memberId)
                         .build()
@@ -63,7 +63,7 @@ public class MemberGroupServiceImpl implements MemberGroupService {
                     Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_FOUND.getMessage()));
 
                     groupMemberRepository.save(
-                            GroupMember.builder()
+                            TeamMember.builder()
                                     .memberGroupId(saveMemberGroup.getId())
                                     .memberId(findMember.getId())
                                     .build()
@@ -81,11 +81,11 @@ public class MemberGroupServiceImpl implements MemberGroupService {
         //s3 로직
         String groupProfileUrl = "";
 
-        MemberGroup memberGroup = memberGroupRepository.findById(groupId).orElseThrow(()->
+        Team memberGroup = memberGroupRepository.findById(groupId).orElseThrow(()->
                 new NotFoundException(GROUP_NOT_FOUND.getMessage())
         );
 
-        memberGroup.updateGroupProfileUrl(groupProfileUrl);
+        memberGroup.updateTeamProfileUrl(groupProfileUrl);
 
         return MemberGroupResponse.from(memberGroup);
     }
@@ -94,12 +94,12 @@ public class MemberGroupServiceImpl implements MemberGroupService {
     @Override
     public MemberGroupResponses findLoginMemberGroups(final long memberId) {
 
-        List<GroupMember> groupMembers = groupMemberRepository.findAllByMemberId(memberId);
+        List<TeamMember> groupMembers = groupMemberRepository.findAllByMemberId(memberId);
         List<MemberGroupResponse> memberGroupResponses = new ArrayList<>();
 
         groupMembers.forEach(
                 memberGroup -> {
-                    Optional<MemberGroup> findGroup= memberGroupRepository.findById(memberGroup.getMemberGroupId());
+                    Optional<Team> findGroup= memberGroupRepository.findById(memberGroup.getMemberGroupId());
                     if(findGroup.isPresent()){
                         memberGroupResponses.add(
                                 MemberGroupResponse.from(findGroup.get())
@@ -115,7 +115,7 @@ public class MemberGroupServiceImpl implements MemberGroupService {
     @Transactional
     @Override
     public void deleteMemberGroup(final long memberId, final long memberGroupId) {
-        List<GroupMember> groupMembers = groupMemberRepository.findAllByMemberGroupId(memberGroupId);
+        List<TeamMember> groupMembers = groupMemberRepository.findAllByMemberGroupId(memberGroupId);
 
         groupMembers.stream()
                         .filter((memberGroup -> memberGroup.getMemberId() == memberId))

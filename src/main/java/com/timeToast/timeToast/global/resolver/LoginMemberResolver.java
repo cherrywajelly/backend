@@ -1,9 +1,8 @@
 package com.timeToast.timeToast.global.resolver;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.global.annotation.Login;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

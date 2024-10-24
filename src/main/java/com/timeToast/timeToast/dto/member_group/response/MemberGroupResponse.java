@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.member_group.response;
 
-import com.timeToast.timeToast.domain.member_group.MemberGroup;
+import com.timeToast.timeToast.domain.team.team.Team;
 import lombok.Builder;
 
 @Builder
@@ -10,11 +10,11 @@ public record MemberGroupResponse(
         String groupProfileUrl
 ) {
 
-    public static MemberGroupResponse from(final MemberGroup memberGroup){
+    public static MemberGroupResponse from(final Team memberGroup){
         return MemberGroupResponse.builder()
                 .groupId(memberGroup.getId())
                 .groupName(memberGroup.getName())
-                .groupProfileUrl(memberGroup.getGroupProfileUrl())
+                .groupProfileUrl(memberGroup.getTeamProfileUrl())
                 .build();
     }
 }
