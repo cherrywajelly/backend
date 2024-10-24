@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @Slf4j
@@ -41,21 +43,44 @@ public class EventToastServiceImpl implements EventToastService{
 
     }
 
-    // opened_date 가 지난 이벤트 토스트만 검증해서 반환
+    // opened_date 가 지난 이벤트 토스트 검증
     public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
         List<EventToast> openedEventToasts = new ArrayList<>();
 
-        eventToasts.forEach(
+        List<EventToast> unOpenedEventToasts = eventToasts.stream()
+                .filter(eventToast -> !eventToast.isOpened()) // isOpened가 false인 객체만 필터링
+                .collect(Collectors.toList());
+
+        unOpenedEventToasts.forEach(
                 eventToast -> {
-                    if (eventToast.getOpenedDate().isBefore(LocalDate.now())){
+                    // opened_date 지난 게시물 열림 처리
+                    if (eventToast.getOpenedDate().isBefore(LocalDate.now())) {
                         eventToast.updateIsOpened(true);
-                        eventToastRepository.save(eventToast);
                         openedEventToasts.add(eventToast);
                     }
                 }
         );
 
-        return openedEventToasts;
+        if(!openedEventToasts.isEmpty()) {
+            eventToastRepository.saveAll(openedEventToasts);
+        }
+
+        return eventToasts;
+    }
+
+    // isOpened ? 열린 토스트 리스트 반환 : 닫힌 토스트 리스트 반환
+    public List<EventToast> filterEventToasts(List<EventToast> eventToasts, boolean isOpened) {
+        List<EventToast> openedEventToasts = new ArrayList<>();
+        List<EventToast> unOpenedEventToasts = new ArrayList<>();
+
+        eventToasts.forEach(
+                eventToast -> {
+                    if (eventToast.isOpened()) { openedEventToasts.add(eventToast); }
+                    else { unOpenedEventToasts.add(eventToast); }
+                }
+        );
+
+        return isOpened ? openedEventToasts : unOpenedEventToasts;
     }
 
 
@@ -67,9 +92,10 @@ public class EventToastServiceImpl implements EventToastService{
         follows.forEach(
                 follow -> {
                     // 팔로우하고 있는 사용자의 이벤트 토스트 조회
-                    List<EventToast> eventToasts = eventToastRepository.findEventToastsByMemberId(follow.getFollowingId());
+//                    List<EventToast> eventToasts = checkEventToastOpened()
+                    List<EventToast> eventToasts = eventToastRepository.findByMemberId(follow.getFollowingId());
 
-                    checkEventToastOpened(eventToasts).forEach(
+                    filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
                             eventToast -> {
                                 EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
                                         new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
@@ -81,5 +107,16 @@ public class EventToastServiceImpl implements EventToastService{
 
         return eventToastResponseList;
     }
+
+//    public List<EventToastResponse> getMyEventToastList(long memberId) {
+//        Member member = memberRepository.getById(memberId);
+//
+//        List<EventToast> eventToasts = eventToastRepository.findByMemberId(memberId);
+//        eventToasts.forEach(
+//                eventToast -> {
+//
+//                }
+//        );
+//    }
 }
 

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EventToastJpaRepository extends JpaRepository<EventToast, Long> {
-    List<EventToast> findEventToastsByMemberId(final long memberId);
+    List<EventToast> findByMemberId(final long memberId);
 }

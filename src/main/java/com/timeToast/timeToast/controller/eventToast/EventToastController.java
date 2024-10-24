@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/eventToast")
+@RequestMapping("/api/v1")
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -19,13 +19,13 @@ public class EventToastController {
 
     private final EventToastService eventToastService;
 
-    @PostMapping("")
+    @PostMapping("/eventToast")
     public void postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
         eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
     }
 
-    @GetMapping("")
-    public List<EventToastResponse> getEventToast(@Login LoginMember loginMember) {
+    @GetMapping("/follow/following/eventToasts")
+    public List<EventToastResponse> getEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getEventToastList(loginMember.id());
     }
 
