@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.service.icon;
 
-import com.timeToast.timeToast.domain.icon_group.IconGroup;
-import com.timeToast.timeToast.dto.icon.request.IconPostRequest;
-import com.timeToast.timeToast.repository.icon.IconRepository;
-import com.timeToast.timeToast.repository.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.dto.icon.icon.request.IconPostRequest;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

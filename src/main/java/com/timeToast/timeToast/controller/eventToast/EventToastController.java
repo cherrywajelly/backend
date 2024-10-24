@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.controller.eventToast;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.global.annotation.Login;

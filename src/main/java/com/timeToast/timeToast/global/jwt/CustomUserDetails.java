@@ -1,11 +1,10 @@
 package com.timeToast.timeToast.global.jwt;
 
-import com.timeToast.timeToast.domain.member.Member;
+import com.timeToast.timeToast.domain.member.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 

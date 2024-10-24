@@ -1,13 +1,13 @@
 package com.timeToast.timeToast.service.follow;
 
 import com.timeToast.timeToast.domain.follow.Follow;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.dto.follow.FollowResponse;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.follow.response.FollowResponse;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

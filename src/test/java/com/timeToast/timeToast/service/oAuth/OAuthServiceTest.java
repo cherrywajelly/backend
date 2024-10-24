@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.service.oAuth;
-import com.timeToast.timeToast.dto.member.LoginResponse;
-import org.springframework.stereotype.Service;
+import com.timeToast.timeToast.dto.member.member.LoginResponse;
 
 import static com.timeToast.timeToast.util.TestConstant.*;
 

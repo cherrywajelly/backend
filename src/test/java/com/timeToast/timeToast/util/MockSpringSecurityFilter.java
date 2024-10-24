@@ -1,12 +1,9 @@
 package com.timeToast.timeToast.util;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.global.jwt.CustomUserDetails;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;

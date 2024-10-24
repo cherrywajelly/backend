@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.domain.member;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 
 import static com.timeToast.timeToast.util.TestConstant.TEST_EMAIL;
 
