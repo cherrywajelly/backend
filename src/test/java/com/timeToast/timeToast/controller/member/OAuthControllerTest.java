@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.controller.member;
 
 import com.timeToast.timeToast.controller.member.oauth.OAuthController;
-import com.timeToast.timeToast.service.oAuth.OAuthService;
-import com.timeToast.timeToast.service.oAuth.OAuthServiceTest;
+import com.timeToast.timeToast.service.member.oauth.OAuthService;
+import com.timeToast.timeToast.service.member.OAuthServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
