@@ -31,13 +31,13 @@ public class FollowController {
         return followService.findFollowerList(loginMember.id());
     }
 
-    @DeleteMapping("/following/{followingId}")
-    public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long followingId){
-        followService.deleteFollowing(followingId, loginMember.id());
+    @DeleteMapping("/following/{followingMemberId}")
+    public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
+        followService.deleteFollowing(followingMemberId, loginMember.id());
     }
 
-    @DeleteMapping("/follower/{followerId}")
-    public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long followerId){
-        followService.deleteFollower(loginMember.id(), followerId);
+    @DeleteMapping("/follower/{followerMemberId}")
+    public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long followerMemberId){
+        followService.deleteFollower(loginMember.id(), followerMemberId);
     }
 }

@@ -33,7 +33,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void createFollow() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v1/follow/following/{followingId}", 2)
+                        post("/api/v1/follows/following/{followingId}", 2)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -51,7 +51,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void findFollowingList() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/follow/followings")
+                        get("/api/v1/follows/followings")
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -75,7 +75,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void findFollowerList() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/follow/followers")
+                        get("/api/v1/follows/followers")
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -99,7 +99,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollowing() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follow/following/{followingId}",1)
+                        delete("/api/v1/follows/following/{followingMemberId}",1)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -118,7 +118,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollower() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follow/follower/{followerId}",1)
+                        delete("/api/v1/follows/follower/{followerMemberId}",1)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())

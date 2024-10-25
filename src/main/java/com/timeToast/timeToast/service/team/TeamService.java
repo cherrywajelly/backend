@@ -13,6 +13,6 @@ public interface TeamService {
 
     TeamResponses findLoginMemberTeams(final long memberId);
 
-    void deleteMemberGroup(final long memberId, final long teamId);
+    void deleteTeam(final long memberId, final long teamId);
 
 }
