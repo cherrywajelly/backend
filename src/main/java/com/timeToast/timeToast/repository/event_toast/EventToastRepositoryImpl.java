@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.event_toast;
 
-import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

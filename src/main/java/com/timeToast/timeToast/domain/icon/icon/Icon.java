@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.domain.icon.icon;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.jam.Jam;
 import jakarta.persistence.*;

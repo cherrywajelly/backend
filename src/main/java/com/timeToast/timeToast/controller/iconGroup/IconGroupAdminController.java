@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
-@RequestMapping("/api/v2/iconGroup")
+@RequestMapping("/api/v2/iconGroups")
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +36,7 @@ public class IconGroupAdminController {
     }
 
     // TODO s3 이미지 처리
-    @PostMapping("/image/{icon_group_id}")
+    @PostMapping("/images/{icon_group_id}")
     public void postIconGroupImages(@Login LoginMember loginMember, @PathVariable("icon_group_id") long iconGroupId, @RequestBody List<IconPostRequest> images) {
         if (loginMember.role().equals(MemberRole.CREATOR)) {
             iconService.postIconSet(images, iconGroupId);

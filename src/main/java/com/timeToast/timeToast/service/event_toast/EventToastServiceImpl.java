@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -11,7 +11,7 @@ import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class EventToastServiceImpl implements EventToastService{
 
@@ -34,16 +33,15 @@ public class EventToastServiceImpl implements EventToastService{
     private final FollowRepository followRepository;
 
 
+    @Transactional
     public void postEventToast(EventToastPostRequest eventToastPostRequest, long memberId) {
-        Member member = memberRepository.getById(memberId);
-
-        Icon icon = iconRepository.getById(eventToastPostRequest.icon_id());
-        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, member, icon));
+        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
         log.info("save event toast");
 
     }
 
     // opened_date 가 지난 이벤트 토스트 검증
+    @Transactional
     public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
         List<EventToast> openedEventToasts = new ArrayList<>();
 
@@ -69,6 +67,7 @@ public class EventToastServiceImpl implements EventToastService{
     }
 
     // isOpened ? 열린 토스트 리스트 반환 : 닫힌 토스트 리스트 반환
+    @Transactional(readOnly = true)
     public List<EventToast> filterEventToasts(List<EventToast> eventToasts, boolean isOpened) {
         List<EventToast> openedEventToasts = new ArrayList<>();
         List<EventToast> unOpenedEventToasts = new ArrayList<>();
@@ -84,6 +83,7 @@ public class EventToastServiceImpl implements EventToastService{
     }
 
 
+    @Transactional(readOnly = true)
     public List<EventToastResponse> getEventToastList(long memberId){
         List<EventToastResponse> eventToastResponseList = new ArrayList<>();
 
@@ -97,8 +97,11 @@ public class EventToastServiceImpl implements EventToastService{
 
                     filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
                             eventToast -> {
-                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, eventToast.getMember(),
-                                        new IconResponse(eventToast.getIcon().getId(), eventToast.getIcon().getIcon_image_url()));
+                                Member member = memberRepository.getById(memberId);
+                                Icon icon = iconRepository.getById(eventToast.getIconId());
+
+                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname(),
+                                        new IconResponse(icon.getId(), icon.getIcon_image_url()));
                                 eventToastResponseList.add(eventToastResponse);
                             }
                     );

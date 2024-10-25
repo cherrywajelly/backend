@@ -8,7 +8,7 @@ import com.timeToast.timeToast.service.oAuth.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/v1/members")
 @RestController
 @RequiredArgsConstructor
 public class MemberController {

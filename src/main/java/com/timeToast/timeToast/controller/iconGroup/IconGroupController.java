@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/iconGroups")
 @Validated
 @RestController
 @RequiredArgsConstructor
 public class IconGroupController {
     private final IconGroupService iconGroupService;
 
-    @PostMapping("/member/iconGroups/{icon_group_id}")
+    @PostMapping("/members/{icon_group_id}")
     public void buyIconGroup(@Login LoginMember loginMember, @PathVariable("icon_group_id") long iconGroupId) {
         iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
     }

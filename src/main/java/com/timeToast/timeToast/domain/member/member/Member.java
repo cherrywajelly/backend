@@ -3,7 +3,7 @@ package com.timeToast.timeToast.domain.member.member;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import jakarta.persistence.*;
 import lombok.*;
