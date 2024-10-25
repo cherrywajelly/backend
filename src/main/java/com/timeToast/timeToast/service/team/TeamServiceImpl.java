@@ -114,7 +114,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public void deleteMemberGroup(final long memberId, final long teamId) {
+    public void deleteTeam(final long memberId, final long teamId) {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
 
         teamMembers.stream()

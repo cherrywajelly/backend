@@ -44,7 +44,7 @@ public class FollowServiceImpl implements FollowService{
             );
             log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
         }else{
-            new BadRequestException(FOLLOW_ALREADY_EXISTS.getMessage());
+            throw new BadRequestException(FOLLOW_ALREADY_EXISTS.getMessage());
         }
     }
 
@@ -95,9 +95,9 @@ public class FollowServiceImpl implements FollowService{
 
     @Transactional
     @Override
-    public void deleteFollowing(final long followingId, final long memberId) {
+    public void deleteFollowing(final long followingMemberId, final long memberId) {
 
-        Follow findFollow = followRepository.findByFollowingIdAndFollowerId(followingId, memberId)
+        Follow findFollow = followRepository.findByFollowingIdAndFollowerId(followingMemberId, memberId)
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);
@@ -108,9 +108,9 @@ public class FollowServiceImpl implements FollowService{
 
     @Transactional
     @Override
-    public void deleteFollower(final long memberId, final long followerId) {
+    public void deleteFollower(final long memberId, final long followerMemberId) {
 
-        Follow findFollow = followRepository.findByFollowingIdAndFollowerId(memberId, followerId)
+        Follow findFollow = followRepository.findByFollowingIdAndFollowerId(memberId, followerMemberId)
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);

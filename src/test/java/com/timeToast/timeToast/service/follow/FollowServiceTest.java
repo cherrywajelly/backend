@@ -30,12 +30,12 @@ public class FollowServiceTest implements FollowService {
     }
 
     @Override
-    public void deleteFollowing(long followingId, long memberId) {
+    public void deleteFollowing(long followingMemberId, long memberId) {
 
     }
 
     @Override
-    public void deleteFollower(long memberId, long followerId) {
+    public void deleteFollower(long memberId, long followerMemberId) {
 
     }
 }
