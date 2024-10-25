@@ -25,6 +25,8 @@ public class IconGroup extends BaseTime {
     @Column(name = "icon_group_id")
     private long id;
 
+    private Long memberId;
+
     @Column(nullable = false)
     private IconType iconType;
 
@@ -36,22 +38,12 @@ public class IconGroup extends BaseTime {
 
     private IconState iconState;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @OneToMany(mappedBy = "iconGroup", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<Icon> icons = new HashSet<>();
-
-    @OneToMany(mappedBy = "iconGroup", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private final Set<IconMember> memberIcons = new HashSet<>();
-
     @Builder
-    public IconGroup(final String name, final long price, final IconType iconType, Member member){
+    public IconGroup(final String name, final long price, final IconType iconType, final long memberId){
         this.name = name;
         this.price = price;
         this.iconType = iconType;
-        this.member = member;
+        this.memberId = memberId;
     }
 
     public void updateIconState(IconState iconState) { this.iconState = iconState; }

@@ -21,6 +21,7 @@ public enum ExceptionConstant {
 
     //event
     EVENT_TOAST_NOT_FOUND("해당 이벤트 토스트를 찾을 수 없습니다."),
+    INVALID_EVENT_TOAST("잘못된 이벤트 토스트 형식입니다."),
 
 
     //jam
@@ -30,6 +31,8 @@ public enum ExceptionConstant {
     ICON_NOT_FOUND("해당 아이콘을 찾을 수 없습니다."),
     ICON_GROUP_NOT_FOUND("해당 아이콘 그룹을 찾을 수 없습니다."),
     ICON_MEMBER_NOT_FOUND("해당 조회를 할 수 없습니다."),
+    INVALID_ICON("잘목된 아이콘 형식입니다."),
+    INVALID_ICON_GROUP("잘못된 아이콘 그룹 형식입니다."),
 
 
     //gift_toast

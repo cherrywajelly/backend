@@ -12,7 +12,7 @@ public record EventToastPostRequest(
         String title,
         Long icon_id
 ){
-    public EventToast toEntity(EventToastPostRequest eventToastPostRequest, final Long memberId){
+    public EventToast toEntity(EventToastPostRequest eventToastPostRequest, final long memberId){
         return EventToast.builder()
                 .openedDate(eventToastPostRequest.opened_date)
                 .title(eventToastPostRequest.title)

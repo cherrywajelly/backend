@@ -16,30 +16,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICONGROUP_ALREADY_EXISTS;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class IconGroupServiceImpl implements IconGroupService{
     private final MemberIconRepository memberIconRepository;
     private final IconGroupRepository iconGroupRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void buyIconGroup(long memberId, long iconGroupId){
         Member member = memberRepository.getById(memberId);
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         // 중복 구매 방지
-        if(memberIconRepository.findByMemberAndIconGroup(member, iconGroup).isEmpty()) {
+        if(memberIconRepository.findByMemberAndIconGroup(member, iconGroup).isEmpty() && member != null) {
             memberIconRepository.save(IconMember.builder()
-                    .member(member)
-                    .iconGroup(iconGroup)
+                    .memberId(memberId)
+                    .iconGroupId(iconGroupId)
                     .build());
 
             log.info("buy new icon group");
         }else {
-            throw new BadRequestException(ICONGROUP_ALREADY_EXISTS.getMessage());
+            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         }
     }
 

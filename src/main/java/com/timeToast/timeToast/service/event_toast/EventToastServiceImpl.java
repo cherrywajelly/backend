@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -20,6 +21,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_EVENT_TOAST;
 
 
 @Service
@@ -35,8 +38,14 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     public void postEventToast(EventToastPostRequest eventToastPostRequest, long memberId) {
-        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
-        log.info("save event toast");
+        Member member = memberRepository.getById(memberId);
+
+        if (member == null) {
+            throw new BadRequestException(INVALID_EVENT_TOAST.getMessage());
+        } else {
+            eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
+            log.info("save event toast");
+        }
 
     }
 
