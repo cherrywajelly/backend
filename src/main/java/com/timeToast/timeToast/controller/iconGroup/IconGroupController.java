@@ -2,7 +2,7 @@ package com.timeToast.timeToast.controller.iconGroup;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.global.annotation.Login;
-import com.timeToast.timeToast.service.icon_group.IconGroupService;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;

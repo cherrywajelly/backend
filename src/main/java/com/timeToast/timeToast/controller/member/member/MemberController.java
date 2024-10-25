@@ -4,7 +4,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.member.member.LoginResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.jwt.JwtService;
-import com.timeToast.timeToast.service.oAuth.MemberService;
+import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

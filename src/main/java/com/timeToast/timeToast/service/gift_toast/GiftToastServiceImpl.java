@@ -12,8 +12,8 @@ import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastReposit
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.member_group.group_member.GroupMemberRepository;
-import com.timeToast.timeToast.repository.member_group.member_group.MemberGroupRepository;
+import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +32,16 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final ToastPieceService toastPieceService;
     private final GiftToastRepository giftToastRepository;
     private final GiftToastOwnerRepository giftToastOwnerRepository;
-    private final MemberGroupRepository groupRepository;
+    private final TeamRepository groupRepository;
     private final ToastPieceRepository toastPieceRepository;
-    private final GroupMemberRepository memberGroupRepository;
+    private final TeamMemberRepository memberGroupRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
 
     public GiftToastServiceImpl(final ToastPieceService toastPieceService,
                                 final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
-                                final MemberGroupRepository groupRepository, final ToastPieceRepository toastPieceRepository,
-                                final GroupMemberRepository memberGroupRepository, final MemberRepository memberRepository,
+                                final TeamRepository groupRepository, final ToastPieceRepository toastPieceRepository,
+                                final TeamMemberRepository memberGroupRepository, final MemberRepository memberRepository,
                                 final IconRepository iconRepository) {
         this.toastPieceService = toastPieceService;
         this.giftToastRepository = giftToastRepository;
@@ -181,7 +181,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private List<GiftToastOwnerResponse> saveGroupGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest){
 
-        List<TeamMember> groupMembers = memberGroupRepository.findAllByMemberGroupId(giftToastRequest.groupId());
+        List<TeamMember> groupMembers = memberGroupRepository.findAllByTeamId(giftToastRequest.groupId());
 
         if(groupMembers.isEmpty()){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
