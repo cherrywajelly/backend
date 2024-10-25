@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MemberIconJpaRepository extends JpaRepository<IconMember, Long> {
-    Optional<IconMember> findByMemberAndIconGroup(Member member, IconGroup iconGroup);
+    Optional<IconMember> findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId);
 }

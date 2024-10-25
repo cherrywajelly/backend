@@ -20,8 +20,8 @@ public class MemberIconRepositoryImpl implements MemberIconRepository{
     public IconMember getById(final long memberIconId) { return memberIconJpaRepository.findById(memberIconId).orElseThrow(() -> new NotFoundException(ICON_MEMBER_NOT_FOUND.getMessage())); }
 
     @Override
-    public Optional<IconMember> findByMemberAndIconGroup(Member member, IconGroup iconGroup) {
-        return memberIconJpaRepository.findByMemberAndIconGroup(member, iconGroup);
+    public Optional<IconMember> findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId) {
+        return memberIconJpaRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId);
     }
 
     @Override
