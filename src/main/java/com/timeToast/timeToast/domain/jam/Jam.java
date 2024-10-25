@@ -20,23 +20,17 @@ public class Jam extends BaseTime {
     @Column(name = "jam_id")
     private long id;
 
+    private Long memberId;
+
+    private Long eventToastId;
+
+    private Long iconId;
+
     private String title;
 
     private String contentsUrl;
 
     private String imageUrl;
-
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "event_toast_id")
-    private EventToast eventToast;
-
-    @ManyToOne
-    @JoinColumn(name = "icon_id", nullable = false)
-    private Icon icon;
 
     @Builder
     public Jam(final String title, final String contents_url, final String image_url){

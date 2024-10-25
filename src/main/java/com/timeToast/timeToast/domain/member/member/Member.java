@@ -35,12 +35,6 @@ public class Member extends BaseTime {
 
     private boolean is_delete;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private final Set<EventToast> eventToasts = new HashSet<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private final Set<IconMember> memberIcons = new HashSet<>();
-
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
                   final LoginType loginType, final MemberRole memberRole, final boolean is_delete){

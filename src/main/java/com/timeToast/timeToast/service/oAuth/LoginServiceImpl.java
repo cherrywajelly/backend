@@ -78,8 +78,8 @@ public class LoginServiceImpl implements LoginService {
         List<IconGroup> iconGroups = iconGroupRepository.findByIconType(IconType.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             memberIconRepository.save(IconMember.builder()
-                    .member(member)
-                    .iconGroup(iconGroup)
+                    .memberId(member.getId())
+                    .iconGroupId(iconGroup.getId())
                     .build());
         }
         System.out.println("기본 이미지가 등록되었습니다");
