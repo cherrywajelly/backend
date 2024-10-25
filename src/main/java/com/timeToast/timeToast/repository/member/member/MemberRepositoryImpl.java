@@ -1,12 +1,13 @@
 package com.timeToast.timeToast.repository.member.member;
 
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_EXISTS;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
@@ -20,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Member getById(final long memberId) {
-        return memberJpaRepository.findById(memberId).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND.getMessage()));
+        return memberJpaRepository.findById(memberId).orElseThrow(() -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
     }
 
     @Override

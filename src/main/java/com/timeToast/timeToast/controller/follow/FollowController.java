@@ -6,7 +6,7 @@ import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.follow.FollowService;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/follow")
+@RequestMapping("/api/v1/follows")
 @RestController
 public class FollowController {
 

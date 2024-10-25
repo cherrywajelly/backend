@@ -60,7 +60,7 @@ public class TeamServiceImpl implements TeamService {
 
         teamMembers.forEach(
                 (groupMemberId) -> {
-                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_FOUND.getMessage()));
+                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
 
                     teamMemberRepository.save(
                             TeamMember.builder()

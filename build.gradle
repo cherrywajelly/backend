@@ -42,7 +42,7 @@ swaggerSources {
 
 openapi3 {
 	servers = [
-			{ url = 'https://timetoast.app' }
+			{ url = 'https://dev-back.timetoast.app' }
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'

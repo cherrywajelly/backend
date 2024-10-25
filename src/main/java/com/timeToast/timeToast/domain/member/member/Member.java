@@ -33,8 +33,6 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    private boolean is_delete;
-
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
                   final LoginType loginType, final MemberRole memberRole, final boolean is_delete){
