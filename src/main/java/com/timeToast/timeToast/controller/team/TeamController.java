@@ -35,7 +35,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/{teamId}")
-    public void deleteGroup(@Login final LoginMember loginMember, @PathVariable final  long teamId){
+    public void deleteTeam(@Login final LoginMember loginMember, @PathVariable final  long teamId){
         teamService.deleteTeam(loginMember.id(), teamId);
     }
 
