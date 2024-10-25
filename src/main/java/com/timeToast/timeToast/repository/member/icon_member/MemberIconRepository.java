@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface MemberIconRepository {
     IconMember getById(final long memberIconId);
-    Optional<IconMember> findByMemberAndIconGroup(Member member, IconGroup iconGroup);
+    Optional<IconMember> findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId);
     IconMember save(final IconMember memberIcon);
 }
