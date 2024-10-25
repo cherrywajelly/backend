@@ -11,12 +11,12 @@ public record IconGroupPostRequest (
         IconType iconType
 
 ) {
-    public IconGroup toEntity(IconGroupPostRequest iconGroupPostRequest, Member member) {
+    public IconGroup toEntity(IconGroupPostRequest iconGroupPostRequest, final long memberId) {
         return IconGroup.builder()
                 .name(iconGroupPostRequest.name)
                 .price(iconGroupPostRequest.price)
                 .iconType(iconGroupPostRequest.iconType)
-                .member(member)
+                .memberId(memberId)
                 .build();
     }
 }

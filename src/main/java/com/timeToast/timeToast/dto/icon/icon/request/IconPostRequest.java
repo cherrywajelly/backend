@@ -6,10 +6,10 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 public record IconPostRequest(
         String icon_image_url
 ) {
-    public Icon toEntity(IconPostRequest iconPostRequest, IconGroup iconGroup){
+    public Icon toEntity(IconPostRequest iconPostRequest, final long iconGroupId){
         return Icon.builder()
                 .icon_image_url(iconPostRequest.icon_image_url)
-                .iconGroup(iconGroup)
+                .iconGroupId(iconGroupId)
                 .build();
     }
 }

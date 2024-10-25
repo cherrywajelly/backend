@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.event_toast.event_toast;
+package com.timeToast.timeToast.domain.event_toast;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -22,7 +22,11 @@ public class EventToast extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_toast_id")
-    private long id;
+    private Long id;
+
+    private Long memberId;
+
+    private Long iconId;
 
     @Column(nullable = false)
     private String title;
@@ -34,24 +38,13 @@ public class EventToast extends BaseTime {
 
     private boolean isDeleted;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @OneToMany(mappedBy = "eventToast", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private final Set<Jam> jams = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "icon_id", nullable = false)
-    private Icon icon;
-
     @Builder
-    public EventToast(final long id, final String title, final LocalDate openedDate, Member member, Icon icon){
+    public EventToast(final long id, final String title, final LocalDate openedDate, final long memberId, final long iconId){
         this.id = id;
         this.title = title;
         this.openedDate = openedDate;
-        this.member = member;
-        this.icon = icon;
+        this.memberId = memberId;
+        this.iconId = iconId;
     }
 
     public void updateIsDelete(final boolean isDelete){

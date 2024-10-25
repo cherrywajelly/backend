@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.domain.icon.icon;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.event_toast.event_toast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.jam.Jam;
 import jakarta.persistence.*;
@@ -23,21 +23,13 @@ public class Icon extends BaseTime {
     @Column(name = "icon_id")
     private long id;
 
+    private Long iconGroupId;
+
     private String icon_image_url;
 
-    @ManyToOne
-    @JoinColumn(name = "icon_group_id", nullable = false)
-    private IconGroup iconGroup;
-
-    @OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
-    private final Set<EventToast> eventToasts = new HashSet<>();
-
-    @OneToMany(mappedBy = "icon", fetch = FetchType.LAZY)
-    private final Set<Jam> jams = new HashSet<>();
-
     @Builder
-    public Icon(final String icon_image_url, IconGroup iconGroup){
+    public Icon(final String icon_image_url, final Long iconGroupId){
         this.icon_image_url = icon_image_url;
-        this.iconGroup = iconGroup;
+        this.iconGroupId = iconGroupId;
     }
 }

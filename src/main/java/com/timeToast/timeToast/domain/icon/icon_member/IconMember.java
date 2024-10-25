@@ -19,17 +19,13 @@ public class IconMember extends BaseTime {
     @Column(name = "icon_member_id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "icon_group_id", nullable = false)
-    private IconGroup iconGroup;
+    private Long iconGroupId;
 
     @Builder
-    public IconMember(Member member, IconGroup iconGroup){
-        this.member = member;
-        this.iconGroup = iconGroup;
+    public IconMember(final long memberId, final long iconGroupId){
+        this.memberId = memberId;
+        this.iconGroupId = iconGroupId;
     }
 }
