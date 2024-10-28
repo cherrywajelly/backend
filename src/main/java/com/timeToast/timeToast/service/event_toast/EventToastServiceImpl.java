@@ -144,7 +144,6 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional(readOnly = true)
     @Override
     public List<EventToastFriendResponse> getFriendEventToastList(final long memberId, final long friendId){
-        //TODO 팔로워인지 여부 조회
         List<EventToast> eventToasts = eventToastRepository.findByMemberId(friendId);
         List<EventToastFriendResponse> eventToastFriendResponses = new ArrayList<>();
 

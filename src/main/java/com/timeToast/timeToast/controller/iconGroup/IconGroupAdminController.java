@@ -27,22 +27,22 @@ public class IconGroupAdminController {
 
     @PostMapping("")
     public void postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
-//        if (loginMember.role().equals(MemberRole.CREATOR)) {
-//            iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
-//        } else {
-//            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
-//        }
+        if (loginMember.role().equals(MemberRole.CREATOR)) {
+            iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
+        } else {
+            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
+        }
         iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
     }
 
     // TODO s3 이미지 처리
     @PostMapping("/images/{icon_group_id}")
     public void postIconGroupImages(@Login LoginMember loginMember, @PathVariable("icon_group_id") long iconGroupId, @RequestBody List<IconPostRequest> images) {
-//        if (loginMember.role().equals(MemberRole.CREATOR)) {
-//            iconService.postIconSet(images, iconGroupId);
-//        } else {
-//            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
-//        }
+        if (loginMember.role().equals(MemberRole.CREATOR)) {
+            iconService.postIconSet(images, iconGroupId);
+        } else {
+            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
+        }
         iconService.postIconSet(images, iconGroupId);
     }
 
