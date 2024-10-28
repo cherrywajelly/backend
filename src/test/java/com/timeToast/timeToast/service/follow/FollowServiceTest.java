@@ -11,6 +11,7 @@ public class FollowServiceTest implements FollowService {
     public void saveFollow(long followingId, long memberId) {
     }
 
+
     @Override
     public FollowResponses findFollowerList(long memberId) {
         List<FollowResponse> followResponses = new ArrayList<>();
