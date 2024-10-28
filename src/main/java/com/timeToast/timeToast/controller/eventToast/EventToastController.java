@@ -48,4 +48,11 @@ public class EventToastController {
                                             @PathVariable final long eventToastId) {
         return eventToastService.getEventToast(loginMember.id(), eventToastId);
     }
+
+    @DeleteMapping("{eventToastId]")
+    public void deleteEventToast(@Login LoginMember loginMember,
+                                 @PathVariable final long eventToastId) {
+        eventToastService.deleteEventToast(loginMember.id(), eventToastId);
+    }
+
 }

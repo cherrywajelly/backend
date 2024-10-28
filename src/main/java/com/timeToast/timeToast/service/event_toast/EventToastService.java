@@ -17,4 +17,6 @@ public interface EventToastService {
 
     List<EventToastFriendResponse> getFriendEventToastList(final long memberId, final long friendId);
     EventToastResponse getEventToast(final long memberId, final long eventToastId);
+
+    void deleteEventToast(final long memberId, final long eventToastId);
 }

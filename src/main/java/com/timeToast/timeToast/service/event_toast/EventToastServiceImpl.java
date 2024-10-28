@@ -11,6 +11,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.EVENT_TOAST_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_EVENT_TOAST;
 
 
@@ -160,12 +162,23 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional(readOnly = true)
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
-        EventToast eventToast = eventToastRepository.findByEventToastId(eventToastId);
+        EventToast eventToast = eventToastRepository.findById(eventToastId);
         Member member = memberRepository.getById(memberId);
 
         EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname());
 
         return eventToastResponse;
+    }
+
+    @Transactional
+    @Override
+    public void deleteEventToast(final long memberId,final long eventToastId) {
+        if(eventToastRepository.findByIdAndMemberId(eventToastId, memberId) == null) {
+            throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
+        } else {
+            eventToastRepository.deleteById(eventToastId);
+            log.info("delete event toast");
+        }
     }
 }
 
