@@ -60,7 +60,7 @@ public class TeamServiceImpl implements TeamService {
 
         teamMembers.forEach(
                 (groupMemberId) -> {
-                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_FOUND.getMessage()));
+                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
 
                     teamMemberRepository.save(
                             TeamMember.builder()
@@ -99,7 +99,7 @@ public class TeamServiceImpl implements TeamService {
 
         teamMembers.forEach(
                 team -> {
-                    Optional<Team> findTeam= teamRepository.findById(team.getTeamId());
+                    Optional<Team> findTeam = teamRepository.findById(team.getTeamId());
                     if(findTeam.isPresent()){
                         teamResponses.add(
                                 TeamResponse.from(findTeam.get())
@@ -114,7 +114,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public void deleteMemberGroup(final long memberId, final long teamId) {
+    public void deleteTeam(final long memberId, final long teamId) {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
 
         teamMembers.stream()

@@ -11,6 +11,7 @@ public class FollowServiceTest implements FollowService {
     public void saveFollow(long followingId, long memberId) {
     }
 
+
     @Override
     public FollowResponses findFollowerList(long memberId) {
         List<FollowResponse> followResponses = new ArrayList<>();
@@ -30,12 +31,12 @@ public class FollowServiceTest implements FollowService {
     }
 
     @Override
-    public void deleteFollowing(long followingId, long memberId) {
+    public void deleteFollowing(long followingMemberId, long memberId) {
 
     }
 
     @Override
-    public void deleteFollower(long memberId, long followerId) {
+    public void deleteFollower(long memberId, long followerMemberId) {
 
     }
 }

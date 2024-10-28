@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class UnauthorizedException extends RuntimeException{
-    private final StatusCode statusCode = StatusCode.UNAUTHORIZED;
+    private final String statusCode = StatusCode.UNAUTHORIZED.getStatusCode();
     private final String message;
 
     public UnauthorizedException(final String message){

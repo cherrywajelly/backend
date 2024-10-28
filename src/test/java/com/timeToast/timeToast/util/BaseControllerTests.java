@@ -26,6 +26,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 public abstract class BaseControllerTests {
 
     protected MockMvc mockMvc;
+    protected ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     protected MemberRepository memberRepository;

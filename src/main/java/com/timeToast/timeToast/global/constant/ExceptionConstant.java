@@ -3,7 +3,7 @@ package com.timeToast.timeToast.global.constant;
 public enum ExceptionConstant {
 
     //member
-    MEMBER_NOT_FOUND("해당 멤버를 찾을 수 없습니다."),
+    MEMBER_NOT_EXISTS("해당 멤버를 찾을 수 없습니다."),
     NICKNAME_CONFLICT("이미 존재하는 닉네임입니다."),
     ROLE_FORBIDDEN("역할이 검증되지 않았습니다."),
     ACCESS_TOKEN_EXPIRED("사용자의 access token이 만료되었습니다."),
