@@ -8,6 +8,7 @@ import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
@@ -95,8 +96,8 @@ public class EventToastServiceImpl implements EventToastService{
 
 
     @Transactional(readOnly = true)
-    public List<EventToastResponse> getEventToastList(final long memberId){
-        List<EventToastResponse> eventToastResponseList = new ArrayList<>();
+    public List<EventToastResponses> getEventToasts(final long memberId){
+        List<EventToastResponses> eventToastResponses = new ArrayList<>();
 
         List<Follow> follows = followRepository.findAllByFollowerId(memberId);
 
@@ -110,15 +111,15 @@ public class EventToastServiceImpl implements EventToastService{
                                 Member member = memberRepository.getById(memberId);
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
-                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname(),
+                                EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(),
                                         new IconResponse(icon.getId(), icon.getIcon_image_url()));
-                                eventToastResponseList.add(eventToastResponse);
+                                eventToastResponses.add(eventToastResponse);
                             }
                     );
                 }
         );
 
-        return eventToastResponseList;
+        return eventToastResponses;
     }
 
     @Transactional(readOnly = true)
@@ -154,6 +155,17 @@ public class EventToastServiceImpl implements EventToastService{
         );
 
         return eventToastFriendResponses;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
+        EventToast eventToast = eventToastRepository.findByEventToastId(eventToastId);
+        Member member = memberRepository.getById(memberId);
+
+        EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname());
+
+        return eventToastResponse;
     }
 }
 

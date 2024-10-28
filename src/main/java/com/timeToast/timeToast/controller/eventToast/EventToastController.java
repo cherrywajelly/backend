@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class EventToastController {
     }
 
     @GetMapping("/follow/following")
-    public List<EventToastResponse> getEventToastList(@Login LoginMember loginMember) {
-        return eventToastService.getEventToastList(loginMember.id());
+    public List<EventToastResponses> getEventToastList(@Login LoginMember loginMember) {
+        return eventToastService.getEventToasts(loginMember.id());
     }
 
     @GetMapping("/member")
@@ -42,5 +43,9 @@ public class EventToastController {
         return eventToastService.getFriendEventToastList(loginMember.id(), memberId);
     }
 
-
+    @GetMapping("/{eventToastId}")
+    public EventToastResponse getEventToast(@Login LoginMember loginMember,
+                                            @PathVariable final long eventToastId) {
+        return eventToastService.getEventToast(loginMember.id(), eventToastId);
+    }
 }

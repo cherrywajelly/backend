@@ -9,4 +9,5 @@ public interface EventToastRepository {
     EventToast save(final EventToast eventToast);
 
     List<EventToast> saveAll(List<EventToast> eventToasts);
+    EventToast findByEventToastId(final long eventToastId);
 }
