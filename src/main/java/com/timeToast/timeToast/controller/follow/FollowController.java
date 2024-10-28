@@ -1,12 +1,12 @@
 package com.timeToast.timeToast.controller.follow;
 
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.follow.FollowService;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/follow")
+@RequestMapping("/api/v1/follows")
 @RestController
 public class FollowController {
 
@@ -16,9 +16,9 @@ public class FollowController {
         this.followService = followService;
     }
 
-    @PostMapping("/following/{followingId}")
-    public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long followingId){
-        followService.saveFollow(followingId, loginMember.id());
+    @PostMapping("/following/{followingMemberId}")
+    public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
+        followService.saveFollow(followingMemberId, loginMember.id());
     }
 
     @GetMapping("/followings")
@@ -31,13 +31,13 @@ public class FollowController {
         return followService.findFollowerList(loginMember.id());
     }
 
-    @DeleteMapping("/following/{followingId}")
-    public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long followingId){
-        followService.deleteFollowing(followingId, loginMember.id());
+    @DeleteMapping("/following/{followingMemberId}")
+    public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
+        followService.deleteFollowing(followingMemberId, loginMember.id());
     }
 
-    @DeleteMapping("/follower/{followerId}")
-    public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long followerId){
-        followService.deleteFollower(loginMember.id(), followerId);
+    @DeleteMapping("/follower/{followerMemberId}")
+    public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long followerMemberId){
+        followService.deleteFollower(loginMember.id(), followerMemberId);
     }
 }

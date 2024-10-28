@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.dto.follow.FollowResponse;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.dto.follow.response.FollowResponse;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ public class FollowServiceTest implements FollowService {
     @Override
     public void saveFollow(long followingId, long memberId) {
     }
+
 
     @Override
     public FollowResponses findFollowerList(long memberId) {
@@ -30,12 +31,12 @@ public class FollowServiceTest implements FollowService {
     }
 
     @Override
-    public void deleteFollowing(long followingId, long memberId) {
+    public void deleteFollowing(long followingMemberId, long memberId) {
 
     }
 
     @Override
-    public void deleteFollower(long memberId, long followerId) {
+    public void deleteFollower(long memberId, long followerMemberId) {
 
     }
 }

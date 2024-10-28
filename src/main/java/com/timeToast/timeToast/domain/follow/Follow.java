@@ -30,4 +30,6 @@ public class Follow extends BaseTime {
         this.followerId = followerId;
     }
 
+
+
 }

@@ -1,20 +1,19 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.follow.Follow;
-import com.timeToast.timeToast.domain.member.Member;
-import com.timeToast.timeToast.dto.follow.FollowResponses;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.util.BaseServiceTests;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class FollowServiceImplTest extends BaseServiceTests {
 
@@ -26,6 +25,7 @@ public class FollowServiceImplTest extends BaseServiceTests {
     FollowRepository followRepository;
 
     @Test
+    @DisplayName("팔로우 저장 테스트")
     public void saveFollow() {
         //given
         Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
@@ -47,6 +47,7 @@ public class FollowServiceImplTest extends BaseServiceTests {
     }
 
     @Test
+    @DisplayName("팔로워 리스트 조회 테스트")
     public void findFollowerList() {
 
         //given
@@ -75,7 +76,9 @@ public class FollowServiceImplTest extends BaseServiceTests {
     }
 
 
+
     @Test
+    @DisplayName("팔로잉 리스트 조회 테스트")
     public void findFollowingList() {
 
         //given
@@ -104,6 +107,7 @@ public class FollowServiceImplTest extends BaseServiceTests {
 
 
     @Test
+    @DisplayName("팔로잉 삭제 테스트")
     public void deleteFollowing() {
 
         //given
@@ -134,6 +138,7 @@ public class FollowServiceImplTest extends BaseServiceTests {
     }
 
     @Test
+    @DisplayName("팔로워 삭제 테스트")
     public void deleteFollower() {
 
         //given
