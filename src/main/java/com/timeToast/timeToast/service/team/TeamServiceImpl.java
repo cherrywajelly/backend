@@ -99,7 +99,7 @@ public class TeamServiceImpl implements TeamService {
 
         teamMembers.forEach(
                 team -> {
-                    Optional<Team> findTeam= teamRepository.findById(team.getTeamId());
+                    Optional<Team> findTeam = teamRepository.findById(team.getTeamId());
                     if(findTeam.isPresent()){
                         teamResponses.add(
                                 TeamResponse.from(findTeam.get())

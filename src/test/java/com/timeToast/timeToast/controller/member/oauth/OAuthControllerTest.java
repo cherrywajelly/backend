@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.controller.member;
+package com.timeToast.timeToast.controller.member.oauth;
 
 import com.timeToast.timeToast.controller.member.oauth.OAuthController;
 import com.timeToast.timeToast.service.member.oauth.OAuthService;

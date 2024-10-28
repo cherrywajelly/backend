@@ -8,22 +8,19 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.util.BaseServiceTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class FollowServiceImplTest extends BaseServiceTests {
 
 
-    @Mock
     @Autowired
     MemberRepository memberRepository;
 
-    @Mock
     @Autowired
     FollowRepository followRepository;
 
