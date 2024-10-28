@@ -5,6 +5,8 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -37,7 +39,7 @@ public class EventToastServiceImpl implements EventToastService{
 
 
     @Transactional
-    public void postEventToast(EventToastPostRequest eventToastPostRequest, long memberId) {
+    public void postEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
         Member member = memberRepository.getById(memberId);
 
         if (member == null) {
@@ -93,7 +95,7 @@ public class EventToastServiceImpl implements EventToastService{
 
 
     @Transactional(readOnly = true)
-    public List<EventToastResponse> getEventToastList(long memberId){
+    public List<EventToastResponse> getEventToastList(final long memberId){
         List<EventToastResponse> eventToastResponseList = new ArrayList<>();
 
         List<Follow> follows = followRepository.findAllByFollowerId(memberId);
@@ -101,7 +103,6 @@ public class EventToastServiceImpl implements EventToastService{
         follows.forEach(
                 follow -> {
                     // 팔로우하고 있는 사용자의 이벤트 토스트 조회
-//                    List<EventToast> eventToasts = checkEventToastOpened()
                     List<EventToast> eventToasts = eventToastRepository.findByMemberId(follow.getFollowingId());
 
                     filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
@@ -120,15 +121,39 @@ public class EventToastServiceImpl implements EventToastService{
         return eventToastResponseList;
     }
 
-//    public List<EventToastResponse> getMyEventToastList(long memberId) {
-//        Member member = memberRepository.getById(memberId);
-//
-//        List<EventToast> eventToasts = eventToastRepository.findByMemberId(memberId);
-//        eventToasts.forEach(
-//                eventToast -> {
-//
-//                }
-//        );
-//    }
+    @Transactional(readOnly = true)
+    @Override
+    public List<EventToastOwnResponse> getOwnEventToastList(final long memberId) {
+        List<EventToast> eventToasts = eventToastRepository.findByMemberId(memberId);
+        List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
+
+        checkEventToastOpened(eventToasts).forEach(
+                eventToast -> {
+                    Icon icon = iconRepository.getById(eventToast.getIconId());
+                    EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()));
+                    eventToastOwnResponses.add(eventToastOwnResponse);
+                }
+        );
+
+        return eventToastOwnResponses;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<EventToastFriendResponse> getFriendEventToastList(final long memberId, final long friendId){
+        //TODO 팔로워인지 여부 조회
+        List<EventToast> eventToasts = eventToastRepository.findByMemberId(friendId);
+        List<EventToastFriendResponse> eventToastFriendResponses = new ArrayList<>();
+
+        filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
+                eventToast -> {
+                    Icon icon = iconRepository.getById(eventToast.getIconId());
+                    EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()));
+                    eventToastFriendResponses.add(eventToastFriendResponse);
+                }
+        );
+
+        return eventToastFriendResponses;
+    }
 }
 

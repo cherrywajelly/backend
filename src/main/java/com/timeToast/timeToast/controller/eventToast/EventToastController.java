@@ -2,6 +2,8 @@ package com.timeToast.timeToast.controller.eventToast;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
@@ -28,5 +30,17 @@ public class EventToastController {
     public List<EventToastResponse> getEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getEventToastList(loginMember.id());
     }
+
+    @GetMapping("/member")
+    public List<EventToastOwnResponse> getOwnEventToastList(@Login LoginMember loginMember) {
+        return eventToastService.getOwnEventToastList(loginMember.id());
+    }
+
+    @GetMapping("/member/{memberId}")
+    public List<EventToastFriendResponse> getFriendEventToastList(@Login LoginMember loginMember,
+                                                                  @PathVariable final long memberId) {
+        return eventToastService.getFriendEventToastList(loginMember.id(), memberId);
+    }
+
 
 }
