@@ -7,21 +7,22 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record EventToastResponse(
+public record EventToastFriendResponse(
         Long event_toast_id,
         String title,
+        LocalDate opened_date,
 
-        String nickname,
-        LocalDate opened_date
-        // 잼 목록 반환
+        IconResponse icon
+
+        //TODO 잼 바름 여부 추가
 ){
-    public static EventToastResponse fromEntity(EventToast eventToast, final String nickname){
-        return EventToastResponse.builder()
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon){
+        return EventToastFriendResponse.builder()
                 .event_toast_id(eventToast.getId())
                 .title(eventToast.getTitle())
                 .opened_date(eventToast.getOpenedDate())
-                .nickname(nickname)
-                // 잼 목록 반환
+                .icon(icon)
+                //TODO 잼 바름 여부 추가
                 .build();
     }
 }

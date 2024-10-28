@@ -16,9 +16,9 @@ public class FollowController {
         this.followService = followService;
     }
 
-    @PostMapping("/following/{followingId}")
-    public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long followingId){
-        followService.saveFollow(followingId, loginMember.id());
+    @PostMapping("/following/{followingMemberId}")
+    public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
+        followService.saveFollow(followingMemberId, loginMember.id());
     }
 
     @GetMapping("/followings")

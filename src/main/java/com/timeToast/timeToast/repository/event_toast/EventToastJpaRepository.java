@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EventToastJpaRepository extends JpaRepository<EventToast, Long> {
     List<EventToast> findByMemberId(final long memberId);
+
+    EventToast findByIdAndMemberId(final long eventToastId, final long memberId);
 }
