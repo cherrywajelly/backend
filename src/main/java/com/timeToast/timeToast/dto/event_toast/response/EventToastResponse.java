@@ -13,7 +13,7 @@ public record EventToastResponse(
 
         String nickname,
         LocalDate opened_date
-        // 잼 목록 반환
+        //TODO 잼 목록 반환
 ){
     public static EventToastResponse fromEntity(EventToast eventToast, final String nickname){
         return EventToastResponse.builder()
@@ -21,7 +21,7 @@ public record EventToastResponse(
                 .title(eventToast.getTitle())
                 .opened_date(eventToast.getOpenedDate())
                 .nickname(nickname)
-                // 잼 목록 반환
+                //TODO 잼 목록 반환
                 .build();
     }
 }
