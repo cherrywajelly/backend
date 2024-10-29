@@ -1,20 +1,16 @@
 package com.timeToast.timeToast.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeToast.timeToast.global.config.SecurityConfig;
 import com.timeToast.timeToast.global.jwt.CustomUserDetailService;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.global.resolver.LoginMemberResolver;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +26,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 public abstract class BaseControllerTests {
 
     protected MockMvc mockMvc;
+    protected ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     protected MemberRepository memberRepository;

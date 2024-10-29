@@ -1,8 +1,11 @@
 package com.timeToast.timeToast.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.team.team.TeamRepository;
+import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.member.member.LoginService;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,4 +20,13 @@ public abstract class BaseServiceTests {
     @Autowired
     FollowRepository followRepository;
 
+    @Autowired
+    TeamRepository teamRepository;
+
+    @Autowired
+    TeamMemberRepository teamMemberRepository;
+
+
+    @Autowired
+    LoginService loginService;
 }

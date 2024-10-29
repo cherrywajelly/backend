@@ -1,9 +1,5 @@
 package com.timeToast.timeToast.global.jwt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.global.exception.InternalServerException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -20,7 +16,6 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.*;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 

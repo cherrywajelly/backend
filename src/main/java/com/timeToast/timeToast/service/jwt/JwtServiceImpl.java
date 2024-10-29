@@ -2,9 +2,8 @@ package com.timeToast.timeToast.service.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeToast.timeToast.domain.member.LoginMember;
-import com.timeToast.timeToast.domain.member_jwt_refresh.MemberJwtRefreshToken;
-import com.timeToast.timeToast.dto.member.LoginResponse;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.member.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
@@ -45,7 +44,7 @@ public class JwtServiceImpl implements JwtService {
     public LoginResponse createJwts(final LoginMember loginMember) {
         String accessToken = createToken(loginMember, ONE_HOUR.time());
         String refreshToken = createToken(loginMember, ONE_DAY.time());
-
+        System.out.println("login member: " + loginMember.id());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
 
