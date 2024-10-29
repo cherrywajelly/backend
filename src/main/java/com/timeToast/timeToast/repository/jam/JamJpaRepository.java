@@ -8,5 +8,7 @@ import java.util.List;
 public interface JamJpaRepository extends JpaRepository<Jam, Long> {
     List<Jam> findByMemberId(final long memberId);
 
+    List<Jam> findByEventToastId(final long eventToastId);
+
     Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId);
 }

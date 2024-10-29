@@ -161,7 +161,7 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional(readOnly = true)
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
-        EventToast eventToast = eventToastRepository.findById(eventToastId);
+        EventToast eventToast = eventToastRepository.getById(eventToastId);
         Member member = memberRepository.getById(memberId);
 
         EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname());

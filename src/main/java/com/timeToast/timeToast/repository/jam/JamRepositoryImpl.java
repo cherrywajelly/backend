@@ -19,6 +19,10 @@ public class JamRepositoryImpl implements JamRepository {
         return jamJpaRepository.findByMemberId(memberId);
     }
 
+    public List<Jam> findByEventToastId(final long eventToastId) {
+        return jamJpaRepository.findByEventToastId(eventToastId);
+    }
+
     @Override
     public Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId) {
         return jamJpaRepository.findByMemberIdAndEventToastId(memberId, eventToastId);

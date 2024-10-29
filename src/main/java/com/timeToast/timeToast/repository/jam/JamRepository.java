@@ -11,5 +11,7 @@ public interface JamRepository {
 
     List<Jam> findByMemberId(final long memberId);
 
+    List<Jam> findByEventToastId(final long eventToastId);
+
     Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId);
 }
