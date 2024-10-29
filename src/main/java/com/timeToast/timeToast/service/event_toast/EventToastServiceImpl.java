@@ -15,6 +15,7 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.EVENT_TOAST_NOT_FOUND;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_EVENT_TOAST;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
 
 @Service
@@ -39,6 +39,7 @@ public class EventToastServiceImpl implements EventToastService{
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final FollowRepository followRepository;
+    private final JamRepository jamRepository;
 
 
     @Transactional
@@ -150,8 +151,15 @@ public class EventToastServiceImpl implements EventToastService{
         filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
-                    EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()));
-                    eventToastFriendResponses.add(eventToastFriendResponse);
+
+                    // 작성한 잼이 없는 경우
+                    if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()) == null) {
+                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()), false);
+                        eventToastFriendResponses.add(eventToastFriendResponse);
+                    } else {
+                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()), true);
+                        eventToastFriendResponses.add(eventToastFriendResponse);
+                    }
                 }
         );
 

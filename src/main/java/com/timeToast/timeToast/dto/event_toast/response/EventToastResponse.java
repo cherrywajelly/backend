@@ -9,11 +9,12 @@ import java.time.LocalDate;
 @Builder
 public record EventToastResponse(
         Long event_toast_id,
+
         String title,
 
         String nickname,
+
         LocalDate opened_date
-        //TODO 잼 목록 반환
 ){
     public static EventToastResponse fromEntity(EventToast eventToast, final String nickname){
         return EventToastResponse.builder()
@@ -21,7 +22,6 @@ public record EventToastResponse(
                 .title(eventToast.getTitle())
                 .opened_date(eventToast.getOpenedDate())
                 .nickname(nickname)
-                //TODO 잼 목록 반환
                 .build();
     }
 }
