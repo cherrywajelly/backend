@@ -26,6 +26,7 @@ public enum ExceptionConstant {
 
     //jam
     JAM_NOT_FOUNT("해당 잼을 찾을 수 없습니다."),
+    INVALID_JAM("잘못된 잼 형식입니다."),
 
     //icon
     ICON_NOT_FOUND("해당 아이콘을 찾을 수 없습니다."),
