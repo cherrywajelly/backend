@@ -20,7 +20,7 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     }
 
     @Override
-    public EventToast findById(final long eventToastId) {
+    public EventToast getById(final long eventToastId) {
         return eventToastJpaRepository.findById(eventToastId).orElseThrow(() -> new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage()));
     }
 

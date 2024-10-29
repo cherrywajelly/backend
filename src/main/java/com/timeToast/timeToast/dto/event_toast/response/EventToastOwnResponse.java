@@ -9,7 +9,9 @@ import java.time.LocalDate;
 @Builder
 public record EventToastOwnResponse(
         Long event_toast_id,
+
         String title,
+
         LocalDate opened_date,
 
         IconResponse icon
