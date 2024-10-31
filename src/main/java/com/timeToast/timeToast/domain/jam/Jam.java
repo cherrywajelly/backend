@@ -33,9 +33,10 @@ public class Jam extends BaseTime {
     private String imageUrl;
 
     @Builder
-    public Jam(final String title, final String contents_url, final String image_url){
+    public Jam(final String title, final long iconId, final long memberId, final long eventToastId) {
         this.title = title;
-        this.contentsUrl = contents_url;
-        this.imageUrl = image_url;
+        this.iconId = iconId;
+        this.memberId = memberId;
+        this.eventToastId = eventToastId;
     }
 }

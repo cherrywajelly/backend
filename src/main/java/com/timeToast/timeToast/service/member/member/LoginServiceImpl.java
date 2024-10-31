@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -75,7 +75,7 @@ public class LoginServiceImpl implements LoginService {
     // TODO db 연결 후 loginToService 랑 병합
     @Override
     public void addBuiltInIconTest(Member member) {
-        List<IconGroup> iconGroups = iconGroupRepository.findByIconType(IconType.BUILTIN);
+        List<IconGroup> iconGroups = iconGroupRepository.findByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             memberIconRepository.save(IconMember.builder()
                     .memberId(member.getId())

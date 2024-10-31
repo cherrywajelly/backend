@@ -9,20 +9,22 @@ import java.time.LocalDate;
 @Builder
 public record EventToastFriendResponse(
         Long event_toast_id,
+
         String title,
+
         LocalDate opened_date,
 
-        IconResponse icon
+        boolean postedJam,
 
-        //TODO 잼 바름 여부 추가
+        IconResponse icon
 ){
-    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon){
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, boolean postedJam) {
         return EventToastFriendResponse.builder()
                 .event_toast_id(eventToast.getId())
                 .title(eventToast.getTitle())
                 .opened_date(eventToast.getOpenedDate())
                 .icon(icon)
-                //TODO 잼 바름 여부 추가
+                .postedJam(postedJam)
                 .build();
     }
 }
