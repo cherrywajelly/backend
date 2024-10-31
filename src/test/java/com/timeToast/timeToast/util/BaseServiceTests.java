@@ -26,7 +26,4 @@ public abstract class BaseServiceTests {
     @Autowired
     TeamMemberRepository teamMemberRepository;
 
-
-    @Autowired
-    LoginService loginService;
 }
