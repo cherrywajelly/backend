@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -33,6 +34,7 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
+    //builder
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
                   final LoginType loginType, final MemberRole memberRole, final boolean is_delete){
