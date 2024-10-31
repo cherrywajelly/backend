@@ -15,14 +15,13 @@ FROM jre AS extractor
 ARG APPLICATION_FILE=timeToast.jar
 WORKDIR /workspace
 COPY --from=builder /workspace/build/libs/${APPLICATION_FILE} .
-RUN java -Djarmode=tools -jar ${APPLICATION_FILE} extract --layers --destination extracted
+RUN java -Djarmode=layertools -jar ${APPLICATION_FILE} extract --destination extracted
 
 FROM jre AS runner
-ENV APPLICATION_FILE=timeToast.jar
 WORKDIR /workspace
 COPY --from=extractor /workspace/extracted/dependencies ./
 COPY --from=extractor /workspace/extracted/spring-boot-loader ./
 COPY --from=extractor /workspace/extracted/snapshot-dependencies ./
 COPY --from=extractor /workspace/extracted/application ./
-CMD java -jar ${APPLICATION_FILE}
+CMD java org.springframework.boot.loader.launch.JarLauncher
 EXPOSE 8080
