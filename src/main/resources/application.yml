@@ -1,0 +1,47 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  jwt:
+    key: ${JWT_KEY}
+
+  h2:
+    console:
+      enabled: true
+
+  management:
+    endpoint:
+      health:
+        probes:
+          enabled: true
+    health:
+      livenessState:
+        enabled: true
+      readinessState:
+        enabled: true
+
+oauth2:
+  client:
+    kakao:
+      client-id: ${KAKAO_CLIENT_ID}
+      client-secret: ${KAKAO_CLIENT_SECRET}
+      redirect-uri: ${KAKAO_REDIRECT_URI}
+
+    google:
+      client-id: ${GOOGLE_CLIENT_ID}
+      client-secret: ${GOOGLE_CLIENT_SECRET}
+      redirect-uri: ${GOOGLE_REDIRECT_URI}
