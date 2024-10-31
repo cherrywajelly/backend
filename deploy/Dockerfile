@@ -1,5 +1,5 @@
-FROM eclipse-temurin:17.0.12_7-jdk-jammy AS jdk
-FROM eclipse-temurin:17.0.12_7-jre-jammy AS jre
+FROM docker.io/library/eclipse-temurin:17.0.12_7-jdk-jammy AS jdk
+FROM docker.io/library/eclipse-temurin:17.0.12_7-jre-jammy AS jre
 
 FROM jdk AS builder
 WORKDIR /workspace
