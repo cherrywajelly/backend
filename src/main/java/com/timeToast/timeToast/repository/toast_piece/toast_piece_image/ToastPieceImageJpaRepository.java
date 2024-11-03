@@ -7,4 +7,5 @@ import java.util.List;
 public interface ToastPieceImageJpaRepository extends JpaRepository<ToastPieceImage, Long> {
 
     List<ToastPieceImage> findAllByToastPieceId(final long ToastPieceId);
+    void deleteAllByToastPieceId(final long toastPieceId);
 }

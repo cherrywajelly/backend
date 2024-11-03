@@ -33,7 +33,7 @@ public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
     }
 
     @Override
-    public List<GiftToastOwner> findByGiftToastId(final long giftToastId) {
+    public List<GiftToastOwner> findAllByGiftToastId(final long giftToastId) {
         return giftToastOwnerJpaRepository.findAllByGiftToastId(giftToastId);
     }
 
@@ -45,7 +45,7 @@ public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
                 .where(member.id.in(
                         JPAExpressions.select(giftToastOwner.memberId)
                                 .from(giftToastOwner)
-                                .where(giftToastOwner.giftToastId.eq(giftToastId), giftToastOwner.isVisible.isTrue())
+                                .where(giftToastOwner.giftToastId.eq(giftToastId))
                 ))
                 .fetch();
     }
@@ -57,9 +57,13 @@ public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
                 .from(member)
                 .rightJoin(giftToastOwner)
                 .on(giftToastOwner.memberId.eq(member.id))
-                .where(giftToastOwner.id.eq(giftToastId),
-                         giftToastOwner.isVisible.isTrue())
+                .where(giftToastOwner.id.eq(giftToastId))
                 .fetch();
+    }
+
+    @Override
+    public void deleteByMemberIdAndGiftToastId(final long memberId, final long giftToastId) {
+        giftToastOwnerJpaRepository.deleteAllByMemberIdAndGiftToastId(memberId,giftToastId);
     }
 
     @Override

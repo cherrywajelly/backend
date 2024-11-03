@@ -9,8 +9,10 @@ import java.util.List;
 public interface GiftToastOwnerRepository {
 
     GiftToastOwner save(final GiftToastOwner giftToastOwner);
-    List<GiftToastOwner> findByGiftToastId(final long giftToastId);
+    List<GiftToastOwner> findAllByGiftToastId(final long giftToastId);
     List<ToastPieceMember> findToastPieceMemberByGiftToastId(final long giftToastId);
     List<GiftToastOwnerResponse> findAllGiftToastMemberByGiftToastId(final long giftToastId);
+
+    void deleteByMemberIdAndGiftToastId(final long memberId, final long giftToastId);
     void delete(final GiftToastOwner giftToastOwner);
 }

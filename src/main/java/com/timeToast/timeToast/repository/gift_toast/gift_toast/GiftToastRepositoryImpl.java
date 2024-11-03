@@ -30,6 +30,7 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
 
     @Override
     public List<GiftToast> getGiftToastByMemberId(final long memberId) {
+
         //TODO
         return queryFactory
                 .select(giftToast)
@@ -41,6 +42,8 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
                 .where(giftToastOwner.isNotNull())
                 .fetch();
     }
+
+
 
     @Override
     public void deleteById(final long giftToastId) {

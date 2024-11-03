@@ -22,17 +22,11 @@ public class GiftToastOwner extends BaseTime {
 
     private Long giftToastId;
 
-    private Boolean isVisible;
-
     @Builder
-    public GiftToastOwner(final long memberId, final long giftToastId, final Boolean isVisible){
+    public GiftToastOwner(final long memberId, final long giftToastId){
         this.memberId = memberId;
         this.giftToastId = giftToastId;
-        this.isVisible = isVisible;
     }
 
-    public void updateIsVisible(final boolean isVisible){
-        this.isVisible = isVisible;
-    }
 
 }
