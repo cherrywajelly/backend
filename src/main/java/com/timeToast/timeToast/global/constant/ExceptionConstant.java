@@ -15,9 +15,9 @@ public enum ExceptionConstant {
     FOLLOW_ALREADY_EXISTS("이미 등록된 팔로우 정보입니다."),
     ICONGROUP_ALREADY_EXISTS("이미 구매한 아이콘입니다."),
 
-    //group
-    GROUP_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
-    MEMBER_GROUP_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
+    //team
+    TEAM_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
+    TEAM_MEMBER_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
 
     //event
     EVENT_TOAST_NOT_FOUND("해당 이벤트 토스트를 찾을 수 없습니다."),

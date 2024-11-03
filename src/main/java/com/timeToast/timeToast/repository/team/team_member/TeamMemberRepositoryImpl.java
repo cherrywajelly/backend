@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TeamMemberRepositoryImpl implements TeamMemberRepository {
@@ -27,6 +28,11 @@ public class TeamMemberRepositoryImpl implements TeamMemberRepository {
     @Override
     public List<TeamMember> findAllByTeamId(final long teamId) {
         return teamMemberJpaRepository.findAllByTeamId(teamId);
+    }
+
+    @Override
+    public Optional<TeamMember> findByMemberIdAndTeamId(final long memberId, final long teamId) {
+        return teamMemberJpaRepository.findByMemberIdAndTeamId(memberId, teamId);
     }
 
     @Override
