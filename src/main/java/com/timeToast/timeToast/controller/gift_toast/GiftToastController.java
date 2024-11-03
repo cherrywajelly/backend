@@ -40,8 +40,10 @@ public class GiftToastController {
 
     @GetMapping("/{giftToastId}")
     public GiftToastDetailResponse getGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){
+        System.out.println("get gift toast");
         return giftToastService.getGiftToast(loginMember.id(), giftToastId);
     }
+
     @GetMapping("/members")
     public GiftToastResponses getGiftToastByLogin(@Login final LoginMember loginMember){
         return giftToastService.getGiftToastByMember(loginMember.id());
@@ -51,8 +53,6 @@ public class GiftToastController {
     public GiftToastIncompleteResponses getGiftToastIncomplete(@Login final LoginMember loginMember){
         return giftToastService.getGiftToastIncomplete(loginMember.id());
     }
-
-
 
     @DeleteMapping("/{giftToastId}")
     public void deleteGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){

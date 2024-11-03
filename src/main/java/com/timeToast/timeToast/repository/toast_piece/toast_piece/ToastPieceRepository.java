@@ -12,4 +12,5 @@ public interface ToastPieceRepository {
     List<ToastPiece> findAllByGiftToastId(final long giftToastId);
     List<ToastPiece> findAllByMemberIdAndGiftToastId(final long memberId, final long giftToastId);
     void deleteToastPiece(final ToastPiece toastPiece);
+
 }

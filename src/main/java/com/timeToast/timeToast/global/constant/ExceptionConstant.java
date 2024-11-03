@@ -42,6 +42,7 @@ public enum ExceptionConstant {
 
     //toast_piece
     TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
+    INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
 
     //login

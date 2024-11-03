@@ -22,23 +22,23 @@ public class ToastPieceController {
     }
 
     @PostMapping("")
-    public ToastPieceSaveResponse saveToastPiece(@Login final LoginMember loginMember, ToastPieceRequest toastPieceRequest){
+    public ToastPieceSaveResponse saveToastPiece(@Login final LoginMember loginMember, @RequestBody final ToastPieceRequest toastPieceRequest){
         return toastPieceService.saveToastPiece(loginMember.id(), toastPieceRequest);
     }
 
-    @PostMapping("/toastPieces/{toastPieceId}/contents")
-    public ToastPieceSaveResponse saveToastPieceContents(final @PathVariable long toastPieceId, final MultipartFile contents){
+    @PostMapping("/{toastPieceId}/contents")
+    public ToastPieceSaveResponse saveToastPieceContents(final @PathVariable long toastPieceId, @RequestPart final MultipartFile contents){
         return toastPieceService.saveToastPieceContents(toastPieceId, contents);
     }
 
-    @PostMapping("/toastPieces/{toastPieceId}/images")
-    public ToastPieceSaveResponse saveToastPieceImages(final @PathVariable long toastPieceId, final List<MultipartFile> toastPieceImages){
+    @PostMapping("/{toastPieceId}/images")
+    public ToastPieceSaveResponse saveToastPieceImages(final @PathVariable long toastPieceId, @RequestPart final List<MultipartFile> toastPieceImages){
         return toastPieceService.saveToastPieceImages(toastPieceId, toastPieceImages);
     }
 
-    @GetMapping("/toastPieces/giftToasts/{giftToastId}")
-    public ToastPieceResponses getToastPiecesByGiftToast(@PathVariable final long giftToastId){
-        return toastPieceService.getToastPiecesByGiftToastId(giftToastId);
+    @DeleteMapping("/{toastPieceId}")
+    public void deleteToastPiece(@Login final LoginMember loginMember, final @PathVariable long toastPieceId){
+        toastPieceService.deleteToastPieceByMemberId(loginMember.id(), toastPieceId);
     }
 
 }
