@@ -6,28 +6,23 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import java.time.LocalDate;
 import java.util.List;
 
-public record GiftToastRequest(
+public record GiftToastGroupRequest(
         Long iconId,
         Long groupId,
         LocalDate memorizedDate,
         LocalDate openedDate,
-        Boolean isAgree,
-        Boolean isOpened,
-        String title,
-        GiftToastType giftToastType,
-        List<Long> giftToastMembers
+        String title
 ) {
 
-    public static GiftToast to(GiftToastRequest giftToastRequest){
+    public static GiftToast to(GiftToastGroupRequest giftToastRequest){
         return GiftToast.builder()
                 .iconId(giftToastRequest.iconId())
-                .title(giftToastRequest.title())
                 .groupId(giftToastRequest.groupId())
+                .title(giftToastRequest.title())
                 .memorizedDate(giftToastRequest.memorizedDate())
                 .openedDate(giftToastRequest.openedDate())
-                .isAgree(giftToastRequest.isAgree())
                 .isOpened(false)
-                .giftToastType(giftToastRequest.giftToastType())
+                .giftToastType(GiftToastType.GROUP)
                 .build();
     }
 }

@@ -9,16 +9,14 @@ import java.util.List;
 public record GiftToastIncompleteResponse(
         long giftToastId,
         String title,
-        String iconImageUrl,
-        List<GiftToastIncompleteMember> giftToastMembers
+        String iconImageUrl
 ) {
-    public static GiftToastIncompleteResponse from(final GiftToast giftToast, final String iconImageUrl,
-                                                   final List<GiftToastIncompleteMember> giftToastMembers){
+    public static GiftToastIncompleteResponse from(final GiftToast giftToast, final String iconImageUrl){
+
         return GiftToastIncompleteResponse.builder()
                 .giftToastId(giftToast.getId())
                 .title(giftToast.getTitle())
                 .iconImageUrl(iconImageUrl)
-                .giftToastMembers(giftToastMembers)
                 .build();
     }
 }

@@ -82,7 +82,7 @@ public class TeamServiceImpl implements TeamService {
         String groupProfileUrl = "";
 
         Team team = teamRepository.findById(teamId).orElseThrow(()->
-                new NotFoundException(GROUP_NOT_FOUND.getMessage())
+                new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
         team.updateTeamProfileUrl(groupProfileUrl);
@@ -115,17 +115,14 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     @Override
     public void deleteTeam(final long memberId, final long teamId) {
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId).orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
+        teamMemberRepository.delete(teamMember);
+
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
 
-        teamMembers.stream()
-                        .filter((team -> team.getMemberId() == memberId))
-                        .findFirst().orElseThrow(()-> new NotFoundException(MEMBER_GROUP_NOT_FOUND.getMessage()));
-
-        teamMembers.forEach(
-                teamMember -> teamMemberRepository.delete(teamMember)
-        );
-
-        teamRepository.deleteByTeamId(teamId);
+        if(teamMembers.isEmpty()){
+            teamRepository.deleteByTeamId(teamId);
+        }
 
     }
 

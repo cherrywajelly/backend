@@ -8,25 +8,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
-public record GiftToastResponse(
+public record GiftToastSaveResponse(
         long giftToastId,
         String title,
-        String iconImageUrl,
         GiftToastType giftToastType,
-        String giftToastOwner,
+        LocalDate memorizedDate,
+        LocalDate openedDate,
         Boolean isOpened
-
 ) {
-    public static GiftToastResponse from(final GiftToast giftToast,final String iconImageUrl,
-                                         final String giftToastOwner){
-        return GiftToastResponse.builder()
+
+    public static GiftToastSaveResponse from(final GiftToast giftToast){
+        return GiftToastSaveResponse.builder()
                 .giftToastId(giftToast.getId())
                 .title(giftToast.getTitle())
-                .iconImageUrl(iconImageUrl)
                 .giftToastType(giftToast.getGiftToastType())
-                .giftToastOwner(giftToastOwner)
+                .memorizedDate(giftToast.getMemorizedDate())
+                .openedDate(giftToast.getOpenedDate())
                 .isOpened(giftToast.getIsOpened())
                 .build();
     }
-
 }

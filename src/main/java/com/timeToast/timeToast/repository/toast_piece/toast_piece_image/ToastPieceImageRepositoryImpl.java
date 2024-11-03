@@ -28,4 +28,10 @@ public class ToastPieceImageRepositoryImpl implements ToastPieceImageRepository 
     public void deleteToastPieceImage(final ToastPieceImage toastPieceImage) {
         toastPieceImageJpaRepository.delete(toastPieceImage);
     }
+
+    @Override
+    public void deleteAllByToastPieceId(final long toastPieceId) {
+        toastPieceImageJpaRepository.deleteAllByToastPieceId(toastPieceId);
+    }
+
 }

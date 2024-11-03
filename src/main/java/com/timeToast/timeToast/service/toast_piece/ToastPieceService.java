@@ -16,4 +16,5 @@ public interface ToastPieceService {
     ToastPieceSaveResponse saveToastPieceImages(final long toastPieceId, final List<MultipartFile> toastPieceImages);
     ToastPieceResponses getToastPiecesByGiftToastId(final long giftToastId);
     void deleteToastPiece(final ToastPiece toastPieceId);
+    void deleteToastPieceByMemberId(final long memberId, final long toastPieceId);
 }
