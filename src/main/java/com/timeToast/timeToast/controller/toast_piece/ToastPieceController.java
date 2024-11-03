@@ -27,8 +27,8 @@ public class ToastPieceController {
     }
 
     @PostMapping("/{toastPieceId}/contents")
-    public ToastPieceSaveResponse saveToastPieceContents(final @PathVariable long toastPieceId, @RequestPart final MultipartFile contents){
-        return toastPieceService.saveToastPieceContents(toastPieceId, contents);
+    public ToastPieceSaveResponse saveToastPieceContents(final @PathVariable long toastPieceId, @RequestPart final MultipartFile toastPieceContents){
+        return toastPieceService.saveToastPieceContents(toastPieceId, toastPieceContents);
     }
 
     @PostMapping("/{toastPieceId}/images")

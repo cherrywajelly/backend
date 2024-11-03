@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
 import static com.timeToast.timeToast.domain.member.member.QMember.member;
+import static com.timeToast.timeToast.domain.toast_piece.toast_piece.QToastPiece.toastPiece;
 
 @Repository
 public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
@@ -59,6 +60,28 @@ public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{
                 .on(giftToastOwner.memberId.eq(member.id))
                 .where(giftToastOwner.id.eq(giftToastId))
                 .fetch();
+    }
+
+    @Override
+    public boolean checkAllGiftToastOwnerWrote(final long giftToastId){
+
+        List<GiftToastOwner> giftToastOwners =
+                queryFactory
+                        .select(giftToastOwner)
+                        .from(giftToastOwner)
+                        .where(giftToastOwner.giftToastId.eq(giftToastId),
+                                giftToastOwner.memberId.in(
+                                        JPAExpressions
+                                                .select(toastPiece.memberId)
+                                                .from(toastPiece)
+                                                .where(toastPiece.giftToastId.eq(giftToastId))))
+                        .fetch();
+
+        if(giftToastOwners.isEmpty()){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

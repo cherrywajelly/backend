@@ -40,7 +40,6 @@ public class GiftToastController {
 
     @GetMapping("/{giftToastId}")
     public GiftToastDetailResponse getGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){
-        System.out.println("get gift toast");
         return giftToastService.getGiftToast(loginMember.id(), giftToastId);
     }
 
