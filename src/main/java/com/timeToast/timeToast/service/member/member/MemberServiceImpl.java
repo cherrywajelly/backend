@@ -22,8 +22,6 @@ public class MemberServiceImpl implements MemberService{
 
         Member member = memberRepository.getById(userId);
 
-        // TODO db 병합 후 지울것
-        loginService.addBuiltInIconTest(member);
         // 이메일 중복 검증 로직
         boolean exist = memberRepository.existsByNickname(nickname);
 
