@@ -5,8 +5,8 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
+import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDetailResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastIncompleteResponses;
-import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastSaveResponse;
 import com.timeToast.timeToast.global.annotation.Login;
@@ -38,9 +38,13 @@ public class GiftToastController {
         return giftToastService.saveGiftToastMine(loginMember.id(), giftToastMineRequest);
     }
 
+    @GetMapping("/{giftToastId}")
+    public GiftToastDetailResponse getGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){
+        return giftToastService.getGiftToast(loginMember.id(), giftToastId);
+    }
     @GetMapping("/members")
-    public GiftToastResponses getGiftToast(@Login final LoginMember loginMember){
-        return giftToastService.getGiftToast(loginMember.id());
+    public GiftToastResponses getGiftToastByLogin(@Login final LoginMember loginMember){
+        return giftToastService.getGiftToastByMember(loginMember.id());
     }
 
     @GetMapping("/members/incomplete")

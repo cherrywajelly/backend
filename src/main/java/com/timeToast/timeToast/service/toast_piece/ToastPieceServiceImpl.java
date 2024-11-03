@@ -67,7 +67,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         return ToastPieceSaveResponse.from(toastPiece);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public ToastPieceResponses getToastPiecesByGiftToastId(final long giftToastId){
         List<ToastPieceResponse> toastPieceResponses = new ArrayList<>();
@@ -79,7 +79,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                     List<ToastPieceImage> toastPieceImages = toastPieceImageRepository.findAllByToastPieceId(toastPiece.getId());
 
                     toastPieceResponses.add(ToastPieceResponse.from(
-                            toastPieceMemberList.stream().filter(toastPieceMember -> toastPieceMember.memberId()==toastPiece.getMemberId()).findFirst().get(),
+                            toastPieceMemberList.stream().filter(toastPieceMember -> toastPieceMember.memberId() == toastPiece.getMemberId()).findFirst().get(),
                             toastPiece,
                             toastPieceImages
                     ));
@@ -92,7 +92,6 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     @Transactional
     @Override
     public void deleteToastPiece(final ToastPiece toastPiece) {
-//        ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId).orElseThrow(()-> new BadRequestException(TOAST_PIECE_NOT_EXISTS.getMessage()));
         List<ToastPieceImage> toastPieceImages = toastPieceImageRepository.findAllByToastPieceId(toastPiece.getId());
 
         toastPieceImages.forEach(toastPieceImage -> toastPieceImageRepository.deleteToastPieceImage(toastPieceImage));

@@ -11,8 +11,7 @@ public record GiftToastGroupRequest(
         Long groupId,
         LocalDate memorizedDate,
         LocalDate openedDate,
-        String title,
-        List<Long> giftToastMembers
+        String title
 ) {
 
     public static GiftToast to(GiftToastGroupRequest giftToastRequest){

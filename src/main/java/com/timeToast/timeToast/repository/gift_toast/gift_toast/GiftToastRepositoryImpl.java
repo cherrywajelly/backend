@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast.QGiftToast.giftToast;
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
@@ -26,6 +27,11 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
     @Override
     public GiftToast save(final GiftToast giftToast) {
         return giftToastJpaRepository.save(giftToast);
+    }
+
+    @Override
+    public Optional<GiftToast> findByGiftToastId(final long giftToastId) {
+        return giftToastJpaRepository.findById(giftToastId);
     }
 
     @Override
