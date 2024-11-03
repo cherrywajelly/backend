@@ -27,11 +27,11 @@ public class IconGroupAdminController {
 
     @PostMapping("")
     public void postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
-        if (loginMember.role().equals(MemberRole.CREATOR)) {
-            iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
-        } else {
-            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
-        }
+//        if (loginMember.role().equals(MemberRole.CREATOR)) {
+//            iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
+//        } else {
+//            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
+//        }
         iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
     }
 
