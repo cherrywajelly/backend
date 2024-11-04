@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service;
 
 import com.oracle.bmc.objectstorage.ObjectStorage;
+import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.oracle.bmc.objectstorage.model.CreatePreauthenticatedRequestDetails;
 import com.oracle.bmc.objectstorage.model.PreauthenticatedRequest;
 import com.oracle.bmc.objectstorage.requests.CreatePreauthenticatedRequestRequest;
@@ -23,12 +24,13 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileUploadService {
-    String bucketName = "timetoast";
+    String bucketName = "timetoast_bucket";
 
     String namespaceName = "axmpikvsv3z9";
 
     private final String urlPrefix =
-            "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/X1gS5Vanwz7flVOyuNlbh0Lw-n38Vas1fSpNvycbONlfq4A2BOV79j8vGJF-dwxy/n/axmpikvsv3z9/b/timetoast_bucket/o/";
+            "https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/";
+//            "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/X1gS5Vanwz7flVOyuNlbh0Lw-n38Vas1fSpNvycbONlfq4A2BOV79j8vGJF-dwxy/n/axmpikvsv3z9/b/timetoast_bucket/o/";
 
     private final OsClientConfiguration ociConfig;
 
@@ -50,15 +52,12 @@ public class FileUploadService {
                 System.out.println(putObjectRequest);
                 System.out.println("===============");
 
-                ObjectStorage storage = ociConfig.getObjectStorage();
+                ObjectStorageClient storage = ociConfig.getObjectStorage();
                 if (storage != null) {
-                    System.out.println("!storage is full");
                     ociConfig.getObjectStorage().putObject(putObjectRequest);
                 } else {
                     System.err.println("ObjectStorage_client_is_null. Cannot perform putObject.");
                 }
-                //upload file
-//                ociConfig.getObjectStorage().putObject(putObjectRequest);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);

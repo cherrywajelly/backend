@@ -16,15 +16,15 @@ public class OAuthController {
     }
 
 //     for test
-//     @GetMapping("")
-//     public RedirectView loadUrl () {
-//        return new RedirectView(oAuthService.loadToLogin());
-//     }
-//
-//     @GetMapping("/test")
-//     public RedirectView loadKakaoUrl () {
-//         return new RedirectView(oAuthService.loadToKakaoLogin());
-//     }
+     @GetMapping("")
+     public RedirectView loadUrl () {
+        return new RedirectView(oAuthService.loadToLogin());
+     }
+
+     @GetMapping("/test")
+     public RedirectView loadKakaoUrl () {
+         return new RedirectView(oAuthService.loadToKakaoLogin());
+     }
 
 
     @GetMapping("/kakao")

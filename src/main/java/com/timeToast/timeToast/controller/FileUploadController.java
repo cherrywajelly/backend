@@ -22,9 +22,7 @@ public class FileUploadController {
                                              @PathVariable final long iconGroupId){
 
         try {
-            System.out.println(files);
             fileUploadService.upload(files);
-            System.out.println(files);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();

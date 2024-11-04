@@ -65,12 +65,12 @@ public class OAuthServiceImpl implements OAuthService {
         return loginUrl;
     }
 
-//    public String loadToKakaoLogin() {
-//        String loginUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + kakaoClientId + "&redirect_uri=" + kakaoRedirectUrl
-//                + "&response_type=code";
-//
-//        return loginUrl;
-//    }
+    public String loadToKakaoLogin() {
+        String loginUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + kakaoClientId + "&redirect_uri=" + kakaoRedirectUrl
+                + "&response_type=code";
+
+        return loginUrl;
+    }
 
     @Override
     public LoginResponse getGoogleAccessToken(String accessToken) {

@@ -17,13 +17,12 @@ public class OsClientConfiguration {
 
 
     @Value("${spring.cloud.oci.region.static}")
-    final String region ="";
+    private String region;
 
-    private final String urlPrefix = "http://os-axmpikvsv3z9.private.compat.objectstorage.ap-chuncheon-1.oci.customer-oci.com";
+    private final String urlPrefix = "https://objectstorage.ap-chuncheon-1.oraclecloud.com/";
 
 
-    public ObjectStorage getObjectStorage() throws IOException {
-
+    public ObjectStorageClient getObjectStorage() throws IOException {
         //config 파일 읽어오기
         final ConfigFileReader.ConfigFile configFile = ConfigFileReader.parse(configurationFilePath, profile);
 
@@ -32,7 +31,7 @@ public class OsClientConfiguration {
             System.out.println(configFile);
             BasicAuthenticationDetailsProvider provider = new ConfigFileAuthenticationDetailsProvider(configFile);
 
-            ObjectStorage client = ObjectStorageClient.builder()
+            ObjectStorageClient client = ObjectStorageClient.builder()
                     .region(region)
                     .endpoint(urlPrefix)
                     .build(provider);

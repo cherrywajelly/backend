@@ -49,7 +49,7 @@ spring:
       config:
         type: file
       region:
-        static: AP_CHUNCHEON_1
+        static: ap-chuncheon-1
 
 #        static: ${OCI_COMPARTMENT}
 #        static: ${OCI_REGION}
