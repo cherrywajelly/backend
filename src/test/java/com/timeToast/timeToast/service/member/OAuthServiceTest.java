@@ -8,11 +8,11 @@ public class OAuthServiceTest implements OAuthService {
 
     @Override
     public LoginResponse getKakaoAccessToken(String accessToken) {
-        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value());
+        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value(), true);
     }
 
     @Override
     public LoginResponse getGoogleAccessToken(String accessToken) {
-        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value());
+        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value(), true);
     }
 }

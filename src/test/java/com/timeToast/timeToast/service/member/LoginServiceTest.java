@@ -11,7 +11,7 @@ public class LoginServiceTest implements LoginService {
 
     @Override
     public LoginResponse loginToService(String email, LoginType loginType) {
-        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value());
+        return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value(), true);
     }
 
     //TODO DB 연결 시 삭제
