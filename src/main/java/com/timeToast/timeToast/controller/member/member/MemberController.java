@@ -17,8 +17,8 @@ public class MemberController {
     private final JwtService jwtService;
 
     // 닉네임 등록
-    @PostMapping("")
-    public void postNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
+    @PutMapping("")
+    public void saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
 
         memberService.postNickname(nickname, loginMember.id());
     }
