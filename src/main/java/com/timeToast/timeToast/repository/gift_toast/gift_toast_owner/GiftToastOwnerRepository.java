@@ -12,7 +12,7 @@ public interface GiftToastOwnerRepository {
     List<GiftToastOwner> findAllByGiftToastId(final long giftToastId);
     List<ToastPieceMember> findToastPieceMemberByGiftToastId(final long giftToastId);
     List<GiftToastOwnerResponse> findAllGiftToastMemberByGiftToastId(final long giftToastId);
-
+    boolean checkAllGiftToastOwnerWrote(final long giftToastId);
     void deleteByMemberIdAndGiftToastId(final long memberId, final long giftToastId);
     void delete(final GiftToastOwner giftToastOwner);
 }

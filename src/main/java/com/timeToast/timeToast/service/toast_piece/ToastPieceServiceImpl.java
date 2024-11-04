@@ -43,9 +43,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
           ToastPieceRequest.to(memberId, toastPieceRequest)
         );
 
-        System.out.println(toastPiece.toString());
-
-        return ToastPieceSaveResponse.from(toastPiece);
+        return ToastPieceSaveResponse.from(toastPiece, List.of());
     }
 
     @Transactional
@@ -55,10 +53,12 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
         //TODO s3 업로드
         String contentsUrl = "";
-
         toastPiece.updateContentsUrl(contentsUrl);
 
-        return ToastPieceSaveResponse.from(toastPiece);
+        List<String> images = new ArrayList<>();
+        toastPieceImageRepository.findAllByToastPieceId(toastPieceId).forEach(image -> images.add(image.getImageUrl()));
+
+        return ToastPieceSaveResponse.from(toastPiece, images);
     }
 
     @Transactional
@@ -67,8 +67,10 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId).orElseThrow(()-> new BadRequestException(TOAST_PIECE_NOT_EXISTS.getMessage()));
 
         //TODO s3 업로드
+        List<String> images = new ArrayList<>();
+        toastPieceImageRepository.findAllByToastPieceId(toastPieceId).forEach(image -> images.add(image.getImageUrl()));
 
-        return ToastPieceSaveResponse.from(toastPiece);
+        return ToastPieceSaveResponse.from(toastPiece, images);
     }
 
     @Transactional(readOnly = true)
@@ -80,7 +82,8 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
         toastPieces.forEach(
                 toastPiece -> {
-                    List<ToastPieceImage> toastPieceImages = toastPieceImageRepository.findAllByToastPieceId(toastPiece.getId());
+                    List<String> toastPieceImages = new ArrayList<>();
+                    toastPieceImageRepository.findAllByToastPieceId(toastPiece.getId()).forEach(image -> toastPieceImages.add(image.getImageUrl()));
 
                     toastPieceResponses.add(ToastPieceResponse.from(
                             toastPieceMemberList.stream().filter(toastPieceMember -> toastPieceMember.memberId() == toastPiece.getMemberId()).findFirst().get(),

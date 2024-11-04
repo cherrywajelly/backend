@@ -16,6 +16,18 @@ public class IconRepositoryImpl implements IconRepository {
     public Icon getById(final long iconId) { return iconJpaRepository.findById(iconId).orElseThrow(() -> new NotFoundException(ICON_NOT_FOUND.getMessage())); }
 
     @Override
+    public Icon getToastIconById(final long iconId, final boolean isOpen) {
+        if(isOpen){
+            return getById(iconId);
+        }else{
+            //TODO default 이미지로
+            return getById(iconId);
+        }
+    }
+
+
+
+    @Override
     public Icon save(final Icon icon) {
         return iconJpaRepository.save(icon);
     }

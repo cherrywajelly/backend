@@ -18,12 +18,12 @@ public record ToastPieceResponse(
         String contentsUrl,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.mm.dd", timezone = "Asia/Seoul")
         LocalDateTime createdAt,
-        List<ToastPieceImage> toastPieceImages
+        List<String> toastPieceImages
 
 
 ) {
     public static ToastPieceResponse from(final ToastPieceMember toastPieceMember,
-                                          final ToastPiece toastPiece, final List<ToastPieceImage> toastPieceImages){
+                                          final ToastPiece toastPiece, final List<String> toastPieceImages){
         return ToastPieceResponse.builder()
                 .memberId(toastPieceMember.memberId())
                 .nickname(toastPieceMember.nickname())

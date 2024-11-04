@@ -146,6 +146,11 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
 
         ToastPieceResponses toastPieceResponses = toastPieceService.getToastPiecesByGiftToastId(giftToastId);
+
+        if(!giftToast.getIsOpened()){
+            _updateIsOpened(giftToast);
+        }
+
         String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
 
         return GiftToastDetailResponse.from(giftToast,iconImageUrl,giftToastOwner,toastPieceResponses);
@@ -172,7 +177,12 @@ public class GiftToastServiceImpl implements GiftToastService{
                         giftToastOwner = memberRepository.getById(memberId).getNickname();
                     }
 
-                    String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
+
+                    if(!giftToast.getIsOpened()){
+                        _updateIsOpened(giftToast);
+                    }
+
+                    String iconImageUrl = iconRepository.getToastIconById(giftToast.getIconId(), giftToast.getIsOpened()).getIcon_image_url();
 
                     giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
                 }
@@ -223,9 +233,18 @@ public class GiftToastServiceImpl implements GiftToastService{
     }
 
 
-    private void _checkDateValidation(LocalDate openedDate, LocalDate memorizedDate){
+    private void _checkDateValidation(final LocalDate openedDate, final LocalDate memorizedDate){
         if(openedDate.isBefore(LocalDate.now()) || memorizedDate.isAfter(LocalDate.now())){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
     }
+    private void _updateIsOpened(final GiftToast giftToast){
+        if(giftToast.getOpenedDate().isBefore(LocalDate.now()) && giftToastOwnerRepository.checkAllGiftToastOwnerWrote(giftToast.getId())){
+            giftToast.updateIsOpened(true);
+        }
+    }
+
+
+
+
 }
