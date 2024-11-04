@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: timeToast
+
+  config:
+    activate:
+      on-profile: local
+    import:
+      - optional:file:.env[.properties]
+      - classpath:/application-oauth.yml
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${LOCAL_DB_HOST}:${LOCAL_DB_PORT}/${LOCAL_DB}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  jwt:
+    key: ${JWT_KEY}
+
+  management:
+    endpoint:
+      health:
+        probes:
+          enabled: true
+    health:
+      livenessState:
+        enabled: true
+      readinessState:
+        enabled: true
+
+
+  cloud:
+    oci:
+      compartment:
+        static: wkddnjs3268
+      config:
+        type: file
+      region:
+        static: ap-chuncheon-1
+
+#        static: ${OCI_COMPARTMENT}
+#        static: ${OCI_REGION}
