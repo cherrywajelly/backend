@@ -6,5 +6,5 @@ public interface MemberService {
 
     void postNickname(final String nickname, final long memberId);
     void isNicknameAvailable(final String nickname);
-    MemberResponse getNickname(final long memberId);
+    MemberResponse getMemberInfo(final long memberId);
 }

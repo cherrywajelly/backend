@@ -43,9 +43,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberResponse getNickname(final long memberId) {
+    public MemberResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return new MemberResponse(member.getNickname());
+        return new MemberResponse(member.getNickname(), member.getMemberProfileUrl());
     }
 
 
