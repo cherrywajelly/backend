@@ -13,6 +13,7 @@ plugins {
 	id 'com.adarshr.test-logger' version '4.0.0'
 	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
 	id 'org.hidetake.swagger.generator' version '2.18.2'
+	id 'jacoco'
 
 }
 
@@ -32,6 +33,65 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+jacoco {
+	toolVersion = "0.8.12"
+	reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
+}
+
+jacocoTestReport {
+	dependsOn test
+
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
+	def QDomainList = []
+	for (qPattern in '**/QA'..'**/QZ') { // QClass 대응
+		QDomainList.add(qPattern + '*')
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/dto/**',
+					'**/global/**',
+					'**/aop/**'
+			] + QDomainList)
+		}))
+	}
+
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+	def QDomainList = []
+	for (qPattern in '*.QA'..'*.QZ') { // QClass 대응
+		QDomainList.add(qPattern + '*')
+	}
+
+
+	violationRules{
+		rule {
+			enabled = true
+			element = 'CLASS'
+			includes = ['org.gradle.*']
+
+			limit {
+				counter = 'METHOD'
+				value = 'COVEREDRATIO'
+				minimum = 0.80
+			}
+
+			excludes =  [
+					'**/dto/**',
+					'**/global/**',
+					'**/aop/**'
+			] + QDomainList
+		}
+	}
 }
 
 swaggerSources {
@@ -113,6 +173,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+	enabled = false
 }
 
 testlogger {
@@ -136,9 +198,6 @@ tasks.withType(GenerateSwaggerUI) {
 	}
 }
 
-tasks.named("test") {
-	enabled = false
-}
 
 bootJar {
 	dependsOn generateSwaggerUISample
