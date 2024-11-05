@@ -54,9 +54,11 @@ public class LoginServiceImpl implements LoginService {
 
         Optional<Member> findMember = memberRepository.findByEmail(email);
         Member member;
+        Boolean isNew;
 
         if(findMember.isPresent()){
             member = findMember.get();
+            isNew = false;
         }else{
             member = memberRepository.save(
                     Member.builder()
@@ -66,9 +68,10 @@ public class LoginServiceImpl implements LoginService {
                             .is_delete(false)
                             .build()
             );
+            isNew = true;
         }
 
-        return jwtService.createJwts(LoginMember.from(member));
+        return jwtService.createJwts(LoginMember.from(member), isNew);
     }
 
 

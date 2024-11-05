@@ -5,7 +5,7 @@ import com.timeToast.timeToast.dto.member.member.LoginResponse;
 
 public interface JwtService {
 
-    LoginResponse createJwts(final LoginMember member);
+    LoginResponse createJwts(final LoginMember member, final boolean isNew);
     String createToken(final LoginMember loginMember, final long expired);
     LoginResponse tokenRenewal(final String refreshToken);
 }
