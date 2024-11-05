@@ -35,8 +35,8 @@ public class MemberController {
         return jwtService.tokenRenewal(refreshToken);
     }
 
-    @GetMapping("/nickname")
+    @GetMapping("/info")
     public MemberResponse getNickname(@Login LoginMember loginMember){
-        return memberService.getNickname(loginMember.id());
+        return memberService.getMemberInfo(loginMember.id());
     }
 }
