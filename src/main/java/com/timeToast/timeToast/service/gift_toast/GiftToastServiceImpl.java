@@ -73,7 +73,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         GiftToast giftToast = giftToastRepository.save(GiftToastGroupRequest.to(giftToastGroupRequest));
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.groupId());
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.teamId());
 
         teamMembers.forEach(
                 teamMember -> giftToastOwnerRepository.save(
@@ -137,7 +137,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         String giftToastOwner;
 
         if(giftToast.getGiftToastType() == GiftToastType.GROUP){
-            giftToastOwner= teamRepository.findById(giftToast.getGroupId()).get().getName();
+            giftToastOwner= teamRepository.findById(giftToast.getTeamId()).get().getName();
         }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
             Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToastId).stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
             giftToastOwner = memberRepository.findById(findGiftToastOwner.get().getMemberId()).orElseGet(null).getNickname();
@@ -166,7 +166,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                 giftToast -> {
                     String giftToastOwner;
                     if(giftToast.getGiftToastType() == GiftToastType.GROUP){
-                        giftToastOwner= teamRepository.findById(giftToast.getGroupId()).get().getName();
+                        giftToastOwner= teamRepository.findById(giftToast.getTeamId()).get().getName();
                     }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
                         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
                         Optional<GiftToastOwner> findGiftToastOwner = giftToastOwners.stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
