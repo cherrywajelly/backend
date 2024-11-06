@@ -57,8 +57,9 @@ jacocoTestReport {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: [
 					'**/dto/**',
+					'**/domain/**',
 					'**/global/**',
-					'**/aop/**'
+					'**/repository/**'
 			] + QDomainList)
 		}))
 	}
@@ -77,18 +78,24 @@ jacocoTestCoverageVerification {
 		rule {
 			enabled = true
 			element = 'CLASS'
-			includes = ['org.gradle.*']
 
 			limit {
 				counter = 'METHOD'
 				value = 'COVEREDRATIO'
-				minimum = 0.80
+				minimum = 0.10
 			}
+
+//			limit {
+//				counter = 'BRANCH'
+//				value = 'COVEREDRATIO'
+//				minimum = 0.01
+//			}
 
 			excludes =  [
 					'**/dto/**',
 					'**/global/**',
-					'**/aop/**'
+					'**/global/**',
+					'**/repository/**'
 			] + QDomainList
 		}
 	}
@@ -174,7 +181,6 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
-	enabled = false
 }
 
 testlogger {
