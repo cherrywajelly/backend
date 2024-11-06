@@ -32,4 +32,8 @@ public class Icon extends BaseTime {
         this.icon_image_url = icon_image_url;
         this.iconGroupId = iconGroupId;
     }
+
+    public void updateUrl(final String icon_image_url) {
+        this.icon_image_url = icon_image_url;
+    }
 }
