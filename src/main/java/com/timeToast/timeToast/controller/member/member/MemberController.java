@@ -2,6 +2,7 @@ package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.MemberResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
@@ -32,5 +33,10 @@ public class MemberController {
     @PostMapping("/refreshToken")
     public LoginResponse tokenRenewal(@RequestParam("refreshToken") String refreshToken){
         return jwtService.tokenRenewal(refreshToken);
+    }
+
+    @GetMapping("/info")
+    public MemberResponse getNickname(@Login LoginMember loginMember){
+        return memberService.getMemberInfo(loginMember.id());
     }
 }

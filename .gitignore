@@ -4,6 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+application-dev.yml
+application-local.yml
+application-oauth.yml
+application-prod.yml
 
 ### STS ###
 .apt_generated
@@ -38,4 +42,3 @@ out/
 
 .DS_Store
 .env*
-

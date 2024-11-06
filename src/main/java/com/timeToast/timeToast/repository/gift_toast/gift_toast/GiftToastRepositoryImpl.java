@@ -37,14 +37,11 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
     @Override
     public List<GiftToast> getGiftToastByMemberId(final long memberId) {
 
-        //TODO
         return queryFactory
                 .select(giftToast)
                 .from(giftToast)
                 .join(giftToastOwner)
-                .on(giftToastOwner.giftToastId.eq(giftToast.id), giftToastOwner.in(JPAExpressions
-                        .selectFrom(giftToastOwner)
-                        .where(giftToastOwner.memberId.eq(memberId))))
+                .on(giftToastOwner.giftToastId.eq(giftToast.id), giftToastOwner.memberId.eq(memberId))
                 .where(giftToastOwner.isNotNull())
                 .fetch();
     }
