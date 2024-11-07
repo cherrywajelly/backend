@@ -21,7 +21,7 @@ import java.util.Set;
 public class EventToast extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_toast_id")
+    @Column(name = "eventToastId")
     private Long id;
 
     private Long memberId;

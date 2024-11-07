@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Icon extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "icon_id")
+    @Column(name = "iconId")
     private long id;
 
     private Long iconGroupId;

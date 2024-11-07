@@ -55,7 +55,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     }
 
-    // opened_date 가 지난 이벤트 토스트 검증
+    // openedDate 가 지난 이벤트 토스트 검증
     @Transactional
     public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
         List<EventToast> openedEventToasts = new ArrayList<>();
@@ -66,7 +66,7 @@ public class EventToastServiceImpl implements EventToastService{
 
         unOpenedEventToasts.forEach(
                 eventToast -> {
-                    // opened_date 지난 게시물 열림 처리
+                    // openedDate 지난 게시물 열림 처리
                     if (eventToast.getOpenedDate().isBefore(LocalDate.now())) {
                         eventToast.updateIsOpened(true);
                         openedEventToasts.add(eventToast);
