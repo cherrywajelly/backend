@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.member.oauth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.dto.member.oauth.GoogleUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.OAuthResponseDto;

@@ -1,29 +1,35 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.member.member.MemberResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.global.exception.ConflictException;
+import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-
+import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
 @Service
-@Transactional
-@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
-    private final LoginService loginService;
+    private final FollowRepository followRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
+                             final TeamMemberRepository teamMemberRepository) {
+        this.memberRepository = memberRepository;
+        this.followRepository = followRepository;
+        this.teamMemberRepository = teamMemberRepository;
+    }
 
+    @Transactional
     public void postNickname(final String nickname, final long memberId){
 
         Member member = memberRepository.getById(memberId);
 
-        // 이메일 중복 검증 로직
         boolean exist = memberRepository.existsByNickname(nickname);
 
         if (!exist) {
@@ -34,18 +40,32 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
-    public void isNicknameAvailable(final String nickname) {
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+    @Transactional(readOnly = true)
+    @Override
+    public void nicknameValidation(final String nickname) {
 
-        if(findMember.isPresent()){
+        if(memberRepository.existsByNickname(nickname)){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
+
     }
 
+    @Transactional
     @Override
-    public MemberResponse getMemberInfo(final long memberId) {
+    public MemberInfoResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return new MemberResponse(member.getNickname(), member.getMemberProfileUrl());
+        return new MemberInfoResponse(member.getNickname(), member.getMemberProfileUrl());
+    }
+
+    @Transactional
+    @Override
+    public MemberProfileResponse getMemberProfile(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        long followingCount = followRepository.findAllByFollowerId(memberId).stream().count();
+        long followerCount = followRepository.findAllByFollowingId(memberId).stream().count();
+        long teamCount = teamMemberRepository.findAllByMemberId(memberId).stream().count();
+
+        return MemberProfileResponse.from(member,followingCount, followerCount, teamCount);
     }
 
 

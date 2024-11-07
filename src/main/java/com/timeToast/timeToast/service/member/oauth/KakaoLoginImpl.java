@@ -3,7 +3,7 @@
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.timeToast.timeToast.domain.enums.member.LoginType;
-//import com.timeToast.timeToast.dto.member.member.LoginResponse;
+//import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 //import com.timeToast.timeToast.dto.oauth.OAuthResponseDto;
 //import jakarta.transaction.Transactional;
 //import org.springframework.beans.factory.annotation.Value;

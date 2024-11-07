@@ -1,9 +1,8 @@
 package com.timeToast.timeToast.controller.member.oauth;
 
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.service.member.oauth.OAuthService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/api/v1/login")
 @RestController

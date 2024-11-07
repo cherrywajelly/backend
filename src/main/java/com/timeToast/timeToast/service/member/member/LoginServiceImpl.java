@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.icon_member.MemberIconRepository;
