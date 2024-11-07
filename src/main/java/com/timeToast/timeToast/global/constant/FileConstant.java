@@ -4,6 +4,7 @@ public enum FileConstant {
     IMAGE("image"),
     CONTENTS("contents"),
     MEMBER("member"),
+    TEAM("team"),
     SLASH("/");
 
     private final String value;
