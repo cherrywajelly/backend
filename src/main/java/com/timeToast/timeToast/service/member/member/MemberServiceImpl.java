@@ -29,15 +29,12 @@ public class MemberServiceImpl implements MemberService{
     public void postNickname(final String nickname, final long memberId){
 
         Member member = memberRepository.getById(memberId);
-
         boolean exist = memberRepository.existsByNickname(nickname);
 
-        if (!exist) {
-            member.updateNickname(nickname);
-        }
-        else {
+        if (exist) {
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
+        member.updateNickname(nickname);
     }
 
     @Transactional(readOnly = true)

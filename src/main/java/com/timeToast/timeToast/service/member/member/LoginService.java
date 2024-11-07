@@ -6,10 +6,6 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 
 public interface LoginService {
 
-//    LoginResponse getAccessToken(LoginType social, String code);
-
     LoginResponse loginToService(String email, LoginType loginType);
-
-    // 기본 아이콘 등록 로직 테스트
     void addBuiltInIconTest(Member member);
 }
