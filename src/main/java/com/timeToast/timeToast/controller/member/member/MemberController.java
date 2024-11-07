@@ -30,7 +30,6 @@ public class MemberController {
 
     @PutMapping("")
     public void saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
-
         memberService.postNickname(nickname, loginMember.id());
     }
 
@@ -43,6 +42,7 @@ public class MemberController {
     public LoginResponse tokenRenewal(@RequestParam("refreshToken") String refreshToken){
         return jwtService.tokenRenewal(refreshToken);
     }
+
     @GetMapping("/info")
     public MemberInfoResponse getMemberInfoByLogin(@Login LoginMember loginMember){
         return memberService.getMemberInfo(loginMember.id());
