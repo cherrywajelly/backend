@@ -1,9 +1,7 @@
 package com.timeToast.timeToast.controller.member.oauth;
 
-import com.timeToast.timeToast.controller.member.oauth.OAuthController;
-import com.timeToast.timeToast.service.member.LoginServiceTest;
 import com.timeToast.timeToast.service.member.oauth.OAuthService;
-import com.timeToast.timeToast.service.member.OAuthServiceTest;
+import com.timeToast.timeToast.service.member.oauth.OAuthServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +14,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 
 import static com.timeToast.timeToast.util.TestConstant.TEST_AUTH_CODE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +43,9 @@ public class OAuthControllerTest extends BaseControllerTests {
                                 .summary("카카오 로그인")
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
-                                        fieldWithPath("refreshToken").type(STRING).description("access token")
+                                        fieldWithPath("refreshToken").type(STRING).description("access token"),
+                                        fieldWithPath("isNew").type(BOOLEAN).description("신규 가입 여부")
+
                                 )
                                 .build()
                         )));
@@ -65,7 +66,8 @@ public class OAuthControllerTest extends BaseControllerTests {
                                 .summary("구글 로그인")
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
-                                        fieldWithPath("refreshToken").type(STRING).description("access token")
+                                        fieldWithPath("refreshToken").type(STRING).description("access token"),
+                                        fieldWithPath("isNew").type(BOOLEAN).description("신규 가입 여부")
                                 )
                                 .build()
                         )));

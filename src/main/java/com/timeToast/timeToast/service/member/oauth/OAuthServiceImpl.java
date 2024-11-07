@@ -3,19 +3,19 @@ package com.timeToast.timeToast.service.member.oauth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.dto.member.oauth.GoogleUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.OAuthResponseDto;
 import com.timeToast.timeToast.service.member.member.LoginService;
 import io.jsonwebtoken.impl.Base64UrlCodec;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class OAuthServiceImpl implements OAuthService {
 
     private final LoginService loginService;
@@ -57,21 +56,7 @@ public class OAuthServiceImpl implements OAuthService {
         this.loginService = loginService;
     }
 
-    // for login test
-//    public String loadToLogin() {
-//        String loginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + "client_id=" + googleClientId + "&redirect_uri=" + googleRedirectUrl
-//                + "&response_type=code&scope=email&access_type=offline";
-//
-//        return loginUrl;
-//    }
-//
-//    public String loadToKakaoLogin() {
-//        String loginUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + kakaoClientId + "&redirect_uri=" + kakaoRedirectUrl
-//                + "&response_type=code";
-//
-//        return loginUrl;
-//    }
-
+    @Transactional(readOnly = true)
     @Override
     public LoginResponse getGoogleAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
@@ -88,6 +73,7 @@ public class OAuthServiceImpl implements OAuthService {
         return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.GOOGLE);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public LoginResponse getKakaoAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();

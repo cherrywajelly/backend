@@ -16,7 +16,7 @@ public class FollowController {
         this.followService = followService;
     }
 
-    @PostMapping("/following/{followingMemberId}")
+    @PostMapping("/followings/{followingMemberId}")
     public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
         followService.saveFollow(followingMemberId, loginMember.id());
     }
@@ -31,12 +31,12 @@ public class FollowController {
         return followService.findFollowerList(loginMember.id());
     }
 
-    @DeleteMapping("/following/{followingMemberId}")
+    @DeleteMapping("/followings/{followingMemberId}")
     public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long followingMemberId){
         followService.deleteFollowing(followingMemberId, loginMember.id());
     }
 
-    @DeleteMapping("/follower/{followerMemberId}")
+    @DeleteMapping("/followers/{followerMemberId}")
     public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long followerMemberId){
         followService.deleteFollower(loginMember.id(), followerMemberId);
     }

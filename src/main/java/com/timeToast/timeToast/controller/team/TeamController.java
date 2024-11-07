@@ -25,8 +25,8 @@ public class TeamController {
     }
 
     @PostMapping("/{teamId}/image")
-    public TeamResponse saveGroupImage(@PathVariable final long teamId, @RequestPart final MultipartFile teamImage){
-        return teamService.saveTeamImage(teamId, teamImage);
+    public TeamResponse saveGroupImage(@PathVariable final long teamId, @RequestPart final MultipartFile teamProfileImage){
+        return teamService.saveTeamImage(teamId, teamProfileImage);
     }
 
     @GetMapping("")
