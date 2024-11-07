@@ -22,33 +22,44 @@ public class EventToastController {
 
     private final EventToastService eventToastService;
 
+
+    // 이벤트 토스트 등록
     @PostMapping("")
     public void postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
         eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
     }
 
-    @GetMapping("/follow/following")
-    public List<EventToastResponses> getEventToastList(@Login LoginMember loginMember) {
-        return eventToastService.getEventToasts(loginMember.id());
-    }
 
+    // 유저 마이페이지 이벤트 토스트 목록 조회
     @GetMapping("/member")
     public List<EventToastOwnResponse> getOwnEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getOwnEventToastList(loginMember.id());
     }
 
+
+    // 특정 사용자의 이벤트 토스트 목록 조회
     @GetMapping("/member/{memberId}")
     public List<EventToastFriendResponse> getFriendEventToastList(@Login LoginMember loginMember,
                                                                   @PathVariable final long memberId) {
         return eventToastService.getFriendEventToastList(loginMember.id(), memberId);
     }
 
+
+    // 사용자가 팔로우 하고 있는 타사용자의 이벤트 토스트 목록 조회
+    @GetMapping("/follow/following")
+    public List<EventToastResponses> getEventToastList(@Login LoginMember loginMember) {
+        return eventToastService.getEventToasts(loginMember.id());
+    }
+
+    // 사용자 이벤트 토스트 상세 조회
     @GetMapping("/{eventToastId}")
     public EventToastResponse getEventToast(@Login LoginMember loginMember,
                                             @PathVariable final long eventToastId) {
         return eventToastService.getEventToast(loginMember.id(), eventToastId);
     }
 
+
+    // 이벤트 토스트 삭제
     @DeleteMapping("/{eventToastId}")
     public void deleteEventToast(@Login LoginMember loginMember,
                                  @PathVariable final long eventToastId) {
