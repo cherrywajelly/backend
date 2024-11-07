@@ -5,6 +5,7 @@ import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import com.timeToast.timeToast.global.config.OsClientConfiguration;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
     String bucketName = "timetoast_bucket";
@@ -67,7 +69,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                 ociConfig.getObjectStorage().putObject(putObjectRequest);
                 return urlPrefix + putObjectRequest.getObjectName();
             } else {
-                System.err.println("ObjectStorage_client_is_null. Cannot perform putObject.");
+                log.error("ObjectStorage_client_is_null. Cannot perform putObject.");
             }
         } catch (Exception e) {
             e.printStackTrace();
