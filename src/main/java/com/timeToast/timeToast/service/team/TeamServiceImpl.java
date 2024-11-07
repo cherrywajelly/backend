@@ -11,6 +11,7 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +30,14 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final FileUploadService fileUploadService;
 
     public TeamServiceImpl(final TeamRepository teamRepository, final MemberRepository memberRepository,
-                           final TeamMemberRepository teamMemberRepository) {
+                           final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService) {
         this.teamRepository = teamRepository;
         this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
+        this.fileUploadService = fileUploadService;
     }
 
     @Transactional
