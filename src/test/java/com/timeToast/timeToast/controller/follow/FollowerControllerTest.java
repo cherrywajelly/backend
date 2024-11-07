@@ -36,7 +36,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void createFollow() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v1/follows/following/{followingId}", 2)
+                        post("/api/v1/follows/followings/{followingId}", 2)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -114,7 +114,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollowing() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/following/{followingMemberId}",1)
+                        delete("/api/v1/follows/followings/{followingMemberId}",1)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
@@ -139,7 +139,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollower() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/follower/{followerMemberId}",1)
+                        delete("/api/v1/follows/followers/{followerMemberId}",1)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())

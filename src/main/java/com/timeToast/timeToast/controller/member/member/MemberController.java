@@ -23,7 +23,7 @@ public class MemberController {
         this.jwtService = jwtService;
     }
 
-    @PutMapping("/profile-image")
+    @PostMapping("/profile-image")
     public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
         return memberService.saveProfileImageByLogin(loginMember.id(), profileImage);
     }

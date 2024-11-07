@@ -34,7 +34,7 @@ class MemberControllerTest extends BaseControllerTests {
     @DisplayName("로그인한 사용자의 프로필 사진을 변경할 수 있다.")
     @WithMockCustomUser
     @Test
-    void createFollow() throws Exception {
+    void saveProfileImage() throws Exception {
 
         mockMvc.perform(
                         multipart("/api/v1/members/profile-image")
@@ -44,9 +44,6 @@ class MemberControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("프로필 사진 저장",
-                        pathParameters(
-                                parameterWithName("followingId").description("팔로워 대상의 memberId")
-                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("멤버")
                                 .summary("로그인한 사용자의 프로필 사진 변경")

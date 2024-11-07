@@ -10,6 +10,7 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
+        System.out.println("save profile");
         return new MemberInfoResponse("nickname","profileUrl");
     }
 
