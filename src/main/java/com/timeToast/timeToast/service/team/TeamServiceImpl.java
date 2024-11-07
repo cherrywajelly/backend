@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
 @Service
 @Slf4j
@@ -62,8 +63,8 @@ public class TeamServiceImpl implements TeamService {
         List<Long> teamMembers = teamSaveRequest.teamMembers();
 
         teamMembers.forEach(
-                (groupMemberId) -> {
-                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
+                (teamMemberId) -> {
+                    Member findMember = memberRepository.findById(teamMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
 
                     teamMemberRepository.save(
                             TeamMember.builder()
@@ -79,17 +80,16 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public TeamResponse saveTeamImage(final long teamId, final  MultipartFile multipartFile) {
-
-        //s3 로직
-        String groupProfileUrl = "";
+    public TeamResponse saveTeamImage(final long teamId, final  MultipartFile teamProfileImage) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(()->
                 new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
-        team.updateTeamProfileUrl(groupProfileUrl);
+        String groupProfileUrl = TEAM.value() + SLASH.value() + IMAGE.value() + team.getId();
+        fileUploadService.upload(teamProfileImage, groupProfileUrl);
 
+        team.updateTeamProfileUrl(groupProfileUrl);
         return TeamResponse.from(team);
     }
 
@@ -118,7 +118,9 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     @Override
     public void deleteTeam(final long memberId, final long teamId) {
-        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId).orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId)
+                .orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
+
         teamMemberRepository.delete(teamMember);
 
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
