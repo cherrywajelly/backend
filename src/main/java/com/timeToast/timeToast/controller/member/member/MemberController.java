@@ -1,33 +1,41 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
-import com.timeToast.timeToast.dto.member.member.MemberResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/api/v1/members")
 @RestController
-@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
     private final JwtService jwtService;
 
-    // 닉네임 등록
+    public MemberController(final MemberService memberService, final JwtService jwtService) {
+        this.memberService = memberService;
+        this.jwtService = jwtService;
+    }
+
+    @PutMapping("/profile-image")
+    public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
+        return memberService.saveProfileImageByLogin(loginMember.id(), profileImage);
+    }
+
     @PutMapping("")
     public void saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
-
         memberService.postNickname(nickname, loginMember.id());
     }
 
-    // 닉네임 중복 검증
-    @PostMapping("/exists")
+    @GetMapping ("/nickname-validation")
     public void isNicknameAvailable(@RequestParam("nickname") String nickname) {
-        memberService.isNicknameAvailable(nickname);
+        memberService.nicknameValidation(nickname);
     }
 
     @PostMapping("/refreshToken")
@@ -36,7 +44,22 @@ public class MemberController {
     }
 
     @GetMapping("/info")
-    public MemberResponse getNickname(@Login LoginMember loginMember){
+    public MemberInfoResponse getMemberInfoByLogin(@Login LoginMember loginMember){
         return memberService.getMemberInfo(loginMember.id());
+    }
+
+    @GetMapping("/{memberId}/info")
+    public MemberInfoResponse getMemberInfo(@PathVariable long memberId){
+        return memberService.getMemberInfo(memberId);
+    }
+
+    @GetMapping("")
+    public MemberProfileResponse getMemberProfileInfoByLogin(@Login LoginMember loginMember){
+        return memberService.getMemberProfile(loginMember.id());
+    }
+
+    @GetMapping("/{memberId}")
+    public MemberProfileResponse getProfileInfo(@PathVariable long memberId){
+        return memberService.getMemberProfile(memberId);
     }
 }
