@@ -9,6 +9,7 @@ import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/api/v1/members")
 @RestController
@@ -17,6 +18,11 @@ public class MemberController {
 
     private final MemberService memberService;
     private final JwtService jwtService;
+
+    @PutMapping("/profile-image")
+    public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
+        return memberService.saveProfileImageByLogin(loginMember.id(), profileImage);
+    }
 
     @PutMapping("")
     public void saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
