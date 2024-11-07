@@ -155,7 +155,7 @@ public class GiftToastServiceImpl implements GiftToastService{
             _updateIsOpened(giftToast);
         }
 
-        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
+        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
 
         return GiftToastDetailResponse.from(giftToast,iconImageUrl,giftToastOwner,toastPieceResponses);
     }
@@ -186,7 +186,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                         _updateIsOpened(giftToast);
                     }
 
-                    String iconImageUrl = iconRepository.getToastIconById(giftToast.getIconId(), giftToast.getIsOpened()).getIcon_image_url();
+                    String iconImageUrl = iconRepository.getToastIconById(giftToast.getIconId(), giftToast.getIsOpened()).getIconImageUrl();
 
                     giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
                 }
@@ -206,7 +206,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                     Optional<ToastPiece> toastPiecesByGiftToast = toastPieceRepository.findAllByMemberIdAndGiftToastId(memberId,giftToast.getId()).stream().findFirst();
 
                     if(toastPiecesByGiftToast.isEmpty()){
-                        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
+                        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
                         giftToastIncompleteResponses.add(GiftToastIncompleteResponse.from(giftToast, iconImageUrl));
                     }
                 }
