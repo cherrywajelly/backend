@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
@@ -41,15 +41,15 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public LoginResponse createJwts(final LoginMember loginMember) {
+    public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
         String accessToken = createToken(loginMember, ONE_HOUR.time());
         String refreshToken = createToken(loginMember, ONE_DAY.time());
-        System.out.println("login member: " + loginMember.id());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
 
-        return LoginResponse.of(accessToken, refreshToken);
+        return LoginResponse.of(accessToken, refreshToken, isNew);
     }
+
 
     @Override
     public String createToken(final LoginMember loginMember, final long expired) {
@@ -84,7 +84,7 @@ public class JwtServiceImpl implements JwtService {
 
             try {
                 LoginMember loginMember = objectMapper.readValue(claims, LoginMember.class);
-                return createJwts(loginMember);
+                return createJwts(loginMember, false);
 
             } catch (JsonProcessingException e) {
                 throw new InternalServerException(LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR.getMessage());

@@ -25,7 +25,7 @@ public class GiftToast extends BaseTime {
 
     private Long iconId;
 
-    private Long groupId;
+    private Long teamId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate memorizedDate;
@@ -42,10 +42,10 @@ public class GiftToast extends BaseTime {
     private GiftToastType giftToastType;
 
     @Builder
-    public GiftToast(final long iconId, final long groupId, final LocalDate memorizedDate, final LocalDate openedDate,
+    public GiftToast(final long iconId, final long teamId, final LocalDate memorizedDate, final LocalDate openedDate,
                      final boolean isOpened, final String title, final GiftToastType giftToastType){
         this.iconId = iconId;
-        this.groupId = groupId;
+        this.teamId = teamId;
         this.memorizedDate = memorizedDate;
         this.openedDate = openedDate;
         this.isOpened = isOpened;

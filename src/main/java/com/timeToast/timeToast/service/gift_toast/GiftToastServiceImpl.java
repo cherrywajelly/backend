@@ -71,9 +71,13 @@ public class GiftToastServiceImpl implements GiftToastService{
         iconRepository.getById(giftToastGroupRequest.iconId());
         _checkDateValidation(giftToastGroupRequest.openedDate(), giftToastGroupRequest.memorizedDate());
 
+        if(teamMemberRepository.findByMemberIdAndTeamId(memberId, giftToastGroupRequest.teamId()).isPresent()){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+
         GiftToast giftToast = giftToastRepository.save(GiftToastGroupRequest.to(giftToastGroupRequest));
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.groupId());
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.teamId());
 
         teamMembers.forEach(
                 teamMember -> giftToastOwnerRepository.save(
@@ -137,7 +141,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         String giftToastOwner;
 
         if(giftToast.getGiftToastType() == GiftToastType.GROUP){
-            giftToastOwner= teamRepository.findById(giftToast.getGroupId()).get().getName();
+            giftToastOwner= teamRepository.findById(giftToast.getTeamId()).get().getName();
         }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
             Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToastId).stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
             giftToastOwner = memberRepository.findById(findGiftToastOwner.get().getMemberId()).orElseGet(null).getNickname();
@@ -151,7 +155,7 @@ public class GiftToastServiceImpl implements GiftToastService{
             _updateIsOpened(giftToast);
         }
 
-        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
+        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
 
         return GiftToastDetailResponse.from(giftToast,iconImageUrl,giftToastOwner,toastPieceResponses);
     }
@@ -166,7 +170,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                 giftToast -> {
                     String giftToastOwner;
                     if(giftToast.getGiftToastType() == GiftToastType.GROUP){
-                        giftToastOwner= teamRepository.findById(giftToast.getGroupId()).get().getName();
+                        giftToastOwner= teamRepository.findById(giftToast.getTeamId()).get().getName();
                     }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
                         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
                         Optional<GiftToastOwner> findGiftToastOwner = giftToastOwners.stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
@@ -182,7 +186,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                         _updateIsOpened(giftToast);
                     }
 
-                    String iconImageUrl = iconRepository.getToastIconById(giftToast.getIconId(), giftToast.getIsOpened()).getIcon_image_url();
+                    String iconImageUrl = iconRepository.getToastIconById(giftToast.getIconId(), giftToast.getIsOpened()).getIconImageUrl();
 
                     giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
                 }
@@ -202,7 +206,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                     Optional<ToastPiece> toastPiecesByGiftToast = toastPieceRepository.findAllByMemberIdAndGiftToastId(memberId,giftToast.getId()).stream().findFirst();
 
                     if(toastPiecesByGiftToast.isEmpty()){
-                        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIcon_image_url();
+                        String iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
                         giftToastIncompleteResponses.add(GiftToastIncompleteResponse.from(giftToast, iconImageUrl));
                     }
                 }
