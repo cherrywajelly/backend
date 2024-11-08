@@ -109,7 +109,8 @@ swaggerSources {
 
 openapi3 {
 	servers = [
-			{ url = 'https://dev-back.timetoast.app' }
+			{ url = 'https://dev-back.timetoast.app' },
+			{ url = 'http://localhost:8080' }
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
