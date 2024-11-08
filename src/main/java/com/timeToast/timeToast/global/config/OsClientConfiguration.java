@@ -12,12 +12,9 @@ import java.io.IOException;
 
 @Configuration
 public class OsClientConfiguration {
-    String configurationFilePath = "~/.oci/config";
-    String profile = "DEFAULT";
-
 
     public ObjectStorageClient getObjectStorage() throws IOException {
-        final ConfigFileReader.ConfigFile configFile = ConfigFileReader.parse(configurationFilePath, profile);
+        final ConfigFileReader.ConfigFile configFile = ConfigFileReader.parseDefault("DEFAULT");
 
 
         try {

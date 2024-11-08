@@ -55,7 +55,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     }
 
-    // opened_date 가 지난 이벤트 토스트 검증
+    // openedDate 가 지난 이벤트 토스트 검증
     @Transactional
     public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
         List<EventToast> openedEventToasts = new ArrayList<>();
@@ -66,7 +66,7 @@ public class EventToastServiceImpl implements EventToastService{
 
         unOpenedEventToasts.forEach(
                 eventToast -> {
-                    // opened_date 지난 게시물 열림 처리
+                    // openedDate 지난 게시물 열림 처리
                     if (eventToast.getOpenedDate().isBefore(LocalDate.now())) {
                         eventToast.updateIsOpened(true);
                         openedEventToasts.add(eventToast);
@@ -115,7 +115,7 @@ public class EventToastServiceImpl implements EventToastService{
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
                                 EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(),
-                                        new IconResponse(icon.getId(), icon.getIcon_image_url()));
+                                        new IconResponse(icon.getId(), icon.getIconImageUrl()));
                                 eventToastResponses.add(eventToastResponse);
                             }
                     );
@@ -134,7 +134,7 @@ public class EventToastServiceImpl implements EventToastService{
         checkEventToastOpened(eventToasts).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
-                    EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()));
+                    EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
                     eventToastOwnResponses.add(eventToastOwnResponse);
                 }
         );
@@ -154,10 +154,10 @@ public class EventToastServiceImpl implements EventToastService{
 
                     // 작성한 잼이 없는 경우
                     if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()) == null) {
-                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()), false);
+                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), false);
                         eventToastFriendResponses.add(eventToastFriendResponse);
                     } else {
-                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIcon_image_url()), true);
+                        EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), true);
                         eventToastFriendResponses.add(eventToastFriendResponse);
                     }
                 }

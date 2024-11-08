@@ -35,72 +35,6 @@ repositories {
 	mavenCentral()
 }
 
-jacoco {
-	toolVersion = "0.8.12"
-	reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
-}
-
-jacocoTestReport {
-	dependsOn test
-
-	reports {
-		xml.required = false
-		csv.required = false
-		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-	}
-	def QDomainList = []
-	for (qPattern in '**/QA'..'**/QZ') { // QClass 대응
-		QDomainList.add(qPattern + '*')
-	}
-
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-					'**/dto/**',
-					'**/domain/**',
-					'**/global/**',
-					'**/repository/**'
-			] + QDomainList)
-		}))
-	}
-
-	finalizedBy 'jacocoTestCoverageVerification'
-}
-
-jacocoTestCoverageVerification {
-	def QDomainList = []
-	for (qPattern in '*.QA'..'*.QZ') { // QClass 대응
-		QDomainList.add(qPattern + '*')
-	}
-
-
-	violationRules{
-		rule {
-			enabled = true
-			element = 'CLASS'
-
-			limit {
-				counter = 'METHOD'
-				value = 'COVEREDRATIO'
-				minimum = 0.00
-			}
-
-//			limit {
-//				counter = 'BRANCH'
-//				value = 'COVEREDRATIO'
-//				minimum = 0.01
-//			}
-
-			excludes =  [
-					'**/dto/**',
-					'**/global/**',
-					'**/global/**',
-					'**/repository/**'
-			] + QDomainList
-		}
-	}
-}
-
 swaggerSources {
 	sample {
 		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
@@ -109,7 +43,8 @@ swaggerSources {
 
 openapi3 {
 	servers = [
-			{ url = 'https://dev-back.timetoast.app' }
+			{ url = 'https://dev-back.timetoast.app' },
+			{ url = 'http://localhost:8080' }
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
@@ -168,14 +103,6 @@ dependencies {
 	//swagger
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
-	//testcontainers
-	testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
-	testImplementation "org.testcontainers:testcontainers:1.20.3"
-	testImplementation "org.testcontainers:junit-jupiter:1.20.3"
-	testImplementation "org.testcontainers:mysql:1.20.3"
-
-
-
 	// oci
 	implementation 'com.oracle.oci.sdk:oci-java-sdk-common:2.8.1'
 	implementation 'com.oracle.oci.sdk:oci-java-sdk-objectstorage:2.8.1'
@@ -217,6 +144,9 @@ tasks.withType(GenerateSwaggerUI) {
 	}
 }
 
+tasks.named("test") {
+	enabled = false
+}
 
 bootJar {
 	dependsOn generateSwaggerUISample

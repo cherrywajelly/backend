@@ -33,12 +33,12 @@ public class IconServiceImpl implements IconService{
         } else {
             files.forEach(file->{
                 Icon icon = iconRepository.save(new Icon("", iconGroupId));
-                String imageUrls = fileUploadService.upload(file, Long.toString(icon.getId()));
+                String endpoint = "icon/image/" + Long.toString(icon.getId());
+                String imageUrls = fileUploadService.uploadImages(file, endpoint);
                 icon.updateUrl(imageUrls);
                 iconRepository.save(icon);
             });
             log.info("save icon images");
         }
-
     }
 }
