@@ -41,11 +41,4 @@ public class IconServiceImpl implements IconService{
             log.info("save icon images");
         }
     }
-
-    @Transactional
-    public void getIconGroup(final long memberId) {
-        List<IconGroup> iconGroups = iconGroupRepository.findByMemberId(memberId);
-
-
-    }
 }

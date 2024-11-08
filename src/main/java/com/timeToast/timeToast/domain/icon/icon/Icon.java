@@ -1,17 +1,11 @@
 package com.timeToast.timeToast.domain.icon.icon;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.domain.jam.Jam;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "icon")
@@ -25,15 +19,15 @@ public class Icon extends BaseTime {
 
     private Long iconGroupId;
 
-    private String icon_image_url;
+    private String iconImageUrl;
 
     @Builder
-    public Icon(final String icon_image_url, final Long iconGroupId){
-        this.icon_image_url = icon_image_url;
+    public Icon(final String iconImageUrl, final Long iconGroupId){
+        this.iconImageUrl = iconImageUrl;
         this.iconGroupId = iconGroupId;
     }
 
-    public void updateUrl(final String icon_image_url) {
-        this.icon_image_url = icon_image_url;
+    public void updateUrl(final String iconImageUrl) {
+        this.iconImageUrl = iconImageUrl;
     }
 }
