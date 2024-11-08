@@ -6,6 +6,7 @@ import com.timeToast.timeToast.global.config.OsClientConfiguration;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,9 +19,12 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
-    String bucketName = "timetoast_bucket";
 
-    String namespace = "axmpikvsv3z9";
+    @Value("${spring.cloud.oci.bucketname.static}")
+    private String bucketName;
+
+    @Value("${spring.cloud.oci.namespace.static}")
+    private String namespace;
 
     private final String urlPrefix = "https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/";
 

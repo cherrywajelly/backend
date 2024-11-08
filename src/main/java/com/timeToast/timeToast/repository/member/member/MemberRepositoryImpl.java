@@ -18,7 +18,6 @@ public class MemberRepositoryImpl implements MemberRepository {
         this.memberJpaRepository = memberJpaRepository;
     }
 
-
     @Override
     public Member getById(final long memberId) {
         return memberJpaRepository.findById(memberId).orElseThrow(() -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
@@ -43,9 +42,6 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void delete(final Member member) {
         memberJpaRepository.delete(member);
     }
-
-    @Override
-    public Optional<Member> findByNickname(final String nickname) { return memberJpaRepository.findByNickname(nickname); }
 
     @Override
     public boolean existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname);}

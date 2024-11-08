@@ -13,6 +13,7 @@ plugins {
 	id 'com.adarshr.test-logger' version '4.0.0'
 	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
 	id 'org.hidetake.swagger.generator' version '2.18.2'
+	id 'jacoco'
 
 }
 
@@ -118,6 +119,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
 }
 
 testlogger {
@@ -150,6 +152,10 @@ bootJar {
 	from("${generateSwaggerUISample.outputDir}") {
 		into 'static/docs'
 	}
+	tasks.named('bootJar') {
+		dependsOn 'openapi3' // bootJar 실행 전에 openapi3을 실행
+	}
+
 }
 
 jar.enabled = false

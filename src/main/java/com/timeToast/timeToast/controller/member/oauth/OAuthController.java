@@ -1,9 +1,8 @@
 package com.timeToast.timeToast.controller.member.oauth;
 
-import com.timeToast.timeToast.dto.member.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.service.member.oauth.OAuthService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/api/v1/login")
 @RestController
@@ -14,17 +13,6 @@ public class OAuthController {
     public OAuthController(final OAuthService oAuthService) {
         this.oAuthService = oAuthService;
     }
-
-//     for test
-//     @GetMapping("")
-//     public RedirectView loadUrl () {
-//        return new RedirectView(oAuthService.loadToLogin());
-//     }
-//
-//     @GetMapping("/test")
-//     public RedirectView loadKakaoUrl () {
-//         return new RedirectView(oAuthService.loadToKakaoLogin());
-//     }
 
 
     @GetMapping("/kakao")
