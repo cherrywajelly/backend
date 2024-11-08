@@ -42,10 +42,10 @@ spring:
         type: ${OCI_FILE}
       region:
         static: ${OCI_REGION}
-      bucketname:
-        static: ${OCI_BUCKETNAME}
-      namespace:
-        static: ${OCI_NAMESPACE}
+      bucketname: ${OCI_BUCKETNAME}
+      namespace: ${OCI_NAMESPACE}
+      url: ${OCI_URL}
+
 
 oauth2:
   client:

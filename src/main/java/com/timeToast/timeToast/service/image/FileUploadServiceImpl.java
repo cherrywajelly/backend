@@ -26,7 +26,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${spring.cloud.oci.namespace.static}")
     private String namespace;
 
-    private final String urlPrefix = "https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/";
+    @Value("${spring.cloud.oci.url}")
+    private String urlPrefix;
 
     private final OsClientConfiguration ociConfig;
 
