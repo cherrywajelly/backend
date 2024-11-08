@@ -1,5 +1,5 @@
-FROM docker.io/library/eclipse-temurin:17.0.12_7-jdk-jammy AS jdk
-FROM docker.io/library/eclipse-temurin:17.0.12_7-jre-jammy AS jre
+FROM yny.ocir.io/axmpikvsv3z9/jdk AS jdk
+FROM yny.ocir.io/axmpikvsv3z9/jre AS jre
 
 FROM jdk AS builder
 WORKDIR /workspace
@@ -9,7 +9,7 @@ COPY settings.gradle .
 COPY build.gradle .
 COPY src src
 RUN chmod +x gradlew
-RUN ./gradlew bootJar -x test
+RUN ./gradlew bootJar
 
 FROM jre AS extractor
 ARG APPLICATION_FILE=timeToast.jar
