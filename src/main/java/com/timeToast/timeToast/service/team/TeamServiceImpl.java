@@ -87,7 +87,7 @@ public class TeamServiceImpl implements TeamService {
         );
 
         String groupProfileUrl = TEAM.value() + SLASH.value() + IMAGE.value() + team.getId();
-        fileUploadService.upload(teamProfileImage, groupProfileUrl);
+        fileUploadService.uploadImages(teamProfileImage, groupProfileUrl);
 
         team.updateTeamProfileUrl(groupProfileUrl);
         return TeamResponse.from(team);

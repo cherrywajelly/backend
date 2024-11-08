@@ -20,10 +20,10 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
 
-    @Value("${spring.cloud.oci.bucketname.static}")
+    @Value("${spring.cloud.oci.bucketname}")
     private String bucketName;
 
-    @Value("${spring.cloud.oci.namespace.static}")
+    @Value("${spring.cloud.oci.namespace}")
     private String namespace;
 
     @Value("${spring.cloud.oci.url}")
@@ -33,6 +33,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     //이미지 업로드
     @Transactional
+    @Override
     public String uploadImages(MultipartFile file, String endpoint) {
 
         try {
@@ -48,6 +49,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     //텍스트 업로드
     @Transactional
+    @Override
     public String uploadTexts(String text, String endpoint) {
 
         InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
