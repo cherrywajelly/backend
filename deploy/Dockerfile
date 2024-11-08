@@ -9,7 +9,7 @@ COPY settings.gradle .
 COPY build.gradle .
 COPY src src
 RUN chmod +x gradlew
-RUN ./gradlew bootJar -x test
+RUN ./gradlew bootJar
 
 FROM jre AS extractor
 ARG APPLICATION_FILE=timeToast.jar
