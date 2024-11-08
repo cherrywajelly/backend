@@ -46,6 +46,8 @@ spring:
         static: ${OCI_BUCKETNAME}
       namespace:
         static: ${OCI_NAMESPACE}
+      url:
+        static: ${OCI_URL}
 
 oauth2:
   client:
