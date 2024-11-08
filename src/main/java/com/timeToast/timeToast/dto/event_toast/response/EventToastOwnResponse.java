@@ -8,19 +8,19 @@ import java.time.LocalDate;
 
 @Builder
 public record EventToastOwnResponse(
-        Long event_toast_id,
+        Long eventToastId,
 
         String title,
 
-        LocalDate opened_date,
+        LocalDate openedDate,
 
         IconResponse icon
 ){
     public static EventToastOwnResponse fromEntity(EventToast eventToast, IconResponse icon){
         return EventToastOwnResponse.builder()
-                .event_toast_id(eventToast.getId())
+                .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
-                .opened_date(eventToast.getOpenedDate())
+                .openedDate(eventToast.getOpenedDate())
                 .icon(icon)
                 .build();
     }

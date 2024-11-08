@@ -37,11 +37,17 @@ spring:
   cloud:
     oci:
       compartment:
-        static: wkddnjs3268
+        static: ${OCI_COMPARTMENT}
       config:
-        type: file
+        type: ${OCI_FILE}
       region:
-        static: ap-chuncheon-1
+        static: ${OCI_REGION}
+      bucketname:
+        static: ${OCI_BUCKETNAME}
+      namespace:
+        static: ${OCI_NAMESPACE}
+      url:
+        static: ${OCI_URL}
 
 oauth2:
   client:
@@ -54,3 +60,4 @@ oauth2:
       client-id: ${GOOGLE_CLIENT_ID}
       client-secret: ${GOOGLE_CLIENT_SECRET}
       redirect-uri: ${GOOGLE_REDIRECT_URI}
+

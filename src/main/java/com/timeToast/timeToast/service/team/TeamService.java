@@ -9,7 +9,7 @@ public interface TeamService {
 
     TeamResponse saveTeam(final long memberId, final TeamSaveRequest groupSaveRequest);
 
-    TeamResponse saveTeamImage(final long teamId, final MultipartFile multipartFile);
+    TeamResponse saveTeamImage(final long teamId, final MultipartFile teamProfileImage);
 
     TeamResponses findLoginMemberTeams(final long memberId);
 
