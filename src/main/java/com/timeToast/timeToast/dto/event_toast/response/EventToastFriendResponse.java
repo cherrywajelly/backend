@@ -8,11 +8,11 @@ import java.time.LocalDate;
 
 @Builder
 public record EventToastFriendResponse(
-        Long event_toast_id,
+        Long eventToastId,
 
         String title,
 
-        LocalDate opened_date,
+        LocalDate openedDate,
 
         boolean postedJam,
 
@@ -22,9 +22,9 @@ public record EventToastFriendResponse(
 ){
     public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, boolean postedJam) {
         return EventToastFriendResponse.builder()
-                .event_toast_id(eventToast.getId())
+                .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
-                .opened_date(eventToast.getOpenedDate())
+                .openedDate(eventToast.getOpenedDate())
                 .nickname(nickname)
                 .icon(icon)
                 .postedJam(postedJam)

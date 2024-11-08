@@ -15,6 +15,10 @@ public record EventToastResponse(
 
         LocalDate openedDate,
 
+        boolean isOpened,
+
+        String iconImageUrl,
+
         String memberProfileUrl,
 
         String nickname,
@@ -25,11 +29,13 @@ public record EventToastResponse(
 
         List<JamResponse> jams
 ){
-    public static EventToastResponse fromEntity(EventToast eventToast, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
+    public static EventToastResponse fromEntity(EventToast eventToast, final String iconImageUrl, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
         return EventToastResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
                 .openedDate(eventToast.getOpenedDate())
+                .isOpened(eventToast.isOpened())
+                .iconImageUrl(iconImageUrl)
                 .memberProfileUrl(memberProfileUrl)
                 .nickname(nickname)
                 .jamCount(jamCount)

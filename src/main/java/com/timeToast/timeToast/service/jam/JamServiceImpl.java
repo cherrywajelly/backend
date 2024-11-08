@@ -61,7 +61,7 @@ public class JamServiceImpl implements JamService {
                 jam -> {
                     Icon icon = iconRepository.getById(jam.getIconId());
                     Member member = memberRepository.getById(jam.getMemberId());
-                    JamResponse jamResponse = JamResponse.fromEntity(jam.getId(), icon.getIcon_image_url(), member.getNickname());
+                    JamResponse jamResponse = JamResponse.fromEntity(jam.getId(), icon.getIconImageUrl(), member.getNickname());
                     jamResponses.add(jamResponse);
                 }
         );
