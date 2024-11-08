@@ -26,7 +26,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${spring.cloud.oci.namespace}")
     private String namespace;
 
-    @Value("${spring.cloud.oci.url}")
+
+    @Value("${spring.cloud.oci.url.static}")
     private String urlPrefix;
 
     private final OsClientConfiguration ociConfig;
