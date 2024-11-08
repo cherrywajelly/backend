@@ -1,9 +1,5 @@
 spring:
   config:
-<<<<<<< HEAD
-
-=======
->>>>>>> 03df4f0746fa8759a3febd3ff7c9a51a841fa81b
     import:
       - optional:file:.env[.properties]
 

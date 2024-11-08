@@ -25,11 +25,12 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse getMemberInfo(long memberId) {
+
         return new MemberInfoResponse("nickname","profileUrl");
     }
 
     @Override
     public MemberProfileResponse getMemberProfile(long memberId) {
-        return null;
+        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1);
     }
 }
