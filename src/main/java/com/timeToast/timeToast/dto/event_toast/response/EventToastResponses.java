@@ -8,9 +8,9 @@ import java.time.LocalDate;
 
 @Builder
 public record EventToastResponses(
-        Long event_toast_id,
+        Long eventToastId,
         String title,
-        LocalDate opened_date,
+        LocalDate openedDate,
 
         String nickname,
 
@@ -18,9 +18,9 @@ public record EventToastResponses(
 ){
     public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, IconResponse icon){
         return EventToastResponses.builder()
-                .event_toast_id(eventToast.getId())
+                .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
-                .opened_date(eventToast.getOpenedDate())
+                .openedDate(eventToast.getOpenedDate())
                 .nickname(nickname)
                 .icon(icon)
                 .build();
