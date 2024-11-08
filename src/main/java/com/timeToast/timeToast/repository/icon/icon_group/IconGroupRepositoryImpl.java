@@ -23,6 +23,12 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     public List<IconGroup> findByIconBuiltin(final IconBuiltin iconBuiltin) {
         return iconGroupJpaRepository.findByIconBuiltin(iconBuiltin);
     }
+
+    @Override
+    public List<IconGroup> findByMemberId(final long memberId) {
+        return iconGroupJpaRepository.findByMemberId(memberId);
+    }
+
     @Override
     public IconGroup save(final IconGroup iconGroup) {
         return iconGroupJpaRepository.save(iconGroup);

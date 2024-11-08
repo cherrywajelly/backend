@@ -6,10 +6,10 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -25,7 +25,8 @@ public class IconServiceImpl implements IconService{
     private final FileUploadService fileUploadService;
 
     @Transactional
-    public void postIconSet(List<MultipartFile> files, long iconGroupId) {
+    @Override
+    public void postIconSet(List<MultipartFile> files, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         if(iconGroup == null) {
@@ -39,6 +40,12 @@ public class IconServiceImpl implements IconService{
             });
             log.info("save icon images");
         }
+    }
+
+    @Transactional
+    public void getIconGroup(final long memberId) {
+        List<IconGroup> iconGroups = iconGroupRepository.findByMemberId(memberId);
+
 
     }
 }
