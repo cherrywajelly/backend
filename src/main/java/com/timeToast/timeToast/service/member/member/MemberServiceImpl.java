@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService{
     public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
         String url = MEMBER.value() + SLASH.value() + CONTENTS.value() + SLASH.value() + memberId;
-        String profileImageUrl = fileUploadService.upload(profileImage,url);
+        String profileImageUrl = fileUploadService.uploadImages(profileImage,url);
         member.updateMemberProfileUrl(profileImageUrl);
         return new MemberInfoResponse(member.getNickname(), member.getMemberProfileUrl());
     }
