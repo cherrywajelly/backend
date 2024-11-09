@@ -20,13 +20,14 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
 
-    @Value("${spring.cloud.oci.bucketname}")
+    @Value("${spring.cloud.oci.bucketname.static}")
     private String bucketName;
 
-    @Value("${spring.cloud.oci.namespace}")
+    @Value("${spring.cloud.oci.namespace.static}")
     private String namespace;
 
-    @Value("${spring.cloud.oci.url}")
+
+    @Value("${spring.cloud.oci.url.static}")
     private String urlPrefix;
 
     private final OsClientConfiguration ociConfig;
