@@ -73,7 +73,7 @@ public class TeamControllerTest extends BaseControllerTests {
     void saveProfileImage() throws Exception {
 
         mockMvc.perform(
-                        multipart("/api/v1/teams/image")
+                        multipart("/api/v1/teams/{teamId}/image",1)
                                 .file("teamProfileImage", "hello.png".getBytes())
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                                 .contentType(MediaType.MULTIPART_FORM_DATA)

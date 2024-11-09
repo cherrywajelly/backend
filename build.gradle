@@ -85,12 +85,6 @@ jacocoTestCoverageVerification {
 				minimum = 0.00
 			}
 
-//			limit {
-//				counter = 'BRANCH'
-//				value = 'COVEREDRATIO'
-//				minimum = 0.01
-//			}
-
 			excludes =  [
 					'**/dto/**',
 					'**/global/**',
@@ -98,12 +92,6 @@ jacocoTestCoverageVerification {
 					'**/repository/**'
 			] + QDomainList
 		}
-	}
-}
-
-swaggerSources {
-	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
 	}
 }
 
@@ -115,7 +103,8 @@ openapi3 {
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
 	version = '1.0.0'
-	format = 'yaml'
+	format = 'json'
+	outputDirectory = 'build/resources/main/static/docs'
 }
 
 dependencies {
@@ -168,13 +157,14 @@ dependencies {
 
 	//swagger
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 
 	//testcontainers
 	testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
 	testImplementation "org.testcontainers:testcontainers:1.20.3"
 	testImplementation "org.testcontainers:junit-jupiter:1.20.3"
 	testImplementation "org.testcontainers:mysql:1.20.3"
-
 
 
 	// oci
@@ -201,31 +191,26 @@ testlogger {
 	slowThreshold 0
 }
 
+task createOutputDirectory {
+	doFirst {
+		file(openapi3.outputDirectory).mkdirs()
+	}
+}
+
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
-	doFirst {
-		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
-
-		def securitySchemesContent =  "  securitySchemes:\n" +  \
-                                      "    APIKey:\n" +  \
-                                      "      type: apiKey\n" +  \
-                                      "      name: Authorization\n" +  \
-                                      "      in: header\n" + \
-                                      "security:\n" +
-				"  - APIKey: []  # Apply the security scheme here"
-
-		swaggerUIFile.append securitySchemesContent
+	delete file('src/main/resources/static/docs/')
+	copy {
+		from "build/resources/main/static/docs"
+		into "src/main/resources/static/docs/"
 	}
+
 }
 
 
 bootJar {
-	dependsOn generateSwaggerUISample
-	from("${generateSwaggerUISample.outputDir}") {
-		into 'static/docs'
-	}
 	tasks.named('bootJar') {
-		dependsOn 'openapi3' // bootJar 실행 전에 openapi3을 실행
+		dependsOn 'createOutputDirectory', ':openapi3'
 	}
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class TeamServiceTest implements TeamService {
     @Override
     public TeamResponse saveTeam(long memberId, TeamSaveRequest groupSaveRequest) {
-        return new TeamResponse(1,"team1",null);
+        return new TeamResponse(1,"team1","profile");
     }
 
     @Override
