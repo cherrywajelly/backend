@@ -10,7 +10,6 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
-        System.out.println("save profile");
         return new MemberInfoResponse("nickname","profileUrl");
     }
 
@@ -31,7 +30,14 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public MemberProfileResponse getMemberProfile(long memberId) {
-        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1);
+    public MemberProfileResponse getMemberProfileByLogin(long memberId) {
+        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
     }
+
+    @Override
+    public MemberProfileResponse getMemberProfile(long loginId, long memberId) {
+        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+    }
+
+
 }
