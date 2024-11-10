@@ -12,7 +12,7 @@ public interface GiftToastService {
     GiftToastSaveResponse saveGiftToastGroup(final long memberId, final GiftToastGroupRequest giftToastGroupRequest);
     GiftToastSaveResponse saveGiftToastFriend(final long memberId, final GiftToastFriendRequest giftToastFriendRequest);
     GiftToastSaveResponse saveGiftToastMine(final long memberId, final GiftToastMineRequest giftToastMineRequest);
-    GiftToastDetailResponse getGiftToast(final long memberId,final long giftToastId);
+    GiftToastDetailResponse getGiftToastDetail(final long memberId, final long giftToastId);
     GiftToastResponses getGiftToastByMember(final long memberId);
     GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId);
     void deleteGiftToast(final long memberId, final long giftToastId);
