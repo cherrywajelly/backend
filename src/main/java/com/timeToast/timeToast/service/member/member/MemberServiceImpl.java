@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
@@ -22,12 +23,15 @@ public class MemberServiceImpl implements MemberService{
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final FileUploadService fileUploadService;
+    private final IconRepository iconRepository;
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
-                             final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService) {
+                             final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
+                             final IconRepository iconRepository) {
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.fileUploadService = fileUploadService;
+        this.iconRepository = iconRepository;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberInfoResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return new MemberInfoResponse(member.getNickname(), member.getMemberProfileUrl());
+        return new MemberInfoResponse(member.getNickname(), getMemberProfileImage(member));
     }
 
     @Transactional
@@ -76,8 +80,15 @@ public class MemberServiceImpl implements MemberService{
         long followerCount = followRepository.findAllByFollowingId(memberId).stream().count();
         long teamCount = teamMemberRepository.findAllByMemberId(memberId).stream().count();
 
-        return MemberProfileResponse.from(member,followingCount, followerCount, teamCount);
+        return new MemberProfileResponse(member.getNickname(), getMemberProfileImage(member), followingCount, followerCount, teamCount);
     }
 
+    private String getMemberProfileImage(final Member member){
+
+        if (member.getMemberProfileUrl().equals(null)){
+            return iconRepository.getDefaultIcon().getIconImageUrl();
+        }
+        return member.getMemberProfileUrl();
+    }
 
 }
