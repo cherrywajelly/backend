@@ -15,8 +15,11 @@ public record GiftToastDetailResponse(
         String iconImageUrl,
         GiftToastType giftToastType,
         String giftToastOwner,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate memorizedDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate openedDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate createdDate,
         Boolean isOpened,
         long dDay,
