@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService{
         this.iconRepository = iconRepository;
     }
 
+    @Transactional
     @Override
     public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
@@ -44,6 +45,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional
+    @Override
     public void postNickname(final String nickname, final long memberId){
 
         Member member = memberRepository.getById(memberId);
@@ -65,14 +67,14 @@ public class MemberServiceImpl implements MemberService{
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public MemberInfoResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
         return new MemberInfoResponse(member.getNickname(), getMemberProfileImage(member));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public MemberProfileResponse getMemberProfileByLogin(final long memberId) {
         Member member = memberRepository.getById(memberId);
