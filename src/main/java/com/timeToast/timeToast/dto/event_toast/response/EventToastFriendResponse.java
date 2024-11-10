@@ -12,17 +12,20 @@ public record EventToastFriendResponse(
 
         String title,
 
-        LocalDate opened_date,
+        LocalDate openedDate,
 
         boolean postedJam,
 
+        String nickname,
+
         IconResponse icon
 ){
-    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, boolean postedJam) {
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, boolean postedJam) {
         return EventToastFriendResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
-                .opened_date(eventToast.getOpenedDate())
+                .openedDate(eventToast.getOpenedDate())
+                .nickname(nickname)
                 .icon(icon)
                 .postedJam(postedJam)
                 .build();

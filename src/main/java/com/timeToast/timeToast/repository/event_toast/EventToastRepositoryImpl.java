@@ -33,7 +33,8 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     @Override
     public List<EventToast> saveAll(List<EventToast> eventToasts) { return eventToastJpaRepository.saveAll(eventToasts); }
 
-    public EventToast findByIdAndMemberId(final long eventToastId, final long memberId) {
+    @Override
+    public EventToast getByIdAndMemberId(final long eventToastId, final long memberId) {
         return eventToastJpaRepository.findByIdAndMemberId(eventToastId, memberId);
     }
 
