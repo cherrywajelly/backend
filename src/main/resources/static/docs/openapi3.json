@@ -12,6 +12,43 @@
   } ],
   "tags" : [ ],
   "paths" : {
+    "/api/v1/eventToasts" : {
+      "post" : {
+        "tags" : [ "이벤트 토스트" ],
+        "summary" : "새로운 이벤트 토스트를 저장",
+        "description" : "새로운 이벤트 토스트를 저장",
+        "operationId" : "이벤트 토스트 저장",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-eventToasts-1479169080"
+              },
+              "examples" : {
+                "이벤트 토스트 저장" : {
+                  "value" : "{\"openedDate\":\"2024-01-01\",\"title\":\"title\",\"iconId\":1}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
     "/api/v1/members" : {
       "get" : {
         "tags" : [ "멤버" ],
@@ -64,6 +101,88 @@
         "responses" : {
           "200" : {
             "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/v1/showcases" : {
+      "get" : {
+        "tags" : [ "진열장" ],
+        "summary" : "진열장 등록 가능한 토스트 조회",
+        "description" : "진열장 등록 가능한 토스트 조회",
+        "operationId" : "진열장 등록 가능한 토스트 조회",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-showcases2051376449"
+                },
+                "examples" : {
+                  "진열장 등록 가능한 토스트 조회" : {
+                    "value" : "{\"showcaseEditResponses\":[{\"eventToastId\":1,\"iconUrl\":\"iconUrl\",\"title\":\"title\",\"openedDate\":\"2024-01-01\",\"isShowcase\":false,\"showCaseId\":0}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "진열장" ],
+        "summary" : "진열장 등록",
+        "description" : "진열장 등록",
+        "operationId" : "진열장 등록",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-showcases278654356"
+              },
+              "examples" : {
+                "진열장 등록" : {
+                  "value" : "{\"showcases\":[1]}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-showcases1782219881"
+                },
+                "examples" : {
+                  "진열장 등록" : {
+                    "value" : "{\"showcaseSaveResponses\":[\"title\"]}"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -146,6 +265,86 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/toastPieces" : {
+      "post" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 저장 - 그룹",
+        "description" : "선물 토스트 저장 - 그룹",
+        "operationId" : "선물 토스트 저장 - 그룹",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-toastPieces1312316809"
+              },
+              "examples" : {
+                "선물 토스트 저장 - 그룹" : {
+                  "value" : "{\"giftToastId\":1,\"iconId\":1,\"title\":\"title\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-toastPieces-1819169589"
+                },
+                "examples" : {
+                  "선물 토스트 저장 - 그룹" : {
+                    "value" : "{\"toastPieceId\":1,\"giftToastId\":1,\"iconId\":1,\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"toastPieceImages\":[\"images\"]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/eventToasts/{eventToastId}" : {
+      "delete" : {
+        "tags" : [ "이벤트 토스트" ],
+        "summary" : "이벤트 토스트 삭제",
+        "description" : "이벤트 토스트 삭제",
+        "operationId" : "이벤트 토스트 삭제",
+        "parameters" : [ {
+          "name" : "eventToastId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
           }
         }
       }
@@ -256,7 +455,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-friend1580334327"
                 },
                 "examples" : {
                   "선물 토스트 저장 - 팔로잉" : {
@@ -269,12 +468,12 @@
         }
       }
     },
-    "/api/v1/giftToasts/group" : {
-      "post" : {
+    "/api/v1/giftToasts/members" : {
+      "get" : {
         "tags" : [ "선물 토스트" ],
-        "summary" : "선물 토스트 저장 - 그룹",
-        "description" : "선물 토스트 저장 - 그룹",
-        "operationId" : "선물 토스트 저장 - 그룹",
+        "summary" : "로그인한 사용자의 선물 토스트 조회",
+        "description" : "로그인한 사용자의 선물 토스트 조회",
+        "operationId" : "로그인한 사용자의 선물 토스트 조회",
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -285,31 +484,17 @@
           },
           "example" : "test accessToken"
         } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/api-v1-giftToasts-group-1268439489"
-              },
-              "examples" : {
-                "선물 토스트 저장 - 그룹" : {
-                  "value" : "{\"iconId\":1,\"teamId\":1,\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"title\":\"title\"}"
-                }
-              }
-            }
-          }
-        },
         "responses" : {
           "200" : {
             "description" : "200",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-members-415586589"
                 },
                 "examples" : {
-                  "선물 토스트 저장 - 그룹" : {
-                    "value" : "{\"giftToastId\":1,\"title\":\"title\",\"giftToastType\":\"GROUP\",\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"isOpened\":false}"
+                  "로그인한 사용자의 선물 토스트 조회" : {
+                    "value" : "{\"giftToastResponses\":[{\"giftToastId\":1,\"title\":\"title\",\"iconImageUrl\":\"iconImageUrl\",\"giftToastType\":\"GROUP\",\"giftToastOwner\":\"owner\",\"isOpened\":false}]}"
                   }
                 }
               }
@@ -354,7 +539,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-friend1580334327"
                 },
                 "examples" : {
                   "선물 토스트 저장 - 나에게" : {
@@ -363,6 +548,78 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/giftToasts/{giftToastId}" : {
+      "get" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 단일 상세 조회",
+        "description" : "선물 토스트 단일 상세 조회",
+        "operationId" : "선물 토스트 단일 상세 조회",
+        "parameters" : [ {
+          "name" : "giftToastId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-giftToastId-1537921964"
+                },
+                "examples" : {
+                  "선물 토스트 단일 상세 조회" : {
+                    "value" : "{\"giftToastId\":1,\"title\":\"title\",\"iconImageUrl\":\"iconImageUrl\",\"giftToastType\":\"GROUP\",\"giftToastOwner\":\"owner\",\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"createdDate\":\"2024-01-01\",\"isOpened\":false,\"dDay\":10,\"toastPieceResponses\":{\"giftToastId\":1,\"toastPieceResponses\":[{\"memberId\":1,\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"iconImageUrl\":\"iconImageUrl\",\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"createdAt\":\"2024-01-01\",\"toastPieceImages\":[\"image\"]}]}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 삭제",
+        "description" : "선물 토스트 삭제",
+        "operationId" : "로그인한 사용자가 자신의 선물 토스트를 삭제",
+        "parameters" : [ {
+          "name" : "giftToastId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
           }
         }
       }
@@ -561,6 +818,72 @@
         }
       }
     },
+    "/api/v1/showcases/members" : {
+      "get" : {
+        "tags" : [ "진열장" ],
+        "summary" : "로그인한 회원의 진열장 조",
+        "description" : "로그인한 회원의 진열장 조",
+        "operationId" : "로그인한 회원의 진열장 조회",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-showcases-members70360060"
+                },
+                "examples" : {
+                  "로그인한 회원의 진열장 조회" : {
+                    "value" : "{\"showcaseResponses\":[{\"eventToastId\":1,\"iconUrl\":\"iconUrl\"}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/showcases/{showcaseId}" : {
+      "delete" : {
+        "tags" : [ "진열장" ],
+        "summary" : "진열장 조회",
+        "description" : "진열장 조회",
+        "operationId" : "진열장 조회",
+        "parameters" : [ {
+          "name" : "showcaseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
     "/api/v1/teams/{teamId}" : {
       "delete" : {
         "tags" : [ "팀" ],
@@ -569,6 +892,78 @@
         "operationId" : "로그인한 사용자의 팀 삭제하기",
         "parameters" : [ {
           "name" : "teamId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/v1/toastPieces/{toastPieceId}" : {
+      "get" : {
+        "tags" : [ "토스트 조각" ],
+        "summary" : "토스트 조각 상세 조회",
+        "description" : "토스트 조각 상세 조회",
+        "operationId" : "토스트 조각 상세 조회",
+        "parameters" : [ {
+          "name" : "toastPieceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-toastPieces-toastPieceId1832050141"
+                },
+                "examples" : {
+                  "토스트 조각 상세 조회" : {
+                    "value" : "{\"memberId\":1,\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"iconImageUrl\":\"iconImageUrl\",\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"createdAt\":\"2024-25-11\",\"toastPieceImages\":[\"images\"]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "토스트 조각" ],
+        "summary" : "토스트 조각 삭제",
+        "description" : "토스트 조각 삭제",
+        "operationId" : "토스트 조각 삭제",
+        "parameters" : [ {
+          "name" : "toastPieceId",
           "in" : "path",
           "description" : "",
           "required" : true,
@@ -683,6 +1078,41 @@
         }
       }
     },
+    "/api/v1/giftToasts/members/incomplete" : {
+      "get" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "로그인한 사용자의 작성 할 선물 토스트 조회",
+        "description" : "로그인한 사용자의 작성 할 선물 토스트 조회",
+        "operationId" : "로그인한 사용자의 작성 할 선물 토스트 조회",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-members-incomplete258625028"
+                },
+                "examples" : {
+                  "로그인한 사용자의 작성 할 선물 토스트 조회" : {
+                    "value" : "{\"giftToastResponses\":[{\"giftToastId\":1,\"title\":\"title\",\"iconImageUrl\":\"iconImageUrl\"}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/members/{memberId}/info" : {
       "get" : {
         "tags" : [ "멤버" ],
@@ -768,6 +1198,92 @@
           }
         }
       }
+    },
+    "/api/v1/toastPieces/{toastPieceId}/contents" : {
+      "post" : {
+        "tags" : [ "토스트 조각" ],
+        "summary" : "토스트 조각 내용 저장",
+        "description" : "토스트 조각 내용 저장",
+        "operationId" : "토스트 조각 내용 저장",
+        "parameters" : [ {
+          "name" : "toastPieceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-toastPieces-1819169589"
+                },
+                "examples" : {
+                  "토스트 조각 내용 저장" : {
+                    "value" : "{\"toastPieceId\":1,\"giftToastId\":1,\"iconId\":1,\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"toastPieceImages\":[\"images\"]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/toastPieces/{toastPieceId}/images" : {
+      "post" : {
+        "tags" : [ "토스트 조각" ],
+        "summary" : "토스트 조각 이미지 저장",
+        "description" : "토스트 조각 이미지 저장",
+        "operationId" : "토스트 조각 이미지 저장",
+        "parameters" : [ {
+          "name" : "toastPieceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-toastPieces-1819169589"
+                },
+                "examples" : {
+                  "토스트 조각 이미지 저장" : {
+                    "value" : "{\"toastPieceId\":1,\"giftToastId\":1,\"iconId\":1,\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"toastPieceImages\":[\"images\"]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
@@ -796,23 +1312,6 @@
           }
         }
       },
-      "api-v1-teams-teamId-image964943506" : {
-        "type" : "object",
-        "properties" : {
-          "teamName" : {
-            "type" : "string",
-            "description" : "팀 이름"
-          },
-          "teamId" : {
-            "type" : "number",
-            "description" : "팀 id"
-          },
-          "teamProfileUrl" : {
-            "type" : "string",
-            "description" : "팀 profile url"
-          }
-        }
-      },
       "api-v1-giftToasts-friend-1287747841" : {
         "type" : "object",
         "properties" : {
@@ -838,6 +1337,111 @@
           }
         }
       },
+      "api-v1-giftToasts-giftToastId-1537921964" : {
+        "type" : "object",
+        "properties" : {
+          "openedDate" : {
+            "type" : "string",
+            "description" : "opened date"
+          },
+          "giftToastId" : {
+            "type" : "number",
+            "description" : "선물 토스트 Id"
+          },
+          "isOpened" : {
+            "type" : "boolean",
+            "description" : "open 여부"
+          },
+          "createdDate" : {
+            "type" : "string",
+            "description" : "created date"
+          },
+          "giftToastOwner" : {
+            "type" : "string",
+            "description" : "선물 토스트 소유주 이름"
+          },
+          "dDay" : {
+            "type" : "number",
+            "description" : "D-day"
+          },
+          "memorizedDate" : {
+            "type" : "string",
+            "description" : "memorized date"
+          },
+          "iconImageUrl" : {
+            "type" : "string",
+            "description" : "아이콘 image url"
+          },
+          "giftToastType" : {
+            "type" : "string",
+            "description" : "선물 토스트 타입"
+          },
+          "toastPieceResponses" : {
+            "type" : "object",
+            "properties" : {
+              "giftToastId" : {
+                "type" : "number",
+                "description" : "giftToastId"
+              },
+              "toastPieceResponses" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "profileUrl" : {
+                      "type" : "string",
+                      "description" : "profile url"
+                    },
+                    "createdAt" : {
+                      "type" : "string",
+                      "description" : "created at"
+                    },
+                    "iconImageUrl" : {
+                      "type" : "string",
+                      "description" : "icon image url"
+                    },
+                    "nickname" : {
+                      "type" : "string",
+                      "description" : "nickname"
+                    },
+                    "title" : {
+                      "type" : "string",
+                      "description" : "title"
+                    },
+                    "contentsUrl" : {
+                      "type" : "string",
+                      "description" : "contents url"
+                    },
+                    "toastPieceImages" : {
+                      "type" : "array",
+                      "description" : "토스트의 이미지 리스트",
+                      "items" : {
+                        "oneOf" : [ {
+                          "type" : "object"
+                        }, {
+                          "type" : "boolean"
+                        }, {
+                          "type" : "string"
+                        }, {
+                          "type" : "number"
+                        } ]
+                      }
+                    },
+                    "memberId" : {
+                      "type" : "number",
+                      "description" : "memberId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          }
+        }
+      },
       "api-v1-members-memberId-info1237683137" : {
         "type" : "object",
         "properties" : {
@@ -851,53 +1455,44 @@
           }
         }
       },
-      "api-v1-members-memberId1778634967" : {
+      "api-v1-showcases2051376449" : {
         "type" : "object",
         "properties" : {
-          "profileUrl" : {
-            "type" : "string",
-            "description" : "프로필 url"
-          },
-          "isFollow" : {
-            "type" : "boolean",
-            "description" : "팔로우 여부"
-          },
-          "teamCount" : {
-            "type" : "number",
-            "description" : "팀 수"
-          },
-          "nickname" : {
-            "type" : "string",
-            "description" : "닉네임"
-          },
-          "followerCount" : {
-            "type" : "number",
-            "description" : "팔로워 수"
-          },
-          "followingCount" : {
-            "type" : "number",
-            "description" : "팔로잉 수"
+          "showcaseEditResponses" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "openedDate" : {
+                  "type" : "string",
+                  "description" : "오픈 날짜"
+                },
+                "eventToastId" : {
+                  "type" : "number",
+                  "description" : "이벤트 토스트 id"
+                },
+                "isShowcase" : {
+                  "type" : "boolean",
+                  "description" : "진열장 등록 여부"
+                },
+                "iconUrl" : {
+                  "type" : "string",
+                  "description" : "아이콘 url"
+                },
+                "showCaseId" : {
+                  "type" : "number",
+                  "description" : "진열장 등록시 id"
+                },
+                "title" : {
+                  "type" : "string",
+                  "description" : "제목"
+                }
+              }
+            }
           }
         }
       },
-      "api-v1-login-kakao1424602255" : {
-        "type" : "object",
-        "properties" : {
-          "isNew" : {
-            "type" : "boolean",
-            "description" : "신규 가입 여부"
-          },
-          "accessToken" : {
-            "type" : "string",
-            "description" : "access token"
-          },
-          "refreshToken" : {
-            "type" : "string",
-            "description" : "access token"
-          }
-        }
-      },
-      "api-v1-giftToasts-mine1580334327" : {
+      "api-v1-giftToasts-friend1580334327" : {
         "type" : "object",
         "properties" : {
           "openedDate" : {
@@ -923,6 +1518,23 @@
           "title" : {
             "type" : "string",
             "description" : "제목"
+          }
+        }
+      },
+      "api-v1-login-kakao1424602255" : {
+        "type" : "object",
+        "properties" : {
+          "isNew" : {
+            "type" : "boolean",
+            "description" : "신규 가입 여부"
+          },
+          "accessToken" : {
+            "type" : "string",
+            "description" : "access token"
+          },
+          "refreshToken" : {
+            "type" : "string",
+            "description" : "access token"
           }
         }
       },
@@ -972,28 +1584,294 @@
           }
         }
       },
-      "api-v1-giftToasts-group-1268439489" : {
+      "api-v1-showcases-members70360060" : {
+        "type" : "object",
+        "properties" : {
+          "showcaseResponses" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "eventToastId" : {
+                  "type" : "number",
+                  "description" : "이벤트 토스트 id"
+                },
+                "iconUrl" : {
+                  "type" : "string",
+                  "description" : "아이콘 url"
+                }
+              }
+            }
+          }
+        }
+      },
+      "api-v1-giftToasts-members-incomplete258625028" : {
+        "type" : "object",
+        "properties" : {
+          "giftToastResponses" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "giftToastId" : {
+                  "type" : "number",
+                  "description" : "giftToastId"
+                },
+                "iconImageUrl" : {
+                  "type" : "string",
+                  "description" : "이미지 url"
+                },
+                "title" : {
+                  "type" : "string",
+                  "description" : "제목"
+                }
+              }
+            }
+          }
+        }
+      },
+      "api-v1-showcases278654356" : {
+        "type" : "object",
+        "properties" : {
+          "showcases" : {
+            "type" : "array",
+            "description" : "등록 eventToast Id",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          }
+        }
+      },
+      "api-v1-toastPieces-toastPieceId1832050141" : {
+        "type" : "object",
+        "properties" : {
+          "profileUrl" : {
+            "type" : "string",
+            "description" : "프로필 url"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "description" : "토스트 조각 생성 일자"
+          },
+          "iconImageUrl" : {
+            "type" : "string",
+            "description" : "토스트 조각 이미지 url"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          },
+          "contentsUrl" : {
+            "type" : "string",
+            "description" : "토스트 조각 내용 url"
+          },
+          "toastPieceImages" : {
+            "type" : "array",
+            "description" : "토스트 조각 이미지 리스트",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "memberId" : {
+            "type" : "number",
+            "description" : "memberId"
+          }
+        }
+      },
+      "api-v1-toastPieces1312316809" : {
+        "type" : "object",
+        "properties" : {
+          "iconId" : {
+            "type" : "number",
+            "description" : "팀 Id"
+          },
+          "giftToastId" : {
+            "type" : "number",
+            "description" : "선물 토스 Id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          }
+        }
+      },
+      "api-v1-teams-teamId-image964943506" : {
+        "type" : "object",
+        "properties" : {
+          "teamName" : {
+            "type" : "string",
+            "description" : "팀 이름"
+          },
+          "teamId" : {
+            "type" : "number",
+            "description" : "팀 id"
+          },
+          "teamProfileUrl" : {
+            "type" : "string",
+            "description" : "팀 profile url"
+          }
+        }
+      },
+      "api-v1-showcases1782219881" : {
+        "type" : "object",
+        "properties" : {
+          "showcaseSaveResponses" : {
+            "type" : "array",
+            "description" : "등록한 event toast title",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          }
+        }
+      },
+      "api-v1-members-memberId1778634967" : {
+        "type" : "object",
+        "properties" : {
+          "profileUrl" : {
+            "type" : "string",
+            "description" : "프로필 url"
+          },
+          "isFollow" : {
+            "type" : "boolean",
+            "description" : "팔로우 여부"
+          },
+          "teamCount" : {
+            "type" : "number",
+            "description" : "팀 수"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "followerCount" : {
+            "type" : "number",
+            "description" : "팔로워 수"
+          },
+          "followingCount" : {
+            "type" : "number",
+            "description" : "팔로잉 수"
+          }
+        }
+      },
+      "api-v1-giftToasts-members-415586589" : {
+        "type" : "object",
+        "properties" : {
+          "giftToastResponses" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "giftToastId" : {
+                  "type" : "number",
+                  "description" : "giftToastId"
+                },
+                "isOpened" : {
+                  "type" : "boolean",
+                  "description" : "오픈 여부"
+                },
+                "giftToastOwner" : {
+                  "type" : "string",
+                  "description" : "선물 토스트 소유주 이름"
+                },
+                "iconImageUrl" : {
+                  "type" : "string",
+                  "description" : "이미지 url"
+                },
+                "giftToastType" : {
+                  "type" : "string",
+                  "description" : "선물 토스트 타입"
+                },
+                "title" : {
+                  "type" : "string",
+                  "description" : "제목"
+                }
+              }
+            }
+          }
+        }
+      },
+      "api-v1-toastPieces-1819169589" : {
+        "type" : "object",
+        "properties" : {
+          "iconId" : {
+            "type" : "number",
+            "description" : "아이콘 Id"
+          },
+          "giftToastId" : {
+            "type" : "number",
+            "description" : "선물 토스트 Id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          },
+          "toastPieceId" : {
+            "type" : "number",
+            "description" : "토스트 조각 Id"
+          },
+          "contentsUrl" : {
+            "type" : "string",
+            "description" : "내용 url"
+          },
+          "toastPieceImages" : {
+            "type" : "array",
+            "description" : "토스트 조각 이미지 list",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          }
+        }
+      },
+      "api-v1-eventToasts-1479169080" : {
         "type" : "object",
         "properties" : {
           "openedDate" : {
             "type" : "string",
-            "description" : "opened date"
+            "description" : "토스트 개봉 날짜"
           },
           "iconId" : {
             "type" : "number",
             "description" : "아이콘 Id"
           },
-          "memorizedDate" : {
-            "type" : "string",
-            "description" : "memorized date"
-          },
-          "teamId" : {
-            "type" : "number",
-            "description" : "팀 Id"
-          },
           "title" : {
             "type" : "string",
-            "description" : "제목"
+            "description" : "이벤트 토스트 제목"
           }
         }
       },

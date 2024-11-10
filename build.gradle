@@ -210,7 +210,8 @@ tasks.withType(GenerateSwaggerUI) {
 
 bootJar {
 	tasks.named('bootJar') {
-		dependsOn 'createOutputDirectory', ':openapi3'
+//		dependsOn 'test', 'createOutputDirectory', ':openapi3'
+		dependsOn 'createOutputDirectory'
 	}
 
 }
