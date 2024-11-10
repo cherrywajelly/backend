@@ -220,6 +220,153 @@
         }
       }
     },
+    "/api/v1/giftToasts/friend" : {
+      "post" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 저장 - 팔로잉",
+        "description" : "선물 토스트 저장 - 팔로잉",
+        "operationId" : "선물 토스트 저장 - 팔로잉",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-giftToasts-friend-1287747841"
+              },
+              "examples" : {
+                "선물 토스트 저장 - 팔로잉" : {
+                  "value" : "{\"iconId\":1,\"friendId\":1,\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"title\":\"title\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                },
+                "examples" : {
+                  "선물 토스트 저장 - 팔로잉" : {
+                    "value" : "{\"giftToastId\":1,\"title\":\"title\",\"giftToastType\":\"FRIEND\",\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"isOpened\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/giftToasts/group" : {
+      "post" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 저장 - 그룹",
+        "description" : "선물 토스트 저장 - 그룹",
+        "operationId" : "선물 토스트 저장 - 그룹",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-giftToasts-group-1268439489"
+              },
+              "examples" : {
+                "선물 토스트 저장 - 그룹" : {
+                  "value" : "{\"iconId\":1,\"teamId\":1,\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"title\":\"title\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                },
+                "examples" : {
+                  "선물 토스트 저장 - 그룹" : {
+                    "value" : "{\"giftToastId\":1,\"title\":\"title\",\"giftToastType\":\"GROUP\",\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"isOpened\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/giftToasts/mine" : {
+      "post" : {
+        "tags" : [ "선물 토스트" ],
+        "summary" : "선물 토스트 저장 - 나에게",
+        "description" : "선물 토스트 저장 - 나에게",
+        "operationId" : "선물 토스트 저장 - 나에게",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "test accessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "test accessToken"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-giftToasts-mine-108434367"
+              },
+              "examples" : {
+                "선물 토스트 저장 - 나에게" : {
+                  "value" : "{\"iconId\":1,\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"title\":\"title\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-giftToasts-mine1580334327"
+                },
+                "examples" : {
+                  "선물 토스트 저장 - 나에게" : {
+                    "value" : "{\"giftToastId\":1,\"title\":\"title\",\"giftToastType\":\"MINE\",\"memorizedDate\":\"2024-01-01\",\"openedDate\":\"2024-01-01\",\"isOpened\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/login/google" : {
       "get" : {
         "tags" : [ "로그인" ],
@@ -666,6 +813,31 @@
           }
         }
       },
+      "api-v1-giftToasts-friend-1287747841" : {
+        "type" : "object",
+        "properties" : {
+          "openedDate" : {
+            "type" : "string",
+            "description" : "opened date"
+          },
+          "iconId" : {
+            "type" : "number",
+            "description" : "아이콘 Id"
+          },
+          "friendId" : {
+            "type" : "number",
+            "description" : "팔로잉 Id"
+          },
+          "memorizedDate" : {
+            "type" : "string",
+            "description" : "memorized date"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          }
+        }
+      },
       "api-v1-members-memberId-info1237683137" : {
         "type" : "object",
         "properties" : {
@@ -696,6 +868,35 @@
           }
         }
       },
+      "api-v1-giftToasts-mine1580334327" : {
+        "type" : "object",
+        "properties" : {
+          "openedDate" : {
+            "type" : "string",
+            "description" : "opened date"
+          },
+          "giftToastId" : {
+            "type" : "number",
+            "description" : "선물 토스트 Id"
+          },
+          "isOpened" : {
+            "type" : "boolean",
+            "description" : "open 여부"
+          },
+          "memorizedDate" : {
+            "type" : "string",
+            "description" : "memorized date"
+          },
+          "giftToastType" : {
+            "type" : "string",
+            "description" : "선물 토스트 타입"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          }
+        }
+      },
       "api-v1-follows-followings502965373" : {
         "type" : "object",
         "properties" : {
@@ -718,6 +919,52 @@
                 }
               }
             }
+          }
+        }
+      },
+      "api-v1-giftToasts-mine-108434367" : {
+        "type" : "object",
+        "properties" : {
+          "openedDate" : {
+            "type" : "string",
+            "description" : "opened date"
+          },
+          "iconId" : {
+            "type" : "number",
+            "description" : "아이콘 Id"
+          },
+          "memorizedDate" : {
+            "type" : "string",
+            "description" : "memorized date"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
+          }
+        }
+      },
+      "api-v1-giftToasts-group-1268439489" : {
+        "type" : "object",
+        "properties" : {
+          "openedDate" : {
+            "type" : "string",
+            "description" : "opened date"
+          },
+          "iconId" : {
+            "type" : "number",
+            "description" : "아이콘 Id"
+          },
+          "memorizedDate" : {
+            "type" : "string",
+            "description" : "memorized date"
+          },
+          "teamId" : {
+            "type" : "number",
+            "description" : "팀 Id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "제목"
           }
         }
       },

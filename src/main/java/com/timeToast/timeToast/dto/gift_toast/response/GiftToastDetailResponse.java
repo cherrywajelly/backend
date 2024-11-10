@@ -19,9 +19,10 @@ public record GiftToastDetailResponse(
         LocalDate openedDate,
         LocalDate createdDate,
         Boolean isOpened,
+        long dDay,
         ToastPieceResponses toastPieceResponses
 ) {
-    public static GiftToastDetailResponse from(final GiftToast giftToast, final String iconImageUrl,
+    public static GiftToastDetailResponse from( final GiftToast giftToast, final String iconImageUrl, final long dDay,
                                          final String giftToastOwner, final ToastPieceResponses toastPieceResponses){
         return GiftToastDetailResponse.builder()
                 .giftToastId(giftToast.getId())
@@ -33,6 +34,7 @@ public record GiftToastDetailResponse(
                 .openedDate(giftToast.getOpenedDate())
                 .createdDate(giftToast.getCreatedAt().toLocalDate())
                 .isOpened(giftToast.getIsOpened())
+                .dDay(dDay)
                 .toastPieceResponses(toastPieceResponses)
                 .build();
     }
