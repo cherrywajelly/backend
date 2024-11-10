@@ -52,7 +52,6 @@ public class LoginServiceImpl implements LoginService {
                             .email(email)
                             .loginType(loginType)
                             .memberRole(MemberRole.USER)
-                            .is_delete(false)
                             .build()
             );
             addBuiltInIconTest(member);

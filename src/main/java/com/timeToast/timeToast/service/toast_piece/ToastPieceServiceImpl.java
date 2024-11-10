@@ -107,6 +107,10 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         List<ToastPieceResponse> toastPieceResponses = new ArrayList<>();
         List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToastId);
 
+        for (ToastPiece toastPiece : toastPieces) {
+            System.out.println(toastPiece);
+        }
+
         toastPieces.forEach(
                 toastPiece -> toastPieceResponses.add(getToastPiece(toastPiece.getId()))
         );

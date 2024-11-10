@@ -76,7 +76,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         iconRepository.getById(giftToastGroupRequest.iconId());
         _checkDateValidation(giftToastGroupRequest.openedDate(), giftToastGroupRequest.memorizedDate());
 
-        if(teamMemberRepository.findByMemberIdAndTeamId(memberId, giftToastGroupRequest.teamId()).isPresent()){
+        if(!teamMemberRepository.findByMemberIdAndTeamId(memberId, giftToastGroupRequest.teamId()).isPresent()){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
 
@@ -252,6 +252,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     private void _checkDateValidation(final LocalDate openedDate, final LocalDate memorizedDate){
         if((openedDate.isBefore(LocalDate.now()) || openedDate.isEqual(LocalDate.now()))
                 && (memorizedDate.isEqual(LocalDate.now()) && memorizedDate.isAfter(LocalDate.now()))){
+            System.out.println("HERE");
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
     }

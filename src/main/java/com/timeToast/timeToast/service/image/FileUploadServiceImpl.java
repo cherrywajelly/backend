@@ -39,12 +39,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         try {
             InputStream inputStream = file.getInputStream();
-            upload(endpoint, inputStream);
+            return upload(endpoint, inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return null;
     }
 
 
