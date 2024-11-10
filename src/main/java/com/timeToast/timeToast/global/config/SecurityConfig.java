@@ -41,7 +41,9 @@ public class SecurityConfig {
                 .headers(httpSecurityHeaders -> httpSecurityHeaders.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers("/h2-console/**", "/docs/**", "/actuator/**", "/v3/api-docs/**", "/api/v1/login/**", "/api/v1/members/refreshToken").permitAll();
+                            request.requestMatchers("/h2-console/**", "/actuator/**",
+                                    "/api/swagger-ui/** ","/docs/**", "/v3/api-docs/**", "/swagger-ui/**","/api-docs/**",
+                                    "/api/v1/login/**", "/api/v1/members/refreshToken").permitAll();
                             request.anyRequest().authenticated();
 
                         }
@@ -59,7 +61,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

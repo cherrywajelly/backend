@@ -1,58 +1,88 @@
 package com.timeToast.timeToast.service.image;
 
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
-import com.oracle.bmc.objectstorage.model.CreatePreauthenticatedRequestDetails;
-import com.oracle.bmc.objectstorage.requests.CreatePreauthenticatedRequestRequest;
 import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
-import com.oracle.bmc.objectstorage.responses.CreatePreauthenticatedRequestResponse;
 import com.timeToast.timeToast.global.config.OsClientConfiguration;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
-    String bucketName = "timetoast_bucket";
 
-    String namespace = "axmpikvsv3z9";
+    @Value("${spring.cloud.oci.bucketname.static}")
+    private String bucketName;
 
-    private final String urlPrefix = "https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/";
+    @Value("${spring.cloud.oci.namespace.static}")
+    private String namespace;
+
+
+    @Value("${spring.cloud.oci.url.static}")
+    private String urlPrefix;
 
     private final OsClientConfiguration ociConfig;
 
-    public String upload(MultipartFile file, String id) {
+    //이미지 업로드
+    @Transactional
+    @Override
+    public String uploadImages(MultipartFile file, String endpoint) {
 
         try {
             InputStream inputStream = file.getInputStream();
+            upload(endpoint, inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            //request 생성
+        return null;
+    }
+
+
+    //텍스트 업로드
+    @Transactional
+    @Override
+    public String uploadTexts(String text, String endpoint) {
+
+        InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+        upload(endpoint, inputStream);
+
+        return null;
+    }
+
+
+    //oci 업로드
+    @Transactional
+    public String upload(String endpoint, InputStream inputStream) {
+        try {
             PutObjectRequest putObjectRequest =
                     PutObjectRequest.builder()
                             .namespaceName(namespace)
                             .bucketName(bucketName)
-                            .objectName(id)
+                            .objectName(endpoint)
                             .putObjectBody(inputStream)
                             .build();
 
             ObjectStorageClient storage = ociConfig.getObjectStorage();
             if (storage != null) {
                 ociConfig.getObjectStorage().putObject(putObjectRequest);
-                return urlPrefix+putObjectRequest.getObjectName();
+                return urlPrefix + putObjectRequest.getObjectName();
             } else {
-                System.err.println("ObjectStorage_client_is_null. Cannot perform putObject.");
+                log.error("ObjectStorage_client_is_null. Cannot perform putObject.");
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        }finally{
+        } finally {
             try {
                 ociConfig.getObjectStorage().close();
             } catch (Exception e) {
@@ -61,5 +91,4 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
         return null;
     }
-
 }

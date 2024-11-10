@@ -8,6 +8,7 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -15,9 +16,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -34,10 +33,10 @@ public class TeamControllerTest extends BaseControllerTests {
         return new TeamController(teamService);
     }
 
-    @DisplayName("사용자는 새로운 팀을 생성할 수 있다.")
+    @DisplayName("새로운 팀을 생성할 수 있다.")
     @WithMockCustomUser
     @Test
-    void createTeam() throws Exception {
+    void saveTeam() throws Exception {
         TeamSaveRequest teamSaveRequest = new TeamSaveRequest("team1", List.of(1L,2L));
         String json = objectMapper.writeValueAsString(teamSaveRequest);
 
@@ -48,10 +47,10 @@ public class TeamControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팀 정보 저장",
+                .andDo(document("팀 생성하기",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팀")
-                                .summary("팀 생성하기")
+                                .summary("팀 생성")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -59,11 +58,44 @@ public class TeamControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamName").type(STRING).description("팀 이름"),
                                         fieldWithPath("teamMembers").type(ARRAY).description("팀 구성원 memberId list")
                                 )
+                                .responseFields(
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 id"),
+                                        fieldWithPath("teamName").type(STRING).description("팀 이름"),
+                                        fieldWithPath("teamProfileUrl").type(STRING).description("팀 profile url")
+                                )
                                 .build()
                         )));
     }
 
-    @DisplayName("사용자는 자신의 팀 목록을 조회할 수 있다.")
+    @DisplayName("팀 프로필 사진을 변경할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void saveProfileImage() throws Exception {
+
+        mockMvc.perform(
+                        multipart("/api/v1/teams/{teamId}/image",1)
+                                .file("teamProfileImage", "hello.png".getBytes())
+                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("팀 프로필 사진 저장",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팀")
+                                .summary("팀 프로필 사진 저장")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 id"),
+                                        fieldWithPath("teamName").type(STRING).description("팀 이름"),
+                                        fieldWithPath("teamProfileUrl").type(STRING).description("팀 profile url")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자의 팀 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void findTeamList() throws Exception {
@@ -76,7 +108,7 @@ public class TeamControllerTest extends BaseControllerTests {
                 .andDo(document("로그인한 사용자의 팀 목록 조회하기",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팀")
-                                .summary("사용자 팀 목록 조회")
+                                .summary("팀 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -89,7 +121,7 @@ public class TeamControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("사용자는 자신의 팀을 삭제할 수 있다.")
+    @DisplayName("로그인한 사용자는 자신의 팀을 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
     void deleteTeam() throws Exception {
