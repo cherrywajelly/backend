@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.repository.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     @Override
     public List<IconGroup> findByIconBuiltin(final IconBuiltin iconBuiltin) {
         return iconGroupJpaRepository.findByIconBuiltin(iconBuiltin);
+    }
+
+    @Override
+    public List<IconGroup>  findAllByIconGroupNotOpen(){
+        return iconGroupJpaRepository.findAllByIconType(IconType.NOT_OPEN);
     }
     @Override
     public IconGroup save(final IconGroup iconGroup) {

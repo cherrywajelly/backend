@@ -8,5 +8,6 @@ import java.util.List;
 public interface IconGroupRepository {
     IconGroup getById(final long iconGroupId);
     List<IconGroup> findByIconBuiltin(final IconBuiltin iconBuiltin);
+    List<IconGroup>  findAllByIconGroupNotOpen();
     IconGroup save(final IconGroup iconGroup);
 }

@@ -46,6 +46,17 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
                 .fetch();
     }
 
+    @Override
+    public List<GiftToast> getGiftToastByMemberIdAndNotOpen(final long memberId) {
+
+        return queryFactory
+                .select(giftToast)
+                .from(giftToast)
+                .join(giftToastOwner)
+                .on(giftToastOwner.giftToastId.eq(giftToast.id), giftToastOwner.memberId.eq(memberId))
+                .where(giftToastOwner.isNotNull(), giftToast.isOpened.isFalse())
+                .fetch();
+    }
 
 
     @Override

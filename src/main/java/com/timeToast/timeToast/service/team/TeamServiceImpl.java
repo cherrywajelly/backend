@@ -86,10 +86,10 @@ public class TeamServiceImpl implements TeamService {
                 new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
-        String groupProfileUrl = TEAM.value() + SLASH.value() + IMAGE.value() + team.getId();
-        fileUploadService.uploadImages(teamProfileImage, groupProfileUrl);
+        String teamUrl = TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
+        String teamProfileUrl = fileUploadService.uploadImages(teamProfileImage, teamUrl);
 
-        team.updateTeamProfileUrl(groupProfileUrl);
+        team.updateTeamProfileUrl(teamProfileUrl);
         return TeamResponse.from(team);
     }
 
