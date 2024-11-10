@@ -208,7 +208,8 @@ class MemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
                                         fieldWithPath("followingCount").type(NUMBER).description("팔로잉 수"),
                                         fieldWithPath("followerCount").type(NUMBER).description("팔로워 수"),
-                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수")
+                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수"),
+                                        fieldWithPath("isFollow").type(BOOLEAN).description("팔로우 여부")
                                 )
                                 .build()
                         )));
@@ -239,7 +240,8 @@ class MemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
                                         fieldWithPath("followingCount").type(NUMBER).description("팔로잉 수"),
                                         fieldWithPath("followerCount").type(NUMBER).description("팔로워 수"),
-                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수")
+                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수"),
+                                        fieldWithPath("isFollow").type(BOOLEAN).description("팔로우 여부")
                                 )
                                 .build()
                         )));

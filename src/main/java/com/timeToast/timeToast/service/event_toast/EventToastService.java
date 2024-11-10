@@ -11,11 +11,12 @@ import java.util.List;
 public interface EventToastService {
     void postEventToast(EventToastPostRequest eventToastPostRequest, final long memberId);
 
-    List<EventToastResponses> getEventToasts(final long memberId);
-
     List<EventToastOwnResponse> getOwnEventToastList(final long memberId);
 
     List<EventToastFriendResponse> getFriendEventToastList(final long memberId, final long friendId);
+
+    List<EventToastResponses> getEventToasts(final long memberId);
+
     EventToastResponse getEventToast(final long memberId, final long eventToastId);
 
     void deleteEventToast(final long memberId, final long eventToastId);

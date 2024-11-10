@@ -10,5 +10,6 @@ public interface MemberService {
     void postNickname(final String nickname, final long memberId);
     void nicknameValidation(final String nickname);
     MemberInfoResponse getMemberInfo(final long memberId);
-    MemberProfileResponse getMemberProfile(final long memberId);
+    MemberProfileResponse getMemberProfileByLogin(final long memberId);
+    MemberProfileResponse getMemberProfile(final long loginId, final long memberId);
 }
