@@ -71,7 +71,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
         eventToasts.forEach(
                 eventToast -> {
                     boolean isShowcase = showcases.stream()
-                            .filter(showcase -> showcase.getId().equals(eventToast.getId())).findFirst().isPresent();
+                            .filter(showcase -> showcase.getEventToastId().equals(eventToast.getId())).findFirst().isPresent();
 
                     String iconUrl = iconRepository.getById(eventToast.getIconId()).getIconImageUrl();
 
