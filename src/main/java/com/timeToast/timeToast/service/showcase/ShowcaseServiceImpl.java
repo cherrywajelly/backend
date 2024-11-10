@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
@@ -70,16 +71,21 @@ public class ShowcaseServiceImpl implements ShowcaseService{
 
         eventToasts.forEach(
                 eventToast -> {
-                    boolean isShowcase = showcases.stream()
-                            .filter(showcase -> showcase.getEventToastId().equals(eventToast.getId())).findFirst().isPresent();
 
                     String iconUrl = iconRepository.getById(eventToast.getIconId()).getIconImageUrl();
 
-                    showcaseEditResponses.add(
-                            ShowcaseEditResponse.from(eventToast, iconUrl, isShowcase));
+                    Optional<Showcase> showcase = showcases.stream().filter(findShowcase -> findShowcase.getEventToastId().equals(eventToast.getId())).findFirst();
+                    if(showcase.isPresent()){
+                        showcaseEditResponses.add(
+                                ShowcaseEditResponse.from(eventToast, iconUrl, true, showcase.get().getId()));
+                    }else{
+                        showcaseEditResponses.add(
+                                ShowcaseEditResponse.from(eventToast, iconUrl, false,  null));
+                    }
+
+
                 }
         );
-
 
         return new ShowcaseEditResponses(showcaseEditResponses);
     }
