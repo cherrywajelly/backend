@@ -10,12 +10,12 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +29,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.TOAST_PI
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
 @Service
+@Slf4j
 public class ToastPieceServiceImpl implements ToastPieceService{
 
     private final ToastPieceRepository toastPieceRepository;
@@ -51,6 +52,8 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     @Override
     public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest) {
         ToastPiece toastPiece = toastPieceRepository.saveToastPiece(ToastPieceRequest.to(memberId, toastPieceRequest));
+
+        log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
         return ToastPieceSaveResponse.from(toastPiece, List.of());
     }
 
@@ -68,7 +71,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         String toastPieceContentsUrl = fileUploadService.uploadImages(contents, saveUrl);
 
         toastPiece.updateContentsUrl(toastPieceContentsUrl);
-
+        log.info("save toastPiece contents {} by {}", toastPiece.getId(), memberId);
         return ToastPieceSaveResponse.from(toastPiece, List.of());
     }
 
@@ -98,6 +101,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                 }
         );
 
+        log.info("save toastPiece images {} by {}", toastPiece.getId(), memberId);
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
@@ -153,6 +157,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
             throw new BadRequestException(INVALID_TOAST_PIECE.getMessage());
         }
 
+        log.info("delete toastPiece contents {} by {}", toastPiece.getId(), memberId);
         toastPieceImageRepository.deleteAllByToastPieceId(toastPieceId);
         toastPieceRepository.deleteToastPiece(toastPiece);
     }

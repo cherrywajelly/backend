@@ -45,14 +45,12 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamResponse saveTeam(final long memberId, final TeamSaveRequest teamSaveRequest) {
 
-        //save group
         Team team = Team.builder()
                 .name(teamSaveRequest.teamName())
                 .build();
 
         Team saveTeam = teamRepository.save(team);
 
-        //save member_group
         teamMemberRepository.save(
                 TeamMember.builder()
                         .teamId(saveTeam.getId())
@@ -75,6 +73,8 @@ public class TeamServiceImpl implements TeamService {
                 }
         );
 
+        log.info("save team {} by {}", team.getId(), memberId);
+
         return TeamResponse.from(saveTeam);
     }
 
@@ -90,6 +90,8 @@ public class TeamServiceImpl implements TeamService {
         String teamProfileUrl = fileUploadService.uploadImages(teamProfileImage, teamUrl);
 
         team.updateTeamProfileUrl(teamProfileUrl);
+
+        log.info("save team Image {}", team.getId());
         return TeamResponse.from(team);
     }
 
@@ -126,6 +128,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
 
         if(teamMembers.isEmpty()){
+            log.info("delete team {}", teamId);
             teamRepository.deleteByTeamId(teamId);
         }
 

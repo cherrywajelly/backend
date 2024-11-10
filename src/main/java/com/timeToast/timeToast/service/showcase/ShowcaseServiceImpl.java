@@ -9,6 +9,7 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
 @Service
+@Slf4j
 public class ShowcaseServiceImpl implements ShowcaseService{
 
     private final ShowcaseRepository showcaseRepository;
@@ -53,6 +55,8 @@ public class ShowcaseServiceImpl implements ShowcaseService{
                     showcaseSaveResponses.add(findEventToast.getTitle());
                 }
         );
+
+        log.info("save showcase by {}", memberId);
 
         return new ShowcaseSaveResponses(showcaseSaveResponses);
     }
@@ -109,6 +113,8 @@ public class ShowcaseServiceImpl implements ShowcaseService{
         }
 
         showcaseRepository.deleteShowcase(showcase);
+
+        log.info("delete showcase {} by {}", showcaseId, memberId);
 
     }
 }
