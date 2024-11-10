@@ -23,9 +23,11 @@ public class IconGroup extends BaseTime {
     private Long memberId;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private IconType iconType;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private IconBuiltin iconBuiltin;
 
     @Column(nullable = false)
@@ -34,6 +36,7 @@ public class IconGroup extends BaseTime {
     @Column(nullable = false)
     private long price;
 
+    @Enumerated(EnumType.STRING)
     private IconState iconState;
 
     @Builder
