@@ -3,7 +3,7 @@ package com.timeToast.timeToast.controller.showcase;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseResponses;
-import com.timeToast.timeToast.dto.showcase.response.ShowcaseSaveResponse;
+import com.timeToast.timeToast.dto.showcase.response.ShowcaseEditResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseSaveResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.showcase.ShowcaseService;
@@ -20,12 +20,12 @@ public class ShowcaseController {
     }
 
     @PostMapping("")
-    public ShowcaseSaveResponse saveShowcase(@Login final LoginMember loginMember, @RequestBody final ShowcaseSaveRequest showcaseSaveRequest){
+    public ShowcaseSaveResponses saveShowcase(@Login final LoginMember loginMember, @RequestBody final ShowcaseSaveRequest showcaseSaveRequest){
         return showcaseService.saveShowcase(loginMember.id(), showcaseSaveRequest);
     }
 
     @GetMapping("")
-    public ShowcaseSaveResponses getShowcaseSaveList(@Login final LoginMember loginMember){
+    public ShowcaseEditResponses getShowcaseSaveList(@Login final LoginMember loginMember){
         return showcaseService.getShowcaseSaveList(loginMember.id());
     }
 
@@ -40,8 +40,8 @@ public class ShowcaseController {
     }
 
     @DeleteMapping("/{showcaseId}")
-    public void deleteShowcase(@PathVariable final long showcaseId){
-        showcaseService.deleteShowcase(showcaseId);
+    public void deleteShowcase(@Login final LoginMember loginMember, @PathVariable final long showcaseId){
+        showcaseService.deleteShowcase(loginMember.id(), showcaseId);
     }
 
 }

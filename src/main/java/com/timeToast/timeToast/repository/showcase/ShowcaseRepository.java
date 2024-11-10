@@ -10,4 +10,5 @@ public interface ShowcaseRepository {
     Optional<Showcase> findByShowcaseId(final long showcaseId);
     List<Showcase> findAllByMemberId(final long memberId);
     void deleteShowcase(final Showcase showcase);
+    void deleteAllByEventToastId(final long eventToastId);
 }

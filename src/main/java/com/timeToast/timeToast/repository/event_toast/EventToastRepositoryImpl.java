@@ -15,17 +15,6 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     private final EventToastJpaRepository eventToastJpaRepository;
 
     @Override
-    public List<EventToast> findByMemberId(final long memberId) {
-        return eventToastJpaRepository.findByMemberId(memberId);
-    }
-
-    @Override
-    public EventToast getById(final long eventToastId) {
-        return eventToastJpaRepository.findById(eventToastId).orElseThrow(() -> new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage()));
-    }
-
-
-    @Override
     public EventToast save(final EventToast eventToast) {
         return eventToastJpaRepository.save(eventToast);
     }
@@ -33,6 +22,17 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     @Override
     public List<EventToast> saveAll(List<EventToast> eventToasts) { return eventToastJpaRepository.saveAll(eventToasts); }
 
+    @Override
+    public EventToast getById(final long eventToastId) {
+        return eventToastJpaRepository.findById(eventToastId).orElseThrow(() -> new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage()));
+    }
+
+    @Override
+    public List<EventToast> findByMemberId(final long memberId) {
+        return eventToastJpaRepository.findByMemberId(memberId);
+    }
+
+    @Override
     public EventToast findByIdAndMemberId(final long eventToastId, final long memberId) {
         return eventToastJpaRepository.findByIdAndMemberId(eventToastId, memberId);
     }

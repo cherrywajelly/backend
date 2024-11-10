@@ -1,4 +1,7 @@
 package com.timeToast.timeToast.dto.showcase.request;
 
-public record ShowcaseSaveRequest() {
+import java.util.List;
+public record ShowcaseSaveRequest(
+        List<Long> showcases
+) {
 }
