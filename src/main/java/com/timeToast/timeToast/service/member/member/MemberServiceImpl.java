@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService{
 
     private String getMemberProfileImage(final Member member){
 
-        if (member.getMemberProfileUrl().equals(null)){
+        if (member.getMemberProfileUrl()==null){
             return iconRepository.getDefaultIcon().getIconImageUrl();
         }
         return member.getMemberProfileUrl();
