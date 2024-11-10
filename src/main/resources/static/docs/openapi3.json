@@ -34,11 +34,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-members-memberId-1412232664"
+                  "$ref" : "#/components/schemas/api-v1-members-memberId1778634967"
                 },
                 "examples" : {
                   "로그인한 사용자의 프로필 조회" : {
-                    "value" : "{\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"followingCount\":0,\"followerCount\":0,\"teamCount\":1}"
+                    "value" : "{\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"followingCount\":0,\"followerCount\":0,\"teamCount\":1,\"isFollow\":false}"
                   }
                 }
               }
@@ -548,11 +548,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-members-memberId-1412232664"
+                  "$ref" : "#/components/schemas/api-v1-members-memberId1778634967"
                 },
                 "examples" : {
                   "사용자의 프로필 조회" : {
-                    "value" : "{\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"followingCount\":0,\"followerCount\":0,\"teamCount\":1}"
+                    "value" : "{\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"followingCount\":0,\"followerCount\":0,\"teamCount\":1,\"isFollow\":false}"
                   }
                 }
               }
@@ -851,6 +851,35 @@
           }
         }
       },
+      "api-v1-members-memberId1778634967" : {
+        "type" : "object",
+        "properties" : {
+          "profileUrl" : {
+            "type" : "string",
+            "description" : "프로필 url"
+          },
+          "isFollow" : {
+            "type" : "boolean",
+            "description" : "팔로우 여부"
+          },
+          "teamCount" : {
+            "type" : "number",
+            "description" : "팀 수"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "followerCount" : {
+            "type" : "number",
+            "description" : "팔로워 수"
+          },
+          "followingCount" : {
+            "type" : "number",
+            "description" : "팔로잉 수"
+          }
+        }
+      },
       "api-v1-login-kakao1424602255" : {
         "type" : "object",
         "properties" : {
@@ -965,31 +994,6 @@
           "title" : {
             "type" : "string",
             "description" : "제목"
-          }
-        }
-      },
-      "api-v1-members-memberId-1412232664" : {
-        "type" : "object",
-        "properties" : {
-          "profileUrl" : {
-            "type" : "string",
-            "description" : "프로필 url"
-          },
-          "teamCount" : {
-            "type" : "number",
-            "description" : "팀 수"
-          },
-          "nickname" : {
-            "type" : "string",
-            "description" : "닉네임"
-          },
-          "followerCount" : {
-            "type" : "number",
-            "description" : "팔로워 수"
-          },
-          "followingCount" : {
-            "type" : "number",
-            "description" : "팔로잉 수"
           }
         }
       },
