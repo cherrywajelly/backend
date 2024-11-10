@@ -5,6 +5,7 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.showcase.Showcase;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
@@ -19,6 +20,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,7 @@ public class EventToastServiceImpl implements EventToastService{
     private final IconRepository iconRepository;
     private final FollowRepository followRepository;
     private final JamRepository jamRepository;
+    private final ShowcaseRepository showcaseRepository;
 
 
     @Transactional
@@ -168,6 +171,7 @@ public class EventToastServiceImpl implements EventToastService{
         if(eventToastRepository.getByIdAndMemberId(eventToastId, memberId) == null) {
             throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
         } else {
+            showcaseRepository.deleteAllByEventToastId(eventToastId);
             eventToastRepository.deleteById(eventToastId);
             log.info("delete event toast");
         }
