@@ -149,3 +149,12 @@ CREATE TABLE toast_piece_image (
                                    PRIMARY KEY (toast_piece_image_id)
 );
 
+CREATE TABLE showcase (
+                          showcase_id BIGINT AUTO_INCREMENT,
+                          member_id BIGINT,
+                          event_toast_id BIGINT,
+                          created_at DATETIME,
+                          last_modified_at DATETIME,
+                          PRIMARY KEY (showcase_id)
+);
+

@@ -1,9 +1,8 @@
 package com.timeToast.timeToast.controller.search;
 
-import com.timeToast.timeToast.dto.search.SearchRequest;
+import com.timeToast.timeToast.dto.search.request.SearchRequest;
 import com.timeToast.timeToast.dto.search.response.SearchResponses;
 import com.timeToast.timeToast.service.search.SearchService;
-import jakarta.validation.constraints.Positive;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/search")
