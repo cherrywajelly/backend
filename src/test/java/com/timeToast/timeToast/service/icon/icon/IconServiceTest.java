@@ -14,8 +14,4 @@ public class IconServiceTest implements IconService{
 
     }
 
-    @Override
-    public Icon getNotOpenIcon() {
-        return new Icon("imageUrl", 1L);
-    }
 }

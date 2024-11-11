@@ -50,13 +50,12 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
-    private final IconService iconService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final ToastPieceImageRepository toastPieceImageRepository, final ToastPieceService toastPieceService,
                                 final ToastPieceRepository toastPieceRepository, final MemberRepository memberRepository,
                                 final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
-                                final IconRepository iconRepository, final IconService iconService) {
+                                final IconRepository iconRepository) {
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.toastPieceService = toastPieceService;
@@ -66,7 +65,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         this.teamMemberRepository = teamMemberRepository;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
-        this.iconService = iconService;
     }
 
 
@@ -164,9 +162,6 @@ public class GiftToastServiceImpl implements GiftToastService{
             giftToastOwner = memberRepository.getById(memberId).getNickname();
         }
 
-        if(!giftToast.getIsOpened()){
-            _updateIsOpened(giftToast);
-        }
 
         if(giftToast.getIsOpened()){
             return GiftToastDetailResponse.from(
@@ -204,15 +199,11 @@ public class GiftToastServiceImpl implements GiftToastService{
                         giftToastOwner = memberRepository.getById(memberId).getNickname();
                     }
 
-                    if(!giftToast.getIsOpened()){
-                        _updateIsOpened(giftToast);
-                    }
-
                     String iconImageUrl;
                     if(giftToast.getIsOpened()){
                         iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
                     }else{
-                        iconImageUrl = iconService.getNotOpenIcon().getIconImageUrl();
+                        iconImageUrl = notOpenImageUrl;
                     }
 
                     giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
@@ -270,12 +261,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
     }
 
-    private void _updateIsOpened(final GiftToast giftToast){
-        if(giftToast.getOpenedDate().isBefore(LocalDate.now()) && giftToastOwnerRepository.checkAllGiftToastOwnerWrote(giftToast.getId())){
-            giftToast.updateIsOpened(true);
-        }
-    }
-
     @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void updateIsOpen(){
@@ -297,6 +282,8 @@ public class GiftToastServiceImpl implements GiftToastService{
 
                 }
         );
+
+        log.info("update gift toast's is open");
     }
 
 
