@@ -42,7 +42,7 @@ public class TeamControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/teams")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
                 )
@@ -75,7 +75,7 @@ public class TeamControllerTest extends BaseControllerTests {
         mockMvc.perform(
                         multipart("/api/v1/teams/{teamId}/image",1)
                                 .file("teamProfileImage", "hello.png".getBytes())
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isOk())
@@ -102,7 +102,7 @@ public class TeamControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/teams")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 팀 목록 조회하기",
@@ -128,7 +128,7 @@ public class TeamControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/teams/{teamId}", 1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 팀 삭제하기",

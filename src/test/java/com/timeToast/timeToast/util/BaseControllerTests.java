@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.jwt.CustomUserDetailService;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.global.resolver.LoginMemberResolver;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
@@ -36,6 +38,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public abstract class BaseControllerTests extends TestContainerSupport{
 
+    protected static final Long CAFE_ID = 1L;
+    protected static String USER_ACCESS_TOKEN;
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper  = serializingObjectMapper();
 
@@ -44,6 +48,11 @@ public abstract class BaseControllerTests extends TestContainerSupport{
 
     @Autowired
     protected MemberRepository memberRepository;
+
+    @BeforeAll
+    static void setUpAuth() {
+        USER_ACCESS_TOKEN = "Bearer " + "eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r";
+    }
 
     @BeforeEach
     void setUp(final RestDocumentationContextProvider provider) {

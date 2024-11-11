@@ -42,7 +42,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/showcases")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
 
@@ -73,7 +73,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/showcases")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -104,7 +104,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/showcases/members")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -131,7 +131,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/showcases/members/{memberId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -161,7 +161,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/showcases/{showcaseId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())

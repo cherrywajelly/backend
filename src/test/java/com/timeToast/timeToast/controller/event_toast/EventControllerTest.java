@@ -44,7 +44,7 @@ public class EventControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/eventToasts")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
                 )
@@ -73,7 +73,7 @@ public class EventControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/eventToasts/{eventToastId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("이벤트 토스트 삭제",

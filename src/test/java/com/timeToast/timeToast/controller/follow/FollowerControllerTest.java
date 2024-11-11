@@ -37,7 +37,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/follows/followings/{memberId}", 2)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로우 정보 저장",
@@ -61,7 +61,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/follows/followings")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로잉 리스트 조회",
@@ -88,7 +88,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/follows/followers")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로워 리스트 조회",
@@ -115,7 +115,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/follows/followings/{memberId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로잉 삭제",
@@ -140,7 +140,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/follows/followers/{memberId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로워 삭제",
