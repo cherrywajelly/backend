@@ -228,6 +228,9 @@ tasks.withType(GenerateSwaggerUI) {
 
 bootJar {
 //	dependsOn 'createOutputDirectory', ':openapi3'
+	from("${openapi3.outputDirectory}") {
+		into 'static/docs'
+	}
 }
 
 jar.enabled = false
