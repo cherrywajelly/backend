@@ -39,7 +39,7 @@ class MemberControllerTest extends BaseControllerTests {
         mockMvc.perform(
                         multipart("/api/v1/members/profile-image")
                                 .file("profileImage", "hello.png".getBytes())
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         put("/api/v1/members?nickname=nickname")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 닉네임 변경",
@@ -86,7 +86,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/members/nickname-validation?nickname=nickname")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("닉네임 중복 확인",
@@ -110,7 +110,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/members/refreshToken?refreshToken=refreshToken")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("닉네임 중복 확인",
@@ -140,7 +140,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/members/info")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 닉네임, 프로필 사진 조회",
@@ -165,7 +165,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/members/{memberId}/info",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("사용자의 닉네임, 프로필 사진 조회",
@@ -193,7 +193,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/members")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 프로필 조회",
@@ -222,7 +222,7 @@ class MemberControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/members/{memberId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("사용자의 프로필 조회",

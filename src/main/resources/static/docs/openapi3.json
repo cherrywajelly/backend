@@ -3,7 +3,7 @@
   "info" : {
     "title" : "TimeToast API 문서",
     "description" : "TimeToast API Docs",
-    "version" : "1.0.0"
+    "version" : "0.0.1"
   },
   "servers" : [ {
     "url" : "https://dev-back.timetoast.app"
@@ -26,7 +26,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -46,7 +46,10 @@
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/members" : {
@@ -63,7 +66,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -81,7 +84,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "put" : {
         "tags" : [ "멤버" ],
@@ -96,13 +102,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/showcases" : {
@@ -119,7 +128,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -137,7 +146,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "post" : {
         "tags" : [ "진열장" ],
@@ -152,7 +164,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -184,7 +196,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/teams" : {
@@ -201,7 +216,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -219,7 +234,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "post" : {
         "tags" : [ "팀" ],
@@ -234,7 +252,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -266,7 +284,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/toastPieces" : {
@@ -283,7 +304,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -315,7 +336,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/eventToasts/{eventToastId}" : {
@@ -340,13 +364,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/follows/followers" : {
@@ -363,7 +390,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -381,7 +408,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/follows/followings" : {
@@ -398,7 +428,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -416,7 +446,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/giftToasts/friend" : {
@@ -433,7 +466,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -465,7 +498,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/giftToasts/members" : {
@@ -482,7 +518,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -500,7 +536,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/giftToasts/mine" : {
@@ -517,7 +556,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "requestBody" : {
           "content" : {
@@ -549,7 +588,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/giftToasts/{giftToastId}" : {
@@ -574,7 +616,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -592,7 +634,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "delete" : {
         "tags" : [ "선물 토스트" ],
@@ -615,13 +660,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/login/google" : {
@@ -688,7 +736,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -706,7 +754,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/members/nickname-validation" : {
@@ -731,13 +782,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/members/profile-image" : {
@@ -754,7 +808,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -772,7 +826,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/members/{memberId}" : {
@@ -797,7 +854,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -815,7 +872,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/showcases/members" : {
@@ -832,7 +892,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -850,7 +910,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/showcases/{showcaseId}" : {
@@ -875,13 +938,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/teams/{teamId}" : {
@@ -906,13 +972,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/toastPieces/{toastPieceId}" : {
@@ -937,7 +1006,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -949,13 +1018,16 @@
                 },
                 "examples" : {
                   "토스트 조각 상세 조회" : {
-                    "value" : "{\"memberId\":1,\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"iconImageUrl\":\"iconImageUrl\",\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"createdAt\":\"2024-25-11\",\"toastPieceImages\":[\"images\"]}"
+                    "value" : "{\"memberId\":1,\"nickname\":\"nickname\",\"profileUrl\":\"profileUrl\",\"iconImageUrl\":\"iconImageUrl\",\"title\":\"title\",\"contentsUrl\":\"contentsUrl\",\"createdAt\":\"2024-35-11\",\"toastPieceImages\":[\"images\"]}"
                   }
                 }
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "delete" : {
         "tags" : [ "토스트 조각" ],
@@ -978,13 +1050,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/follows/followers/{memberId}" : {
@@ -1009,13 +1084,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/follows/followings/{memberId}" : {
@@ -1040,13 +1118,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       },
       "delete" : {
         "tags" : [ "팔로우" ],
@@ -1069,13 +1150,16 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
             "description" : "200"
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/giftToasts/members/incomplete" : {
@@ -1092,7 +1176,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -1110,7 +1194,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/members/{memberId}/info" : {
@@ -1135,7 +1222,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -1153,7 +1240,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/teams/{teamId}/image" : {
@@ -1178,7 +1268,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -1196,7 +1286,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/toastPieces/{toastPieceId}/contents" : {
@@ -1221,7 +1314,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -1239,7 +1332,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     },
     "/api/v1/toastPieces/{toastPieceId}/images" : {
@@ -1264,7 +1360,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "test accessToken"
+          "example" : "Bearer eyJhbGciOiJIUzM4NCJ9.eyJqdGkiOiI0MjRkMzM2NC1lMzgzLTQ2MzQtYTcwMy0zNzVhMzYyZDA4NTYiLCJpc3MiOiJ0aW1lVG9hc3QuY29tIiwic3ViIjoie1wiaWRcIjozLFwiZW1haWxcIjpcInllaW5pMDQxN0BnbWFpbC5jb21cIixcInJvbGVcIjpcIlVTRVJcIn0iLCJpYXQiOjE3MzEzMDI1NjEsImV4cCI6MTczMTMwNjE2MX0.VbROPXRou8Fwe7cfKoIYeWEma0LLdyaJPl-bAHr2XHsiqqls2SYDDHyn87wUd58r"
         } ],
         "responses" : {
           "200" : {
@@ -1282,7 +1378,10 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearerAuthJWT" : [ ]
+        } ]
       }
     }
   },
@@ -1630,26 +1729,6 @@
           }
         }
       },
-      "api-v1-showcases278654356" : {
-        "type" : "object",
-        "properties" : {
-          "showcases" : {
-            "type" : "array",
-            "description" : "등록 eventToast Id",
-            "items" : {
-              "oneOf" : [ {
-                "type" : "object"
-              }, {
-                "type" : "boolean"
-              }, {
-                "type" : "string"
-              }, {
-                "type" : "number"
-              } ]
-            }
-          }
-        }
-      },
       "api-v1-toastPieces-toastPieceId1832050141" : {
         "type" : "object",
         "properties" : {
@@ -1695,6 +1774,26 @@
           "memberId" : {
             "type" : "number",
             "description" : "memberId"
+          }
+        }
+      },
+      "api-v1-showcases278654356" : {
+        "type" : "object",
+        "properties" : {
+          "showcases" : {
+            "type" : "array",
+            "description" : "등록 eventToast Id",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
           }
         }
       },
@@ -1902,6 +2001,13 @@
       },
       "api-v1-members-profile-image486549215" : {
         "type" : "object"
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuthJWT" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
       }
     }
   }

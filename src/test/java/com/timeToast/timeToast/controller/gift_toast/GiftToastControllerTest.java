@@ -42,7 +42,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/giftToasts/group")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
 
@@ -83,7 +83,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/giftToasts/friend")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
                 )
@@ -123,7 +123,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/giftToasts/mine")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
                 )
@@ -161,7 +161,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/giftToasts/{giftToastId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -209,7 +209,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/giftToasts/members")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -241,7 +241,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/giftToasts/members/incomplete")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -270,7 +270,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/giftToasts/{giftToastId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())

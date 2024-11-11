@@ -41,7 +41,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         post("/api/v1/toastPieces")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
 
@@ -79,7 +79,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
         mockMvc.perform(
                         multipart("/api/v1/toastPieces/{toastPieceId}/contents", 1L)
                                 .file("toastPieceContents", "hello.png".getBytes())
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isOk())
@@ -113,7 +113,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
         mockMvc.perform(
                         multipart("/api/v1/toastPieces/{toastPieceId}/images", 1L)
                                 .file("toastPieceImages", "hello.png".getBytes())
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isOk())
@@ -148,7 +148,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/toastPieces/{toastPieceId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
@@ -186,7 +186,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         delete("/api/v1/toastPieces/{toastPieceId}", 1L)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
