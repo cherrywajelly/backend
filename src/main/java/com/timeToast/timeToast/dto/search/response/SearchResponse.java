@@ -12,12 +12,12 @@ public record SearchResponse(
 
 ) {
 
-    public static SearchResponse from(final Member member, final String profileUrl){
+    public static SearchResponse from(final Member member){
 
         return SearchResponse.builder()
                 .memberId(member.getId())
                 .nickname(member.getNickname())
-                .profileUrl(profileUrl)
+                .profileUrl(member.getMemberProfileUrl())
                 .build();
     }
 }

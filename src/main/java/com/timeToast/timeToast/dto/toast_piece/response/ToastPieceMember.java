@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record ToastPieceMember(
-        long memberId,
+        Long memberId,
         String nickname,
         String profileUrl
 ) {

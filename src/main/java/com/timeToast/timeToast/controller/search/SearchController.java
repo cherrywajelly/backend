@@ -15,7 +15,7 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping("")
+    @PostMapping("")
     public SearchResponses searchNickname(@RequestBody final SearchRequest searchRequest){
       return searchService.searchNickname(searchRequest);
     }
