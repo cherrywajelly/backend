@@ -10,9 +10,8 @@ import java.util.List;
 
 public interface ToastPieceService {
 
-    ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest);
-    ToastPieceSaveResponse saveToastPieceContents(final long memberId, final long toastPieceId, final MultipartFile contents);
-    ToastPieceSaveResponse saveToastPieceImages(final long memberId, final long toastPieceId, final List<MultipartFile> toastPieceImages);
+    ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest,
+                                          final MultipartFile contents,final List<MultipartFile> toastPieceImages);
     ToastPieceResponses getToastPiecesByGiftToastId(final long giftToastId);
     ToastPieceResponse getToastPiece(final long toastPieceId);
     void deleteToastPieceByMemberIdAndToastPieceId(final long memberId, final long toastPieceId);

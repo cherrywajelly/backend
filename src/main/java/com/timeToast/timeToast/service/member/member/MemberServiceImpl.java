@@ -38,10 +38,13 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
+
         String url = MEMBER.value() + SLASH.value() + IMAGE.value() + SLASH.value() + memberId;
         String profileImageUrl = fileUploadService.uploadImages(profileImage,url);
+
         member.updateProfileUrl(profileImageUrl);
-        return new MemberInfoResponse(member.getNickname(), member.getMemberProfileUrl());
+
+        return MemberInfoResponse.from(member);
     }
 
     @Transactional
@@ -71,37 +74,26 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberInfoResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return new MemberInfoResponse(member.getNickname(), getMemberProfileImage(member));
+        return MemberInfoResponse.from(member);
     }
 
     @Transactional(readOnly = true)
     @Override
     public MemberProfileResponse getMemberProfileByLogin(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        long followingCount = followRepository.findAllByFollowerId(memberId).stream().count();
-        long followerCount = followRepository.findAllByFollowingId(memberId).stream().count();
-        long teamCount = teamMemberRepository.findAllByMemberId(memberId).stream().count();
-        return new MemberProfileResponse(member.getNickname(), getMemberProfileImage(member), followingCount, followerCount, teamCount, false);
+        return getMemberProfile(memberId, memberId);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public MemberProfileResponse getMemberProfile(final long loginId, final long memberId) {
         Member member = memberRepository.getById(memberId);
-        long followingCount = followRepository.findAllByFollowerId(memberId).stream().count();
-        long followerCount = followRepository.findAllByFollowingId(memberId).stream().count();
-        long teamCount = teamMemberRepository.findAllByMemberId(memberId).stream().count();
-        boolean isFollow = followRepository.findByFollowingIdAndFollowerId(loginId, memberId).isPresent();
-
-        return new MemberProfileResponse(member.getNickname(), getMemberProfileImage(member), followingCount, followerCount, teamCount, isFollow);
-    }
-
-    private String getMemberProfileImage(final Member member){
-
-        if (member.getMemberProfileUrl()==null){
-            return iconRepository.getDefaultIcon().getIconImageUrl();
-        }
-        return member.getMemberProfileUrl();
+        return MemberProfileResponse.builder()
+                .nickname(member.getNickname())
+                .followingCount(followRepository.findAllByFollowerId(memberId).size())
+                .followerCount(followRepository.findAllByFollowingId(memberId).size())
+                .teamCount(teamMemberRepository.findAllByMemberId(memberId).size())
+                .isFollow(followRepository.findByFollowingIdAndFollowerId(loginId, memberId).isPresent())
+                .build();
     }
 
 }

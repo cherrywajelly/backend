@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TOAST_PIECE;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.TOAST_PIECE_NOT_EXISTS;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
@@ -50,40 +51,23 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     @Transactional
     @Override
-    public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest) {
+    public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest,
+                                                 final MultipartFile contents, final List<MultipartFile> toastPieceImages) {
         ToastPiece toastPiece = toastPieceRepository.saveToastPiece(ToastPieceRequest.to(memberId, toastPieceRequest));
-
+        toastPiece.updateContentsUrl(saveToastPieceContents(toastPiece, contents));
+        List<String> toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
         log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
-        return ToastPieceSaveResponse.from(toastPiece, List.of());
+        return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
-    @Transactional
-    @Override
-    public ToastPieceSaveResponse saveToastPieceContents(final long memberId, final long toastPieceId, final MultipartFile contents) {
-        ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
-                .orElseThrow(()-> new BadRequestException(TOAST_PIECE_NOT_EXISTS.getMessage()));
 
-        if(!toastPiece.getMemberId().equals(memberId)){
-            throw new BadRequestException(INVALID_TOAST_PIECE.getMessage());
-        }
+    private String saveToastPieceContents(final ToastPiece toastPiece, final MultipartFile contents ) {
 
         String saveUrl = TOAST_PIECE.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  toastPiece.getId();
-        String toastPieceContentsUrl = fileUploadService.uploadImages(contents, saveUrl);
-
-        toastPiece.updateContentsUrl(toastPieceContentsUrl);
-        log.info("save toastPiece contents {} by {}", toastPiece.getId(), memberId);
-        return ToastPieceSaveResponse.from(toastPiece, List.of());
+        return fileUploadService.uploadImages(contents, saveUrl);
     }
 
-    @Transactional
-    @Override
-    public ToastPieceSaveResponse saveToastPieceImages(final long memberId, final long toastPieceId, final List<MultipartFile> toastPieceImages) {
-        ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
-                .orElseThrow(()-> new BadRequestException(TOAST_PIECE_NOT_EXISTS.getMessage()));
-
-        if(!toastPiece.getMemberId().equals(memberId)){
-            throw new BadRequestException(INVALID_TOAST_PIECE.getMessage());
-        }
+    private List<String> saveToastPieceImages(final ToastPiece toastPiece , List<MultipartFile> toastPieceImages) {
 
         List<String> toastPieceImageUrls = new ArrayList<>();
 
@@ -100,24 +84,16 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                     toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());
                 }
         );
-
-        log.info("save toastPiece images {} by {}", toastPiece.getId(), memberId);
-        return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
+        return toastPieceImageUrls;
     }
 
     @Transactional(readOnly = true)
     @Override
     public ToastPieceResponses getToastPiecesByGiftToastId(final long giftToastId){
         List<ToastPieceResponse> toastPieceResponses = new ArrayList<>();
-        List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToastId);
 
-        for (ToastPiece toastPiece : toastPieces) {
-            System.out.println(toastPiece);
-        }
-
-        toastPieces.forEach(
-                toastPiece -> toastPieceResponses.add(getToastPiece(toastPiece.getId()))
-        );
+        toastPieceRepository.findAllByGiftToastId(giftToastId).forEach(
+                toastPiece -> toastPieceResponses.add(getToastPiece(toastPiece.getId())));
 
         return new ToastPieceResponses(giftToastId, toastPieceResponses);
     }
@@ -130,21 +106,19 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
         Optional<Member> member = memberRepository.findById(toastPiece.getMemberId());
         ToastPieceMember toastPieceMember;
-
-        String iconImageUrl = iconRepository.getById(toastPiece.getIconId()).getIconImageUrl();
-        List<String> toastPieceImages = new ArrayList<>();
-
         if(member.isEmpty()){
-            toastPieceMember = new ToastPieceMember(0, null, iconRepository.getDefaultIcon().getIconImageUrl());
+            toastPieceMember = new ToastPieceMember(null, null, basicProfileImageUrl);
         }else{
             toastPieceMember = ToastPieceMember.from(member.get());
         }
 
+        String iconImageUrl = iconRepository.getById(toastPiece.getIconId()).getIconImageUrl();
+        List<String> toastPieceImages = new ArrayList<>();
+
         toastPieceImageRepository.findAllByToastPieceId(toastPieceId)
                 .forEach( toastPieceImage -> toastPieceImages.add(toastPieceImage.getImageUrl()));
 
-        return ToastPieceResponse.from( toastPieceMember,toastPiece, iconImageUrl, toastPieceImages);
-
+        return ToastPieceResponse.from(toastPieceMember,toastPiece, iconImageUrl, toastPieceImages);
     }
 
     @Transactional

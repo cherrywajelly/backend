@@ -22,10 +22,10 @@ public record GiftToastDetailResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate createdDate,
         Boolean isOpened,
-        long dDay,
+        Long dDay,
         ToastPieceResponses toastPieceResponses
 ) {
-    public static GiftToastDetailResponse from( final GiftToast giftToast, final String iconImageUrl, final long dDay,
+    public static GiftToastDetailResponse from( final GiftToast giftToast, final String iconImageUrl, final Long dDay,
                                          final String giftToastOwner, final ToastPieceResponses toastPieceResponses){
         return GiftToastDetailResponse.builder()
                 .giftToastId(giftToast.getId())

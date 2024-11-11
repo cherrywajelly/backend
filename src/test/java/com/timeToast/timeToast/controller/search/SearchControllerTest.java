@@ -13,10 +13,9 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -38,7 +37,7 @@ public class SearchControllerTest  extends BaseControllerTests {
         String json = objectMapper.writeValueAsString(searchRequest);
 
         mockMvc.perform(
-                        get("/api/v1/search")
+                        post("/api/v1/search")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)

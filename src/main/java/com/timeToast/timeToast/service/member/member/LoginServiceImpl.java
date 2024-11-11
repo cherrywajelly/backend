@@ -12,11 +12,14 @@ import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.icon_member.MemberIconRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
 
 
 @Service
@@ -43,13 +46,15 @@ public class LoginServiceImpl implements LoginService {
         Optional<Member> findMember = memberRepository.findByEmail(email);
 
         if(findMember.isPresent()){
-
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
 
         }else{
+            String nickname = RandomStringUtils.randomAlphabetic(7);
             Member member = memberRepository.save(
                     Member.builder()
                             .email(email)
+                            .nickname(nickname)
+                            .memberProfileUrl(basicProfileImageUrl)
                             .loginType(loginType)
                             .memberRole(MemberRole.USER)
                             .build()
