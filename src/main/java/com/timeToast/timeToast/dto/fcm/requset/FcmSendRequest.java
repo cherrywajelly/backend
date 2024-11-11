@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.fcm.requset;
 
+import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import lombok.*;
 
 @Builder

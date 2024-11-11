@@ -2,13 +2,14 @@ package com.timeToast.timeToast.domain.fcm;
 
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.global.constant.FcmConstant;
+import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "fcm")
@@ -29,7 +30,18 @@ public class Fcm extends BaseTime {
 
     private String toastName;
 
-    private LocalDateTime time;
+    private LocalDate time;
 
     private boolean isOpened;
+
+    @Builder
+    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName, final LocalDate time) {
+        this.memberId = memberId;
+        this.fcmConstant = fcmConstant;
+        this.nickname = nickname;
+        this.toastName = toastName;
+        this.time = time;
+    }
+
+    public void updateIsOpened(boolean isOpened) { this.isOpened = isOpened; }
 }
