@@ -8,6 +8,8 @@ COPY gradle gradle
 COPY settings.gradle .
 COPY build.gradle .
 COPY src src
+RUN mkdir -p src/main/resources/firebase/ && \
+    cp /secret/firebase-adminsdk.json src/main/resources/firebase/
 RUN chmod +x gradlew
 RUN ./gradlew bootJar -x test
 
