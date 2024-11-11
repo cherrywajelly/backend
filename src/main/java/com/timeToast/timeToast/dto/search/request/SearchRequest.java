@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.search;
+package com.timeToast.timeToast.dto.search.request;
 
 public record SearchRequest(
         int page,

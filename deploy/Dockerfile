@@ -23,5 +23,6 @@ COPY --from=extractor /workspace/extracted/dependencies ./
 COPY --from=extractor /workspace/extracted/spring-boot-loader ./
 COPY --from=extractor /workspace/extracted/snapshot-dependencies ./
 COPY --from=extractor /workspace/extracted/application ./
+COPY build/resources/main/ BOOT-INF/classes/
 CMD java org.springframework.boot.loader.launch.JarLauncher
 EXPOSE 8080

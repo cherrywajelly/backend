@@ -44,8 +44,13 @@ public enum ExceptionConstant {
     TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
+    //showcase
+    INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
+    SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
+    INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
 
     //login
+    INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
 
     private final String message;

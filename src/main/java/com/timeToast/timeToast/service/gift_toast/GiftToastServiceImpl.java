@@ -3,7 +3,6 @@ package com.timeToast.timeToast.service.gift_toast;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
-import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
@@ -90,6 +89,8 @@ public class GiftToastServiceImpl implements GiftToastService{
                                 .giftToastId(giftToast.getId())
                                 .build()));
 
+        log.info("save group giftToast {} by {}", giftToast.getId(), memberId);
+
         return GiftToastSaveResponse.from(giftToast);
     }
 
@@ -114,6 +115,8 @@ public class GiftToastServiceImpl implements GiftToastService{
                         .giftToastId(giftToast.getId())
                         .build());
 
+        log.info("save friend giftToast {} by {}", giftToast.getId(), memberId);
+
         return GiftToastSaveResponse.from(giftToast);
     }
 
@@ -130,6 +133,8 @@ public class GiftToastServiceImpl implements GiftToastService{
                 .memberId(memberId)
                 .giftToastId(giftToast.getId())
                 .build());
+
+        log.info("save mine giftToast {} by {}", giftToast.getId(), memberId);
 
         return GiftToastSaveResponse.from(giftToast);
     }
@@ -245,6 +250,8 @@ public class GiftToastServiceImpl implements GiftToastService{
                     }
             );
             giftToastRepository.deleteById(giftToastId);
+
+            log.info("delete giftToast {} by {}", giftToastId, memberId);
         }
     }
 
@@ -252,7 +259,6 @@ public class GiftToastServiceImpl implements GiftToastService{
     private void _checkDateValidation(final LocalDate openedDate, final LocalDate memorizedDate){
         if((openedDate.isBefore(LocalDate.now()) || openedDate.isEqual(LocalDate.now()))
                 && (memorizedDate.isEqual(LocalDate.now()) && memorizedDate.isAfter(LocalDate.now()))){
-            System.out.println("HERE");
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
     }

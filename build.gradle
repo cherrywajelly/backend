@@ -102,7 +102,7 @@ openapi3 {
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
-	version = '1.0.0'
+	version = '0.0.1'
 	format = 'json'
 	outputDirectory = 'build/resources/main/static/docs'
 }
@@ -188,7 +188,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
+	dependsOn 'createOutputDirectory'
+	finalizedBy jacocoTestReport, 'openapi3'
+
 }
 
 testlogger {
@@ -197,26 +199,42 @@ testlogger {
 
 task createOutputDirectory {
 	doFirst {
+		delete file('src/main/resources/static/docs/')
 		file(openapi3.outputDirectory).mkdirs()
+		file('src/main/resources/static/docs/').mkdirs()
 	}
 }
 
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
-//	delete file('src/main/resources/static/docs/')
-//	copy {
-//		from "build/resources/main/static/docs"
-//		into "src/main/resources/static/docs/"
-//	}
+
+	doLast {
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.json")
+
+		def securitySchemesContent = "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+				"  - APIKey: []"
+
+		swaggerUIFile.append securitySchemesContent
+
+		copy {
+			from file("build/resources/main/static/docs/openapi3.json")
+			into "src/main/resources/static/docs/"
+		}
+	}
+
 
 }
 
-
 bootJar {
-	tasks.named('bootJar') {
-		dependsOn 'createOutputDirectory', ':openapi3'
+//	dependsOn 'createOutputDirectory', ':openapi3'
+	from("${openapi3.outputDirectory}") {
+		into 'static/docs'
 	}
-
 }
 
 jar.enabled = false
