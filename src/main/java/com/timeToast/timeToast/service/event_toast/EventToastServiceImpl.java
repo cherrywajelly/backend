@@ -5,7 +5,6 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.showcase.Showcase;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
@@ -21,6 +20,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -218,6 +218,17 @@ public class EventToastServiceImpl implements EventToastService{
         );
 
         return isOpened ? openedEventToasts : unOpenedEventToasts;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void updateIsOpen(){
+        List<EventToast> eventToasts = eventToastRepository.findAllEventToastToOpen();
+
+        eventToasts.forEach(
+                eventToast -> eventToast.updateIsOpened(true));
+
+        log.info("update gift toast's is open");
     }
 }
 

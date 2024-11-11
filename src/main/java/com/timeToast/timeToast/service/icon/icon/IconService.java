@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface IconService {
     void postIconSet(List<MultipartFile> files, long iconGroupId);
-    Icon getNotOpenIcon();
 }

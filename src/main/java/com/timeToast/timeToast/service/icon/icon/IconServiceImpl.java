@@ -42,10 +42,4 @@ public class IconServiceImpl implements IconService{
         }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Icon getNotOpenIcon() {
-       IconGroup iconGroup = iconGroupRepository.findAllByIconGroupNotOpen().stream().findFirst().get();
-       return  iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get();
-    }
 }

@@ -8,7 +8,8 @@ import java.util.Optional;
 public interface GiftToastRepository {
     GiftToast save(final GiftToast giftToast);
     Optional<GiftToast> findByGiftToastId(final long giftToastId);
-    List<GiftToast> getGiftToastByMemberId(final long memberId);
-    List<GiftToast> getGiftToastByMemberIdAndNotOpen(final long memberId);
+    List<GiftToast> findAllGiftToastsByMemberId(final long memberId);
+    List<GiftToast> findAllGiftToastsByMemberIdAndNotOpen(final long memberId);
+    List<GiftToast> findAllGiftToastToOpen();
     void deleteById(final long giftToastId);
 }

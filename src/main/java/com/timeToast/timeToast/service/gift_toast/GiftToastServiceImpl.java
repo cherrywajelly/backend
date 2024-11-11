@@ -24,6 +24,7 @@ import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPie
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,13 +50,12 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
-    private final IconService iconService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final ToastPieceImageRepository toastPieceImageRepository, final ToastPieceService toastPieceService,
                                 final ToastPieceRepository toastPieceRepository, final MemberRepository memberRepository,
                                 final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
-                                final IconRepository iconRepository, final IconService iconService) {
+                                final IconRepository iconRepository) {
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.toastPieceService = toastPieceService;
@@ -65,7 +65,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         this.teamMemberRepository = teamMemberRepository;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
-        this.iconService = iconService;
     }
 
 
@@ -163,9 +162,6 @@ public class GiftToastServiceImpl implements GiftToastService{
             giftToastOwner = memberRepository.getById(memberId).getNickname();
         }
 
-        if(!giftToast.getIsOpened()){
-            _updateIsOpened(giftToast);
-        }
 
         if(giftToast.getIsOpened()){
             return GiftToastDetailResponse.from(
@@ -187,7 +183,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastResponses getGiftToastByMember(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.getGiftToastByMemberId(memberId);
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberId(memberId);
         List<GiftToastResponse> giftToastResponses = new ArrayList<>();
 
         giftToasts.forEach(
@@ -203,15 +199,11 @@ public class GiftToastServiceImpl implements GiftToastService{
                         giftToastOwner = memberRepository.getById(memberId).getNickname();
                     }
 
-                    if(!giftToast.getIsOpened()){
-                        _updateIsOpened(giftToast);
-                    }
-
                     String iconImageUrl;
                     if(giftToast.getIsOpened()){
                         iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
                     }else{
-                        iconImageUrl = iconService.getNotOpenIcon().getIconImageUrl();
+                        iconImageUrl = notOpenImageUrl;
                     }
 
                     giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
@@ -224,7 +216,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.getGiftToastByMemberIdAndNotOpen(memberId);
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId);
         List<GiftToastIncompleteResponse> giftToastIncompleteResponses = new ArrayList<>();
 
         giftToasts.forEach(
@@ -269,12 +261,30 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
     }
 
-    private void _updateIsOpened(final GiftToast giftToast){
-        if(giftToast.getOpenedDate().isBefore(LocalDate.now()) && giftToastOwnerRepository.checkAllGiftToastOwnerWrote(giftToast.getId())){
-            giftToast.updateIsOpened(true);
-        }
-    }
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void updateIsOpen(){
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastToOpen();
 
+        giftToasts.forEach(
+                giftToast -> {
+                    List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
+                    List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
+
+                    boolean isOpen = giftToastOwners.stream()
+                            .allMatch(giftToastOwner ->
+                                    toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId()))
+                            );
+
+                    if(isOpen){
+                        giftToast.updateIsOpened(true);
+                    }
+
+                }
+        );
+
+        log.info("update gift toast's is open");
+    }
 
 
 
