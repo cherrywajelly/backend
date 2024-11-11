@@ -276,20 +276,20 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
     }
 
-    @Scheduled(cron = "1 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void updateIsOpen(){
         List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastToOpen();
 
-        System.out.println(giftToasts.stream().count());
         giftToasts.forEach(
                 giftToast -> {
                     List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
                     List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
 
-                    boolean isOpen = giftToastOwners.stream().filter(
-                            giftToastOwner -> toastPieces.stream().filter(
-                                    toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId())).findFirst().isEmpty()
-                    ).findFirst().isEmpty();
+                    boolean isOpen = giftToastOwners.stream()
+                            .allMatch(giftToastOwner ->
+                                    toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId()))
+                            );
 
                     if(isOpen){
                         giftToast.updateIsOpened(true);
