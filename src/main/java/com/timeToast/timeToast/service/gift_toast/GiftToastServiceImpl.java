@@ -23,6 +23,7 @@ import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPie
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -181,7 +182,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastResponses getGiftToastByMember(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.getGiftToastByMemberId(memberId);
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberId(memberId);
         List<GiftToastResponse> giftToastResponses = new ArrayList<>();
 
         giftToasts.forEach(
@@ -218,7 +219,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.getGiftToastByMemberIdAndNotOpen(memberId);
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId);
         List<GiftToastIncompleteResponse> giftToastIncompleteResponses = new ArrayList<>();
 
         giftToasts.forEach(
@@ -269,6 +270,28 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
     }
 
+    @Scheduled(cron = "1 * * * * *")
+    public void updateIsOpen(){
+        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastToOpen();
+
+        System.out.println(giftToasts.stream().count());
+        giftToasts.forEach(
+                giftToast -> {
+                    List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
+                    List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
+
+                    boolean isOpen = giftToastOwners.stream().filter(
+                            giftToastOwner -> toastPieces.stream().filter(
+                                    toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId())).findFirst().isEmpty()
+                    ).findFirst().isEmpty();
+
+                    if(isOpen){
+                        giftToast.updateIsOpened(true);
+                    }
+
+                }
+        );
+    }
 
 
 

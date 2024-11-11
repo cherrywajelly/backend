@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
     }
 
     @Override
-    public List<GiftToast> getGiftToastByMemberId(final long memberId) {
+    public List<GiftToast> findAllGiftToastsByMemberId(final long memberId) {
 
         return queryFactory
                 .select(giftToast)
@@ -47,7 +48,7 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
     }
 
     @Override
-    public List<GiftToast> getGiftToastByMemberIdAndNotOpen(final long memberId) {
+    public List<GiftToast> findAllGiftToastsByMemberIdAndNotOpen(final long memberId) {
 
         return queryFactory
                 .select(giftToast)
@@ -55,6 +56,16 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
                 .join(giftToastOwner)
                 .on(giftToastOwner.giftToastId.eq(giftToast.id), giftToastOwner.memberId.eq(memberId))
                 .where(giftToastOwner.isNotNull(), giftToast.isOpened.isFalse())
+                .fetch();
+    }
+
+    @Override
+    public List<GiftToast> findAllGiftToastToOpen() {
+
+        return queryFactory
+                .selectFrom(giftToast)
+                .where(giftToast.isOpened.isFalse(),
+                        giftToast.openedDate.before(LocalDate.now()).or(giftToast.openedDate.eq(LocalDate.now())))
                 .fetch();
     }
 
