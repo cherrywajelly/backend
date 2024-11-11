@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.timeToast.timeToast.dto.fcm.requset.*;
 import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -18,6 +19,15 @@ import static com.timeToast.timeToast.global.constant.FcmConstant.*;
 
 @Service
 public class FcmServiceImpl implements FcmService {
+
+    @Value("${fcm.url}")
+    private String fcmUrl;
+
+    @Value("${fcm.path}")
+    private String fcmPath;
+
+    @Value("${fcm.credential}")
+    private String fcmCredential;
 
     // 메세지 전송
     @Override
@@ -35,7 +45,7 @@ public class FcmServiceImpl implements FcmService {
 
             HttpEntity entity = new HttpEntity<>(message, headers);
 
-            String API_URL = "https://fcm.googleapis.com/v1/projects/timetoast-f33b2/messages:send";
+            String API_URL = fcmUrl;
             ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
         } catch (Exception e) {
@@ -97,11 +107,11 @@ public class FcmServiceImpl implements FcmService {
     // 접근 위한 엑세스 코드 생성
     public String getAccessToken()  {
         try {
-            String firebaseConfigPath = "firebase/timetoast-f33b2-firebase-adminsdk-vk1le-6580205b29.json";
+            String firebaseConfigPath = fcmPath;
 
             GoogleCredentials googleCredentials = GoogleCredentials
                     .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                    .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+                    .createScoped(List.of(fcmCredential));
 
             googleCredentials.refreshIfExpired();
             return googleCredentials.getAccessToken().getTokenValue();
