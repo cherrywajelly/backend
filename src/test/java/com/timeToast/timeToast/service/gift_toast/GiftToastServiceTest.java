@@ -38,7 +38,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 new ToastPieceResponse(1, "nickname", "profileUrl", "iconImageUrl", "title", "contentsUrl", LocalDateTime.of(LocalDate.of(2024, 1, 1), LocalTime.of(1,1,1)), List.of("image")));
 
         return new GiftToastDetailResponse(1, "title", "iconImageUrl", GiftToastType.GROUP, "owner",
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), false, 10,
+                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), false, 10L,
                 new ToastPieceResponses(1, toastPieceResponses));
     }
 

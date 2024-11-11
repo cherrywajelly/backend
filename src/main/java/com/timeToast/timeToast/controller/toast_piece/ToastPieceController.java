@@ -22,18 +22,9 @@ public class ToastPieceController {
     }
 
     @PostMapping("")
-    public ToastPieceSaveResponse saveToastPiece(@Login final LoginMember loginMember, @RequestBody final ToastPieceRequest toastPieceRequest){
-        return toastPieceService.saveToastPiece(loginMember.id(), toastPieceRequest);
-    }
-
-    @PostMapping("/{toastPieceId}/contents")
-    public ToastPieceSaveResponse saveToastPieceContents(@Login LoginMember loginMember, @PathVariable final long toastPieceId, @RequestPart final MultipartFile toastPieceContents){
-        return toastPieceService.saveToastPieceContents(loginMember.id(), toastPieceId, toastPieceContents);
-    }
-
-    @PostMapping("/{toastPieceId}/images")
-    public ToastPieceSaveResponse saveToastPieceImages(@Login LoginMember loginMember, @PathVariable final long toastPieceId, @RequestPart final List<MultipartFile> toastPieceImages){
-        return toastPieceService.saveToastPieceImages(loginMember.id(), toastPieceId, toastPieceImages);
+    public ToastPieceSaveResponse saveToastPiece(@Login final LoginMember loginMember, @RequestPart final ToastPieceRequest toastPieceRequest,
+                                                 @RequestPart final MultipartFile toastPieceContents,@RequestPart final List<MultipartFile> toastPieceImages){
+        return toastPieceService.saveToastPiece(loginMember.id(), toastPieceRequest, toastPieceContents, toastPieceImages);
     }
 
     @GetMapping("/{toastPieceId}")

@@ -49,6 +49,11 @@ spring:
       url:
         static: ${OCI_URL}
 
+fcm:
+  url: ${FCM_URL}
+  path: ${FCM_CONFIG_PATH}
+  credential: ${FCM_CREDENTIAL}
+
 oauth2:
   client:
     kakao:

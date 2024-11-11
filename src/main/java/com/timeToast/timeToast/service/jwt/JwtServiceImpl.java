@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.service.member_jwt_refresh.MemberJwtRefreshTokenService;
+import com.timeToast.timeToast.service.member_token.MemberTokenService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +29,11 @@ import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_DAY;
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
-    private final MemberJwtRefreshTokenService memberJwtRefreshTokenService;
+    private final MemberTokenService memberJwtRefreshTokenService;
     private final ObjectMapper objectMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtServiceImpl(final MemberJwtRefreshTokenService memberJwtRefreshTokenService,
+    public JwtServiceImpl(final MemberTokenService memberJwtRefreshTokenService,
                           final ObjectMapper objectMapper, final JwtTokenProvider jwtTokenProvider) {
         this.memberJwtRefreshTokenService = memberJwtRefreshTokenService;
         this.objectMapper = objectMapper;

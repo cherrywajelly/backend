@@ -24,23 +24,16 @@ public class SearchServiceImpl implements SearchService{
         this.iconRepository = iconRepository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public SearchResponses searchNickname(final SearchRequest searchRequest) {
         Pageable pageable = PageRequest.of(searchRequest.page(), searchRequest.size());
 
         List<SearchResponse> searchMembers = new ArrayList<>();
         memberRepository.findMemberByNickname(searchRequest.searchKeyword(), pageable).forEach(
-                member -> {
-                    String profileUrl = member.getMemberProfileUrl();
-                    if(profileUrl == null){
-                        profileUrl = iconRepository.getDefaultIcon().getIconImageUrl();
-                    }
-                    searchMembers.add(SearchResponse.from(member, profileUrl));
-                }
-        );
+                member -> searchMembers.add(SearchResponse.from(member)));
 
 
-        return new SearchResponses(searchRequest.page()+1,searchRequest.size(), searchMembers);
+        return new SearchResponses(searchRequest.page()+1 ,searchRequest.size(), searchMembers);
     }
 }

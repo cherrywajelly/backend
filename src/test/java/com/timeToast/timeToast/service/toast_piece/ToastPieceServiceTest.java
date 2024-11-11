@@ -13,19 +13,11 @@ import java.util.List;
 public class ToastPieceServiceTest implements ToastPieceService {
 
     @Override
-    public ToastPieceSaveResponse saveToastPiece(long memberId, ToastPieceRequest toastPieceRequest) {
+    public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest,
+                                                 final MultipartFile contents,final List<MultipartFile> toastPieceImages) {
         return new ToastPieceSaveResponse(1, 1, 1, "title","contentsUrl", List.of("images"));
     }
 
-    @Override
-    public ToastPieceSaveResponse saveToastPieceContents(long memberId, long toastPieceId, MultipartFile contents) {
-        return new ToastPieceSaveResponse(1, 1, 1, "title","contentsUrl", List.of("images"));
-    }
-
-    @Override
-    public ToastPieceSaveResponse saveToastPieceImages(long memberId, long toastPieceId, List<MultipartFile> toastPieceImages) {
-        return new ToastPieceSaveResponse(1, 1, 1, "title","contentsUrl", List.of("images"));
-    }
 
     @Override
     public ToastPieceResponses getToastPiecesByGiftToastId(long giftToastId) {
