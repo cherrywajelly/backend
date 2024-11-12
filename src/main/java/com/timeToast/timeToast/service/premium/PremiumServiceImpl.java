@@ -31,7 +31,7 @@ public class PremiumServiceImpl implements PremiumService{
         return PremiumResponse.from(premiumRepository.getById(premiumId));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PremiumResponses getPremium() {
         List<PremiumResponse> premiumResponses = new ArrayList<>();

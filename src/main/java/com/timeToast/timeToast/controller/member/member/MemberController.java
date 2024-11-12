@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
@@ -61,5 +62,10 @@ public class MemberController {
     @GetMapping("/{memberId}")
     public MemberProfileResponse getProfileInfo(@Login final LoginMember loginMember, @PathVariable long memberId){
         return memberService.getMemberProfile(loginMember.id(), memberId);
+    }
+
+    @GetMapping("/premiums")
+    public PremiumResponse getPremiumByLogin(@Login final LoginMember loginMember){
+        return memberService.getMemberPremium(loginMember.id());
     }
 }
