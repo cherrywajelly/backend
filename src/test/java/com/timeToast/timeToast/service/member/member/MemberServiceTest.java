@@ -10,7 +10,7 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
-        return new MemberInfoResponse("nickname","profileUrl");
+        return new MemberInfoResponse(1L, "nickname","profileUrl");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MemberServiceTest implements MemberService{
     @Override
     public MemberInfoResponse getMemberInfo(long memberId) {
 
-        return new MemberInfoResponse("nickname","profileUrl");
+        return new MemberInfoResponse(1L,"nickname","profileUrl");
     }
 
     @Override

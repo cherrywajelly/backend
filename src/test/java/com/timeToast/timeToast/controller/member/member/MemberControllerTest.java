@@ -156,6 +156,7 @@ class MemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url")
                                 )
@@ -184,6 +185,7 @@ class MemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url")
                                 )
