@@ -89,6 +89,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.getById(memberId);
         return MemberProfileResponse.builder()
                 .nickname(member.getNickname())
+                .profileUrl(member.getMemberProfileUrl())
                 .followingCount(followRepository.findAllByFollowerId(memberId).size())
                 .followerCount(followRepository.findAllByFollowingId(memberId).size())
                 .teamCount(teamMemberRepository.findAllByMemberId(memberId).size())
