@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService{
                 .followingCount(followRepository.findAllByFollowerId(memberId).size())
                 .followerCount(followRepository.findAllByFollowingId(memberId).size())
                 .teamCount(teamMemberRepository.findAllByMemberId(memberId).size())
-                .isFollow(followRepository.findByFollowingIdAndFollowerId(loginId, memberId).isPresent())
+                .isFollow(followRepository.findByFollowingIdAndFollowerId(memberId, loginId).isPresent())
                 .build();
     }
 
