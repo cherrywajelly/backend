@@ -255,5 +255,33 @@ class MemberControllerTest extends BaseControllerTests {
     }
 
 
+    @DisplayName("사용자의 프리미엄 구독을 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getPremiumByLogin() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/members/premiums")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("사용자의 프리미엄 구독 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("멤버")
+                                .summary("사용자의 프리미엄 구독 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("premiumId").type(NUMBER).description("premium id"),
+                                        fieldWithPath("premiumType").type(STRING).description("premium type"),
+                                        fieldWithPath("price").type(NUMBER).description("가격"),
+                                        fieldWithPath("count").type(NUMBER).description("이미지 갯수"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+                                )
+                                .build()
+                        )));
+    }
+
 
 }

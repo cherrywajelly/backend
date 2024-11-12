@@ -156,8 +156,9 @@ public class GiftToastServiceImpl implements GiftToastService{
 
             Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToastId)
                     .stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
-
+            System.out.println(findGiftToastOwner);
             giftToastOwner = memberRepository.findById(findGiftToastOwner.get().getMemberId()).orElseGet(null).getNickname();
+            System.out.println(giftToastOwner);
 
         }else{
             giftToastOwner = memberRepository.getById(memberId).getNickname();
