@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
@@ -12,4 +13,5 @@ public interface MemberService {
     MemberInfoResponse getMemberInfo(final long memberId);
     MemberProfileResponse getMemberProfileByLogin(final long memberId);
     MemberProfileResponse getMemberProfile(final long loginId, final long memberId);
+    PremiumResponse getMemberPremium(final long memberId);
 }
