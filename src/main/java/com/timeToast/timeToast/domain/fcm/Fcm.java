@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "fcm")
@@ -30,18 +30,17 @@ public class Fcm extends BaseTime {
 
     private String toastName;
 
-    private LocalDate time;
+    private LocalDateTime time;
 
     private boolean isOpened;
 
     @Builder
-    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName, final LocalDate time) {
+    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName) {
         this.memberId = memberId;
         this.fcmConstant = fcmConstant;
         this.nickname = nickname;
         this.toastName = toastName;
-        this.time = time;
     }
 
-    public void updateIsOpened(boolean isOpened) { this.isOpened = isOpened; }
+    public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }
 }

@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.timeToast.timeToast.domain.fcm.Fcm;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
 import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
+import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
 
 @Service
 @Slf4j
@@ -49,8 +56,44 @@ public class FcmServiceImpl implements FcmService {
     @Override
     public void saveToken(final long memberId, final String token){
         MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
-        memberToken.updateFcmToken(token);
-        memberTokenRepository.save(memberToken);
+        if (token != null) {
+            memberToken.updateFcmToken(token);
+            memberTokenRepository.save(memberToken);
+        } else {
+            throw new BadRequestException(INVALID_FCM_TOKEN.getMessage());
+        }
+    }
+
+    //TODO 1.최신순으로 조회되는지  2.각 경우에 맞게 시간 계산되는지 3.데이터 잘 반환되는지
+    @Transactional
+    @Override
+    public List<FcmResponses> getFcmResponses(final long memberId){
+        List<FcmResponses> fcmResponses = new ArrayList<>();
+        List<Fcm> fcms = fcmRepository.findByMemberId(memberId);
+        fcms.forEach(
+                fcm -> {
+
+                    String text = fcm.getFcmConstant().value();
+                    LocalDateTime localDateTime = LocalDateTime.now().plusHours(9);
+                    Duration duration = Duration.between(fcm.getCreatedAt(), localDateTime);
+                    String time = "";
+
+                    if(duration.toHours() == 0) {
+                        time = duration.toMinutes() + "분 전";
+                    } else if (duration.toDays() == 0) {
+                        time = duration.toHours() + "시간 전";
+                    } else if (duration.toDays() < 30) {
+                        time = duration.toDays() + "일 전";
+                    } else {
+                        time = ChronoUnit.MONTHS.between(fcm.getCreatedAt(), localDateTime) + "달 전";
+                    }
+
+                    FcmResponses fcmResponse = FcmResponses.fromEntity(fcm, text, time);
+                    fcmResponses.add(fcmResponse);
+                }
+        );
+
+        return null;
     }
 
     // 메세지 전송
@@ -83,8 +126,7 @@ public class FcmServiceImpl implements FcmService {
     //db에 알림 저장
     @Transactional
     public void saveFcmInfo(final long memberId, FcmResponse fcmResponse) {
-        LocalDate time = LocalDateTime.now().plusHours(9).toLocalDate();
-        FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmResponse, memberId, time);
+        FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmResponse, memberId);
         Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse);
         fcmRepository.save(fcm);
         log.info("save fcm");

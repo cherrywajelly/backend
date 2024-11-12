@@ -2,10 +2,15 @@ package com.timeToast.timeToast.controller.fcm;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.fcm.FcmService;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequestMapping("/api/v1/fcm")
 @RestController
@@ -13,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class FcmController {
 
     private final FcmService fcmService;
+    private final FileUploadService fileUploadService;
 
-    @PutMapping("/token")
+    @PutMapping("")
     public void putFcmToken(@Login LoginMember loginMember, @RequestParam final String token) {
         fcmService.saveToken(loginMember.id(), token);
     }
@@ -24,6 +30,10 @@ public class FcmController {
         fcmService.sendMessageTo(loginMember.id(), fcmResponse);
     }
 
-    //TODO fcm 조회 구현
+    @GetMapping("")
+    public List<FcmResponses> getFcmMessages(@Login LoginMember loginMember) {
+        return fcmService.getFcmResponses(loginMember.id());
+    }
 
+    //TODO is_Opened 구현
 }

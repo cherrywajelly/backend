@@ -5,7 +5,7 @@ import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import lombok.Builder;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 public record FcmDataResponse(
@@ -15,28 +15,24 @@ public record FcmDataResponse(
 
     String nickname,
 
-    String toastName,
-
-    LocalDate time
+    String toastName
 
 ) {
-    public static FcmDataResponse fromFcmResponse(FcmResponse fcmDataResponse, final long memberId,  LocalDate time) {
+    public static FcmDataResponse fromFcmResponse(FcmResponse fcmDataResponse, final long memberId) {
         return FcmDataResponse.builder()
                 .memberId(memberId)
                 .fcmConstant(fcmDataResponse.fcmConstant())
                 .nickname(fcmDataResponse.nickname())
                 .toastName(fcmDataResponse.toastName())
-                .time(time)
                 .build();
     }
 
-    public Fcm toEntity(FcmDataResponse fcmDataRequest) {
+    public Fcm toEntity(FcmDataResponse fcmDataResponse) {
         return Fcm.builder()
-                .memberId(fcmDataRequest.memberId())
-                .fcmConstant(fcmDataRequest.fcmConstant())
-                .nickname(fcmDataRequest.nickname())
-                .toastName(fcmDataRequest.toastName())
-                .time(fcmDataRequest.time())
+                .memberId(fcmDataResponse.memberId())
+                .fcmConstant(fcmDataResponse.fcmConstant())
+                .nickname(fcmDataResponse.nickname())
+                .toastName(fcmDataResponse.toastName())
                 .build();
     }
 
