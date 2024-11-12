@@ -105,7 +105,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamResponse> teamResponses = new ArrayList<>();
 
         teamMembers.forEach(
-                team -> TeamResponse.from(teamRepository.getById(team.getTeamId())));
+                team -> teamResponses.add(TeamResponse.from(teamRepository.getById(team.getTeamId()))));
 
         return new TeamResponses(teamResponses);
     }
