@@ -8,6 +8,7 @@ public record EventToastPostRequest(
         LocalDate openedDate,
 
         String title,
+
         Long iconId
 ){
     public EventToast toEntity(EventToastPostRequest eventToastPostRequest, final long memberId){
