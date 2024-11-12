@@ -44,6 +44,9 @@ class MemberControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("프로필 사진 저장",
+                        requestParts(
+                                partWithName("profileImage").description("프로필 이미지")
+                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("멤버")
                                 .summary("로그인한 사용자의 프로필 사진 변경")
@@ -74,7 +77,9 @@ class MemberControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
-
+                                .queryParameters(
+                                        parameterWithName("nickname").description("닉네임")
+                                )
                                 .build()
                         )));
     }

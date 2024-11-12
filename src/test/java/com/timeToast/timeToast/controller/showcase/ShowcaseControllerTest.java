@@ -56,10 +56,10 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .requestFields(
-                                        fieldWithPath("showcases[0]").type(ARRAY).description("등록 eventToast Id")
+                                        fieldWithPath("showcases").type(ARRAY).description("등록 eventToast Id list")
                                 )
                                 .responseFields(
-                                        fieldWithPath("showcaseSaveResponses[0]").type(ARRAY).description("등록한 event toast title")
+                                        fieldWithPath("showcaseSaveResponses").type(ARRAY).description("등록한 event toast title list")
                                 )
                                 .build()
                         )));
@@ -153,7 +153,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("showcase 조회")
+    @DisplayName("showcase 삭제")
     @WithMockCustomUser
     @Test
     void deleteShowcase() throws Exception {
@@ -165,13 +165,13 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("진열장 조회",
+                .andDo(document("진열장 삭제",
                         pathParameters(
                                 parameterWithName("showcaseId").description("showcase id")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("진열장")
-                                .summary("진열장 조회")
+                                .summary("진열장 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )

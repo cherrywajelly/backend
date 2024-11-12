@@ -3,6 +3,8 @@ package com.timeToast.timeToast.service.gift_toast;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
@@ -34,8 +36,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.BasicImage.notOpenImageUrl;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.GIFT_TOAST_NOT_FOUND;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_GIFT_TOAST;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
 @Service
 @Slf4j
@@ -188,13 +189,22 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         giftToasts.forEach(
                 giftToast -> {
-                    String giftToastOwner;
+                    String giftToastOwner = null;
                     if(giftToast.getGiftToastType().equals(GiftToastType.GROUP)){
-                        giftToastOwner= teamRepository.findById(giftToast.getTeamId()).orElseGet(null).getName();
+                        Optional<Team> findTeam = teamRepository.findById(giftToast.getTeamId());
+                        if(findTeam.isPresent()){
+                            giftToastOwner= findTeam.get().getName();
+                        }
                     }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
-                        Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId()).stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
-                        giftToastOwner = memberRepository.findById(findGiftToastOwner.get().getMemberId()).orElseGet(null).getNickname();
+                        Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId()).stream()
+                                .filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
 
+                        if(findGiftToastOwner.isPresent()){
+                            Optional<Member> findMember = memberRepository.findById(findGiftToastOwner.get().getMemberId());
+                            if(findMember.isPresent()) {
+                                giftToastOwner = findMember.get().getNickname();
+                            }
+                        }
                     }else{
                         giftToastOwner = memberRepository.getById(memberId).getNickname();
                     }
