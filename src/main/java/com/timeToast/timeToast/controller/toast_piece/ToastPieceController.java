@@ -23,7 +23,7 @@ public class ToastPieceController {
 
     @PostMapping("")
     public ToastPieceSaveResponse saveToastPiece(@Login final LoginMember loginMember, @RequestPart final ToastPieceRequest toastPieceRequest,
-                                                 @RequestPart final MultipartFile toastPieceContents,@RequestPart final List<MultipartFile> toastPieceImages){
+                                                 @RequestPart("toastPieceContents") final MultipartFile toastPieceContents,@RequestPart("toastPieceImages") final List<MultipartFile> toastPieceImages){
         return toastPieceService.saveToastPiece(loginMember.id(), toastPieceRequest, toastPieceContents, toastPieceImages);
     }
 
