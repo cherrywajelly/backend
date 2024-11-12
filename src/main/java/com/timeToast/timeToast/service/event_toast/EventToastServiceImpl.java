@@ -68,7 +68,7 @@ public class EventToastServiceImpl implements EventToastService{
         List<EventToast> eventToasts = eventToastRepository.findByMemberId(memberId);
         List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
 
-        checkEventToastOpened(eventToasts).forEach(
+        eventToasts.forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
@@ -90,7 +90,7 @@ public class EventToastServiceImpl implements EventToastService{
                     // 팔로우하고 있는 사용자의 이벤트 토스트 조회
                     List<EventToast> eventToasts = eventToastRepository.findByMemberId(follow.getFollowingId());
 
-                    filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
+                    filterEventToasts(eventToasts, false).forEach(
                             eventToast -> {
                                 Member member = memberRepository.getById(memberId);
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
@@ -112,7 +112,7 @@ public class EventToastServiceImpl implements EventToastService{
         List<EventToast> eventToasts = eventToastRepository.findByMemberId(friendId);
         List<EventToastFriendResponse> eventToastFriendResponses = new ArrayList<>();
 
-        filterEventToasts(checkEventToastOpened(eventToasts), false).forEach(
+        filterEventToasts(eventToasts, false).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     Member member = memberRepository.getById(friendId);
@@ -175,33 +175,6 @@ public class EventToastServiceImpl implements EventToastService{
             eventToastRepository.deleteById(eventToastId);
             log.info("delete event toast");
         }
-    }
-
-
-    // openedDate 가 지난 이벤트 토스트 검증
-    @Transactional
-    public List<EventToast> checkEventToastOpened(List<EventToast> eventToasts){
-        List<EventToast> openedEventToasts = new ArrayList<>();
-
-        List<EventToast> unOpenedEventToasts = eventToasts.stream()
-                .filter(eventToast -> !eventToast.isOpened()) // isOpened가 false인 객체만 필터링
-                .collect(Collectors.toList());
-
-        unOpenedEventToasts.forEach(
-                eventToast -> {
-                    // openedDate 지난 게시물 열림 처리
-                    if (eventToast.getOpenedDate().isBefore(LocalDate.now())) {
-                        eventToast.updateIsOpened(true);
-                        openedEventToasts.add(eventToast);
-                    }
-                }
-        );
-
-        if(!openedEventToasts.isEmpty()) {
-            eventToastRepository.saveAll(openedEventToasts);
-        }
-
-        return eventToasts;
     }
 
     // isOpened ? 열린 토스트 리스트 반환 : 닫힌 토스트 리스트 반환

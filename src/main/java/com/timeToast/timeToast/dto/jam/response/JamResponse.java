@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record JamResponse(
-        Long jamId,
+        long jamId,
 
         String iconImageUrl,
 
