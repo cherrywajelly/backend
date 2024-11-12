@@ -13,10 +13,9 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -38,7 +37,7 @@ public class SearchControllerTest  extends BaseControllerTests {
         String json = objectMapper.writeValueAsString(searchRequest);
 
         mockMvc.perform(
-                        get("/api/v1/search")
+                        post("/api/v1/search")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
@@ -47,13 +46,18 @@ public class SearchControllerTest  extends BaseControllerTests {
                 .andDo(document("검색 결과 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("검색")
-                                .summary("키워드를 통한 검색 조")
+                                .summary("키워드를 통한 검색 결과 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .requestFields(
+                                        fieldWithPath("page").type(NUMBER).description("요청 페이지 번호"),
+                                        fieldWithPath("size").type(NUMBER).description("요청 갯수"),
+                                        fieldWithPath("searchKeyword").type(STRING).description("검색어")
+                                )
                                 .responseFields(
-                                        fieldWithPath("nextPage").type(NUMBER).description("사용자Id"),
-                                        fieldWithPath("size").type(NUMBER).description("닉네임"),
+                                        fieldWithPath("nextPage").type(NUMBER).description("다음 페이지"),
+                                        fieldWithPath("size").type(NUMBER).description("요청 갯수"),
                                         fieldWithPath("searchResponses[0].memberId").type(NUMBER).description("사용자 id"),
                                         fieldWithPath("searchResponses[0].nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("searchResponses[0].profileUrl").type(STRING).description("사용자 프로필 url")

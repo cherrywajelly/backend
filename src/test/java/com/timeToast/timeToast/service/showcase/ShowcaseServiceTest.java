@@ -19,7 +19,7 @@ public class ShowcaseServiceTest implements ShowcaseService{
     public ShowcaseEditResponses getShowcaseSaveList(long memberId) {
         List<ShowcaseEditResponse> showcaseEditResponses = new ArrayList<>();
         showcaseEditResponses.add(
-                new ShowcaseEditResponse(1L, "iconUrl", "title", LocalDate.of(2024, 1, 1), false, 0L )
+                new ShowcaseEditResponse(1L, 0L,false, "iconUrl", "title", LocalDate.of(2024, 1, 1) )
         );
         return new ShowcaseEditResponses(showcaseEditResponses);
     }

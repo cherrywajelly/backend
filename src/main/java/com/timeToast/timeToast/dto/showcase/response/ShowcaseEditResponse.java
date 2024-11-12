@@ -9,12 +9,14 @@ import java.time.LocalDate;
 @Builder
 public record ShowcaseEditResponse(
         long eventToastId,
+        Long showCaseId,
+        boolean isShowcase,
         String iconUrl,
         String title,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        LocalDate openedDate,
-        boolean isShowcase,
-        Long showCaseId
+        LocalDate openedDate
+
+
 ) {
 
     public static ShowcaseEditResponse from(final EventToast eventToast, final String iconUrl, final boolean isShowcase, final Long showCaseId){

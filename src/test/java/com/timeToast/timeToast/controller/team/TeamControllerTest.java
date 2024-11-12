@@ -19,8 +19,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -80,6 +80,9 @@ public class TeamControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팀 프로필 사진 저장",
+                        requestParts(
+                                partWithName("teamProfileImage").description("팀 프로필 이미지 파일")
+                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팀")
                                 .summary("팀 프로필 사진 저장")

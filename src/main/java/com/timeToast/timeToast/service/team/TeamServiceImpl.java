@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
@@ -29,15 +30,15 @@ import static com.timeToast.timeToast.global.constant.FileConstant.*;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
-    private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final MemberRepository memberRepository;
     private final FileUploadService fileUploadService;
 
-    public TeamServiceImpl(final TeamRepository teamRepository, final MemberRepository memberRepository,
-                           final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService) {
+    public TeamServiceImpl(final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
+                           final MemberRepository memberRepository, final FileUploadService fileUploadService) {
         this.teamRepository = teamRepository;
-        this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
+        this.memberRepository = memberRepository;
         this.fileUploadService = fileUploadService;
     }
 
@@ -47,6 +48,7 @@ public class TeamServiceImpl implements TeamService {
 
         Team team = Team.builder()
                 .name(teamSaveRequest.teamName())
+                .teamProfileUrl(basicProfileImageUrl)
                 .build();
 
         Team saveTeam = teamRepository.save(team);
@@ -103,16 +105,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamResponse> teamResponses = new ArrayList<>();
 
         teamMembers.forEach(
-                team -> {
-                    Optional<Team> findTeam = teamRepository.findById(team.getTeamId());
-                    if(findTeam.isPresent()){
-                        teamResponses.add(
-                                TeamResponse.from(findTeam.get())
-                        );
-                    }
-
-                }
-        );
+                team -> teamResponses.add(TeamResponse.from(teamRepository.getById(team.getTeamId()))));
 
         return new TeamResponses(teamResponses);
     }
