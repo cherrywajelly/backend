@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast.QGiftToast.giftToast;
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
 import static com.timeToast.timeToast.domain.toast_piece.toast_piece.QToastPiece.toastPiece;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.GIFT_TOAST_NOT_FOUND;
 
 @Repository
 public class GiftToastRepositoryImpl implements GiftToastRepository{
@@ -69,6 +71,10 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
                 .fetch();
     }
 
+    @Override
+    public GiftToast getById(final long giftToastId) {
+        return giftToastJpaRepository.findById(giftToastId).orElseThrow(() -> new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage()));
+    }
 
     @Override
     public void deleteById(final long giftToastId) {

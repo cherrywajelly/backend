@@ -15,24 +15,31 @@ public record FcmDataResponse(
 
     String nickname,
 
-    String toastName
+    String toastName,
+
+    long param,
+
+    String imageUrl
 
 ) {
-    public static FcmDataResponse fromFcmResponse(FcmResponse fcmDataResponse, final long memberId) {
+    public static FcmDataResponse fromFcmResponse(FcmResponse fcmResponse, final long memberId) {
         return FcmDataResponse.builder()
                 .memberId(memberId)
-                .fcmConstant(fcmDataResponse.fcmConstant())
-                .nickname(fcmDataResponse.nickname())
-                .toastName(fcmDataResponse.toastName())
+                .fcmConstant(fcmResponse.fcmConstant())
+                .nickname(fcmResponse.nickname())
+                .toastName(fcmResponse.toastName())
+                .param(fcmResponse.param())
                 .build();
     }
 
-    public Fcm toEntity(FcmDataResponse fcmDataResponse) {
+    public Fcm toEntity(FcmDataResponse fcmDataResponse, String imageUrl) {
         return Fcm.builder()
                 .memberId(fcmDataResponse.memberId())
                 .fcmConstant(fcmDataResponse.fcmConstant())
                 .nickname(fcmDataResponse.nickname())
                 .toastName(fcmDataResponse.toastName())
+                .param(fcmDataResponse.param())
+                .imageUrl(imageUrl)
                 .build();
     }
 

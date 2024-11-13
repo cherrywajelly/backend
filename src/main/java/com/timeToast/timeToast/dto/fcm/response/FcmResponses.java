@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record FcmResponses(
-        long id,
+        long fcmId,
 
         FcmConstant fcmConstant,
 
@@ -14,7 +14,7 @@ public record FcmResponses(
 
         String text,
 
-//        String imageUrl,
+        String imageUrl,
 
         String time,
 
@@ -24,10 +24,11 @@ public record FcmResponses(
 ) {
     public static FcmResponses fromEntity(Fcm fcm, String text, String time){
         return FcmResponses.builder()
-                .id(fcm.getId())
+                .fcmId(fcm.getId())
                 .fcmConstant(fcm.getFcmConstant())
                 .nickname(fcm.getNickname())
                 .text(text)
+                .imageUrl(fcm.getImageUrl())
                 .time(time)
                 .toastName(fcm.getToastName())
                 .build();

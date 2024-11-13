@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.controller.fcm;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.fcm.response.FcmOpenedResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.annotation.Login;
@@ -18,7 +19,6 @@ import java.util.List;
 public class FcmController {
 
     private final FcmService fcmService;
-    private final FileUploadService fileUploadService;
 
     @PutMapping("")
     public void putFcmToken(@Login LoginMember loginMember, @RequestParam final String token) {
@@ -35,9 +35,9 @@ public class FcmController {
         return fcmService.getFcmResponses(loginMember.id());
     }
 
-    //TODO is_Opened 반환 데이터 수정
+
     @GetMapping("/opened/{fcmId}")
-    public void putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
-        fcmService.putIsOpened(loginMember.id(), fcmId);
+    public FcmOpenedResponse putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+        return fcmService.putIsOpened(loginMember.id(), fcmId);
     }
 }

@@ -35,12 +35,19 @@ public class Fcm extends BaseTime {
 
     private boolean isOpened;
 
+    // pathVariable id
+    private long param;
+
+    private String imageUrl;
+
     @Builder
-    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName) {
+    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName, final long param, final String imageUrl) {
         this.memberId = memberId;
         this.fcmConstant = fcmConstant;
         this.nickname = nickname;
         this.toastName = toastName;
+        this.param = param;
+        this.imageUrl = imageUrl;
     }
 
     public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }

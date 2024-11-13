@@ -3,15 +3,22 @@ package com.timeToast.timeToast.service.fcm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.fcm.Fcm;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
 import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmOpenedResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
+import com.timeToast.timeToast.repository.follow.FollowRepository;
+import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +56,12 @@ public class FcmServiceImpl implements FcmService {
     private String fcmCredential;
 
     private final MemberTokenRepository memberTokenRepository;
-
     private final FcmRepository fcmRepository;
+    private final EventToastRepository eventToastRepository;
+    private final IconRepository iconRepository;
+    private final GiftToastRepository giftToastRepository;
+    private final MemberRepository memberRepository;
+
 
     @Transactional
     @Override
@@ -95,17 +106,18 @@ public class FcmServiceImpl implements FcmService {
         return fcmResponses;
     }
 
+
     @Transactional
     @Override
-    public void putIsOpened(final long memberId, final long fcmId){
+    public FcmOpenedResponse putIsOpened(final long memberId, final long fcmId){
         Fcm fcm = fcmRepository.getById(fcmId);
 
-        if (fcm.isOpened()) {
-            //TODO 데이터 반환
-        } else {
+        if (!fcm.isOpened()) {
             fcm.updateIsOpened(true);
-            //TODO 데이터 반환
         }
+
+        FcmOpenedResponse fcmOpenedResponse = new FcmOpenedResponse(fcmId, fcm.getFcmConstant(), fcm.getParam());
+        return fcmOpenedResponse;
     }
 
     // 메세지 전송
@@ -138,9 +150,29 @@ public class FcmServiceImpl implements FcmService {
     @Transactional
     public void saveFcmInfo(final long memberId, FcmResponse fcmResponse) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmResponse, memberId);
-        Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse);
-        fcmRepository.save(fcm);
-        log.info("save fcm");
+        String imageUrl = "";
+
+        switch (fcmResponse.fcmConstant()) {
+            case EVENTTOASTSPREAD:
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+            case EVENTTOASTOPENED:
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+            case GIFTTOASTCREATED:
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+            case GIFTTOASTOPENED:
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+            case GIFTTOASTBAKED:
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+            case FOLLOW:
+                imageUrl = memberRepository.getById(fcmDataResponse.param()).getMemberProfileUrl();
+
+            default:
+                imageUrl = null;
+
+                Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
+                fcmRepository.save(fcm);
+                log.info("save fcm");
+        }
     }
 
     // 메세지 생성
@@ -190,7 +222,6 @@ public class FcmServiceImpl implements FcmService {
                 FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+FOLLOW.value(), null);
                 FcmSendRequest followSend = new FcmSendRequest(token, followNotification, new FcmDataRequest());
                 return followSend;
-
             default:
                 return null;
         }
