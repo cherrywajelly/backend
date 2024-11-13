@@ -25,4 +25,9 @@ public class IconGroupServiceTest implements IconGroupService {
         iconGroupResponses.add(new IconGroupResponses(1, "name", iconResponses));
         return iconGroupResponses;
     }
+
+    @Override
+    public void deleteIconGroup(long memberId, long iconGroupId) {
+
+    }
 }

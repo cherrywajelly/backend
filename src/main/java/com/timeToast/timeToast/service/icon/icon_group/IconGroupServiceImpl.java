@@ -6,7 +6,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.member.icon_member.MemberIconRepository;
+import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,20 +26,21 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 @Slf4j
 @RequiredArgsConstructor
 public class IconGroupServiceImpl implements IconGroupService{
-    private final MemberIconRepository memberIconRepository;
+    private final IconMemberRepository memberIconRepository;
     private final IconGroupRepository iconGroupRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
+    private final IconMemberRepository iconMemberRepository;
 
     @Transactional
     @Override
-    public void buyIconGroup(long memberId, long iconGroupId){
+    public void buyIconGroup(final long memberId, final long iconGroupId){
         Member member = memberRepository.getById(memberId);
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         if (member != null && iconGroup != null) {
             // 중복 구매 방지
-            if(memberIconRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId).isEmpty()) {
+            if(memberIconRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) == null) {
                 memberIconRepository.save(IconMember.builder()
                         .memberId(memberId)
                         .iconGroupId(iconGroupId)
@@ -77,5 +78,11 @@ public class IconGroupServiceImpl implements IconGroupService{
     @Transactional
     @Override
     public void deleteIconGroup(final long memberId, final long iconGroupId){
+        IconMember iconMember = iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId);
+        if (iconMember != null) {
+            iconMemberRepository.deleteById(iconMember.getId());
+        } else {
+            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
+        }
     }
 }

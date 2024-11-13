@@ -2,13 +2,17 @@ package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.controller.iconGroup.IconGroupController;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -17,8 +21,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -84,10 +87,27 @@ public class IconGroupControllerTest extends BaseControllerTests {
     }
 
 
+    @DisplayName("아이콘 그룹 목록을 삭제할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    public void deleteIconGroup() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/iconGroups/{iconGroupId}", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("아이콘 그룹 삭제",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘 그룹")
+                                .summary("아이콘 그룹 목록 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .pathParameters(
+                                        parameterWithName("iconGroupId").description("삭제할 아이콘 그룹 Id")
+                                )
+                                .build()
+                        )));
+    }
 }
-//
-//
-//@DeleteMapping("/{iconGroupId}")
-//public void deleteIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-//    iconGroupService.deleteIconGroup(loginMember.id(), iconGroupId);
-//}
