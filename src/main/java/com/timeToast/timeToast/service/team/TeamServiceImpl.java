@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -89,7 +88,7 @@ public class TeamServiceImpl implements TeamService {
         );
 
         String teamUrl = TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
-        String teamProfileUrl = fileUploadService.uploadImages(teamProfileImage, teamUrl);
+        String teamProfileUrl = fileUploadService.uploadfile(teamProfileImage, teamUrl);
 
         team.updateTeamProfileUrl(teamProfileUrl);
 

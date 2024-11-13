@@ -34,7 +34,7 @@ public class IconServiceImpl implements IconService{
             files.forEach(file->{
                 Icon icon = iconRepository.save(new Icon("", iconGroupId));
                 String endpoint = "icon/image/" + Long.toString(icon.getId());
-                String imageUrls = fileUploadService.uploadImages(file, endpoint);
+                String imageUrls = fileUploadService.uploadfile(file, endpoint);
                 icon.updateUrl(imageUrls);
                 iconRepository.save(icon);
             });

@@ -64,7 +64,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     private String saveToastPieceContents(final ToastPiece toastPiece, final MultipartFile contents ) {
 
         String saveUrl = TOAST_PIECE.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  toastPiece.getId();
-        return fileUploadService.uploadImages(contents, saveUrl);
+        return fileUploadService.uploadfile(contents, saveUrl);
     }
 
     private List<String> saveToastPieceImages(final ToastPiece toastPiece , List<MultipartFile> toastPieceImages) {
@@ -79,7 +79,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                                     .build());
 
                     String saveUrl = TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
-                    String toastPieceImageUrl = fileUploadService.uploadImages(toastPieceImage, saveUrl);
+                    String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
                     saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
                     toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());
                 }

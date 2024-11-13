@@ -8,6 +8,7 @@ import com.timeToast.timeToast.service.jam.JamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +20,11 @@ public class JamController {
     private final JamService jamService;
 
     @PostMapping("/{eventToastId}")
-    public void postJam(@Login LoginMember loginMember, @RequestBody JamRequest jamRequest,
+    public void postJam(@Login LoginMember loginMember, @RequestPart("jamContents") final MultipartFile jamContents,
+                        @RequestPart("jamImages") final MultipartFile jamImages,
+                        @RequestBody JamRequest jamRequest,
                         @PathVariable final long eventToastId) {
-        jamService.postJam(jamRequest, eventToastId, loginMember.id());
+        jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
 
     @GetMapping("/{eventToastId}")
