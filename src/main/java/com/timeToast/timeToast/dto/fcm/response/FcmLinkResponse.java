@@ -6,8 +6,8 @@ import lombok.Builder;
 @Builder
 public record FcmLinkResponse(
 
-        FcmConstant fcmConstant,
+        String fcmConstant,
 
-        long param
+        String param
 ){
 }

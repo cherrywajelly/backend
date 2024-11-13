@@ -9,5 +9,7 @@ public interface IconGroupRepository {
     IconGroup getById(final long iconGroupId);
     List<IconGroup> findByIconBuiltin(final IconBuiltin iconBuiltin);
     List<IconGroup>  findAllByIconGroupNotOpen();
+    List<IconGroup> findByMemberId(final long memberId);
     IconGroup save(final IconGroup iconGroup);
+    void deleteById(final long iconGroupId);
 }

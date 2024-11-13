@@ -23,7 +23,6 @@ public class Fcm extends BaseTime {
 
     private long memberId;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private FcmConstant fcmConstant;
 

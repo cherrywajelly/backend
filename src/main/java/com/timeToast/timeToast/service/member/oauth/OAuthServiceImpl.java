@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.member.oauth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.dto.member.oauth.GoogleUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
@@ -38,8 +39,14 @@ public class OAuthServiceImpl implements OAuthService {
     @Value("${oauth2.client.google.client-secret}")
     private String googleClientSecret;
 
-    @Value("${oauth2.client.google.redirect-uri}")
-    private String googleRedirectUrl;
+    @Value("${oauth2.client.google.member-redirect-uri}")
+    private String googleMemberRedirectUrl;
+
+    @Value("${oauth2.client.google.creator-redirect-uri}")
+    private String googleCreatorRedirectUrl;
+
+    @Value("${oauth2.client.google.admin-redirect-uri}")
+    private String googleAdminRedirectUrl;
 
     private final String kakaoTokenUrl = "https://kauth.kakao.com/oauth/token";
 
@@ -49,40 +56,66 @@ public class OAuthServiceImpl implements OAuthService {
     @Value("${oauth2.client.kakao.client-secret}")
     private String kakaoClientSecret;
 
-    @Value("${oauth2.client.kakao.redirect-uri}")
-    private String kakaoRedirectUrl;
+    @Value("${oauth2.client.kakao.member-redirect-uri}")
+    private String kakaoMemberRedirectUrl;
+
+    @Value("${oauth2.client.kakao.creator-redirect-uri}")
+    private String kakaoCreatorRedirectUrl;
+
+    @Value("${oauth2.client.kakao.admin-redirect-uri}")
+    private String kakaoAdminRedirectUrl;
 
     public OAuthServiceImpl(final LoginService loginService) {
         this.loginService = loginService;
     }
 
-    @Transactional(readOnly = true)
+
+
+    @Transactional
     @Override
-    public LoginResponse getGoogleAccessToken(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
-        Map<String, String> params = new HashMap<>();
-
-        params.put("code", accessToken);
-        params.put("client_id", googleClientId);
-        params.put("client_secret", googleClientSecret);
-        params.put("redirect_uri", googleRedirectUrl);
-        params.put("grant_type", "authorization_code");
-
-        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(googleTokenUrl, params, OAuthResponseDto.class);
-        Optional<GoogleUserDataDto> decodeInfo = decodeGoogleToken(responseEntity.getBody().getId_token().split("\\.")[1]);
-        return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.GOOGLE);
+    public LoginResponse kakaoLoginMember(final String accessToken) {
+        return getKakaoAccessToken(accessToken, MemberRole.USER, kakaoMemberRedirectUrl);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public LoginResponse getKakaoAccessToken(String accessToken) {
+    public LoginResponse kakaoLoginCreator(final String accessToken) {
+        return getKakaoAccessToken(accessToken, MemberRole.CREATOR, kakaoCreatorRedirectUrl);
+    }
+
+    @Transactional
+    @Override
+    public LoginResponse kakaoLoginAdmin(final String accessToken) {
+        return getKakaoAccessToken(accessToken, MemberRole.ADMIN, kakaoAdminRedirectUrl);
+    }
+
+    @Transactional
+    @Override
+    public LoginResponse googleLoginMember(final String accessToken) {
+        return getGoogleAccessToken(accessToken, MemberRole.USER, googleMemberRedirectUrl);
+    }
+
+    @Transactional
+    @Override
+    public LoginResponse googleLoginCreator(final String accessToken) {
+        return getGoogleAccessToken(accessToken, MemberRole.CREATOR, googleCreatorRedirectUrl);
+    }
+
+    @Transactional
+    @Override
+    public LoginResponse googleLoginAdmin(final String accessToken) {
+        return getGoogleAccessToken(accessToken, MemberRole.ADMIN, googleAdminRedirectUrl);
+    }
+
+
+    private LoginResponse getKakaoAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         params.add("code", accessToken);
         params.add("client_id", kakaoClientId);
         params.add("client_secret", kakaoClientSecret);
-        params.add("redirect_uri", kakaoRedirectUrl);
+        params.add("redirect_uri", redirectUrl);
         params.add("grant_type", "authorization_code");
 
         HttpHeaders headers = new HttpHeaders();
@@ -93,10 +126,25 @@ public class OAuthServiceImpl implements OAuthService {
         ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
         Optional<KakaoUserDataDto> decodeInfo = decodeKakaoToken(responseEntity.getBody().getId_token().split("\\.")[1]);
 
-        return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.KAKAO);
+        return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.KAKAO, memberRole);
     }
 
-    public Optional<GoogleUserDataDto> decodeGoogleToken(String jwtToken) {
+    private LoginResponse getGoogleAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> params = new HashMap<>();
+
+        params.put("code", accessToken);
+        params.put("client_id", googleClientId);
+        params.put("client_secret", googleClientSecret);
+        params.put("redirect_uri", redirectUrl);
+        params.put("grant_type", "authorization_code");
+
+        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(googleTokenUrl, params, OAuthResponseDto.class);
+        Optional<GoogleUserDataDto> decodeInfo = decodeGoogleToken(responseEntity.getBody().getId_token().split("\\.")[1]);
+        return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.GOOGLE, memberRole);
+    }
+
+    private Optional<GoogleUserDataDto> decodeGoogleToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -110,7 +158,7 @@ public class OAuthServiceImpl implements OAuthService {
         }
     }
 
-    public Optional<KakaoUserDataDto> decodeKakaoToken(String jwtToken) {
+    private Optional<KakaoUserDataDto> decodeKakaoToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();

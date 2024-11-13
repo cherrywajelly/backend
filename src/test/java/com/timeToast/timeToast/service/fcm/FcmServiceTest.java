@@ -30,7 +30,7 @@ public class FcmServiceTest implements FcmService {
 
     @Override
     public FcmLinkResponse putIsOpened(final long memberId, final long fcmId){
-        FcmLinkResponse fcmLinkResponse = new FcmLinkResponse(FcmConstant.EVENTTOASTSPREAD, 1);
+        FcmLinkResponse fcmLinkResponse = new FcmLinkResponse(FcmConstant.EVENTTOASTSPREAD.toString(), "1");
         return fcmLinkResponse;
     }
 }

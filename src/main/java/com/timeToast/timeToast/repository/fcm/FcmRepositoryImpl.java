@@ -22,6 +22,7 @@ public class FcmRepositoryImpl implements FcmRepository {
         return fcmJpaRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
     }
 
+    @Override
     public Fcm getById(final long id) { return fcmJpaRepository.findById(id).orElseThrow(() -> new NotFoundException(FCM_NOT_FOUND.getMessage())); }
 }
 

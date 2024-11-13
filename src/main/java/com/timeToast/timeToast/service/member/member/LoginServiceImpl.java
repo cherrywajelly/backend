@@ -10,8 +10,8 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.icon_member.MemberIconRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,22 +30,22 @@ public class LoginServiceImpl implements LoginService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final IconGroupRepository iconGroupRepository;
-    private final MemberIconRepository memberIconRepository;
+    private final IconMemberRepository iconMemberRepository;
     private final PremiumRepository premiumRepository;
 
     public LoginServiceImpl(final JwtService jwtService, final MemberRepository memberRepository, final PremiumRepository premiumRepository,
-                            final IconGroupRepository iconGroupRepository, final MemberIconRepository memberIconRepository) {
+                            final IconGroupRepository iconGroupRepository, final IconMemberRepository iconMemberRepository) {
         this.jwtService = jwtService;
         this.memberRepository = memberRepository;
         this.iconGroupRepository = iconGroupRepository;
-        this.memberIconRepository = memberIconRepository;
+        this.iconMemberRepository = iconMemberRepository;
         this.premiumRepository = premiumRepository;
     }
 
 
     @Transactional
     @Override
-    public LoginResponse loginToService(String email, LoginType loginType) {
+    public LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {
 
         Optional<Member> findMember = memberRepository.findByEmail(email);
 
@@ -61,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
                             .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
                             .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
                             .loginType(loginType)
-                            .memberRole(MemberRole.USER)
+                            .memberRole(memberRole)
                             .build()
             );
             addBuiltInIconTest(member);
@@ -72,10 +72,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Transactional
     @Override
-    public void addBuiltInIconTest(Member member) {
+    public void addBuiltInIconTest(final Member member) {
         List<IconGroup> iconGroups = iconGroupRepository.findByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
-            memberIconRepository.save(IconMember.builder()
+            iconMemberRepository.save(IconMember.builder()
                     .memberId(member.getId())
                     .iconGroupId(iconGroup.getId())
                     .build());

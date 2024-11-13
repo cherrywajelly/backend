@@ -100,7 +100,7 @@ public class FcmControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("fcmConstant").type(STRING).description("fcm 타입"),
-                                        fieldWithPath("param").type(NUMBER).description("fcm 관련 사용자 닉네임")
+                                        fieldWithPath("param").type(STRING).description("fcm 관련 사용자 닉네임")
                                 )
                                 .build()
                         )));
