@@ -45,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Transactional
     @Override
-    public LoginResponse loginToService(String email, LoginType loginType) {
+    public LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {
 
         Optional<Member> findMember = memberRepository.findByEmail(email);
 
@@ -61,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
                             .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
                             .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
                             .loginType(loginType)
-                            .memberRole(MemberRole.USER)
+                            .memberRole(memberRole)
                             .build()
             );
             addBuiltInIconTest(member);
@@ -72,7 +72,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Transactional
     @Override
-    public void addBuiltInIconTest(Member member) {
+    public void addBuiltInIconTest(final Member member) {
         List<IconGroup> iconGroups = iconGroupRepository.findByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             memberIconRepository.save(IconMember.builder()
