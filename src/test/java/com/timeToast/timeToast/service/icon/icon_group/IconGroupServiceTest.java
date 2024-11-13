@@ -16,7 +16,7 @@ public class IconGroupServiceTest implements IconGroupService {
     }
 
     @Override
-    public List<IconGroupResponses> getIconGroups(final long memberId) {
+    public List<IconGroupResponses> getToastIconGroups(final long memberId) {
         List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
 
         List<IconResponse> iconResponses = new ArrayList<>();
