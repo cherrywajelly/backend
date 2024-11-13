@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FcmJpaRepository extends JpaRepository<Fcm, Long> {
-    List<Fcm> findByMemberId(final long memberId);
+    List<Fcm> findByMemberIdOrderByCreatedAtDesc(final long memberId);
 }

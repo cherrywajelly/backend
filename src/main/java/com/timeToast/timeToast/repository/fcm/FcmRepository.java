@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface FcmRepository {
     Fcm save(final Fcm fcm);
 
-    List<Fcm> findByMemberId(final long memberId);
+    List<Fcm> findByMemberIdOrderByCreatedAtDesc(final long memberId);
+
+    Fcm getById(final long id);
 }

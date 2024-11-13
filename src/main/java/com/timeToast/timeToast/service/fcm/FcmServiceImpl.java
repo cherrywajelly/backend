@@ -59,22 +59,21 @@ public class FcmServiceImpl implements FcmService {
         if (token != null) {
             memberToken.updateFcmToken(token);
             memberTokenRepository.save(memberToken);
+            log.info("update fcm token");
         } else {
             throw new BadRequestException(INVALID_FCM_TOKEN.getMessage());
         }
     }
 
-    //TODO 1.최신순으로 조회되는지  2.각 경우에 맞게 시간 계산되는지 3.데이터 잘 반환되는지
     @Transactional
     @Override
     public List<FcmResponses> getFcmResponses(final long memberId){
         List<FcmResponses> fcmResponses = new ArrayList<>();
-        List<Fcm> fcms = fcmRepository.findByMemberId(memberId);
+        List<Fcm> fcms = fcmRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
         fcms.forEach(
                 fcm -> {
-
                     String text = fcm.getFcmConstant().value();
-                    LocalDateTime localDateTime = LocalDateTime.now().plusHours(9);
+                    LocalDateTime localDateTime = LocalDateTime.now();
                     Duration duration = Duration.between(fcm.getCreatedAt(), localDateTime);
                     String time = "";
 
@@ -93,7 +92,20 @@ public class FcmServiceImpl implements FcmService {
                 }
         );
 
-        return null;
+        return fcmResponses;
+    }
+
+    @Transactional
+    @Override
+    public void putIsOpened(final long memberId, final long fcmId){
+        Fcm fcm = fcmRepository.getById(fcmId);
+
+        if (fcm.isOpened()) {
+            //TODO 데이터 반환
+        } else {
+            fcm.updateIsOpened(true);
+            //TODO 데이터 반환
+        }
     }
 
     // 메세지 전송
@@ -115,7 +127,6 @@ public class FcmServiceImpl implements FcmService {
 
             String API_URL = fcmUrl;
             ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-
             saveFcmInfo(memberId, fcmResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -153,6 +164,7 @@ public class FcmServiceImpl implements FcmService {
     public FcmSendRequest makeMessage(final long memberId, FcmResponse fcmResponse) {
         MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
         String token = memberToken.getFcm_token();
+
         switch (fcmResponse.fcmConstant()){
             case EVENTTOASTSPREAD:
                 FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmResponse.toastName());

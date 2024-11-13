@@ -35,5 +35,9 @@ public class FcmController {
         return fcmService.getFcmResponses(loginMember.id());
     }
 
-    //TODO is_Opened 구현
+    //TODO is_Opened 반환 데이터 수정
+    @GetMapping("/opened/{fcmId}")
+    public void putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+        fcmService.putIsOpened(loginMember.id(), fcmId);
+    }
 }

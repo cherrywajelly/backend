@@ -18,12 +18,13 @@ import java.time.LocalDateTime;
 public class Fcm extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fcmId")
-    private Long id;
+    @Column(name = "fcm_id")
+    private long id;
 
-    private Long memberId;
+    private long memberId;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private FcmConstant fcmConstant;
 
     private String nickname;

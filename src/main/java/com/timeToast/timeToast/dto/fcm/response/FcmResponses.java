@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record FcmResponses(
-        Long id,
+        long id,
 
         FcmConstant fcmConstant,
 

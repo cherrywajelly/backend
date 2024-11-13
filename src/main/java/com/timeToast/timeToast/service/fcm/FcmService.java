@@ -11,5 +11,7 @@ public interface FcmService {
 
     List<FcmResponses> getFcmResponses(final long memberId);
 
-    void sendMessageTo(final long memberId, FcmResponse fcmDataResponse);
+    void sendMessageTo(final long memberId, FcmResponse fcmResponse);
+
+    void putIsOpened(final long memberId, final long fcmId);
 }
