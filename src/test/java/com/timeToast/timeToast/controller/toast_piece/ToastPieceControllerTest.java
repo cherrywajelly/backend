@@ -2,6 +2,8 @@ package com.timeToast.timeToast.controller.toast_piece;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
+import com.timeToast.timeToast.service.gift_toast.GiftToastService;
+import com.timeToast.timeToast.service.gift_toast.GiftToastServiceTest;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -26,10 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ToastPieceControllerTest extends BaseControllerTests {
 
     private final ToastPieceService toastPieceService = new ToastPieceServiceTest();
+    private final GiftToastService giftToastService = new GiftToastServiceTest();
 
     @Override
     protected Object initController() {
-        return new ToastPieceController(toastPieceService);
+        return new ToastPieceController(toastPieceService,giftToastService);
     }
 
 
@@ -104,14 +107,25 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("memberId"),
-                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("iconImageUrl").type(STRING).description("토스트 조각 이미지 url"),
-                                        fieldWithPath("title").type(STRING).description("제목"),
-                                        fieldWithPath("contentsUrl").type(STRING).description("토스트 조각 내용 url"),
-                                        fieldWithPath("createdAt").type(STRING).description("토스트 조각 생성 일자"),
-                                        fieldWithPath("toastPieceImages").type(ARRAY).description("토스트 조각 이미지 리스트")
+                                        fieldWithPath("giftToastInfo.giftToastId").type(NUMBER).description("선물 토스트 Id"),
+                                        fieldWithPath("giftToastInfo.title").type(STRING).description("제목"),
+                                        fieldWithPath("giftToastInfo.iconImageUrl").type(STRING).description("아이콘 image url"),
+                                        fieldWithPath("giftToastInfo.giftToastType").type(STRING).description("선물 토스트 타입"),
+                                        fieldWithPath("giftToastInfo.giftToastOwner").type(STRING).description("선물 토스트 소유주 이름"),
+                                        fieldWithPath("giftToastInfo.profileImageUrl").type(STRING).description("선물 토스트 프로필 사진 url"),
+                                        fieldWithPath("giftToastInfo.memorizedDate").type(STRING).description("memorized date"),
+                                        fieldWithPath("giftToastInfo.openedDate").type(STRING).description("opened date"),
+                                        fieldWithPath("giftToastInfo.createdDate").type(STRING).description("created date"),
+                                        fieldWithPath("giftToastInfo.isOpened").type(BOOLEAN).description("open 여부"),
+                                        fieldWithPath("toastPieceResponse.memberId").type(NUMBER).description("member id"),
+                                        fieldWithPath("toastPieceResponse.toastPieceId").type(NUMBER).description("toastPiece id"),
+                                        fieldWithPath("toastPieceResponse.nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("toastPieceResponse.profileUrl").type(STRING).description("프로필 url"),
+                                        fieldWithPath("toastPieceResponse.iconImageUrl").type(STRING).description("토스트 조각 이미지 url"),
+                                        fieldWithPath("toastPieceResponse.title").type(STRING).description("제목"),
+                                        fieldWithPath("toastPieceResponse.contentsUrl").type(STRING).description("토스트 조각 내용 url"),
+                                        fieldWithPath("toastPieceResponse.createdAt").type(STRING).description("토스트 조각 생성 일자"),
+                                        fieldWithPath("toastPieceResponse.toastPieceImages").type(ARRAY).description("토스트 조각 이미지 리스트")
 
 
                                         )

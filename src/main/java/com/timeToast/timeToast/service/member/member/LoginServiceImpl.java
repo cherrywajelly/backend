@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
+import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 
 
 @Service
@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService {
                     Member.builder()
                             .email(email)
                             .nickname(nickname)
-                            .memberProfileUrl(basicProfileImageUrl)
+                            .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
                             .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
                             .loginType(loginType)
                             .memberRole(MemberRole.USER)
