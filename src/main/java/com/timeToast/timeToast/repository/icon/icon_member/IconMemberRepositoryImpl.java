@@ -5,6 +5,9 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_MEMBER_NOT_FOUND;
 
 @Repository
@@ -18,6 +21,10 @@ public class IconMemberRepositoryImpl implements IconMemberRepository {
     @Override
     public IconMember getByMemberIdAndIconGroupId(final long memberId, final long iconGroupId) {
         return iconMemberJpaRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId);
+    }
+
+    public List<IconMember> findByMemberId(final long memberId){
+        return iconMemberJpaRepository.findByMemberId(memberId);
     }
 
     @Override

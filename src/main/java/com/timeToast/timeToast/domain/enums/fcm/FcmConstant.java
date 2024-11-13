@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.global.constant;
+package com.timeToast.timeToast.domain.enums.fcm;
 
 public enum FcmConstant {
     EVENTTOASTSPREAD(" 토스트에 잼을 발랐습니다"),
