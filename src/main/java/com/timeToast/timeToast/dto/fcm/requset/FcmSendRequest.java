@@ -1,5 +1,7 @@
 package com.timeToast.timeToast.dto.fcm.requset;
 
+import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import lombok.*;
 
 @Builder
@@ -8,7 +10,7 @@ public record FcmSendRequest(
 
         FcmNotificationRequest notification,
 
-        FcmDataRequest data
+        FcmLinkResponse data
 ) {
     public FcmSendRequest toSend(FcmSendRequest fcmSendDto) {
         return FcmSendRequest.builder()

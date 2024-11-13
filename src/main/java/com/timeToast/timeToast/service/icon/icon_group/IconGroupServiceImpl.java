@@ -58,18 +58,19 @@ public class IconGroupServiceImpl implements IconGroupService{
     @Transactional
     @Override
     public List<IconGroupResponses> getIconGroups(long memberId){
-        List<IconGroup> iconGroups = iconGroupRepository.findByMemberId(memberId);
+        List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
         List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
 
-        iconGroups.forEach(iconGroup -> {
+        iconMembers.forEach(iconMember -> {
             List<IconResponse> iconResponses = new ArrayList<>();
-            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
+            List<Icon> icons = iconRepository.findAllByIconGroupId(iconMember.getIconGroupId());
 
             icons.forEach(icon -> {
                 iconResponses.add(new IconResponse(icon.getId(), icon.getIconImageUrl()));
             });
 
-            iconGroupResponses.add(new IconGroupResponses(iconGroup.getId(), iconGroup.getName(), iconResponses));
+            IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
+            iconGroupResponses.add(new IconGroupResponses(iconMember.getId(), iconGroup.getName(), iconResponses));
         });
 
         return iconGroupResponses;

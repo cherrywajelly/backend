@@ -92,7 +92,7 @@ public class EventToastServiceImpl implements EventToastService{
 
                     filterEventToasts(eventToasts, false).forEach(
                             eventToast -> {
-                                Member member = memberRepository.getById(memberId);
+                                Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
                                 EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(),

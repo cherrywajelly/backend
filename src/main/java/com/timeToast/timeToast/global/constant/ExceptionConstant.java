@@ -51,6 +51,10 @@ public enum ExceptionConstant {
     SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
     INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
 
+    // fcm
+    INVALID_FCM_TOKEN("잘못된 토큰 등록 형식입니다."),
+    FCM_NOT_FOUND("해당 알림을 찾을 수 없습니다."),
+
     //premium
     PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
