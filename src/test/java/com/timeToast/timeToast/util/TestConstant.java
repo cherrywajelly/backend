@@ -2,8 +2,8 @@ package com.timeToast.timeToast.util;
 
 public enum TestConstant {
 
-    TEST_ACCESS_TOKEN("test accessToken"),
-    TEST_REFRESH_TOKEN("test refreshToken"),
+    TEST_ACCESS_TOKEN("access token"),
+    TEST_REFRESH_TOKEN("refresh token"),
     TEST_AUTH_CODE("test authCode"),
     TEST_EMAIL("test email");
 

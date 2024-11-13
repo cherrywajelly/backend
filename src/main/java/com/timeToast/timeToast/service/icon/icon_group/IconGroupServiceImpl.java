@@ -62,7 +62,7 @@ public class IconGroupServiceImpl implements IconGroupService{
 
         iconGroups.forEach(iconGroup -> {
             List<IconResponse> iconResponses = new ArrayList<>();
-            List<Icon> icons = iconRepository.findByIconGroupId(iconGroup.getId());
+            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
 
             icons.forEach(icon -> {
                 iconResponses.add(new IconResponse(icon.getId(), icon.getIconImageUrl()));

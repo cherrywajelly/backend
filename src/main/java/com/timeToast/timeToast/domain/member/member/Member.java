@@ -3,13 +3,8 @@ package com.timeToast.timeToast.domain.member.member;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "member")
@@ -34,10 +29,9 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    //builder
     @Builder
     public Member(final String nickname, final String email, final String memberProfileUrl,
-                  final LoginType loginType, final MemberRole memberRole, final boolean is_delete){
+                  final LoginType loginType, final MemberRole memberRole){
         this.nickname = nickname;
         this.email = email;
         this.memberProfileUrl = memberProfileUrl;
@@ -45,7 +39,7 @@ public class Member extends BaseTime {
         this.memberRole = memberRole;
     }
 
-    public void updateMemberProfileUrl(final String memberProfileUrl){
+    public void updateProfileUrl(final String memberProfileUrl){
         this.memberProfileUrl = memberProfileUrl;
     }
 

@@ -4,16 +4,16 @@ import lombok.Builder;
 
 @Builder
 public record JamResponse(
-        Long jamId,
+        long jamId,
 
-        String icon_image_url,
+        String iconImageUrl,
 
         String nickname
 ){
-    public static JamResponse fromEntity(final long jamId, String icon_image_url, String nickname){
+    public static JamResponse fromEntity(final long jamId, String iconImageUrl, String nickname){
         return JamResponse.builder()
                 .jamId(jamId)
-                .icon_image_url(icon_image_url)
+                .iconImageUrl(iconImageUrl)
                 .nickname(nickname)
                 .build();
     }

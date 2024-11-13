@@ -13,22 +13,22 @@ public record ToastPieceResponse(
         long memberId,
         String nickname,
         String profileUrl,
-        long iconId,
+        String iconImageUrl,
         String title,
         String contentsUrl,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.mm.dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd", timezone = "Asia/Seoul")
         LocalDateTime createdAt,
         List<String> toastPieceImages
 
 
 ) {
-    public static ToastPieceResponse from(final ToastPieceMember toastPieceMember,
-                                          final ToastPiece toastPiece, final List<String> toastPieceImages){
+    public static ToastPieceResponse from(final ToastPieceMember toastPieceMember, final ToastPiece toastPiece,
+                                          final String iconImageUrl, final List<String> toastPieceImages){
         return ToastPieceResponse.builder()
                 .memberId(toastPieceMember.memberId())
                 .nickname(toastPieceMember.nickname())
                 .profileUrl(toastPieceMember.profileUrl())
-                .iconId(toastPiece.getIconId())
+                .iconImageUrl(iconImageUrl)
                 .title(toastPiece.getTitle())
                 .contentsUrl(toastPiece.getContentsUrl())
                 .createdAt(toastPiece.getCreatedAt())

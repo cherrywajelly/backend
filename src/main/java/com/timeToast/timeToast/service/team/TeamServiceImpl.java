@@ -11,6 +11,7 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,35 +21,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
 @Service
 @Slf4j
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
-    private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final MemberRepository memberRepository;
+    private final FileUploadService fileUploadService;
 
-    public TeamServiceImpl(final TeamRepository teamRepository, final MemberRepository memberRepository,
-                           final TeamMemberRepository teamMemberRepository) {
+    public TeamServiceImpl(final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
+                           final MemberRepository memberRepository, final FileUploadService fileUploadService) {
         this.teamRepository = teamRepository;
-        this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
+        this.memberRepository = memberRepository;
+        this.fileUploadService = fileUploadService;
     }
 
     @Transactional
     @Override
     public TeamResponse saveTeam(final long memberId, final TeamSaveRequest teamSaveRequest) {
 
-        //save group
         Team team = Team.builder()
                 .name(teamSaveRequest.teamName())
+                .teamProfileUrl(basicProfileImageUrl)
                 .build();
 
         Team saveTeam = teamRepository.save(team);
 
-        //save member_group
         teamMemberRepository.save(
                 TeamMember.builder()
                         .teamId(saveTeam.getId())
@@ -59,8 +63,8 @@ public class TeamServiceImpl implements TeamService {
         List<Long> teamMembers = teamSaveRequest.teamMembers();
 
         teamMembers.forEach(
-                (groupMemberId) -> {
-                    Member findMember = memberRepository.findById(groupMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
+                (teamMemberId) -> {
+                    Member findMember = memberRepository.findById(teamMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
 
                     teamMemberRepository.save(
                             TeamMember.builder()
@@ -71,22 +75,25 @@ public class TeamServiceImpl implements TeamService {
                 }
         );
 
+        log.info("save team {} by {}", team.getId(), memberId);
+
         return TeamResponse.from(saveTeam);
     }
 
     @Transactional
     @Override
-    public TeamResponse saveTeamImage(final long teamId, final  MultipartFile multipartFile) {
-
-        //s3 로직
-        String groupProfileUrl = "";
+    public TeamResponse saveTeamImage(final long teamId, final  MultipartFile teamProfileImage) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(()->
                 new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
-        team.updateTeamProfileUrl(groupProfileUrl);
+        String teamUrl = TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
+        String teamProfileUrl = fileUploadService.uploadImages(teamProfileImage, teamUrl);
 
+        team.updateTeamProfileUrl(teamProfileUrl);
+
+        log.info("save team Image {}", team.getId());
         return TeamResponse.from(team);
     }
 
@@ -98,16 +105,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamResponse> teamResponses = new ArrayList<>();
 
         teamMembers.forEach(
-                team -> {
-                    Optional<Team> findTeam = teamRepository.findById(team.getTeamId());
-                    if(findTeam.isPresent()){
-                        teamResponses.add(
-                                TeamResponse.from(findTeam.get())
-                        );
-                    }
-
-                }
-        );
+                team -> teamResponses.add(TeamResponse.from(teamRepository.getById(team.getTeamId()))));
 
         return new TeamResponses(teamResponses);
     }
@@ -115,12 +113,15 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     @Override
     public void deleteTeam(final long memberId, final long teamId) {
-        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId).orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
+        TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId)
+                .orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
+
         teamMemberRepository.delete(teamMember);
 
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
 
         if(teamMembers.isEmpty()){
+            log.info("delete team {}", teamId);
             teamRepository.deleteByTeamId(teamId);
         }
 

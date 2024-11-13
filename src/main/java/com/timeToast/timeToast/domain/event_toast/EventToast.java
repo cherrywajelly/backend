@@ -21,7 +21,7 @@ import java.util.Set;
 public class EventToast extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_toast_id")
+    @Column(name = "eventToastId")
     private Long id;
 
     private Long memberId;
@@ -36,8 +36,6 @@ public class EventToast extends BaseTime {
 
     private boolean isOpened;
 
-    private boolean isDeleted;
-
     @Builder
     public EventToast(final long id, final String title, final LocalDate openedDate, final long memberId, final long iconId){
         this.id = id;
@@ -45,10 +43,6 @@ public class EventToast extends BaseTime {
         this.openedDate = openedDate;
         this.memberId = memberId;
         this.iconId = iconId;
-    }
-
-    public void updateIsDelete(final boolean isDelete){
-        this.isDeleted = !isDeleted;
     }
 
     public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }

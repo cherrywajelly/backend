@@ -12,13 +12,13 @@ public record IconGroupResponses(
 
         String name,
 
-        List<IconResponse> iconResponses
+        List<IconResponse> icon
 ) {
     public static IconGroupResponses fromEntity(IconGroup iconGroup, List<IconResponse> iconResponses) {
         return IconGroupResponses.builder()
                 .iconGroupId(iconGroup.getId())
                 .name(iconGroup.getName())
-                .iconResponses(iconResponses)
+                .icon(iconResponses)
                 .build();
     }
 }

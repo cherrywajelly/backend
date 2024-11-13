@@ -1,22 +1,21 @@
 package com.timeToast.timeToast.dto.event_toast.request;
 
 import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
-import com.timeToast.timeToast.domain.member.member.Member;
 
 import java.time.LocalDate;
 
 public record EventToastPostRequest(
-        LocalDate opened_date,
+        LocalDate openedDate,
 
         String title,
-        Long icon_id
+
+        Long iconId
 ){
     public EventToast toEntity(EventToastPostRequest eventToastPostRequest, final long memberId){
         return EventToast.builder()
-                .openedDate(eventToastPostRequest.opened_date)
+                .openedDate(eventToastPostRequest.openedDate)
                 .title(eventToastPostRequest.title)
-                .iconId(eventToastPostRequest.icon_id)
+                .iconId(eventToastPostRequest.iconId)
                 .memberId(memberId)
                 .build();
     }

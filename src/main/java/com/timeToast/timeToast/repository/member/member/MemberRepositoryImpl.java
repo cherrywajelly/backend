@@ -1,23 +1,31 @@
 package com.timeToast.timeToast.repository.member.member;
 
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+import static com.timeToast.timeToast.domain.member.member.QMember.member;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_EXISTS;
+
+import java.util.Optional;
+import java.util.List;
+
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
 
-    private MemberJpaRepository memberJpaRepository;
+    private final MemberJpaRepository memberJpaRepository;
+    private final JPAQueryFactory queryFactory;
 
-    public MemberRepositoryImpl(final MemberJpaRepository memberJpaRepository) {
+    public MemberRepositoryImpl(final MemberJpaRepository memberJpaRepository, final JPAQueryFactory queryFactory) {
         this.memberJpaRepository = memberJpaRepository;
+        this.queryFactory = queryFactory;
     }
-
 
     @Override
     public Member getById(final long memberId) {
@@ -40,12 +48,27 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void delete(final Member member) {
-        memberJpaRepository.delete(member);
+    public List<Member> findMemberByNickname(final String nickname, final Pageable pageable){
+        return queryFactory.selectFrom(member)
+                .where(member.nickname.contains(nickname))
+                .orderBy(
+                        new CaseBuilder()
+                                .when(member.nickname.startsWith(nickname)).then(0)
+                                .when(member.nickname.contains(nickname)).then(1)
+                                .otherwise(2).asc(),
+                        member.nickname.asc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+
     }
 
     @Override
-    public Optional<Member> findByNickname(final String nickname) { return memberJpaRepository.findByNickname(nickname); }
+    public void delete(final Member member) {
+        memberJpaRepository.delete(member);
+    }
 
     @Override
     public boolean existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname);}

@@ -30,23 +30,23 @@ public class FollowerControllerTest extends BaseControllerTests {
     }
 
 
-    @DisplayName("특정 사용자를 memberId를 활용하여 팔로우 할 수 있다.")
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다.")
     @WithMockCustomUser
     @Test
-    void createFollow() throws Exception {
+    void saveFollow() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v1/follows/following/{followingId}", 2)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                        post("/api/v1/follows/followings/{memberId}", 2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로우 정보 저장",
                         pathParameters(
-                                parameterWithName("followingId").description("팔로워 대상의 memberId")
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팔로우")
-                                .summary("특정 사용자를 팔로우 하기")
+                                .summary("사용자를 팔로우 하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -61,7 +61,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/follows/followings")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로잉 리스트 조회",
@@ -88,7 +88,7 @@ public class FollowerControllerTest extends BaseControllerTests {
 
         mockMvc.perform(
                         get("/api/v1/follows/followers")
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로워 리스트 조회",
@@ -108,19 +108,19 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("로그인한 사용자의 팔로잉을 삭제할 수 있다.")
+    @DisplayName("로그인한 사용자가 팔로잉을 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
     void deleteFollowing() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/following/{followingMemberId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                        delete("/api/v1/follows/followings/{memberId}",1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로잉 삭제",
                         pathParameters(
-                                parameterWithName("followingMemberId").description("팔로잉의 memberId")
+                                parameterWithName("memberId").description("팔로잉의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팔로우")
@@ -139,13 +139,13 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollower() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/follower/{followerMemberId}",1)
-                                .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
+                        delete("/api/v1/follows/followers/{memberId}",1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("팔로워 삭제",
                         pathParameters(
-                                parameterWithName("followerMemberId").description("팔로워의 memberId")
+                                parameterWithName("memberId").description("팔로워의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("팔로우")

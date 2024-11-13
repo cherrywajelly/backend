@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.gift_toast.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import lombok.Builder;
@@ -12,7 +13,9 @@ public record GiftToastSaveResponse(
         long giftToastId,
         String title,
         GiftToastType giftToastType,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate memorizedDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate openedDate,
         Boolean isOpened
 ) {

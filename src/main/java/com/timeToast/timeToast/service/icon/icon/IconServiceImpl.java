@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON;
@@ -34,11 +33,13 @@ public class IconServiceImpl implements IconService{
         } else {
             files.forEach(file->{
                 Icon icon = iconRepository.save(new Icon("", iconGroupId));
-                String imageUrls = fileUploadService.upload(file, Long.toString(icon.getId()));
+                String endpoint = "icon/image/" + Long.toString(icon.getId());
+                String imageUrls = fileUploadService.uploadImages(file, endpoint);
                 icon.updateUrl(imageUrls);
                 iconRepository.save(icon);
             });
             log.info("save icon images");
         }
+
     }
 }
