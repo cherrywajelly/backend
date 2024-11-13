@@ -9,4 +9,5 @@ public interface IconRepository {
     Icon getDefaultIcon();
     List<Icon> findAllByIconGroupId(final long iconGroupId);
     Icon save(final Icon icon);
+    void deleteById(final long iconId);
 }
