@@ -46,4 +46,9 @@ public class FollowRepositoryImpl implements FollowRepository{
     }
 
 
+    @Override
+    public void deleteAllFollowByMemberId(final long memberId){
+        followJpaRepository.deleteAllByFollowerId(memberId);
+        followJpaRepository.deleteAllByFollowingId(memberId);
+    }
 }

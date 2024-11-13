@@ -117,12 +117,25 @@ public class TeamServiceImpl implements TeamService {
 
         teamMemberRepository.delete(teamMember);
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
-
-        if(teamMembers.isEmpty()){
+        if(teamMemberRepository.findAllByTeamId(teamId).isEmpty()){
             log.info("delete team {}", teamId);
             teamRepository.deleteByTeamId(teamId);
         }
+
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllTeam(final long memberId) {
+
+        teamMemberRepository.findAllByMemberId(memberId).forEach(
+                teamMember -> {
+                    teamMemberRepository.delete(teamMember);
+                    if(teamMemberRepository.findAllByTeamId(teamMember.getTeamId()).isEmpty()){
+                        teamRepository.deleteByTeamId(teamMember.getTeamId());
+                    }
+                }
+        );
 
     }
 

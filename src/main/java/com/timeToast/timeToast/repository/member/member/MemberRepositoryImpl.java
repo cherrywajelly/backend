@@ -71,5 +71,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void deleteById(final long memberId) {
+        memberJpaRepository.deleteById(memberId);
+    }
+
+    @Override
     public boolean existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname);}
 }
