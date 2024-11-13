@@ -25,6 +25,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class IconGroupControllerTest extends BaseControllerTests {
@@ -47,7 +48,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 그룹 구매",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 그룹")
+                                .tag("아이콘")
                                 .summary("새로운 아이콘 그룹 구매")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -59,20 +60,20 @@ public class IconGroupControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("아이콘 그룹 목록을 조회할 수 있다.")
+    @DisplayName("사용자의 토스트 아이콘 그룹 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
-    void getIconGroups() throws Exception {
+    void getToastIconGroupsByMember() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/iconGroups")
+                        get("/api/v1/iconGroups/members/toasts")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("아이콘 그룹 조회",
+                .andDo(document("사용자의 토스트 아이콘 그룹 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 그룹")
-                                .summary("아이콘 그룹 목록 조회")
+                                .tag("아이콘")
+                                .summary("사용자 토스트 아이콘 그룹 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -81,6 +82,123 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("[].name").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("[].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
                                         fieldWithPath("[].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자의 잼 아이콘 그룹 목록을 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getJamIconGroupsByMember() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/iconGroups/members/jams")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("사용자의 잼 아이콘 그룹 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("사용자 잼 아이콘 그룹 목록 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("[].name").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("[].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
+                                        fieldWithPath("[].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("마켓의 토스트 아이콘 그룹 목록을 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getAllToastsIconGroups() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/iconGroups/toasts")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("마켓의 토스트 아이콘 그룹 목록을 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("마켓의 토스트 아이콘 그룹 목록을 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupMarketResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupMarketResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupMarketResponses[0].creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
+                                        fieldWithPath("iconGroupMarketResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupMarketResponses[0].isBuy").type(BOOLEAN).description("사용자 구입 여부")
+
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("마켓의 잼 아이콘 그룹 목록을 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getAllJamsIconGroups() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/iconGroups/jams")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("마켓의 토스트 아이콘 그룹 목록을 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("마켓의 토스트 아이콘 그룹 목록을 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupMarketResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupMarketResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupMarketResponses[0].creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
+                                        fieldWithPath("iconGroupMarketResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupMarketResponses[0].isBuy").type(BOOLEAN).description("사용자 구입 여부")
+
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("아이콘 그룹 단일 상세 조회")
+    @WithMockCustomUser
+    @Test
+    void getIconGroupDetail() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/iconGroups/{iconGroupId}", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("아이콘 그룹 단일 상세 조회",
+                        pathParameters(
+                                parameterWithName("iconGroupId").description("iconGroup Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("아이콘 그룹 단일 상세 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("profileImageUrl").type(STRING).description("제작자 아이콘 이미지 url"),
+                                        fieldWithPath("title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
+                                        fieldWithPath("price").type(NUMBER).description("아이콘 그룹 가격"),
+                                        fieldWithPath("iconResponses[0].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("iconResponses[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
                                 .build()
                         )));

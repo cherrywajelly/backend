@@ -20,9 +20,15 @@ public class IconMemberRepositoryImpl implements IconMemberRepository {
 
     @Override
     public IconMember getByMemberIdAndIconGroupId(final long memberId, final long iconGroupId) {
+        return iconMemberJpaRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId);
+    }
+
+    @Override
+    public Optional<IconMember> findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId){
         return iconMemberJpaRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId);
     }
 
+    @Override
     public List<IconMember> findByMemberId(final long memberId){
         return iconMemberJpaRepository.findByMemberId(memberId);
     }

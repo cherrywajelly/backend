@@ -21,18 +21,18 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     public IconGroup getById(final long iconGroupId) { return iconGroupJpaRepository.findById(iconGroupId).orElseThrow(() -> new NotFoundException(ICON_GROUP_NOT_FOUND.getMessage())); }
 
     @Override
-    public List<IconGroup> findByIconBuiltin(final IconBuiltin iconBuiltin) {
-        return iconGroupJpaRepository.findByIconBuiltin(iconBuiltin);
+    public List<IconGroup> findAllByIconBuiltin(final IconBuiltin iconBuiltin) {
+        return iconGroupJpaRepository.findAllByIconBuiltin(iconBuiltin);
     }
 
     @Override
-    public List<IconGroup> findByMemberId(final long memberId) {
-        return iconGroupJpaRepository.findByMemberId(memberId);
+    public List<IconGroup> findAllByMemberId(final long memberId) {
+        return iconGroupJpaRepository.findAllByMemberId(memberId);
     }
 
     @Override
-    public List<IconGroup>  findAllByIconGroupNotOpen(){
-        return iconGroupJpaRepository.findAllByIconType(IconType.NOT_OPEN);
+    public List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin){
+        return iconGroupJpaRepository.findAllByIconTypeAndIconBuiltin(iconType, iconBuiltin);
     }
 
     @Override

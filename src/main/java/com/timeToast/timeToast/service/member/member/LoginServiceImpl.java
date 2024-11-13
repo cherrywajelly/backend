@@ -73,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
     @Transactional
     @Override
     public void addBuiltInIconTest(final Member member) {
-        List<IconGroup> iconGroups = iconGroupRepository.findByIconBuiltin(IconBuiltin.BUILTIN);
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             iconMemberRepository.save(IconMember.builder()
                     .memberId(member.getId())

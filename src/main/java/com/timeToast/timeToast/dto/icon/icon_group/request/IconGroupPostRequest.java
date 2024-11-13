@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 public record IconGroupPostRequest (
 
         String name,
-        long price,
+        int price,
         IconType iconType,
         IconBuiltin iconBuiltin
 
