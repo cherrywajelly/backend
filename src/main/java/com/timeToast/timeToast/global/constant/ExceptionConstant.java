@@ -42,7 +42,8 @@ public enum ExceptionConstant {
     GIFT_TOAST_OWNER_NOT_FOUND("선물 토스트 소유주를 찾을 수 없습니다."),
 
     //toast_piece
-    TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_FOUND("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_EXISTS("토스트 조각을 존재하지 않습니다."),
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
