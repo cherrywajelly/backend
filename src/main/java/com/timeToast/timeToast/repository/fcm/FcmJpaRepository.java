@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FcmJpaRepository extends JpaRepository<Fcm, Long> {
     List<Fcm> findByMemberIdOrderByCreatedAtDesc(final long memberId);
+    void deleteAllByMemberId(final long memberId);
 }

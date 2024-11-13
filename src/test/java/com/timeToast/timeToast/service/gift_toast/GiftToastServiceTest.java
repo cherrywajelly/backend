@@ -133,4 +133,9 @@ public class GiftToastServiceTest implements GiftToastService{
     public void deleteGiftToast(long memberId, long giftToastId) {
 
     }
+
+    @Override
+    public void deleteAllGiftToast(long memberId) {
+
+    }
 }

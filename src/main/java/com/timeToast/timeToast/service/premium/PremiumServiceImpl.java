@@ -1,8 +1,6 @@
 package com.timeToast.timeToast.service.premium;
 
-import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponses;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;

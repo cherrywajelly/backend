@@ -24,5 +24,10 @@ public class FcmRepositoryImpl implements FcmRepository {
 
     @Override
     public Fcm getById(final long id) { return fcmJpaRepository.findById(id).orElseThrow(() -> new NotFoundException(FCM_NOT_FOUND.getMessage())); }
+
+    @Override
+    public void deleteAllByMemberId(final long memberId){
+        fcmJpaRepository.deleteAllByMemberId(memberId);
+    }
 }
 

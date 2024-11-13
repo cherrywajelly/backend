@@ -32,8 +32,8 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     }
 
     @Override
-    public List<EventToast> findByMemberId(final long memberId) {
-        return eventToastJpaRepository.findByMemberId(memberId);
+    public List<EventToast> findAllByMemberId(final long memberId) {
+        return eventToastJpaRepository.findAllByMemberId(memberId);
     }
 
 

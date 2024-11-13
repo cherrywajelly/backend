@@ -11,4 +11,5 @@ public interface IconMemberRepository {
     List<IconMember> findByMemberId(final long memberId);
     IconMember save(final IconMember memberIcon);
     void deleteById(final long memberIconId);
+    void deleteAllByMemberId(final long memberId);
 }

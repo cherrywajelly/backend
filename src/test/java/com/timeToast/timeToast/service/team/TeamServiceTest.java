@@ -29,6 +29,11 @@ public class TeamServiceTest implements TeamService {
 
     @Override
     public void deleteTeam(long memberId, long teamId) {
-        System.out.println("here");
+
+    }
+
+    @Override
+    public void deleteAllTeam(long memberId) {
+
     }
 }

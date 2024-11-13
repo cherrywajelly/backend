@@ -63,22 +63,18 @@ class MemberControllerTest extends BaseControllerTests {
     void saveNickname() throws Exception {
 
         mockMvc.perform(
-                        put("/api/v1/members?nickname=nickname")
+                        put("/api/v1/members")
+                                .param("nickname", "nickname")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 닉네임 변경",
-                        queryParameters(
-                                parameterWithName("nickname").description("닉네임")
-                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("멤버")
                                 .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .queryParameters(
-                                        parameterWithName("nickname").description("닉네임")
                                 )
                                 .build()
                         )));
@@ -90,7 +86,8 @@ class MemberControllerTest extends BaseControllerTests {
     void isNicknameAvailable() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/members/nickname-validation?nickname=nickname")
+                        get("/api/v1/members/nickname-validation")
+                                .param("nickname", "nickname")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
@@ -114,20 +111,15 @@ class MemberControllerTest extends BaseControllerTests {
     void tokenRenewal() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v1/members/refreshToken?refreshToken=refreshToken")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                        post("/api/v1/members/refreshToken")
+                                .param("refreshToken", USER_ACCESS_TOKEN)
+
                 )
                 .andExpect(status().isOk())
-                .andDo(document("닉네임 중복 확인",
+                .andDo(document("리프레쉬 토큰 갱신",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("멤버")
-                                .summary("닉네임 중복 확인")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .queryParameters(
-                                        parameterWithName("refreshToken").description("refreshToken")
-                                )
+                                .summary("리프레쉬 토큰 갱신")
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
                                         fieldWithPath("refreshToken").type(STRING).description("access token"),
