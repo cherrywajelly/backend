@@ -1,16 +1,17 @@
 package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
+import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +34,51 @@ public class GiftToastServiceTest implements GiftToastService{
 
     @Override
     public GiftToastDetailResponse getGiftToastDetail(long memberId, long giftToastId) {
+
+        GiftToastInfo giftToastInfo =  GiftToastInfo.builder()
+                .giftToastId(1L)
+                .title("title")
+                .iconImageUrl("iconImageUrl")
+                .giftToastType(GiftToastType.GROUP)
+                .giftToastOwner("giftToastOwner")
+                .profileImageUrl("profileImageUrl")
+                .memorizedDate(LocalDate.of(2024, 1, 1))
+                .openedDate(LocalDate.of(2024, 1, 1))
+                .createdDate(LocalDate.of(2024, 1, 1))
+                .isOpened(false)
+                .build();
+
         List<ToastPieceResponse> toastPieceResponses = new ArrayList<>();
         toastPieceResponses.add(
-                new ToastPieceResponse(1, "nickname", "profileUrl", "iconImageUrl", "title", "contentsUrl", LocalDateTime.of(LocalDate.of(2024, 1, 1), LocalTime.of(1,1,1)), List.of("image")));
+                ToastPieceResponse.builder()
+                        .memberId(1L)
+                        .toastPieceId(1L)
+                        .nickname("nickname")
+                        .profileUrl("profileUrl")
+                        .iconImageUrl("iconImageUrl")
+                        .title("title")
+                        .contentsUrl("contentsUrl")
+                        .createdAt(LocalDate.now())
+                        .toastPieceImages(List.of("images"))
+                        .build());
 
-        return new GiftToastDetailResponse(1, "title", "iconImageUrl", GiftToastType.GROUP, "owner",
-                LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), false, 10L,
-                new ToastPieceResponses(1, toastPieceResponses));
+        return new GiftToastDetailResponse(giftToastInfo,1L, new ToastPieceResponses(1L,toastPieceResponses) );
+    }
+
+    @Override
+    public GiftToastInfo getGiftToastInfo(final long memberId, final GiftToast giftToast) {
+        return GiftToastInfo.builder()
+                .giftToastId(1L)
+                .title("title")
+                .iconImageUrl("iconImageUrl")
+                .giftToastType(GiftToastType.GROUP)
+                .giftToastOwner("giftToastOwner")
+                .profileImageUrl("profileImageUrl")
+                .memorizedDate(LocalDate.of(2024, 1, 1))
+                .openedDate(LocalDate.of(2024, 1, 1))
+                .createdDate(LocalDate.of(2024, 1, 1))
+                .isOpened(false)
+                .build();
     }
 
     @Override
@@ -58,6 +97,36 @@ public class GiftToastServiceTest implements GiftToastService{
                 new GiftToastIncompleteResponse(1, "title", "iconImageUrl")
         );
         return new GiftToastIncompleteResponses(giftToastResponses);
+    }
+
+    @Override
+    public ToastPieceDetailResponse getToastPiece(long memberId, long toastPieceId) {
+        GiftToastInfo giftToastInfo =  GiftToastInfo.builder()
+                .giftToastId(1L)
+                .title("title")
+                .iconImageUrl("iconImageUrl")
+                .giftToastType(GiftToastType.GROUP)
+                .giftToastOwner("giftToastOwner")
+                .profileImageUrl("profileImageUrl")
+                .memorizedDate(LocalDate.of(2024, 1, 1))
+                .openedDate(LocalDate.of(2024, 1, 1))
+                .createdDate(LocalDate.of(2024, 1, 1))
+                .isOpened(false)
+                .build();
+
+        ToastPieceResponse toastPieceResponse =  ToastPieceResponse.builder()
+                .memberId(1L)
+                .toastPieceId(1L)
+                .nickname("nickname")
+                .profileUrl("profileUrl")
+                .iconImageUrl("iconImageUrl")
+                .title("title")
+                .contentsUrl("contentsUrl")
+                .createdAt(LocalDate.now())
+                .toastPieceImages(List.of("images"))
+                .build();
+
+        return new ToastPieceDetailResponse(giftToastInfo,toastPieceResponse);
     }
 
     @Override

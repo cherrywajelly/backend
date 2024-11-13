@@ -42,13 +42,17 @@ public enum ExceptionConstant {
     GIFT_TOAST_OWNER_NOT_FOUND("선물 토스트 소유주를 찾을 수 없습니다."),
 
     //toast_piece
-    TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_FOUND("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_EXISTS("토스트 조각을 존재하지 않습니다."),
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
     INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
     SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
     INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
+
+    //premium
+    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
     //login
     INVALID_USER("권한이 없는 유저입니다."),
