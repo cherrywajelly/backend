@@ -7,4 +7,5 @@ import java.util.List;
 public interface ShowcaseJpaRepository extends JpaRepository<Showcase, Long> {
     List<Showcase> findAllByMemberId(final long memberId);
     void deleteAllByEventToastId(final long eventToastId);
+    void deleteAllByMemberId(final long memberId);
 }

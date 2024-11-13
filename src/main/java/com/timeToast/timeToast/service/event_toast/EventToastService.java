@@ -18,6 +18,6 @@ public interface EventToastService {
     List<EventToastResponses> getEventToasts(final long memberId);
 
     EventToastResponse getEventToast(final long memberId, final long eventToastId);
-
+    void deleteAllEventToastByMemberId(final long memberId);
     void deleteEventToast(final long memberId, final long eventToastId);
 }

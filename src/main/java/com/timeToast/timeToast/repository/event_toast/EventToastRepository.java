@@ -5,7 +5,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import java.util.List;
 
 public interface EventToastRepository {
-    List<EventToast> findByMemberId(final long memberId);
+    List<EventToast> findAllByMemberId(final long memberId);
 
     EventToast save(final EventToast eventToast);
 

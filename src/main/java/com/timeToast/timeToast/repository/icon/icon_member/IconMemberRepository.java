@@ -9,4 +9,5 @@ public interface IconMemberRepository {
     IconMember getByMemberIdAndIconGroupId(final long memberId, final long iconGroupId);
     IconMember save(final IconMember memberIcon);
     void deleteById(final long memberIconId);
+    void deleteAllByMemberId(final long memberId);
 }

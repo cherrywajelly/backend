@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface IconMemberJpaRepository extends JpaRepository<IconMember, Long> {
     IconMember findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId);
+    void deleteAllByMemberId(final long memberId);
 }

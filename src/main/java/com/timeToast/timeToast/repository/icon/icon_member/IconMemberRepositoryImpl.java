@@ -5,31 +5,33 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_MEMBER_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
 public class IconMemberRepositoryImpl implements IconMemberRepository {
-    private final IconMemberJpaRepository memberIconJpaRepository;
+    private final IconMemberJpaRepository iconMemberJpaRepository;
 
     @Override
-    public IconMember getById(final long memberIconId) { return memberIconJpaRepository.findById(memberIconId).orElseThrow(() -> new NotFoundException(ICON_MEMBER_NOT_FOUND.getMessage())); }
+    public IconMember getById(final long memberIconId) { return iconMemberJpaRepository.findById(memberIconId).orElseThrow(() -> new NotFoundException(ICON_MEMBER_NOT_FOUND.getMessage())); }
 
     @Override
     public IconMember getByMemberIdAndIconGroupId(final long memberId, final long iconGroupId) {
-        return memberIconJpaRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId);
+        return iconMemberJpaRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId);
     }
 
     @Override
     public IconMember save(final IconMember memberIcon) {
-        return memberIconJpaRepository.save(memberIcon);
+        return iconMemberJpaRepository.save(memberIcon);
     }
-
 
     @Override
     public void deleteById(final long memberIconId) {
-        memberIconJpaRepository.deleteById(memberIconId);
+        iconMemberJpaRepository.deleteById(memberIconId);
+    }
+
+    @Override
+    public void deleteAllByMemberId(final long memberId){
+        iconMemberJpaRepository.deleteAllByMemberId(memberId);
     }
 }
