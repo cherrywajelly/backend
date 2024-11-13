@@ -1,7 +1,9 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,11 @@ public class MemberServiceTest implements MemberService{
     @Override
     public MemberProfileResponse getMemberProfile(long loginId, long memberId) {
         return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+    }
+
+    @Override
+    public PremiumResponse getMemberPremium(long memberId) {
+        return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
     }
 
 

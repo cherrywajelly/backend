@@ -11,6 +11,11 @@ public record DDayCount (
 
 
     public static long count(final LocalDate now, final LocalDate endDate){
-        return DAYS.between(now,endDate);
+        long dDay = DAYS.between(now,endDate);
+
+        if(dDay < 0){
+            dDay = 0;
+        }
+        return dDay;
     }
 }

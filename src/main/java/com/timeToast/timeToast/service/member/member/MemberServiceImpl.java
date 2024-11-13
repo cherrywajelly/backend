@@ -3,10 +3,12 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
@@ -24,14 +26,17 @@ public class MemberServiceImpl implements MemberService{
     private final TeamMemberRepository teamMemberRepository;
     private final FileUploadService fileUploadService;
     private final IconRepository iconRepository;
+    private final PremiumRepository premiumRepository;
+
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                             final IconRepository iconRepository) {
+                             final IconRepository iconRepository, final PremiumRepository premiumRepository) {
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.fileUploadService = fileUploadService;
         this.iconRepository = iconRepository;
+        this.premiumRepository = premiumRepository;
     }
 
     @Transactional
@@ -95,6 +100,13 @@ public class MemberServiceImpl implements MemberService{
                 .teamCount(teamMemberRepository.findAllByMemberId(memberId).size())
                 .isFollow(followRepository.findByFollowingIdAndFollowerId(memberId, loginId).isPresent())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PremiumResponse getMemberPremium(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        return PremiumResponse.from(premiumRepository.getById(member.getPremiumId()));
     }
 
 }

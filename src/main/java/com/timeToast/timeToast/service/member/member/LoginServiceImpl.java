@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -11,6 +12,7 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.icon_member.MemberIconRepository;
+import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
+import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 
 
 @Service
@@ -29,13 +31,15 @@ public class LoginServiceImpl implements LoginService {
     private final MemberRepository memberRepository;
     private final IconGroupRepository iconGroupRepository;
     private final MemberIconRepository memberIconRepository;
+    private final PremiumRepository premiumRepository;
 
-    public LoginServiceImpl(final JwtService jwtService, final MemberRepository memberRepository,
+    public LoginServiceImpl(final JwtService jwtService, final MemberRepository memberRepository, final PremiumRepository premiumRepository,
                             final IconGroupRepository iconGroupRepository, final MemberIconRepository memberIconRepository) {
         this.jwtService = jwtService;
         this.memberRepository = memberRepository;
         this.iconGroupRepository = iconGroupRepository;
         this.memberIconRepository = memberIconRepository;
+        this.premiumRepository = premiumRepository;
     }
 
 
@@ -54,7 +58,8 @@ public class LoginServiceImpl implements LoginService {
                     Member.builder()
                             .email(email)
                             .nickname(nickname)
-                            .memberProfileUrl(basicProfileImageUrl)
+                            .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
+                            .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
                             .loginType(loginType)
                             .memberRole(MemberRole.USER)
                             .build()

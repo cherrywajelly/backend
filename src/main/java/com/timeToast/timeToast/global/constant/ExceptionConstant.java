@@ -42,7 +42,8 @@ public enum ExceptionConstant {
     GIFT_TOAST_OWNER_NOT_FOUND("선물 토스트 소유주를 찾을 수 없습니다."),
 
     //toast_piece
-    TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_FOUND("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_EXISTS("토스트 조각을 존재하지 않습니다."),
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
@@ -52,6 +53,9 @@ public enum ExceptionConstant {
 
     // fcm
     INVALID_FCM_TOKEN("잘못된 토큰 등록 형식입니다."),
+
+    //premium
+    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
     //login
     INVALID_USER("권한이 없는 유저입니다."),
