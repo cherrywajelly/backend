@@ -11,4 +11,5 @@ public interface IconGroupRepository {
     List<IconGroup>  findAllByIconGroupNotOpen();
     List<IconGroup> findByMemberId(final long memberId);
     IconGroup save(final IconGroup iconGroup);
+    void deleteById(final long iconGroupId);
 }

@@ -28,4 +28,9 @@ public class IconGroupController {
         return iconGroupService.getIconGroups(loginMember.id());
     }
 
+    @DeleteMapping("/{iconGroupId}")
+    public void deleteIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
+        iconGroupService.deleteIconGroup(loginMember.id(), iconGroupId);
+    }
+
 }

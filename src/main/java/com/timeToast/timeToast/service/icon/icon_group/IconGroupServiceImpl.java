@@ -73,4 +73,9 @@ public class IconGroupServiceImpl implements IconGroupService{
 
         return iconGroupResponses;
     }
+
+    @Transactional
+    @Override
+    public void deleteIconGroup(final long memberId, final long iconGroupId){
+    }
 }

@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface IconGroupService {
     void buyIconGroup(long memberId, long iconGroupId);
+
     List<IconGroupResponses> getIconGroups(long memberId);
+
+    void deleteIconGroup(final long memberId, final long iconGroupId);
 }

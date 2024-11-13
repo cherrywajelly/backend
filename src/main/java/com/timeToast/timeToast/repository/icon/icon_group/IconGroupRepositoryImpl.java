@@ -34,8 +34,15 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     public List<IconGroup>  findAllByIconGroupNotOpen(){
         return iconGroupJpaRepository.findAllByIconType(IconType.NOT_OPEN);
     }
+
     @Override
     public IconGroup save(final IconGroup iconGroup) {
         return iconGroupJpaRepository.save(iconGroup);
+    }
+
+
+    @Override
+    public void deleteById(final long iconGroupId) {
+        iconGroupJpaRepository.deleteById(iconGroupId);
     }
 }
