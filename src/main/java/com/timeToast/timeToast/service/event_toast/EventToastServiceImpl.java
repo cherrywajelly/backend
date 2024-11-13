@@ -194,7 +194,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public void    deleteAllEventToastByMemberId(final long memberId){
+    public void deleteAllEventToastByMemberId(final long memberId){
         eventToastRepository.findAllByMemberId(memberId).forEach(
                 eventToast -> {
                     jamRepository.deleteAllByEventToastId(eventToast.getId());

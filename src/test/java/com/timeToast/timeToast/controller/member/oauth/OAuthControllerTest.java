@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 
 import static com.timeToast.timeToast.util.TestConstant.TEST_AUTH_CODE;
@@ -40,6 +41,9 @@ public class OAuthControllerTest extends BaseControllerTests {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("카카오 로그인")
+                                .queryParameters(
+                                        parameterWithName("code").description("인증 코드")
+                                )
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
                                         fieldWithPath("refreshToken").type(STRING).description("access token"),
@@ -63,6 +67,9 @@ public class OAuthControllerTest extends BaseControllerTests {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("구글 로그인")
+                                .queryParameters(
+                                        parameterWithName("code").description("인증 코드")
+                                )
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
                                         fieldWithPath("refreshToken").type(STRING).description("access token"),

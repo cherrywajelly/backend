@@ -1,39 +1,41 @@
 package com.timeToast.timeToast.service.withdrawal;
 
-import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
-import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.team.TeamService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class WithdrawalServiceImpl implements WithdrawalService{
 
     private final MemberRepository memberRepository;
     private final MemberTokenRepository memberTokenRepository;
+    private final IconMemberRepository iconMemberRepository;
+    private final FollowRepository followRepository;
+    private final TeamService teamService;
     private final GiftToastService giftToastService;
     private final EventToastService eventToastService;
     private final ShowcaseRepository showcaseRepository;
-    private final FollowRepository followRepository;
-    private final TeamService teamService;
-    private final IconMemberRepository iconMemberRepository;
 
-    public WithdrawalServiceImpl(MemberRepository memberRepository, MemberTokenRepository memberTokenRepository, GiftToastService giftToastService, EventToastService eventToastService, ShowcaseRepository showcaseRepository, FollowRepository followRepository, TeamService teamService, IconMemberRepository iconMemberRepository) {
+    public WithdrawalServiceImpl(final MemberRepository memberRepository, final MemberTokenRepository memberTokenRepository,
+                                 final IconMemberRepository iconMemberRepository, final FollowRepository followRepository,
+                                 final TeamService teamService, final GiftToastService giftToastService,
+                                 final EventToastService eventToastService, final ShowcaseRepository showcaseRepository) {
+
         this.memberRepository = memberRepository;
         this.memberTokenRepository = memberTokenRepository;
+        this.iconMemberRepository = iconMemberRepository;
+        this.followRepository = followRepository;
+        this.teamService = teamService;
         this.giftToastService = giftToastService;
         this.eventToastService = eventToastService;
         this.showcaseRepository = showcaseRepository;
-        this.followRepository = followRepository;
-        this.teamService = teamService;
-        this.iconMemberRepository = iconMemberRepository;
     }
 
     @Transactional
@@ -47,7 +49,7 @@ public class WithdrawalServiceImpl implements WithdrawalService{
         teamService.deleteAllTeam(memberId);
         followRepository.deleteAllFollowByMemberId(memberId);
         iconMemberRepository.deleteAllByMemberId(memberId);
-        memberTokenRepository.deleteById(memberId);
+        memberTokenRepository.deleteByMemberId(memberId);
         memberRepository.deleteById(memberId);
     }
 
@@ -65,9 +67,4 @@ public class WithdrawalServiceImpl implements WithdrawalService{
         memberRepository.deleteById(memberId);
     }
 
-
-    private void deleteMember(final long memberId){
-
-
-    }
 }

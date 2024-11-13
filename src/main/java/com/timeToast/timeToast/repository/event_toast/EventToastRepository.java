@@ -14,6 +14,7 @@ public interface EventToastRepository {
     EventToast getById(final long eventToastId);
 
     EventToast getByIdAndMemberId(final long eventToastId, final long memberId);
+
     List<EventToast> findAllEventToastToOpen();
 
     void deleteById(final long eventToastId);

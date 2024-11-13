@@ -25,8 +25,8 @@ public class MemberTokenRepositoryImpl implements MemberTokenRepository {
     }
 
     @Override
-    public void deleteById(final long memberId) {
-        memberTokenJpaRepository.deleteById(memberId);
+    public void deleteByMemberId(final long memberId) {
+        memberTokenJpaRepository.deleteByMemberId(memberId);
     }
 
 }
