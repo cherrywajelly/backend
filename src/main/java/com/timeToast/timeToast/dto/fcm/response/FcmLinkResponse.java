@@ -4,8 +4,7 @@ import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import lombok.Builder;
 
 @Builder
-public record FcmOpenedResponse (
-        long fcmId,
+public record FcmLinkResponse(
 
         FcmConstant fcmConstant,
 

@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.fcm;
 
-import com.timeToast.timeToast.dto.fcm.response.FcmOpenedResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 
@@ -14,5 +14,5 @@ public interface FcmService {
 
     void sendMessageTo(final long memberId, FcmResponse fcmResponse);
 
-    FcmOpenedResponse putIsOpened(final long memberId, final long fcmId);
+    FcmLinkResponse putIsOpened(final long memberId, final long fcmId);
 }

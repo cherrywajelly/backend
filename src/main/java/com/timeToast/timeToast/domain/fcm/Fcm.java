@@ -31,8 +31,6 @@ public class Fcm extends BaseTime {
 
     private String toastName;
 
-    private LocalDateTime time;
-
     private boolean isOpened;
 
     // pathVariable id

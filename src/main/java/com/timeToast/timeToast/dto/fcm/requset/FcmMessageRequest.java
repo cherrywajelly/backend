@@ -1,11 +1,11 @@
 package com.timeToast.timeToast.dto.fcm.requset;
 
 
-import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 
 public record FcmMessageRequest (
 
-        FcmDataRequest data,
+        FcmLinkResponse data,
 
         FcmNotificationRequest notification,
 
