@@ -11,4 +11,6 @@ public interface FcmRepository {
     List<Fcm> findByMemberIdOrderByCreatedAtDesc(final long memberId);
 
     Fcm getById(final long id);
+
+    void deleteAllByMemberId(final long memberId);
 }
