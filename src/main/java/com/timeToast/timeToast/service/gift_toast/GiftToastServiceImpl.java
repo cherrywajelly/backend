@@ -82,6 +82,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         GiftToast giftToast = giftToastRepository.save(GiftToastGroupRequest.to(giftToastGroupRequest));
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.teamId());
+        isOpenUpdate(giftToast);
 
         teamMembers.forEach(
                 teamMember -> giftToastOwnerRepository.save(
@@ -103,6 +104,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastFriendRequest.openedDate(), giftToastFriendRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastFriendRequest.to(giftToastFriendRequest));
+        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(
                 GiftToastOwner.builder()
@@ -129,6 +131,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastMineRequest.openedDate(), giftToastMineRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastMineRequest.to(giftToastMineRequest));
+        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(GiftToastOwner.builder()
                 .memberId(memberId)
@@ -269,6 +272,12 @@ public class GiftToastServiceImpl implements GiftToastService{
         if((openedDate.isBefore(LocalDate.now()) || openedDate.isEqual(LocalDate.now()))
                 && (memorizedDate.isEqual(LocalDate.now()) && memorizedDate.isAfter(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+    }
+
+    private void isOpenUpdate(final GiftToast giftToast){
+        if (giftToast.getOpenedDate().isEqual(LocalDate.now())) {
+            giftToast.updateIsOpened(true);
         }
     }
 
