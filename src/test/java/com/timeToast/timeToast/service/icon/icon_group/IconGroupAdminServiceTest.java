@@ -11,8 +11,4 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
 
     }
 
-    @Override
-    public List<IconGroupCreatorResponse> getIconGroupForCreator(final long memberId) {
-        return null;
-    }
 }
