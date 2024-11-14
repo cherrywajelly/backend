@@ -1,11 +1,8 @@
 package com.timeToast.timeToast.controller.event_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.controller.eventToast.EventToastController;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.event_toast.EventToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;

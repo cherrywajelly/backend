@@ -1,20 +1,20 @@
 package com.timeToast.timeToast.dto.jam.response;
 
+import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
 import lombok.Builder;
 
 @Builder
-public record JamResponse(
-        long jamId,
+public record JamResponse (
 
-        String iconImageUrl,
+        EventToastDataResponse eventToastDataResponse,
+        JamDataResponse jamDataResponse
 
-        String nickname
 ){
-    public static JamResponse fromEntity(final long jamId, String iconImageUrl, String nickname){
+    public static JamResponse of(EventToastDataResponse eventToastDataResponse, JamDataResponse jamDataResponse) {
         return JamResponse.builder()
-                .jamId(jamId)
-                .iconImageUrl(iconImageUrl)
-                .nickname(nickname)
+                .eventToastDataResponse(eventToastDataResponse)
+                .jamDataResponse(jamDataResponse)
                 .build();
     }
+
 }

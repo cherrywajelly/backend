@@ -1,10 +1,13 @@
 package com.timeToast.timeToast.repository.jam;
 
 import com.timeToast.timeToast.domain.jam.Jam;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.JAM_NOT_FOUNT;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,6 +30,11 @@ public class JamRepositoryImpl implements JamRepository {
     @Override
     public Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId) {
         return jamJpaRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
+    }
+
+    @Override
+    public Jam getById(final long jamId) {
+        return jamJpaRepository.findById(jamId).orElseThrow(() -> new NotFoundException(JAM_NOT_FOUNT.getMessage()));
     }
 
     @Override

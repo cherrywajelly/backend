@@ -15,5 +15,7 @@ public interface JamRepository {
 
     Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId);
 
+    Jam getById(final long jamId);
+
     void deleteAllByEventToastId(final long eventToastId);
 }
