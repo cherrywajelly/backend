@@ -38,6 +38,11 @@ public class JamRepositoryImpl implements JamRepository {
     }
 
     @Override
+    public void deleteById(final long jamId) {
+        jamJpaRepository.deleteById(jamId);
+    }
+
+    @Override
     public void deleteAllByEventToastId(final long eventToastId){
         jamJpaRepository.deleteAllByEventToastId(eventToastId);
     }

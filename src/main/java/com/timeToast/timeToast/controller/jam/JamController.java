@@ -42,4 +42,9 @@ public class JamController {
         return jamService.getJam(loginMember.id(), jamId);
     }
 
+    @DeleteMapping("/{jamId}")
+    public void deleteJam(@Login LoginMember loginMember, @PathVariable final long jamId) {
+        jamService.deleteJam(loginMember.id(), jamId);
+    }
+
 }

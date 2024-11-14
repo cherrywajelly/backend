@@ -5,8 +5,6 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
@@ -112,6 +110,19 @@ public class JamServiceImpl implements JamService {
 
             return new JamResponse(eventToastDataResponse, jamDataResponse);
 
+        } else {
+            throw new BadRequestException(INVALID_JAM.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteJam(final long memberId, final long jamId){
+        Jam jam = jamRepository.getById(jamId);
+
+        if (jam.getMemberId() == memberId) {
+            jamRepository.deleteById(jamId);
+            log.info("delete jam");
         } else {
             throw new BadRequestException(INVALID_JAM.getMessage());
         }

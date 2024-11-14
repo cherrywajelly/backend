@@ -13,4 +13,6 @@ public interface JamService {
     List<JamResponses> getJams(final long eventToastId);
 
     JamResponse getJam(final long memberId, final long jamId);
+
+    void deleteJam(final long memberId, final long jamId);
 }
