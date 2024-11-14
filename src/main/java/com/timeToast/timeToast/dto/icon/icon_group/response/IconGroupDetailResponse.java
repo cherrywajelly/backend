@@ -7,7 +7,7 @@ import java.util.*;
 
 @Builder
 public record IconGroupDetailResponse(
-        String profileImageUrl,
+        String thumbnailImageUrl,
         String title,
         String creatorNickname,
         int price,

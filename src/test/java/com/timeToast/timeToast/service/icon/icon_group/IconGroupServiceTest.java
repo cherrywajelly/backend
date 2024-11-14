@@ -49,6 +49,7 @@ public class IconGroupServiceTest implements IconGroupService {
                 IconGroupMarketResponse.builder()
                         .iconGroupId(1L)
                         .title("title")
+                        .thumbnailImageUrl("thumbnailImage")
                         .creatorNickname("nickname")
                         .iconType(IconType.TOAST)
                         .isBuy(false).build());
@@ -64,6 +65,7 @@ public class IconGroupServiceTest implements IconGroupService {
                 IconGroupMarketResponse.builder()
                         .iconGroupId(1L)
                         .title("title")
+                        .thumbnailImageUrl("thumbnailImage")
                         .creatorNickname("nickname")
                         .iconType(IconType.JAM)
                         .isBuy(false).build());
@@ -74,7 +76,7 @@ public class IconGroupServiceTest implements IconGroupService {
     @Override
     public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId) {
         return IconGroupDetailResponse.builder()
-                .profileImageUrl("profileImageUrl")
+                .thumbnailImageUrl("thumbnailImageUrl")
                 .title("title")
                 .creatorNickname("nickname")
                 .price(0)

@@ -109,6 +109,7 @@ public class IconGroupServiceImpl implements IconGroupService{
                             IconGroupMarketResponse.builder()
                                     .iconGroupId(iconGroup.getId())
                                     .title(iconGroup.getName())
+                                    .thumbnailImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl())
                                     .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
                                     .iconType(iconGroup.getIconType())
                                     .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
@@ -123,12 +124,13 @@ public class IconGroupServiceImpl implements IconGroupService{
     public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
+        List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
         return IconGroupDetailResponse.builder()
-                .profileImageUrl(creator.getMemberProfileUrl())
+                .thumbnailImageUrl(iconResponses.stream().findFirst().get().iconImageUrl())
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
-                .iconResponses(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList())
+                .iconResponses(iconResponses)
                 .build();
     }
 

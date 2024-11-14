@@ -7,6 +7,7 @@ import lombok.Builder;
 public record IconGroupMarketResponse(
         long iconGroupId,
         String title,
+        String thumbnailImageUrl,
         String creatorNickname,
         IconType iconType,
         boolean isBuy
