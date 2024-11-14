@@ -133,6 +133,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("iconGroupMarketResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupMarketResponses[0].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
                                         fieldWithPath("iconGroupMarketResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupMarketResponses[0].creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
                                         fieldWithPath("iconGroupMarketResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
@@ -162,6 +163,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("iconGroupMarketResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupMarketResponses[0].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
                                         fieldWithPath("iconGroupMarketResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupMarketResponses[0].creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
                                         fieldWithPath("iconGroupMarketResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
@@ -193,7 +195,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("profileImageUrl").type(STRING).description("제작자 아이콘 이미지 url"),
+                                        fieldWithPath("thumbnailImageUrl").type(STRING).description("thumbnailImage url"),
                                         fieldWithPath("title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
                                         fieldWithPath("price").type(NUMBER).description("아이콘 그룹 가격"),
