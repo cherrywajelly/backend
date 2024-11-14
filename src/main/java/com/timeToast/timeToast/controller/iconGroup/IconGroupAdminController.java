@@ -39,9 +39,6 @@ public class IconGroupAdminController {
 
     }
 
-//    @GetMapping("")
-//    public List<IconGroupCreatorResponse> getIconGroup(@Login LoginMember loginMember) {
-//        return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
-//    }
+
 
 }
