@@ -38,7 +38,7 @@ public class EventToastServiceTest implements EventToastService {
     @Override
     public List<EventToastResponses> getEventToasts(final long memberId){
         List<EventToastResponses> eventToastResponseList = new ArrayList<>();
-        eventToastResponseList.add(new EventToastResponses(1, "title", LocalDate.of(2024, 11, 11), "nickname", new IconResponse(1, "iconUrl")));
+        eventToastResponseList.add(new EventToastResponses(1, "title", LocalDate.of(2024, 11, 11), "nickname", "imageUrl", new IconResponse(1, "iconUrl")));
         return eventToastResponseList;
     }
 

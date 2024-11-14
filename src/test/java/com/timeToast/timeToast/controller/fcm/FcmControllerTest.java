@@ -1,18 +1,29 @@
 package com.timeToast.timeToast.controller.fcm;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
+import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.fcm.FcmServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -102,6 +113,40 @@ public class FcmControllerTest extends BaseControllerTests {
                                         fieldWithPath("fcmConstant").type(STRING).description("fcm 타입"),
                                         fieldWithPath("param").type(STRING).description("fcm 관련 사용자 닉네임")
                                 )
+                                .build()
+                        )));
+    }
+
+
+    @DisplayName("알림 전송 테스트를 할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void test() throws Exception {
+
+        FcmResponse fcmResponse = new FcmResponse(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
+        String json = objectMapper.writeValueAsString(fcmResponse);
+
+        mockMvc.perform(
+                        post("/api/v1/fcm/send")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("알림 전송 테스트",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("알림")
+                                .summary("알림 테스트")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("fcmConstant").type(STRING).description("알림 타입"),
+                                        fieldWithPath("nickname").type(STRING).description("알림 관련 사용자 닉네임"),
+                                        fieldWithPath("toastName").type(STRING).description("알림 관련 토스트 제목"),
+                                        fieldWithPath("param").type(NUMBER).description("알림 관련 id")
+                                )
+                                .responseFields()
                                 .build()
                         )));
     }
