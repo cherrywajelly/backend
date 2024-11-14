@@ -56,6 +56,7 @@ public class JamServiceImpl implements JamService {
             newJam.updateContentsUrl(getContentsUrl(contents, newJam));
             newJam.updateImageUrl(getContentsUrl(image, newJam));
             jamRepository.save(newJam);
+
             log.info("save jam");
         }
     }
