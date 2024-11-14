@@ -11,7 +11,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamResponse;
+import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
@@ -142,12 +142,12 @@ public class EventToastServiceImpl implements EventToastService{
         if (eventToast.isOpened()) {
             long dDay = 0;
 
-            List<JamResponse> jamResponses = new ArrayList<>();
+            List<JamResponses> jamResponses = new ArrayList<>();
 
             jams.forEach(
                     jam -> {
                         Member iconMember = memberRepository.getById(jam.getMemberId());
-                        jamResponses.add(new JamResponse(jam.getId(), jam.getImageUrl(), iconMember.getNickname()));
+                        jamResponses.add(new JamResponses(jam.getId(), jam.getImageUrl(), iconMember.getNickname()));
                     }
             );
 

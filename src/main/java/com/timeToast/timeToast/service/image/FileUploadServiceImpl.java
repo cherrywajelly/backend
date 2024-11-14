@@ -32,36 +32,14 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     private final OsClientConfiguration ociConfig;
 
-    //이미지 업로드
+    //oci 업로드
     @Transactional
     @Override
-    public String uploadImages(MultipartFile file, String endpoint) {
+    public String uploadfile(MultipartFile file, String endpoint) {
 
         try {
             InputStream inputStream = file.getInputStream();
-            return upload(endpoint, inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-
-    //텍스트 업로드
-    @Transactional
-    @Override
-    public String uploadTexts(String text, String endpoint) {
-
-        InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-        upload(endpoint, inputStream);
-
-        return null;
-    }
-
-
-    //oci 업로드
-    @Transactional
-    public String upload(String endpoint, InputStream inputStream) {
-        try {
             PutObjectRequest putObjectRequest =
                     PutObjectRequest.builder()
                             .namespaceName(namespace)
@@ -77,8 +55,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             } else {
                 log.error("ObjectStorage_client_is_null. Cannot perform putObject.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -89,4 +66,5 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
         return null;
     }
+
 }

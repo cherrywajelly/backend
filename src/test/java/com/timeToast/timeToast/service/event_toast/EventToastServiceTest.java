@@ -1,13 +1,12 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamResponse;
+import com.timeToast.timeToast.dto.jam.response.JamResponses;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,14 +37,14 @@ public class EventToastServiceTest implements EventToastService {
     @Override
     public List<EventToastResponses> getEventToasts(final long memberId){
         List<EventToastResponses> eventToastResponseList = new ArrayList<>();
-        eventToastResponseList.add(new EventToastResponses(1, "title", LocalDate.of(2024, 11, 11), "nickname", "imageUrl", new IconResponse(1, "iconUrl")));
+        eventToastResponseList.add(new EventToastResponses(1, "title", LocalDate.of(2024, 11, 11), "nickname", "profileImageUrl", new IconResponse(1, "iconUrl")));
         return eventToastResponseList;
     }
 
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
-        List<JamResponse> jamResponseList = new ArrayList<>();
-        jamResponseList.add(new JamResponse(1, "title", "iconUrl"));
+        List<JamResponses> jamResponseList = new ArrayList<>();
+        jamResponseList.add(new JamResponses(1, "title", "iconUrl"));
         EventToastResponse eventToastResponse = new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11),
                 false, "iconUrl", "profileUrl", "nickname", 0, 1, jamResponseList);
         return eventToastResponse;
