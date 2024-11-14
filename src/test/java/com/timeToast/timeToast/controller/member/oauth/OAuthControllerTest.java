@@ -28,7 +28,6 @@ public class OAuthControllerTest extends BaseControllerTests {
     }
 
     @DisplayName("인가 코드를 사용하여 카카오 로그인에 성공한다.")
-//    @WithMockUser(username = "User", roles = "USER")
     @Test()
     void kakaoLogin() throws Exception {
 

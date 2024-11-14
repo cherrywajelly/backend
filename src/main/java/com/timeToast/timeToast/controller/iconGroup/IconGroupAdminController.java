@@ -34,9 +34,9 @@ public class IconGroupAdminController {
         }
     }
 
-    @PostMapping("/images/{icon_group_id}")
-    public void postIconGroupImages(@Login LoginMember loginMember, @RequestPart("files") List<MultipartFile> files,
-                                    @PathVariable("icon_group_id") final long iconGroupId) {
+    @PostMapping("/images/{iconGroupId}")
+    public void postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files,
+                                    @PathVariable("iconGroupId") final long iconGroupId) {
         if (loginMember.role().equals(MemberRole.CREATOR)) {
             iconService.postIconSet(files, iconGroupId);
         } else {

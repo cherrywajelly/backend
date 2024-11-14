@@ -4,10 +4,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceImage;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceMember;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -24,9 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.BasicImage.basicProfileImageUrl;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TOAST_PIECE;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.TOAST_PIECE_NOT_EXISTS;
+import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
 @Service
@@ -47,6 +43,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         this.fileUploadService = fileUploadService;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
+
     }
 
     @Transactional
@@ -93,21 +90,19 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         List<ToastPieceResponse> toastPieceResponses = new ArrayList<>();
 
         toastPieceRepository.findAllByGiftToastId(giftToastId).forEach(
-                toastPiece -> toastPieceResponses.add(getToastPiece(toastPiece.getId())));
+                toastPiece -> toastPieceResponses.add(getToastPieceResponse(toastPiece.getId())));
 
         return new ToastPieceResponses(giftToastId, toastPieceResponses);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public ToastPieceResponse getToastPiece(final long toastPieceId) {
+    public  ToastPieceResponse getToastPieceResponse(final long toastPieceId){
         ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
-                .orElseThrow(()-> new BadRequestException(TOAST_PIECE_NOT_EXISTS.getMessage()));
+                .orElseThrow(()-> new NotFoundException(TOAST_PIECE_NOT_FOUND.getMessage()));
 
         Optional<Member> member = memberRepository.findById(toastPiece.getMemberId());
         ToastPieceMember toastPieceMember;
         if(member.isEmpty()){
-            toastPieceMember = new ToastPieceMember(null, null, basicProfileImageUrl);
+            toastPieceMember = new ToastPieceMember(null, null, BASIC_PROFILE_IMAGE_URL);
         }else{
             toastPieceMember = ToastPieceMember.from(member.get());
         }

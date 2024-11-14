@@ -25,7 +25,7 @@ public class IconServiceImpl implements IconService{
 
     @Transactional
     @Override
-    public void postIconSet(List<MultipartFile> files, long iconGroupId) {
+    public void postIconSet(List<MultipartFile> files, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         if(iconGroup == null) {
@@ -40,6 +40,6 @@ public class IconServiceImpl implements IconService{
             });
             log.info("save icon images");
         }
-    }
 
+    }
 }

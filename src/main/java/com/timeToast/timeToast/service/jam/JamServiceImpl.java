@@ -41,17 +41,20 @@ public class JamServiceImpl implements JamService {
 
     @Transactional
     @Override
-    public void postJam(JamRequest jamRequest, MultipartFile contents, MultipartFile image, final long eventToastId, final long memberId) {
+    public void postJam(final JamRequest jamRequest, final MultipartFile contents, final MultipartFile image, final long eventToastId, final long memberId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Jam jam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
+        System.out.println("jam : " + jam);
 
         if (eventToast == null) {
             throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
         } else if (jam != null) {
             throw new BadRequestException(INVALID_JAM.getMessage());
         } else {
-            Jam newJam = jamRequest.toEntity(jamRequest, memberId, eventToastId);
-            newJam.updateContentsUrl(getContentsUrl(contents, newJam));
+            System.out.println("1");
+            Jam newJam = jamRepository.save(jamRequest.toEntity(jamRequest, memberId, eventToastId));
+            System.out.println(getContentsUrl(contents, newJam));
+//            newJam.updateContentsUrl(getContentsUrl(contents, newJam));
             newJam.updateImageUrl(getContentsUrl(image, newJam));
             jamRepository.save(newJam);
             log.info("save jam");

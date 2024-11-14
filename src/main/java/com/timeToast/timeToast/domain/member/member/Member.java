@@ -17,6 +17,8 @@ public class Member extends BaseTime {
     @Column(name = "member_id")
     private Long id;
 
+    private Long premiumId;
+
     private String nickname;
 
     private String email;
@@ -30,8 +32,9 @@ public class Member extends BaseTime {
     private MemberRole memberRole;
 
     @Builder
-    public Member(final String nickname, final String email, final String memberProfileUrl,
+    public Member(final Long premiumId, final String nickname, final String email, final String memberProfileUrl,
                   final LoginType loginType, final MemberRole memberRole){
+        this.premiumId = premiumId;
         this.nickname = nickname;
         this.email = email;
         this.memberProfileUrl = memberProfileUrl;
@@ -47,5 +50,8 @@ public class Member extends BaseTime {
         this.nickname = nickname;
     }
 
+    public void updatePremiumId(final long premiumId){
+        this.premiumId = premiumId;
+    }
 
 }

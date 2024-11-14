@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.event_toast.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import lombok.Builder;
@@ -9,10 +10,11 @@ import java.util.List;
 
 @Builder
 public record EventToastResponse(
-        Long eventToastId,
+        long eventToastId,
 
         String title,
 
+        @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
         boolean isOpened,

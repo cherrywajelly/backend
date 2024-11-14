@@ -11,6 +11,7 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -23,7 +24,6 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.BasicImage.notOpenImageUrl;
+import static com.timeToast.timeToast.global.constant.BasicImage.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
 @Service
@@ -82,6 +82,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         GiftToast giftToast = giftToastRepository.save(GiftToastGroupRequest.to(giftToastGroupRequest));
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.teamId());
+        isOpenUpdate(giftToast);
 
         teamMembers.forEach(
                 teamMember -> giftToastOwnerRepository.save(
@@ -103,6 +104,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastFriendRequest.openedDate(), giftToastFriendRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastFriendRequest.to(giftToastFriendRequest));
+        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(
                 GiftToastOwner.builder()
@@ -129,6 +131,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastMineRequest.openedDate(), giftToastMineRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastMineRequest.to(giftToastMineRequest));
+        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(GiftToastOwner.builder()
                 .memberId(memberId)
@@ -146,38 +149,46 @@ public class GiftToastServiceImpl implements GiftToastService{
         GiftToast giftToast = giftToastRepository.findByGiftToastId(giftToastId)
                 .orElseThrow(()-> new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage()));
 
-        String giftToastOwner;
+        return GiftToastDetailResponse.from(
+                getGiftToastInfo(memberId, giftToast),
+                DDayCount.count(LocalDate.now(), giftToast.getOpenedDate()),
+                getToastPieceResponses(giftToast));
+
+    }
+
+    @Transactional
+    @Override
+    public GiftToastInfo getGiftToastInfo(final long memberId, final GiftToast giftToast){
+
+        String giftToastOwner = null;
+        String profileImageUrl = BASIC_PROFILE_IMAGE_URL;
 
         if(giftToast.getGiftToastType().equals(GiftToastType.GROUP)){
 
-            giftToastOwner = teamRepository.findById(giftToast.getTeamId()).orElseGet(null).getName();
+            Optional<Team> team =  teamRepository.findById(giftToast.getTeamId());
+            if(team.isPresent()){
+                giftToastOwner = team.get().getName();
+                profileImageUrl = team.get().getTeamProfileUrl();
+            }
+
+
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), profileImageUrl, giftToastOwner);
 
         }else if(giftToast.getGiftToastType().equals(GiftToastType.FRIEND)){
 
-            Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToastId)
+            Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId())
                     .stream().filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
 
-            giftToastOwner = memberRepository.findById(findGiftToastOwner.get().getMemberId()).orElseGet(null).getNickname();
+            if(findGiftToastOwner.isPresent()){
+                Member member = memberRepository.getById(findGiftToastOwner.get().getMemberId());
+                giftToastOwner = member.getNickname();
+                profileImageUrl =  member.getMemberProfileUrl();
+            }
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast),profileImageUrl, giftToastOwner);
 
         }else{
-            giftToastOwner = memberRepository.getById(memberId).getNickname();
-        }
-
-
-        if(giftToast.getIsOpened()){
-            return GiftToastDetailResponse.from(
-                    giftToast,
-                    iconRepository.getById(giftToast.getIconId()).getIconImageUrl(),
-                    null,
-                    giftToastOwner,
-                    toastPieceService.getToastPiecesByGiftToastId(giftToastId));
-        }else{
-            return GiftToastDetailResponse.from(
-                    giftToast,
-                    notOpenImageUrl,
-                    DDayCount.count(LocalDate.now(), giftToast.getOpenedDate()),
-                    giftToastOwner,
-                    new ToastPieceResponses(giftToast.getId(), List.of()));
+            Member member = memberRepository.getById(memberId);
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), member.getMemberProfileUrl(), member.getNickname());
         }
     }
 
@@ -190,8 +201,10 @@ public class GiftToastServiceImpl implements GiftToastService{
         giftToasts.forEach(
                 giftToast -> {
                     String giftToastOwner = null;
+
                     if(giftToast.getGiftToastType().equals(GiftToastType.GROUP)){
                         Optional<Team> findTeam = teamRepository.findById(giftToast.getTeamId());
+
                         if(findTeam.isPresent()){
                             giftToastOwner= findTeam.get().getName();
                         }
@@ -201,27 +214,20 @@ public class GiftToastServiceImpl implements GiftToastService{
 
                         if(findGiftToastOwner.isPresent()){
                             Optional<Member> findMember = memberRepository.findById(findGiftToastOwner.get().getMemberId());
-                            if(findMember.isPresent()) {
-                                giftToastOwner = findMember.get().getNickname();
-                            }
+                            giftToastOwner = findMember.get().getNickname();
                         }
+
                     }else{
                         giftToastOwner = memberRepository.getById(memberId).getNickname();
                     }
 
-                    String iconImageUrl;
-                    if(giftToast.getIsOpened()){
-                        iconImageUrl = iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
-                    }else{
-                        iconImageUrl = notOpenImageUrl;
-                    }
-
-                    giftToastResponses.add(GiftToastResponse.from(giftToast,iconImageUrl, giftToastOwner));
+                    giftToastResponses.add(GiftToastResponse.from(giftToast,getIconImageUrl(giftToast), giftToastOwner));
                 }
         );
 
         return new GiftToastResponses(giftToastResponses);
     }
+
 
     @Transactional(readOnly = true)
     @Override
@@ -241,6 +247,21 @@ public class GiftToastServiceImpl implements GiftToastService{
         );
 
         return new GiftToastIncompleteResponses(giftToastIncompleteResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ToastPieceDetailResponse getToastPiece(final long memberId, final long toastPieceId) {
+        ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
+                .orElseThrow(()-> new NotFoundException(TOAST_PIECE_NOT_FOUND.getMessage()));
+
+        GiftToast giftToast = giftToastRepository.findByGiftToastId(toastPiece.getGiftToastId())
+                .orElseThrow(()-> new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage()) );
+
+        return ToastPieceDetailResponse.builder()
+                .giftToastInfo(getGiftToastInfo(memberId, giftToast))
+                .toastPieceResponse(toastPieceService.getToastPieceResponse(toastPiece.getId()))
+                .build();
     }
 
     @Transactional
@@ -263,11 +284,32 @@ public class GiftToastServiceImpl implements GiftToastService{
         }
     }
 
+    private ToastPieceResponses getToastPieceResponses(final GiftToast giftToast){
+
+        if(giftToast.getIsOpened()){
+            return toastPieceService.getToastPiecesByGiftToastId(giftToast.getId());
+        }
+        return new ToastPieceResponses(giftToast.getId(), List.of());
+    }
+
+    private String getIconImageUrl(GiftToast giftToast) {
+        if(giftToast.getIsOpened()) {
+            return iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
+        }
+        return NOT_OPEN_IMAGE_URL;
+
+    }
 
     private void _checkDateValidation(final LocalDate openedDate, final LocalDate memorizedDate){
         if((openedDate.isBefore(LocalDate.now()) || openedDate.isEqual(LocalDate.now()))
                 && (memorizedDate.isEqual(LocalDate.now()) && memorizedDate.isAfter(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+    }
+
+    private void isOpenUpdate(final GiftToast giftToast){
+        if (giftToast.getOpenedDate().isEqual(LocalDate.now())) {
+            giftToast.updateIsOpened(true);
         }
     }
 

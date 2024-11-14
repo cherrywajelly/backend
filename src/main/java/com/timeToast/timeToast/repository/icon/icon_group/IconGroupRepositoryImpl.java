@@ -26,11 +26,23 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     }
 
     @Override
+    public List<IconGroup> findByMemberId(final long memberId) {
+        return iconGroupJpaRepository.findByMemberId(memberId);
+    }
+
+    @Override
     public List<IconGroup>  findAllByIconGroupNotOpen(){
         return iconGroupJpaRepository.findAllByIconType(IconType.NOT_OPEN);
     }
+
     @Override
     public IconGroup save(final IconGroup iconGroup) {
         return iconGroupJpaRepository.save(iconGroup);
+    }
+
+
+    @Override
+    public void deleteById(final long iconGroupId) {
+        iconGroupJpaRepository.deleteById(iconGroupId);
     }
 }

@@ -20,10 +20,11 @@ public class JamController {
     private final JamService jamService;
 
     @PostMapping("/{eventToastId}")
-    public void postJam(@Login LoginMember loginMember, @RequestPart("jamContents") final MultipartFile jamContents,
+    public void postJam(@Login LoginMember loginMember,
+                        @PathVariable final long eventToastId,
+                        @RequestPart("jamContents") final MultipartFile jamContents,
                         @RequestPart("jamImages") final MultipartFile jamImages,
-                        @RequestBody JamRequest jamRequest,
-                        @PathVariable final long eventToastId) {
+                        @RequestPart final JamRequest jamRequest) {
         jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
 

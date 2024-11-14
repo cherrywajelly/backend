@@ -14,15 +14,14 @@ public class OAuthController {
         this.oAuthService = oAuthService;
     }
 
-
     @GetMapping("/kakao")
     public LoginResponse loginWithKakao(@RequestParam("code") String code) {
-        return oAuthService.getKakaoAccessToken(code);
+        return oAuthService.kakaoLoginMember(code);
     }
 
     @GetMapping("/google")
     public LoginResponse loginWithGoogle(@RequestParam("code") String code) {
-        return oAuthService.getGoogleAccessToken(code);
+        return oAuthService.googleLoginMember(code);
     }
 
 }

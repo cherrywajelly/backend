@@ -1,5 +1,6 @@
 CREATE TABLE member (
                         member_id BIGINT AUTO_INCREMENT,
+                        premium_id BIGINT,
                         email VARCHAR(255),
                         member_profile_url VARCHAR(255),
                         nickname VARCHAR(255),
@@ -10,10 +11,22 @@ CREATE TABLE member (
                         PRIMARY KEY (member_id)
 );
 
-INSERT INTO member VALUES (1,"test1@email.com", "memberProfileUrl1", "testNickname1", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (2,"test2@email.com", "memberProfileUrl2", "testNickname2", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (3,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (4,"test4@email.com", "memberProfileUrl4", "testNickname4", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+CREATE TABLE premium (
+                         premium_id BIGINT AUTO_INCREMENT,
+                         premium_type VARCHAR(20),
+                         price INT,
+                         count INT,
+                         description VARCHAR(255),
+                         created_at DATETIME,
+                         last_modified_at DATETIME,
+                         PRIMARY KEY (premium_id)
+);
+
+
+INSERT INTO member VALUES (1,1,"test1@email.com", "memberProfileUrl1", "testNickname1", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (2,1,"test2@email.com", "memberProfileUrl2", "testNickname2", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "testNickname4", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE member_jwt_refresh_token (
                                           member_jwt_refresh_token_id BIGINT AUTO_INCREMENT,

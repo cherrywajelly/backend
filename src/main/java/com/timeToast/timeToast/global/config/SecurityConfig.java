@@ -43,7 +43,7 @@ public class SecurityConfig {
                         request -> {
                             request.requestMatchers("/h2-console/**", "/actuator/**",
                                     "/api/swagger-ui/** ","/docs/**", "/v3/api-docs/**", "/swagger-ui/**","/api-docs/**",
-                                    "/api/v1/login/**", "/api/v1/members/refreshToken").permitAll();
+                                    "/api/v1/login/**", "/api/v2/login/**","/api/v3/login/**", "/api/v1/members/refreshToken").permitAll();
                             request.anyRequest().authenticated();
 
                         }
