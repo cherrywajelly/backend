@@ -14,5 +14,6 @@ public interface TeamService {
     TeamResponses findLoginMemberTeams(final long memberId);
 
     void deleteTeam(final long memberId, final long teamId);
+    void deleteAllTeam(final long memberId);
 
 }

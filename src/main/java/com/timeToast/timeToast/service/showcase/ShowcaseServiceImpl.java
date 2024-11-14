@@ -65,7 +65,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
     @Transactional(readOnly = true)
     @Override
     public ShowcaseEditResponses getShowcaseSaveList(final long memberId) {
-        List<EventToast> eventToasts = eventToastRepository.findByMemberId(memberId);
+        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(memberId);
         List<Showcase> showcases = showcaseRepository.findAllByMemberId(memberId);
         List<ShowcaseEditResponse> showcaseEditResponses = new ArrayList<>();
 
@@ -123,4 +123,5 @@ public class ShowcaseServiceImpl implements ShowcaseService{
         log.info("delete showcase {} by {}", showcaseId, memberId);
 
     }
+
 }

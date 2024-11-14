@@ -76,7 +76,7 @@ public class JamServiceImpl implements JamService {
     @Transactional
     @Override
     public List<JamResponse> getJams(final long eventToastId) {
-        List<Jam> jams = jamRepository.findByEventToastId(eventToastId);
+        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
         List<JamResponse> jamResponses = new ArrayList<>();
 
         jams.forEach(

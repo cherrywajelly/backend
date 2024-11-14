@@ -15,4 +15,5 @@ public interface MemberRepository {
     List<Member> findMemberByNickname(final String nickname, final Pageable pageable);
     boolean existsByNickname(final String nickname);
     void delete(final Member member);
+    void deleteById(final long memberId);
 }

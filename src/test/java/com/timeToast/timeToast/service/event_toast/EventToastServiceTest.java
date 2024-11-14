@@ -52,6 +52,11 @@ public class EventToastServiceTest implements EventToastService {
     }
 
     @Override
+    public void deleteAllEventToastByMemberId(long memberId) {
+
+    }
+
+    @Override
     public void deleteEventToast(final long memberId,final long eventToastId) {
 
     }

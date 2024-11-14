@@ -269,8 +269,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     public void deleteGiftToast(final long memberId,final long giftToastId) {
 
         giftToastOwnerRepository.deleteByMemberIdAndGiftToastId(memberId, giftToastId);
-        List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToastId);
-        if(giftToastOwners.isEmpty()){
+        if(giftToastOwnerRepository.findAllByGiftToastId(giftToastId).isEmpty()){
             List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToastId);
             toastPieces.forEach(
                     toastPiece -> {
@@ -282,6 +281,13 @@ public class GiftToastServiceImpl implements GiftToastService{
 
             log.info("delete giftToast {} by {}", giftToastId, memberId);
         }
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllGiftToast(final long memberId){
+        giftToastRepository.findAllGiftToastsByMemberId(memberId).forEach(
+                giftToast -> deleteGiftToast(memberId, giftToast.getId()));
     }
 
     private ToastPieceResponses getToastPieceResponses(final GiftToast giftToast){

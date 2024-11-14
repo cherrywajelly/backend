@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface GiftToastService {
     GiftToastSaveResponse saveGiftToastGroup(final long memberId, final GiftToastGroupRequest giftToastGroupRequest);
@@ -17,4 +18,7 @@ public interface GiftToastService {
     GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId);
     ToastPieceDetailResponse getToastPiece(final long memberId, final long toastPieceId);
     void deleteGiftToast(final long memberId, final long giftToastId);
+
+    @Transactional
+    void deleteAllGiftToast(long memberId);
 }

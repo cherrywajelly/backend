@@ -40,4 +40,9 @@ public class ShowcaseRepositoryImpl implements ShowcaseRepository{
     public void deleteAllByEventToastId(final long eventToastId){
         showcaseJpaRepository.deleteAllByEventToastId(eventToastId);
     }
+
+    @Override
+    public void deleteAllByMemberId(final long memberId) {
+        showcaseJpaRepository.deleteAllByMemberId(memberId);
+    }
 }

@@ -8,6 +8,7 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_AUTH_CODE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,9 @@ public class OAuthAdminControllerTest extends BaseControllerTests {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("관리자 카카오 로그인")
+                                .queryParameters(
+                                        parameterWithName("code").description("인증 코드")
+                                )
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
                                         fieldWithPath("refreshToken").type(STRING).description("access token"),
@@ -62,6 +66,9 @@ public class OAuthAdminControllerTest extends BaseControllerTests {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("관리자 구글 로그인")
+                                .queryParameters(
+                                        parameterWithName("code").description("인증 코드")
+                                )
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
                                         fieldWithPath("refreshToken").type(STRING).description("access token"),

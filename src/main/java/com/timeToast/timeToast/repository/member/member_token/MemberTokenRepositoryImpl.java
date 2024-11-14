@@ -23,4 +23,10 @@ public class MemberTokenRepositoryImpl implements MemberTokenRepository {
     public Optional<MemberToken> findByMemberId(final long memberId) {
         return memberTokenJpaRepository.findByMemberId(memberId);
     }
+
+    @Override
+    public void deleteByMemberId(final long memberId) {
+        memberTokenJpaRepository.deleteByMemberId(memberId);
+    }
+
 }
