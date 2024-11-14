@@ -146,8 +146,8 @@ public class MemberServiceImpl implements MemberService{
 //                .profileUrl(member.getMemberProfileUrl())
 //                .nickname(member.getNickname())
 //                .iconTotalCount(iconGroups.size())
-//                .salesIconTotalCount()
-//                .totalRevenue()
+//                .salesIconTotalCount(0)
+//                .totalRevenue(0)
 //                //TODO account
 //                .accout("account")
 //                .build();
