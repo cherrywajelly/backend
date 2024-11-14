@@ -18,14 +18,17 @@ public record EventToastResponses(
 
         String nickname,
 
+        String memberProfileUrl,
+
         IconResponse icon
 ){
-    public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, IconResponse icon){
+    public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon){
         return EventToastResponses.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
                 .openedDate(eventToast.getOpenedDate())
                 .nickname(nickname)
+                .memberProfileUrl(memberProfileUrl)
                 .icon(icon)
                 .build();
     }

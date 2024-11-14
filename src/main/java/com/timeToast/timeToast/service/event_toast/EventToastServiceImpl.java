@@ -94,7 +94,7 @@ public class EventToastServiceImpl implements EventToastService{
                                 Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
-                                EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(),
+                                EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
                                         new IconResponse(icon.getId(), icon.getIconImageUrl()));
                                 eventToastResponses.add(eventToastResponse);
                             }
