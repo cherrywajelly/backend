@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JamController {
     private final JamService jamService;
-    private final ToastPieceService toastPieceService;
 
     @PostMapping("/{eventToastId}")
     public void postJam(@Login LoginMember loginMember,

@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.jam.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.jam.Jam;
 import lombok.Builder;
 
@@ -13,6 +14,8 @@ public record JamDataResponse (
         String jamNickname,
         String jamContentsUrl,
         String jamImageUrl,
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate jamCreatedDate
 ) {
     public static JamDataResponse fromEntity(Jam jam, String iconImageUrl, String memberProfileUrl, String nickname) {
