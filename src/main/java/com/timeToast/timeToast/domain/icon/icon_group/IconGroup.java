@@ -39,13 +39,16 @@ public class IconGroup extends BaseTime {
     @Enumerated(EnumType.STRING)
     private IconState iconState;
 
+    private String description;
+
     @Builder
-    public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId){
+    public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
         this.name = name;
         this.price = price;
         this.iconType = iconType;
         this.iconBuiltin = iconBuiltin;
         this.memberId = memberId;
+        this.description = description;
     }
 
     public void updateIconState(IconState iconState) { this.iconState = iconState; }

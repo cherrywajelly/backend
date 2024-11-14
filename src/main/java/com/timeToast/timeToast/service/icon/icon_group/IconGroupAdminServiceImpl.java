@@ -5,12 +5,16 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 
@@ -20,6 +24,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
+    private final IconRepository iconRepository;
 
     @Transactional
     public void postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
@@ -34,5 +39,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             log.info("save icon group");
         }
     }
+
+
 
 }

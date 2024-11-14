@@ -5,6 +5,10 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResp
 
 import java.util.List;
 
-public interface IconGroupAdminService {
-    void postIconGroup(IconGroupPostRequest iconGroupPostRequest, final long userId);
+public class IconGroupAdminServiceTest implements IconGroupAdminService {
+    @Override
+    public void postIconGroup(IconGroupPostRequest iconGroupPostRequest, final long userId){
+
+    }
+
 }

@@ -52,10 +52,10 @@ public class JamServiceImpl implements JamService {
             throw new BadRequestException(INVALID_NEW_JAM.getMessage());
         } else {
             Jam newJam = jamRepository.save(jamRequest.toEntity(jamRequest, memberId, eventToastId));
-            System.out.println(getContentsUrl(contents, newJam));
             newJam.updateContentsUrl(getContentsUrl(contents, newJam));
-            newJam.updateImageUrl(getContentsUrl(image, newJam));
+            newJam.updateImageUrl(getImageUrl(image, newJam));
             jamRepository.save(newJam);
+
             log.info("save jam");
         }
     }

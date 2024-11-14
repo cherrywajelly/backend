@@ -134,9 +134,9 @@ public class EventToastServiceImpl implements EventToastService{
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Icon icon = iconRepository.getById(eventToast.getIconId());
-        Member member = memberRepository.getById(eventToast.getMemberId());
-        List<Jam> jams = jamRepository.findAllByMemberId(memberId);
+        Icon icon = iconRepository.getById(eventToast.getIconId()); //이벤트 토스트 아이콘
+        Member member = memberRepository.getById(eventToast.getMemberId()); // 이벤트 토스트 주인
+        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId); // 이벤트 토스트 잼 조회
 
 //         이벤트 토스트가 열려있을 경우
         if (eventToast.isOpened()) {
@@ -146,8 +146,9 @@ public class EventToastServiceImpl implements EventToastService{
 
             jams.forEach(
                     jam -> {
-                        Member iconMember = memberRepository.getById(jam.getMemberId());
-                        jamResponses.add(new JamResponses(jam.getId(), jam.getImageUrl(), iconMember.getNickname()));
+                        Icon jamIcon = iconRepository.getById(jam.getIconId()); // 잼 아이콘
+                        Member iconMember = memberRepository.getById(jam.getMemberId()); // 잼 작성자
+                        jamResponses.add(JamResponses.fromEntity(jam.getId(), jamIcon.getIconImageUrl(), iconMember.getNickname()));
                     }
             );
 
