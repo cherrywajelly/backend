@@ -136,7 +136,7 @@ public class EventToastServiceImpl implements EventToastService{
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Icon icon = iconRepository.getById(eventToast.getIconId());
         Member member = memberRepository.getById(eventToast.getMemberId());
-        List<Jam> jams = jamRepository.findAllByMemberId(memberId);
+        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
 
 //         이벤트 토스트가 열려있을 경우
         if (eventToast.isOpened()) {
