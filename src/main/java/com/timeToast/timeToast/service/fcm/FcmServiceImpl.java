@@ -233,11 +233,11 @@ public class FcmServiceImpl implements FcmService {
                     Optional<FcmSendRequest> followSend = Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
                     return followSend;
                 default:
-                    return null;
+                    return Optional.empty();
                 }
 
         }
-        return null;
+        return Optional.empty();
 
     }
 
