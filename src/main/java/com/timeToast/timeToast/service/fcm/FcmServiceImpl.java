@@ -194,10 +194,9 @@ public class FcmServiceImpl implements FcmService {
 
             if (fcmSendRequest.get().token() != null) {
                 return om.writeValueAsString(fcmRequest);
-            } else {
-                return null;
             }
         }
+        return null;
     }
 
 
