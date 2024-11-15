@@ -9,13 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "monthSettlement")
+@Table(name = "month_settlement")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MonthSettlement extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "monthSettlement_id")
+    @Column(name = "month_settlement_id")
     private long id;
 
     private long memberId;
