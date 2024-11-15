@@ -12,7 +12,7 @@ public record CreatorDetailResponse(
         int iconTotalCount,
         int salesIconTotalCount,
         int totalRevenue,
-        String account,
+        String accountNumber,
         List<CreatorIconInfo> creatorIconInfos
 ) {
 }
