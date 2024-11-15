@@ -133,8 +133,11 @@ public class FcmServiceImpl implements FcmService {
             HttpEntity entity = new HttpEntity<>(message, headers);
 
             String API_URL = fcmUrl;
-            ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-            saveFcmInfo(memberId, fcmResponse);
+
+            if (message != null) {
+                restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+                saveFcmInfo(memberId, fcmResponse);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
