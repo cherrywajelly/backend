@@ -156,6 +156,7 @@ public class FcmServiceImpl implements FcmService {
             HttpEntity entity = new HttpEntity<>(message, headers);
 
             String API_URL = fcmUrl;
+
             ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
             saveFcmInfo(memberId, fcmResponse);
         } catch (Exception e) {
@@ -209,7 +210,13 @@ public class FcmServiceImpl implements FcmService {
         FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.data(), fcmNotificationRequest, fcmSendRequest.token());
 
         FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
-        return om.writeValueAsString(fcmRequest);
+
+        if (fcmSendRequest.token() != null) {
+            return om.writeValueAsString(fcmRequest);
+        } else {
+            return null;
+        }
+
     }
 
 
