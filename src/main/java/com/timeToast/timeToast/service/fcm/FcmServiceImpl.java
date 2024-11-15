@@ -237,6 +237,8 @@ public class FcmServiceImpl implements FcmService {
                 default:
                     return null;
             }
+        } else {
+            log.error("have to save fcm token");
         }
 
         return null;
