@@ -2,10 +2,9 @@ package com.timeToast.timeToast.repository.member.member;
 
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -63,6 +62,11 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .fetch();
 
 
+    }
+
+    @Override
+    public List<Member> findAllByMemberRole(final MemberRole memberRole){
+        return memberJpaRepository.findAllByMemberRole(memberRole);
     }
 
     @Override

@@ -86,7 +86,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Transactional
     @Override
     public LoginResponse kakaoLoginAdmin(final String accessToken) {
-        return getKakaoAccessToken(accessToken, MemberRole.ADMIN, kakaoAdminRedirectUrl);
+        return getKakaoAccessToken(accessToken, MemberRole.MANAGER, kakaoAdminRedirectUrl);
     }
 
     @Transactional
@@ -104,7 +104,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Transactional
     @Override
     public LoginResponse googleLoginAdmin(final String accessToken) {
-        return getGoogleAccessToken(accessToken, MemberRole.ADMIN, googleAdminRedirectUrl);
+        return getGoogleAccessToken(accessToken, MemberRole.MANAGER, googleAdminRedirectUrl);
     }
 
 

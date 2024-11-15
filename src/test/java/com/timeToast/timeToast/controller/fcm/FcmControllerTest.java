@@ -101,17 +101,13 @@ public class FcmControllerTest extends BaseControllerTests {
                         get("/api/v1/fcm/opened/{fcmId}", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andDo(document("선택 알림 관련 페이지로 이동",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("알림")
                                 .summary("알림 관련 페이지로 이동")
                                 .pathParameters(
                                         parameterWithName("fcmId").description("알림 id")
-                                )
-                                .responseFields(
-                                        fieldWithPath("fcmConstant").type(STRING).description("fcm 타입"),
-                                        fieldWithPath("param").type(STRING).description("fcm 관련 사용자 닉네임")
                                 )
                                 .build()
                         )));

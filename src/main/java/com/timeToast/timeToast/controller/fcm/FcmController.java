@@ -8,6 +8,7 @@ import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class FcmController {
 
 
     @GetMapping("/opened/{fcmId}")
-    public FcmLinkResponse putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+    public RedirectView putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+
         return fcmService.putIsOpened(loginMember.id(), fcmId);
     }
 }
