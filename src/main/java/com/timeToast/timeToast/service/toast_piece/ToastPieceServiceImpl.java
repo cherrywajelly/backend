@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTBAKED;
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPENED;
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -82,8 +83,8 @@ public class ToastPieceServiceImpl implements ToastPieceService{
             if(!giftToastOwner.getMemberId().equals(memberId)){
                 fcmService.sendMessageTo(giftToastOwner.getMemberId(),
                         FcmResponse.builder()
-                                .fcmConstant(GIFTTOASTOPENED)
-                                .nickname(memberRepository.getById(giftToastOwner.getMemberId()).getNickname())
+                                .fcmConstant(GIFTTOASTBAKED)
+                                .nickname(memberRepository.getById(memberId).getNickname())
                                 .toastName(giftToast.getTitle())
                                 .param(giftToast.getId())
                                 .build());

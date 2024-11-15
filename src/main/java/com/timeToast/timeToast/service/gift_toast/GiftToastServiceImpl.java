@@ -144,7 +144,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         fcmService.sendMessageTo(memberId,
                 FcmResponse.builder()
                         .fcmConstant(GIFTTOASTCREATED)
-                        .nickname(memberRepository.getById(memberId).getNickname())
                         .toastName(giftToast.getTitle())
                         .param(giftToast.getId())
                         .build());
@@ -380,7 +379,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         fcmService.sendMessageTo(memberId,
                 FcmResponse.builder()
                         .fcmConstant(GIFTTOASTOPENED)
-                        .nickname(memberRepository.getById(memberId).getNickname())
                         .toastName(giftToast.getTitle())
                         .param(giftToast.getId())
                         .build());

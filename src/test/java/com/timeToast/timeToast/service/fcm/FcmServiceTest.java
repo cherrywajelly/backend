@@ -30,8 +30,6 @@ public class FcmServiceTest implements FcmService {
     }
 
     @Override
-    public RedirectView putIsOpened(final long memberId, final long fcmId){
-        RedirectView fcmLinkResponse = new RedirectView("redirect url");
-        return fcmLinkResponse;
+    public void putIsOpened(final long memberId, final long fcmId){
     }
 }

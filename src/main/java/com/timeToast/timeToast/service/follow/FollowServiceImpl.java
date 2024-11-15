@@ -1,13 +1,16 @@
 package com.timeToast.timeToast.service.follow;
 
+import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.service.fcm.FcmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +27,12 @@ public class FollowServiceImpl implements FollowService{
 
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
+    private final FcmService fcmService;
 
-    public FollowServiceImpl(final FollowRepository followRepository, final MemberRepository memberRepository) {
+    public FollowServiceImpl(final FollowRepository followRepository, final MemberRepository memberRepository, final FcmService fcmService) {
         this.followRepository = followRepository;
         this.memberRepository = memberRepository;
+        this.fcmService = fcmService;
     }
     @Transactional
     @Override
@@ -43,6 +48,15 @@ public class FollowServiceImpl implements FollowService{
                             .build()
             );
             log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
+
+
+            fcmService.sendMessageTo(
+                    followingId,
+                    FcmResponse.builder()
+                            .fcmConstant(FcmConstant.FOLLOW)
+                            .nickname(memberRepository.getById(memberId).getNickname())
+                            .param(memberId)
+                    .build());
         }else{
             throw new BadRequestException(FOLLOW_ALREADY_EXISTS.getMessage());
         }

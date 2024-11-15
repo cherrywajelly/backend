@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.event_toast;
 
+import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -10,6 +11,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -20,6 +22,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.service.fcm.FcmService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +48,7 @@ public class EventToastServiceImpl implements EventToastService{
     private final FollowRepository followRepository;
     private final JamRepository jamRepository;
     private final ShowcaseRepository showcaseRepository;
+    private final FcmService fcmService;
 
 
     @Transactional
@@ -210,7 +214,11 @@ public class EventToastServiceImpl implements EventToastService{
         List<EventToast> eventToasts = eventToastRepository.findAllEventToastToOpen();
 
         eventToasts.forEach(
-                eventToast -> eventToast.updateIsOpened(true));
+                eventToast -> {
+                    eventToast.updateIsOpened(true);
+
+                    fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTOPENED, null, eventToast.getTitle(), eventToast.getId()));
+                });
 
         log.info("update event toast's is open");
     }

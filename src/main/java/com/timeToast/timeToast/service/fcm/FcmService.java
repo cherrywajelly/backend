@@ -18,5 +18,5 @@ public interface FcmService {
     void sendMessageTo(final long memberId, FcmResponse fcmResponse);
 
     // 읽었는지 체크
-    RedirectView putIsOpened(final long memberId, final long fcmId);
+    void putIsOpened(final long memberId, final long fcmId);
 }
