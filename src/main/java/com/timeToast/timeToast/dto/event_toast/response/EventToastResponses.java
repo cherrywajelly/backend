@@ -20,9 +20,11 @@ public record EventToastResponses(
 
         String memberProfileUrl,
 
-        IconResponse icon
+        IconResponse icon,
+
+        boolean isWritten
 ){
-    public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon){
+    public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten) {
         return EventToastResponses.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
@@ -30,6 +32,7 @@ public record EventToastResponses(
                 .nickname(nickname)
                 .memberProfileUrl(memberProfileUrl)
                 .icon(icon)
+                .isWritten(isWritten)
                 .build();
     }
 }

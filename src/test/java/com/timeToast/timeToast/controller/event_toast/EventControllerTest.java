@@ -151,7 +151,8 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("[].nickname").type(STRING).description("조회 대상 닉네임"),
                                         fieldWithPath("[].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
                                         fieldWithPath("[].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
-                                        fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
+                                        fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지"),
+                                        fieldWithPath("[].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부")
                                 )
                                 .build()
                         )));
@@ -188,6 +189,7 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("jamCount").type(NUMBER).description("이벤트 토스트에 발른 잼 개수"),
                                         fieldWithPath("dDay").type(NUMBER).description("이벤트 토스트 개봉까지 남은 날짜"),
+                                        fieldWithPath("isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부"),
                                         fieldWithPath("jams[].jamId").type(NUMBER).description("이벤트 토스트에 발린 잼의 id"),
                                         fieldWithPath("jams[].iconImageUrl").type(STRING).description("이벤트 토스트에 발린 잼의 아이콘 이미지"),
                                         fieldWithPath("jams[].nickname").type(STRING).description("이벤트 토스트에 잼을 바른 사용자의 닉네임")

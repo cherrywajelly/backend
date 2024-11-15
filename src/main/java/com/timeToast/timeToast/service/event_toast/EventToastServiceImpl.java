@@ -98,9 +98,16 @@ public class EventToastServiceImpl implements EventToastService{
                                 Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
-                                EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
-                                        new IconResponse(icon.getId(), icon.getIconImageUrl()));
-                                eventToastResponses.add(eventToastResponse);
+                                Jam jam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId());
+                                if (jam == null) {
+                                    EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), false);
+                                    eventToastResponses.add(eventToastResponse);
+                                } else {
+                                    EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), true);
+                                    eventToastResponses.add(eventToastResponse);
+                                }
                             }
                     );
                 }
@@ -156,14 +163,29 @@ public class EventToastServiceImpl implements EventToastService{
                     }
             );
 
+            Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, jamResponses);
-            return eventToastResponse;
+
+            return updateWritten(memberId, eventToastId, eventToastResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, null);
+
+            return updateWritten(memberId, eventToastId, eventToastResponse);
+        }
+    }
+
+    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastRes){
+        Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
+
+        if (memberJam == null) {
+            EventToastResponse eventToastResponse = EventToastResponse.of(eventToastRes, false);
+            return eventToastResponse;
+        } else {
+            EventToastResponse eventToastResponse = EventToastResponse.of(eventToastRes, true);
             return eventToastResponse;
         }
     }
