@@ -1,6 +1,5 @@
-package com.timeToast.timeToast.domain.order;
+package com.timeToast.timeToast.domain.orders;
 
-import com.google.type.DateTime;
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,13 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order extends BaseTime {
+public class Orders extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "orders_id")
     private long id;
 
     private long memberId;
@@ -25,7 +24,7 @@ public class Order extends BaseTime {
     private long payment;
 
     @Builder
-    public Order(final long memberId, final long iconGroupId, final long payment) {
+    public Orders(final long memberId, final long iconGroupId, final long payment) {
         this.memberId = memberId;
         this.iconGroupId = iconGroupId;
         this.payment = payment;
