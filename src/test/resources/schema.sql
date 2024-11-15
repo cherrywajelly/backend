@@ -29,12 +29,12 @@ INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNick
 INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "testNickname4", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE member_jwt_refresh_token (
-                                          member_jwt_refresh_token_id BIGINT AUTO_INCREMENT,
-                                          member_id BIGINT NOT NULL,
-                                          jwt_refresh_token VARCHAR(350),
+                                          team_id BIGINT AUTO_INCREMENT,
+                                          name VARCHAR(255),
+                                          team_profile_url VARCHAR(255),
                                           created_at datetime,
                                           last_modified_at datetime,
-                                          PRIMARY KEY (member_jwt_refresh_token_id)
+                                          PRIMARY KEY (team_id)
 );
 
 CREATE TABLE team (
@@ -121,7 +121,7 @@ INSERT INTO icon_member VALUES (6,3,2,"2024-11-03 22:34:32.431779", "2024-11-03 
 CREATE TABLE gift_toast (
                             gift_toast_id BIGINT AUTO_INCREMENT,
                             icon_id BIGINT,
-                            group_id BIGINT,
+                            team_id BIGINT,
                             memorized_date DATE,
                             opened_date DATE,
                             is_opened BOOLEAN,
@@ -162,6 +162,32 @@ CREATE TABLE toast_piece_image (
                                    PRIMARY KEY (toast_piece_image_id)
 );
 
+CREATE TABLE event_toast (
+                             event_toast_id BIGINT AUTO_INCREMENT,
+                             member_id BIGINT,
+                             icon_id BIGINT,
+                             title VARCHAR(255),
+                             opened_date DATE,
+                             is_opened BIT(1),
+                             created_at DATETIME,
+                             last_modified_at DATETIME,
+                             PRIMARY KEY (event_toast_id)
+);
+
+
+CREATE TABLE jam (
+                     jam_id BIGINT AUTO_INCREMENT,
+                     member_id BIGINT,
+                     event_toast_id BIGINT,
+                     icon_id BIGINT,
+                     title VARCHAR(255),
+                     contents_url VARCHAR(255),
+                     image_url VARCHAR(255),
+                     created_at DATETIME,
+                     last_modified_at DATETIME,
+                     PRIMARY KEY (jam_id)
+);
+
 CREATE TABLE showcase (
                           showcase_id BIGINT AUTO_INCREMENT,
                           member_id BIGINT,
@@ -171,3 +197,14 @@ CREATE TABLE showcase (
                           PRIMARY KEY (showcase_id)
 );
 
+CREATE TABLE fcm (
+                     fcm_id BIGINT AUTO_INCREMENT,
+                     member_id BIGINT,
+                     fcm_constant VARCHAR(50),
+                     nickname VARCHAR(255),
+                     toast_name VARCHAR(255),
+                     is_opened BIT(1),
+                     param BIGINT,
+                     image_url VARCHAR(255),
+                     PRIMARY KEY (fcm_id)
+);
