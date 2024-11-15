@@ -31,6 +31,7 @@ public record FcmResponses(
                 .imageUrl(fcm.getImageUrl())
                 .time(time)
                 .toastName(fcm.getToastName())
+                .isOpened(fcm.isOpened())
                 .build();
     }
 }

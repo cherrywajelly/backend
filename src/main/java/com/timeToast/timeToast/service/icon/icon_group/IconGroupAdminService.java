@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IconGroupAdminService {
     void postIconGroup(IconGroupPostRequest iconGroupPostRequest, final long userId);
+    List<IconGroupCreatorResponse> getIconGroupForCreator(final long memberId);
 }

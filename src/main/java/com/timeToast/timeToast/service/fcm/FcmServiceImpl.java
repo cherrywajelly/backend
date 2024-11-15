@@ -26,6 +26,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -105,7 +106,7 @@ public class FcmServiceImpl implements FcmService {
     // 알림 눌렀을 때
     @Transactional
     @Override
-    public FcmLinkResponse putIsOpened(final long memberId, final long fcmId){
+    public RedirectView putIsOpened(final long memberId, final long fcmId) {
         Fcm fcm = fcmRepository.getById(fcmId);
 
         if (!fcm.isOpened()) {
@@ -113,8 +114,28 @@ public class FcmServiceImpl implements FcmService {
             fcmRepository.save(fcm);
         }
 
-        FcmLinkResponse fcmLinkResponse = new FcmLinkResponse(fcm.getFcmConstant().toString(), Long.toString(fcm.getParam()));
-        return fcmLinkResponse;
+        String redirectLink = "/";
+
+        switch (fcm.getFcmConstant()) {
+            case EVENTTOASTSPREAD:
+            case EVENTTOASTOPENED:
+                redirectLink = redirectLink + "event-toast/" + fcm.getParam();
+                break;
+            case GIFTTOASTCREATED:
+            case GIFTTOASTOPENED:
+            case GIFTTOASTBAKED:
+                redirectLink = redirectLink + "gift-toast/" + fcm.getParam();
+                break;
+            case FOLLOW:
+                redirectLink = redirectLink + "profile/" + fcm.getParam();
+                break;
+            default:
+                return null;
+        }
+
+        RedirectView redirectView = new RedirectView(redirectLink);
+        redirectView.setStatusCode(HttpStatus.MOVED_TEMPORARILY);
+        return redirectView;
     }
 
     // 메세지 전송

@@ -81,31 +81,31 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
     }
 
 
-//    @DisplayName("제작자가 제작한 아이콘 그룹 목록을 조회할 수 있다.")
-//    @WithMockCustomUser
-//    @Test
-//    void getIconGroup() throws Exception {
-//
-//        mockMvc.perform(
-//                        get("/api/v2/iconGroups")
-//                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-//                )
-//                .andExpect(status().isOk())
-//                .andDo(document("아이콘 등록",
-//                        resource(ResourceSnippetParameters.builder()
-//                                .tag("아이콘")
-//                                .summary("새로운 아이콘 등록")
-//                                .requestHeaders(
-//                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-//                                )
-//                                .responseFields(
-//                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("이벤트 토스트 id"),
-//                                        fieldWithPath("[].iconImageUrl").type(STRING).description("이벤트 토스트 제목"),
-//                                        fieldWithPath("[].iconTitle").type(STRING).description("이벤트 토스트 개봉 날짜")
-//                                )
-//                                .build()
-//                        )));
-//    }
+    @DisplayName("제작자가 제작한 아이콘 그룹 목록을 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getIconGroup() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v2/iconGroups")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("아이콘 목록 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("아이콘 목록 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("[].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
+                                        fieldWithPath("[].iconTitle").type(STRING).description("아이콘 제목")
+                                )
+                                .build()
+                        )));
+    }
 
 }
 

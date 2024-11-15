@@ -1,6 +1,8 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
+import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
@@ -39,6 +41,16 @@ public class MemberServiceTest implements MemberService{
     @Override
     public MemberProfileResponse getMemberProfile(long loginId, long memberId) {
         return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+    }
+
+    @Override
+    public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
+        return null;
+    }
+
+    @Override
+    public CreatorResponses getCreators() {
+        return null;
     }
 
     @Override
