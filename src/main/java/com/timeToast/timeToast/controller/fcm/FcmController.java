@@ -36,8 +36,8 @@ public class FcmController {
 
 
     @GetMapping("/opened/{fcmId}")
-    public RedirectView putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+    public void putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
 
-        return fcmService.putIsOpened(loginMember.id(), fcmId);
+        fcmService.putIsOpened(loginMember.id(), fcmId);
     }
 }

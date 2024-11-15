@@ -95,7 +95,7 @@ public class FcmServiceImpl implements FcmService {
                         time = ChronoUnit.MONTHS.between(fcm.getCreatedAt(), localDateTime) + "달 전";
                     }
 
-                    FcmResponses fcmResponse = FcmResponses.fromEntity(fcm, text, time);
+                    FcmResponses fcmResponse = FcmResponses.fromEntity(fcm, text, time, fcm.getParam());
                     fcmResponses.add(fcmResponse);
                 }
         );
@@ -106,36 +106,13 @@ public class FcmServiceImpl implements FcmService {
     // 알림 눌렀을 때
     @Transactional
     @Override
-    public RedirectView putIsOpened(final long memberId, final long fcmId) {
+    public void putIsOpened(final long memberId, final long fcmId) {
         Fcm fcm = fcmRepository.getById(fcmId);
 
         if (!fcm.isOpened()) {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
-
-        String redirectLink = "/";
-
-        switch (fcm.getFcmConstant()) {
-            case EVENTTOASTSPREAD:
-            case EVENTTOASTOPENED:
-                redirectLink = redirectLink + "event-toast/" + fcm.getParam();
-                break;
-            case GIFTTOASTCREATED:
-            case GIFTTOASTOPENED:
-            case GIFTTOASTBAKED:
-                redirectLink = redirectLink + "gift-toast/" + fcm.getParam();
-                break;
-            case FOLLOW:
-                redirectLink = redirectLink + "profile/" + fcm.getParam();
-                break;
-            default:
-                return null;
-        }
-
-        RedirectView redirectView = new RedirectView(redirectLink);
-        redirectView.setStatusCode(HttpStatus.MOVED_TEMPORARILY);
-        return redirectView;
     }
 
     // 메세지 전송
