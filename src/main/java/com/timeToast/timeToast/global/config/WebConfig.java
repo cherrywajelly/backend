@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOriginPatterns("https://dev-back.timetoast.app", "http://localhost")
+                .allowedOriginPatterns("https://dev-back.timetoast.app", "http://localhost", "https://dev-front.timetoast.app", "https://timetoast.app")
 //                .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
