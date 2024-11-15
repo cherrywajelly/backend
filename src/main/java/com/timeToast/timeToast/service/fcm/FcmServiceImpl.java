@@ -189,7 +189,13 @@ public class FcmServiceImpl implements FcmService {
         FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.data(), fcmNotificationRequest, fcmSendRequest.token());
 
         FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
-        return om.writeValueAsString(fcmRequest);
+
+        if (fcmSendRequest.token() != null) {
+            return om.writeValueAsString(fcmRequest);
+        } else {
+            return null;
+        }
+
     }
 
 
