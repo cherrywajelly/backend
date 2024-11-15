@@ -86,7 +86,8 @@ public class FcmControllerTest extends BaseControllerTests {
                                         fieldWithPath("[].imageUrl").type(STRING).description("fcm 이미지"),
                                         fieldWithPath("[].time").type(STRING).description("fcm 작성 시간"),
                                         fieldWithPath("[].toastName").type(STRING).description("fcm 관련 토스트 이름"),
-                                        fieldWithPath("[].isOpened").type(BOOLEAN).description("fcm 열어본 여부")
+                                        fieldWithPath("[].isOpened").type(BOOLEAN).description("fcm 열어본 여부"),
+                                        fieldWithPath("[].param").type(NUMBER).description("이동 path param")
                                 )
                                 .build()
                         )));
@@ -101,7 +102,7 @@ public class FcmControllerTest extends BaseControllerTests {
                         get("/api/v1/fcm/opened/{fcmId}", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
-                .andExpect(status().isFound())
+                .andExpect(status().isOk())
                 .andDo(document("선택 알림 관련 페이지로 이동",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("알림")
