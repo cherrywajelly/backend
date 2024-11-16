@@ -18,7 +18,5 @@ public interface GiftToastService {
     GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId);
     ToastPieceDetailResponse getToastPiece(final long memberId, final long toastPieceId);
     void deleteGiftToast(final long memberId, final long giftToastId);
-
-    @Transactional
     void deleteAllGiftToast(long memberId);
 }

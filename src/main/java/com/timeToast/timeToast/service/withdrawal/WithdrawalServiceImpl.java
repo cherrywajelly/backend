@@ -67,7 +67,6 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     @Transactional
     @Override
     public void adminWithdrawal(final long memberId) {
-
         memberRepository.deleteById(memberId);
     }
 
