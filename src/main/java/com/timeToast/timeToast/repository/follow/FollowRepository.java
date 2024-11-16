@@ -13,4 +13,5 @@ public interface FollowRepository {
     List<Follow> findAllByFollowerId(final long followerId);
     Optional<Follow> findByFollowingIdAndFollowerId(final long followingId, final long followerId);
     void deleteFollow(final Follow follow);
+    void deleteAllFollowByMemberId(final long memberId);
 }

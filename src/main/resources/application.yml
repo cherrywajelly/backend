@@ -4,7 +4,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=Asia/Seoul
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
@@ -46,16 +46,36 @@ spring:
         static: ${OCI_BUCKETNAME}
       namespace:
         static: ${OCI_NAMESPACE}
+      url:
+        static: ${OCI_URL}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+fcm:
+  url: ${FCM_URL}
+  path: ${FCM_CONFIG_PATH}
+  credential: ${FCM_CREDENTIAL}
 
 oauth2:
   client:
     kakao:
       client-id: ${KAKAO_CLIENT_ID}
       client-secret: ${KAKAO_CLIENT_SECRET}
-      redirect-uri: ${KAKAO_REDIRECT_URI}
+      member-redirect-uri: ${KAKAO_MEMBER_REDIRECT_URI}
+      creator-redirect-uri: ${KAKAO_CREATOR_REDIRECT_URI}
+      admin-redirect-uri: ${KAKAO_ADMIN_REDIRECT_URI}
 
     google:
       client-id: ${GOOGLE_CLIENT_ID}
       client-secret: ${GOOGLE_CLIENT_SECRET}
-      redirect-uri: ${GOOGLE_REDIRECT_URI}
+      member-redirect-uri: ${GOOGLE_MEMBER_REDIRECT_URI}
+      creator-redirect-uri: ${GOOGLE_CREATOR_REDIRECT_URI}
+      admin-redirect-uri: ${GOOGLE_ADMIN_REDIRECT_URI}
 
+springdoc:
+  swagger-ui:
+    url: /docs/openapi3.json
+    path: /api-docs/index.html

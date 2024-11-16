@@ -6,6 +6,7 @@ public enum ExceptionConstant {
     MEMBER_NOT_EXISTS("해당 멤버를 찾을 수 없습니다."),
     NICKNAME_CONFLICT("이미 존재하는 닉네임입니다."),
     ROLE_FORBIDDEN("역할이 검증되지 않았습니다."),
+    UNAUTHORIZED_MEMBER("권한이 없는 사용자입니다,"),
     ACCESS_TOKEN_EXPIRED("사용자의 access token이 만료되었습니다."),
     REFRESH_TOKEN_EXPIRED("사용자의 refresh token이 만료되었습니다."),
     INVALID_TOKEN_FORMAT("잘못된 토큰 양식 입니다."),
@@ -26,7 +27,8 @@ public enum ExceptionConstant {
 
     //jam
     JAM_NOT_FOUNT("해당 잼을 찾을 수 없습니다."),
-    INVALID_JAM("이미 작성한 잼이 있습니다."),
+    INVALID_NEW_JAM("이미 작성한 잼이 있습니다."),
+    INVALID_JAM("잘못된 잼 형식입니다."),
 
     //icon
     ICON_NOT_FOUND("해당 아이콘을 찾을 수 없습니다."),
@@ -39,13 +41,27 @@ public enum ExceptionConstant {
     //gift_toast
     INVALID_GIFT_TOAST("잘못된 선물 토스트 형식입니다."),
     GIFT_TOAST_NOT_FOUND("선물 토스트를 찾을 수 없습니다."),
+    GIFT_TOAST_OWNER_NOT_FOUND("선물 토스트 소유주를 찾을 수 없습니다."),
 
     //toast_piece
-    TOAST_PIECE_NOT_EXISTS("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_FOUND("토스트 조각을 찾을 수 없습니다."),
+    TOAST_PIECE_NOT_EXISTS("토스트 조각을 존재하지 않습니다."),
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
+    //showcase
+    INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
+    SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
+    INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
+
+    // fcm
+    INVALID_FCM_TOKEN("잘못된 토큰 등록 형식입니다."),
+    FCM_NOT_FOUND("해당 알림을 찾을 수 없습니다."),
+
+    //premium
+    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
     //login
+    INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
 
     private final String message;

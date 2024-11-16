@@ -6,12 +6,11 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON;
@@ -25,7 +24,8 @@ public class IconServiceImpl implements IconService{
     private final FileUploadService fileUploadService;
 
     @Transactional
-    public void postIconSet(List<MultipartFile> files, long iconGroupId) {
+    @Override
+    public void postIconSet(List<MultipartFile> files, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         if(iconGroup == null) {
@@ -34,11 +34,12 @@ public class IconServiceImpl implements IconService{
             files.forEach(file->{
                 Icon icon = iconRepository.save(new Icon("", iconGroupId));
                 String endpoint = "icon/image/" + Long.toString(icon.getId());
-                String imageUrls = fileUploadService.uploadImages(file, endpoint);
+                String imageUrls = fileUploadService.uploadfile(file, endpoint);
                 icon.updateUrl(imageUrls);
                 iconRepository.save(icon);
             });
             log.info("save icon images");
         }
+
     }
 }

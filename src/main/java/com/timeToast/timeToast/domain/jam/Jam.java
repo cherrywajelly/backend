@@ -39,4 +39,8 @@ public class Jam extends BaseTime {
         this.memberId = memberId;
         this.eventToastId = eventToastId;
     }
+
+    public void updateContentsUrl(String contentsUrl) { this.contentsUrl = contentsUrl; }
+
+    public void updateImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

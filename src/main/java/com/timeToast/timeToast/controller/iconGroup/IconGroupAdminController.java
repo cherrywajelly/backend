@@ -3,6 +3,7 @@ package com.timeToast.timeToast.controller.iconGroup;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.exception.ForbiddenException;
 import com.timeToast.timeToast.service.icon.icon.IconService;
@@ -27,21 +28,22 @@ public class IconGroupAdminController {
 
     @PostMapping("")
     public void postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
-        if (loginMember.role().equals(MemberRole.CREATOR)) {
-            iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
-        } else {
-            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
-        }
+        iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
     }
 
-    @PostMapping("/images/{icon_group_id}")
+    @PostMapping("/images/{iconGroupId}")
     public void postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files,
-                                    @PathVariable("icon_group_id") final long iconGroupId) {
-        if (loginMember.role().equals(MemberRole.CREATOR)) {
-            iconService.postIconSet(files, iconGroupId);
-        } else {
-            throw new ForbiddenException(ROLE_FORBIDDEN.getMessage());
-        }
+                                    @PathVariable("iconGroupId") final long iconGroupId) {
+
+        iconService.postIconSet(files, iconGroupId);
+
     }
+
+    @GetMapping("")
+    public List<IconGroupCreatorResponse> getIconGroup(@Login LoginMember loginMember) {
+        return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
+    }
+
+    
 
 }

@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.BasicImage.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 
@@ -29,15 +29,15 @@ import static com.timeToast.timeToast.global.constant.FileConstant.*;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
-    private final MemberRepository memberRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final MemberRepository memberRepository;
     private final FileUploadService fileUploadService;
 
-    public TeamServiceImpl(final TeamRepository teamRepository, final MemberRepository memberRepository,
-                           final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService) {
+    public TeamServiceImpl(final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
+                           final MemberRepository memberRepository, final FileUploadService fileUploadService) {
         this.teamRepository = teamRepository;
-        this.memberRepository = memberRepository;
         this.teamMemberRepository = teamMemberRepository;
+        this.memberRepository = memberRepository;
         this.fileUploadService = fileUploadService;
     }
 
@@ -45,14 +45,13 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamResponse saveTeam(final long memberId, final TeamSaveRequest teamSaveRequest) {
 
-        //save group
         Team team = Team.builder()
                 .name(teamSaveRequest.teamName())
+                .teamProfileUrl(BASIC_PROFILE_IMAGE_URL)
                 .build();
 
         Team saveTeam = teamRepository.save(team);
 
-        //save member_group
         teamMemberRepository.save(
                 TeamMember.builder()
                         .teamId(saveTeam.getId())
@@ -75,6 +74,8 @@ public class TeamServiceImpl implements TeamService {
                 }
         );
 
+        log.info("save team {} by {}", team.getId(), memberId);
+
         return TeamResponse.from(saveTeam);
     }
 
@@ -86,10 +87,12 @@ public class TeamServiceImpl implements TeamService {
                 new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
-        String groupProfileUrl = TEAM.value() + SLASH.value() + IMAGE.value() + team.getId();
-        fileUploadService.uploadImages(teamProfileImage, groupProfileUrl);
+        String teamUrl = TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
+        String teamProfileUrl = fileUploadService.uploadfile(teamProfileImage, teamUrl);
 
-        team.updateTeamProfileUrl(groupProfileUrl);
+        team.updateTeamProfileUrl(teamProfileUrl);
+
+        log.info("save team Image {}", team.getId());
         return TeamResponse.from(team);
     }
 
@@ -101,16 +104,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamResponse> teamResponses = new ArrayList<>();
 
         teamMembers.forEach(
-                team -> {
-                    Optional<Team> findTeam = teamRepository.findById(team.getTeamId());
-                    if(findTeam.isPresent()){
-                        teamResponses.add(
-                                TeamResponse.from(findTeam.get())
-                        );
-                    }
-
-                }
-        );
+                team -> teamResponses.add(TeamResponse.from(teamRepository.getById(team.getTeamId()))));
 
         return new TeamResponses(teamResponses);
     }
@@ -123,11 +117,25 @@ public class TeamServiceImpl implements TeamService {
 
         teamMemberRepository.delete(teamMember);
 
-        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
-
-        if(teamMembers.isEmpty()){
+        if(teamMemberRepository.findAllByTeamId(teamId).isEmpty()){
+            log.info("delete team {}", teamId);
             teamRepository.deleteByTeamId(teamId);
         }
+
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllTeam(final long memberId) {
+
+        teamMemberRepository.findAllByMemberId(memberId).forEach(
+                teamMember -> {
+                    teamMemberRepository.delete(teamMember);
+                    if(teamMemberRepository.findAllByTeamId(teamMember.getTeamId()).isEmpty()){
+                        teamRepository.deleteByTeamId(teamMember.getTeamId());
+                    }
+                }
+        );
 
     }
 

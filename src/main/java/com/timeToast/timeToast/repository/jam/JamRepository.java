@@ -9,9 +9,15 @@ public interface JamRepository {
 
     Jam save(Jam jam);
 
-    List<Jam> findByMemberId(final long memberId);
+    List<Jam> findAllByMemberId(final long memberId);
 
-    List<Jam> findByEventToastId(final long eventToastId);
+    List<Jam> findAllByEventToastId(final long eventToastId);
 
     Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId);
+
+    Jam getById(final long jamId);
+
+    void deleteById(final long jamId);
+
+    void deleteAllByEventToastId(final long eventToastId);
 }

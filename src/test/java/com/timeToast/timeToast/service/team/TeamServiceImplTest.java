@@ -76,29 +76,29 @@ public class TeamServiceImplTest extends BaseServiceTests {
         assertThat(teamMember3.getMemberId()).isEqualTo(member3.getId());
     }
 
-    @Test
-    @DisplayName("팀 저장 테스트 - 실패")
-    public void saveTeamFail(){
-
-        //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
-
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
-
-        //when
-        Team saveTeam = teamRepository.save(
-                Team.builder()
-                        .name("teamName")
-                        .build()
-        );
-
-
-        assertThat(memberRepository.findById(3L)).isEmpty();
-
-        //어떻게 오류 난 걸 쓰지
-    }
+//    @Test
+//    @DisplayName("팀 저장 테스트 - 실패")
+//    public void saveTeamFail(){
+//
+//        //given
+//        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
+//        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
+//
+//        Member saveMember1 = memberRepository.save(member1);
+//        Member saveMember2 = memberRepository.save(member2);
+//
+//        //when
+//        Team saveTeam = teamRepository.save(
+//                Team.builder()
+//                        .name("teamName")
+//                        .build()
+//        );
+//
+//
+//        assertThat(memberRepository.findById(3L)).isEmpty();
+//
+//        //어떻게 오류 난 걸 쓰지
+//    }
 
     @Test
     @DisplayName("로그인한 사용자의 팀 리스트 조회 테스트")

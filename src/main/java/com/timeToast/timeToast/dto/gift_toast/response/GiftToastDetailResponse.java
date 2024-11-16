@@ -10,29 +10,16 @@ import java.time.LocalDate;
 
 @Builder
 public record GiftToastDetailResponse(
-        long giftToastId,
-        String title,
-        String iconImageUrl,
-        GiftToastType giftToastType,
-        String giftToastOwner,
-        LocalDate memorizedDate,
-        LocalDate openedDate,
-        LocalDate createdDate,
-        Boolean isOpened,
+
+        GiftToastInfo giftToastInfo,
+        Long dDay,
         ToastPieceResponses toastPieceResponses
 ) {
-    public static GiftToastDetailResponse from(final GiftToast giftToast, final String iconImageUrl,
-                                         final String giftToastOwner, final ToastPieceResponses toastPieceResponses){
+    public static GiftToastDetailResponse from(final GiftToastInfo giftToastInfo, final Long dDay,
+                                               final ToastPieceResponses toastPieceResponses){
         return GiftToastDetailResponse.builder()
-                .giftToastId(giftToast.getId())
-                .title(giftToast.getTitle())
-                .iconImageUrl(iconImageUrl)
-                .giftToastType(giftToast.getGiftToastType())
-                .giftToastOwner(giftToastOwner)
-                .memorizedDate(giftToast.getMemorizedDate())
-                .openedDate(giftToast.getOpenedDate())
-                .createdDate(giftToast.getCreatedAt().toLocalDate())
-                .isOpened(giftToast.getIsOpened())
+                .giftToastInfo(giftToastInfo)
+                .dDay(dDay)
                 .toastPieceResponses(toastPieceResponses)
                 .build();
     }

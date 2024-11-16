@@ -26,40 +26,20 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${spring.cloud.oci.namespace.static}")
     private String namespace;
 
-    private final String urlPrefix = "https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/";
+
+    @Value("${spring.cloud.oci.url.static}")
+    private String urlPrefix;
 
     private final OsClientConfiguration ociConfig;
 
-    //이미지 업로드
+    //oci 업로드
     @Transactional
-    public String uploadImages(MultipartFile file, String endpoint) {
+    @Override
+    public String uploadfile(MultipartFile file, String endpoint) {
 
         try {
             InputStream inputStream = file.getInputStream();
-            upload(endpoint, inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        return null;
-    }
-
-
-    //텍스트 업로드
-    @Transactional
-    public String uploadTexts(String text, String endpoint) {
-
-        InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-        upload(endpoint, inputStream);
-
-        return null;
-    }
-
-
-    //oci 업로드
-    @Transactional
-    public String upload(String endpoint, InputStream inputStream) {
-        try {
             PutObjectRequest putObjectRequest =
                     PutObjectRequest.builder()
                             .namespaceName(namespace)
@@ -75,8 +55,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             } else {
                 log.error("ObjectStorage_client_is_null. Cannot perform putObject.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -87,4 +66,5 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
         return null;
     }
+
 }

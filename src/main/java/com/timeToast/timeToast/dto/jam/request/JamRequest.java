@@ -7,6 +7,8 @@ public record JamRequest(
         String title,
 
         long iconId
+
+
 ){
     public Jam toEntity(JamRequest jamRequest, final long memberId, final long eventToastId){
         return Jam.builder()

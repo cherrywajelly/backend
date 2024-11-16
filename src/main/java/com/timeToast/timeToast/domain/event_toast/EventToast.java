@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.domain.event_toast;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class EventToast extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "eventToastId")
+    @Column(name = "event_toast_id")
     private Long id;
 
     private Long memberId;
@@ -32,11 +33,10 @@ public class EventToast extends BaseTime {
     private String title;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate openedDate;
 
     private boolean isOpened;
-
-    private boolean isDeleted;
 
     @Builder
     public EventToast(final long id, final String title, final LocalDate openedDate, final long memberId, final long iconId){
@@ -45,10 +45,6 @@ public class EventToast extends BaseTime {
         this.openedDate = openedDate;
         this.memberId = memberId;
         this.iconId = iconId;
-    }
-
-    public void updateIsDelete(final boolean isDelete){
-        this.isDeleted = !isDeleted;
     }
 
     public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }

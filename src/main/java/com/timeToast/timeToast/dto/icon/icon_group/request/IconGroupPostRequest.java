@@ -7,9 +7,10 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 public record IconGroupPostRequest (
 
         String name,
-        long price,
+        int price,
         IconType iconType,
-        IconBuiltin iconBuiltin
+        IconBuiltin iconBuiltin,
+        String description
 
 ) {
     public IconGroup toEntity(IconGroupPostRequest iconGroupPostRequest, final long memberId) {
@@ -18,6 +19,7 @@ public record IconGroupPostRequest (
                 .price(iconGroupPostRequest.price)
                 .iconType(iconGroupPostRequest.iconType)
                 .iconBuiltin(iconGroupPostRequest.iconBuiltin)
+                .description(description)
                 .memberId(memberId)
                 .build();
     }

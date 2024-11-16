@@ -85,12 +85,6 @@ jacocoTestCoverageVerification {
 				minimum = 0.00
 			}
 
-//			limit {
-//				counter = 'BRANCH'
-//				value = 'COVEREDRATIO'
-//				minimum = 0.01
-//			}
-
 			excludes =  [
 					'**/dto/**',
 					'**/global/**',
@@ -101,21 +95,16 @@ jacocoTestCoverageVerification {
 	}
 }
 
-swaggerSources {
-	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-	}
-}
-
 openapi3 {
 	servers = [
-			{ url = 'https://dev-back.timetoast.app'},
-			{url='http://localhost:8080/'}
+			{ url = 'https://dev-back.timetoast.app' },
+			{ url = 'http://localhost:8080' }
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
-	version = '1.0.0'
-	format = 'yaml'
+	version = '0.0.1'
+	format = 'json'
+	outputDirectory = 'build/resources/main/static/docs'
 }
 
 dependencies {
@@ -168,13 +157,14 @@ dependencies {
 
 	//swagger
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 
 	//testcontainers
 	testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
 	testImplementation "org.testcontainers:testcontainers:1.20.3"
 	testImplementation "org.testcontainers:junit-jupiter:1.20.3"
 	testImplementation "org.testcontainers:mysql:1.20.3"
-
 
 
 	// oci
@@ -190,44 +180,61 @@ dependencies {
 	implementation 'org.glassfish.jersey.connectors:jersey-apache-connector:2.34'
 
 	implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+	//firbase
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+//	implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
+	dependsOn 'createOutputDirectory'
+	finalizedBy jacocoTestReport, 'openapi3'
+
 }
 
 testlogger {
 	slowThreshold 0
 }
 
+task createOutputDirectory {
+	doFirst {
+		delete file('src/main/resources/static/docs/')
+		file(openapi3.outputDirectory).mkdirs()
+		file('src/main/resources/static/docs/').mkdirs()
+	}
+}
+
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
-	doFirst {
-		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
 
-		def securitySchemesContent =  "  securitySchemes:\n" +  \
+	doLast {
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.json")
+
+		def securitySchemesContent = "  securitySchemes:\n" +  \
                                       "    APIKey:\n" +  \
                                       "      type: apiKey\n" +  \
                                       "      name: Authorization\n" +  \
                                       "      in: header\n" + \
                                       "security:\n" +
-				"  - APIKey: []  # Apply the security scheme here"
+				"  - APIKey: []"
 
 		swaggerUIFile.append securitySchemesContent
+
+		copy {
+			from file("build/resources/main/static/docs/openapi3.json")
+			into "src/main/resources/static/docs/"
+		}
 	}
+
+
 }
 
-
 bootJar {
-	dependsOn generateSwaggerUISample
-	from("${generateSwaggerUISample.outputDir}") {
+//	dependsOn 'createOutputDirectory', ':openapi3'
+	from("${openapi3.outputDirectory}") {
 		into 'static/docs'
 	}
-	tasks.named('bootJar') {
-		dependsOn 'openapi3' // bootJar 실행 전에 openapi3을 실행
-	}
-
 }
 
 jar.enabled = false
