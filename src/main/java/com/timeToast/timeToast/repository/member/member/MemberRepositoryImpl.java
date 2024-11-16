@@ -4,12 +4,12 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import static com.timeToast.timeToast.domain.member.member.QMember.member;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_EXISTS;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 import java.util.Optional;
 import java.util.List;
@@ -28,7 +28,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Member getById(final long memberId) {
-        return memberJpaRepository.findById(memberId).orElseThrow(() -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
+        return memberJpaRepository.findById(memberId).orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND.getMessage()));
     }
 
     @Override

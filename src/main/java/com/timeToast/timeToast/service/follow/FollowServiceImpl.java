@@ -40,7 +40,7 @@ public class FollowServiceImpl implements FollowService{
         Optional<Follow> findFollow = followRepository.findByFollowingIdAndFollowerId(followingId,memberId);
 
         if(findFollow.isEmpty()){
-            Member followingMember = memberRepository.findById(followingId).orElseThrow(()-> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
+            Member followingMember = memberRepository.findById(followingId).orElseThrow(()-> new BadRequestException(MEMBER_NOT_FOUND.getMessage()));
             Follow saveFollow = followRepository.save(
                     Follow.builder()
                             .followingId(followingMember.getId())
