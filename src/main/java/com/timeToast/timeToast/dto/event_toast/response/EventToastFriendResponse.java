@@ -20,6 +20,8 @@ public record EventToastFriendResponse(
 
         String nickname,
 
+        String memberProfileUrl,
+
         IconResponse icon
 ){
     public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, boolean postedJam) {
