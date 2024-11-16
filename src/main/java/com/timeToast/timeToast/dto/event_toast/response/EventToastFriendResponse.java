@@ -24,7 +24,7 @@ public record EventToastFriendResponse(
 
         IconResponse icon
 ){
-    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean postedJam) {
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean isWritten) {
         return EventToastFriendResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
