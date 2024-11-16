@@ -58,10 +58,11 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final FcmService fcmService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
-                                final ToastPieceImageRepository toastPieceImageRepository, final ToastPieceService toastPieceService,
-                                final ToastPieceRepository toastPieceRepository, final MemberRepository memberRepository,
-                                final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
+                                final ToastPieceService toastPieceService, final ToastPieceRepository toastPieceRepository,
+                                final ToastPieceImageRepository toastPieceImageRepository, final TeamRepository teamRepository,
+                                final MemberRepository memberRepository, final TeamMemberRepository teamMemberRepository,
                                 final IconRepository iconRepository, final FcmService fcmService) {
+
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.toastPieceService = toastPieceService;
@@ -108,7 +109,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         );
 
         log.info("save group giftToast {} by {}", giftToast.getId(), memberId);
-
         return GiftToastSaveResponse.from(giftToast);
     }
 
@@ -138,15 +138,6 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         log.info("save friend giftToast {} by {}", giftToast.getId(), memberId);
         return GiftToastSaveResponse.from(giftToast);
-    }
-
-    private void sentCreatedMessage(final long memberId, GiftToast giftToast) {
-        fcmService.sendMessageTo(memberId,
-                FcmResponse.builder()
-                        .fcmConstant(GIFTTOASTCREATED)
-                        .toastName(giftToast.getTitle())
-                        .param(giftToast.getId())
-                        .build());
     }
 
     @Transactional
@@ -197,7 +188,6 @@ public class GiftToastServiceImpl implements GiftToastService{
                 profileImageUrl = team.get().getTeamProfileUrl();
             }
 
-
             return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), profileImageUrl, giftToastOwner);
 
         }else if(giftToast.getGiftToastType().equals(GiftToastType.FRIEND)){
@@ -221,26 +211,27 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastResponses getGiftToastByMember(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberId(memberId);
+
         List<GiftToastResponse> giftToastResponses = new ArrayList<>();
 
-        giftToasts.forEach(
+        giftToastRepository.findAllGiftToastsByMemberId(memberId).forEach(
                 giftToast -> {
                     String giftToastOwner = null;
 
                     if(giftToast.getGiftToastType().equals(GiftToastType.GROUP)){
                         Optional<Team> findTeam = teamRepository.findById(giftToast.getTeamId());
-
                         if(findTeam.isPresent()){
                             giftToastOwner= findTeam.get().getName();
                         }
-                    }else if(giftToast.getGiftToastType() == GiftToastType.FRIEND){
+
+                    }else if(giftToast.getGiftToastType().equals(GiftToastType.FRIEND)){
                         Optional<GiftToastOwner> findGiftToastOwner = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId()).stream()
                                 .filter(owner -> !owner.getMemberId().equals(memberId)).findFirst();
 
                         if(findGiftToastOwner.isPresent()){
-                            Optional<Member> findMember = memberRepository.findById(findGiftToastOwner.get().getMemberId());
-                            giftToastOwner = findMember.get().getNickname();
+                            Member findMember = memberRepository.findById(findGiftToastOwner.get().getMemberId())
+                                    .orElseThrow(()-> new NotFoundException(MEMBER_NOT_FOUND.getMessage()));
+                            giftToastOwner = findMember.getNickname();
                         }
 
                     }else{
@@ -258,10 +249,9 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional(readOnly = true)
     @Override
     public GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId) {
-        List<GiftToast> giftToasts = giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId);
         List<GiftToastIncompleteResponse> giftToastIncompleteResponses = new ArrayList<>();
 
-        giftToasts.forEach(
+        giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId).forEach(
                 giftToast -> {
                     Optional<ToastPiece> toastPiecesByGiftToast = toastPieceRepository.
                             findAllByMemberIdAndGiftToastId(memberId,giftToast.getId()).stream().findFirst();
@@ -304,7 +294,6 @@ public class GiftToastServiceImpl implements GiftToastService{
                     }
             );
             giftToastRepository.deleteById(giftToastId);
-
             log.info("delete giftToast {} by {}", giftToastId, memberId);
         }
     }
@@ -324,7 +313,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         return new ToastPieceResponses(giftToast.getId(), List.of());
     }
 
-    private String getIconImageUrl(GiftToast giftToast) {
+    private String getIconImageUrl(final GiftToast giftToast) {
         if(giftToast.getIsOpened()) {
             return iconRepository.getById(giftToast.getIconId()).getIconImageUrl();
         }
@@ -343,6 +332,24 @@ public class GiftToastServiceImpl implements GiftToastService{
         if (giftToast.getOpenedDate().isEqual(LocalDate.now())) {
             giftToast.updateIsOpened(true);
         }
+    }
+
+    private void sentCreatedMessage(final long memberId, final GiftToast giftToast) {
+        fcmService.sendMessageTo(memberId,
+                FcmResponse.builder()
+                        .fcmConstant(GIFTTOASTCREATED)
+                        .toastName(giftToast.getTitle())
+                        .param(giftToast.getId())
+                        .build());
+    }
+
+    private void sendOpenedMessage(final GiftToast giftToast, final long memberId) {
+        fcmService.sendMessageTo(memberId,
+                FcmResponse.builder()
+                        .fcmConstant(GIFTTOASTOPENED)
+                        .toastName(giftToast.getTitle())
+                        .param(giftToast.getId())
+                        .build());
     }
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -374,15 +381,5 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         log.info("update gift toast's is open");
     }
-
-    private void sendOpenedMessage(GiftToast giftToast, final long memberId) {
-        fcmService.sendMessageTo(memberId,
-                FcmResponse.builder()
-                        .fcmConstant(GIFTTOASTOPENED)
-                        .toastName(giftToast.getTitle())
-                        .param(giftToast.getId())
-                        .build());
-    }
-
 
 }
