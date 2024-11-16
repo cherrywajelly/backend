@@ -25,7 +25,7 @@ public class JamController {
     public void postJam(@Login LoginMember loginMember,
                         @PathVariable final long eventToastId,
                         @RequestPart("jamContents") final MultipartFile jamContents,
-                        @RequestPart("jamImages") final MultipartFile jamImages,
+                        @RequestPart(value = "jamImages",required = false) final MultipartFile jamImages,
                         @RequestPart final JamRequest jamRequest) {
         jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
