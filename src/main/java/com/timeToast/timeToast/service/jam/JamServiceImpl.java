@@ -55,8 +55,10 @@ public class JamServiceImpl implements JamService {
 
         Jam newJam = jamRepository.save(jamRequest.toEntity(jamRequest, memberId, eventToastId));
         newJam.updateContentsUrl(getContentsUrl(contents, newJam));
-        newJam.updateImageUrl(getImageUrl(image, newJam));
-        jamRepository.save(newJam);
+        if(image!=null){
+            newJam.updateImageUrl(getImageUrl(image, newJam));
+            jamRepository.save(newJam);
+        }
         log.info("save jam");
 
         //알림

@@ -67,9 +67,10 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                                                  final MultipartFile contents, final List<MultipartFile> toastPieceImages) {
         ToastPiece toastPiece = toastPieceRepository.saveToastPiece(ToastPieceRequest.to(memberId, toastPieceRequest));
         toastPiece.updateContentsUrl(saveToastPieceContents(toastPiece, contents));
-        List<String> toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
-        log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
-
+        List<String> toastPieceImageUrls = new ArrayList<>();
+        if(toastPieceImages!=null){
+            toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
+        }
         sendMessage(memberId, toastPiece);
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
