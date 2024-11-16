@@ -41,24 +41,21 @@ public class IconGroupServiceImpl implements IconGroupService{
         Member member = memberRepository.getById(memberId);
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
-        if (member != null && iconGroup != null) {
-            // 중복 구매 방지
-            if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) == null) {
-                iconMemberRepository.save(IconMember.builder()
-                        .memberId(memberId)
-                        .iconGroupId(iconGroupId)
-                        .build());
 
-                log.info("buy new icon group");
-            }else {
-                throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
-            }
-        } else {
+        // 중복 구매 방지
+        if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) == null) {
+            iconMemberRepository.save(IconMember.builder()
+                    .memberId(member.getId())
+                    .iconGroupId(iconGroup.getId())
+                    .build());
+            log.info("buy icon group {} by member {}", iconGroupId, memberId);
+        }else {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         }
+
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<IconGroupResponses> getToastIconGroups(final long memberId){
         return getIconGroups(memberId,IconType.TOAST);
@@ -71,10 +68,9 @@ public class IconGroupServiceImpl implements IconGroupService{
     }
 
     private List<IconGroupResponses> getIconGroups(final long memberId, final IconType iconType){
-        List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
         List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
 
-        iconMembers.forEach(iconMember -> {
+        iconMemberRepository.findByMemberId(memberId).forEach(iconMember -> {
             IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
 
             if(iconGroup.getIconType().equals(iconType)){
@@ -125,8 +121,12 @@ public class IconGroupServiceImpl implements IconGroupService{
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
         List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
+        String thumbnailImageUrl = null;
+        if(iconResponses.stream().findFirst().isPresent()){
+            thumbnailImageUrl = iconResponses.stream().findFirst().get().iconImageUrl();
+        }
         return IconGroupDetailResponse.builder()
-                .thumbnailImageUrl(iconResponses.stream().findFirst().get().iconImageUrl())
+                .thumbnailImageUrl(thumbnailImageUrl)
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
