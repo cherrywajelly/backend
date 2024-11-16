@@ -19,5 +19,5 @@ public interface MemberService {
     CreatorDetailResponse getCreatorByCreatorId(final long creatorId);
     PremiumResponse getMemberPremium(final long memberId);
     void getCreatorMonthSettlement(final int year, final int month);
-    getCreatorMonthSettlementByCreatorId();
+//    getCreatorMonthSettlementByCreatorId();
 }
