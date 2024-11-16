@@ -8,8 +8,10 @@ import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceIm
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.*;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -32,6 +34,7 @@ import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPEN
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 @Slf4j
@@ -155,7 +158,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     @Transactional
     @Override
-    public void deleteToastPieceByMemberIdAndToastPieceId(final long memberId, final long toastPieceId) {
+    public Response deleteToastPieceByMemberIdAndToastPieceId(final long memberId, final long toastPieceId) {
         ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
                 .orElseThrow(()-> new NotFoundException(TOAST_PIECE_NOT_EXISTS.getMessage()));
 
@@ -166,6 +169,8 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         log.info("delete toastPiece contents {} by {}", toastPiece.getId(), memberId);
         toastPieceImageRepository.deleteAllByToastPieceId(toastPieceId);
         toastPieceRepository.deleteToastPiece(toastPiece);
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 }

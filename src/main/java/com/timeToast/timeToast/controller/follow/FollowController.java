@@ -3,6 +3,7 @@ package com.timeToast.timeToast.controller.follow;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.follow.FollowService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ public class FollowController {
     }
 
     @PostMapping("/followings/{memberId}")
-    public void saveFollow(@Login final LoginMember loginMember, @PathVariable final long memberId){
-        followService.saveFollow(memberId, loginMember.id());
+    public Response saveFollow(@Login final LoginMember loginMember, @PathVariable final long memberId){
+        return followService.saveFollow(memberId, loginMember.id());
     }
 
     @GetMapping("/followings")
@@ -32,12 +33,12 @@ public class FollowController {
     }
 
     @DeleteMapping("/followings/{memberId}")
-    public void deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long memberId){
-        followService.deleteFollowing(memberId, loginMember.id());
+    public Response deleteFollowing(@Login final LoginMember loginMember, @PathVariable final long memberId){
+        return followService.deleteFollowing(memberId, loginMember.id());
     }
 
     @DeleteMapping("/followers/{memberId}")
-    public void deleteFollower(@Login final LoginMember loginMember, @PathVariable final long memberId){
-        followService.deleteFollower(loginMember.id(), memberId);
+    public Response deleteFollower(@Login final LoginMember loginMember, @PathVariable final long memberId){
+        return followService.deleteFollower(loginMember.id(), memberId);
     }
 }

@@ -2,22 +2,13 @@ package com.timeToast.timeToast.controller.fcm;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
-import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
-import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.fcm.FcmServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.time.LocalDate;
-
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -58,6 +49,10 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .summary("fcm 토큰 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
                         )));
@@ -109,6 +104,10 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .summary("알림 관련 페이지로 이동")
                                 .pathParameters(
                                         parameterWithName("fcmId").description("알림 id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
                         )));

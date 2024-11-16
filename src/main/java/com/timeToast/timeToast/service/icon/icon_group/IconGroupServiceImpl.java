@@ -7,8 +7,10 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -37,21 +41,24 @@ public class IconGroupServiceImpl implements IconGroupService{
 
     @Transactional
     @Override
-    public void buyIconGroup(final long memberId, final long iconGroupId){
+    public Response buyIconGroup(final long memberId, final long iconGroupId){
         Member member = memberRepository.getById(memberId);
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
 
         // 중복 구매 방지
-        if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) == null) {
-            iconMemberRepository.save(IconMember.builder()
-                    .memberId(member.getId())
-                    .iconGroupId(iconGroup.getId())
-                    .build());
-            log.info("buy icon group {} by member {}", iconGroupId, memberId);
-        }else {
+        if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) != null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
+
         }
+
+        iconMemberRepository.save(IconMember.builder()
+                .memberId(member.getId())
+                .iconGroupId(iconGroup.getId())
+                .build());
+        log.info("buy icon group {} by member {}", iconGroupId, memberId);
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
 
     }
 
@@ -136,12 +143,14 @@ public class IconGroupServiceImpl implements IconGroupService{
 
     @Transactional
     @Override
-    public void deleteIconGroup(final long memberId, final long iconGroupId){
+    public Response deleteIconGroup(final long memberId, final long iconGroupId){
         IconMember iconMember = iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId);
-        if (iconMember != null) {
-            iconMemberRepository.deleteById(iconMember.getId());
-        } else {
+
+        if (iconMember == null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         }
+
+        iconMemberRepository.deleteById(iconMember.getId());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 }

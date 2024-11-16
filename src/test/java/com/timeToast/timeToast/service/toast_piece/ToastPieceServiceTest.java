@@ -7,6 +7,9 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -50,7 +53,7 @@ public class ToastPieceServiceTest implements ToastPieceService {
 
 
     @Override
-    public void deleteToastPieceByMemberIdAndToastPieceId(long memberId, long toastPieceId) {
-
+    public Response deleteToastPieceByMemberIdAndToastPieceId(long memberId, long toastPieceId) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 }

@@ -10,7 +10,9 @@ import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
@@ -38,6 +40,8 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -63,7 +67,7 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     @Override
-    public void saveToken(final long memberId, final String token){
+    public Response saveToken(final long memberId, final String token){
         MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
         if (token != null) {
             memberToken.updateFcmToken(token);
@@ -72,6 +76,7 @@ public class FcmServiceImpl implements FcmService {
         } else {
             throw new BadRequestException(INVALID_FCM_TOKEN.getMessage());
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -107,19 +112,20 @@ public class FcmServiceImpl implements FcmService {
     // 알림 눌렀을 때
     @Transactional
     @Override
-    public void putIsOpened(final long memberId, final long fcmId) {
+    public Response putIsOpened(final long memberId, final long fcmId) {
         Fcm fcm = fcmRepository.getById(fcmId);
 
         if (!fcm.isOpened()) {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     // 메세지 전송
     @Transactional
     @Override
-    public void sendMessageTo(final long memberId, final FcmResponse fcmResponse)  {
+    public Response sendMessageTo(final long memberId, final FcmResponse fcmResponse)  {
         try{
             String message = createMessage(memberId, fcmResponse);
 
@@ -143,6 +149,8 @@ public class FcmServiceImpl implements FcmService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
     }
 

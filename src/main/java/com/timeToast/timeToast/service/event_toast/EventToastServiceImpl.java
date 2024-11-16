@@ -2,7 +2,6 @@ package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -14,8 +13,9 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
-import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 
 @Service
@@ -53,10 +55,11 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public void postEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+    public Response postEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
         memberRepository.getById(memberId);
         eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
         log.info("save event toast");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -194,7 +197,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public void deleteEventToast(final long memberId,final long eventToastId) {
+    public Response deleteEventToast(final long memberId,final long eventToastId) {
         if(eventToastRepository.getByIdAndMemberId(eventToastId, memberId).isEmpty()) {
             throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
         }
@@ -202,6 +205,7 @@ public class EventToastServiceImpl implements EventToastService{
         showcaseRepository.deleteAllByEventToastId(eventToastId);
         eventToastRepository.deleteById(eventToastId);
         log.info("delete event toast");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
     }
 

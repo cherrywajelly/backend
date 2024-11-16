@@ -1,5 +1,7 @@
 package com.timeToast.timeToast.service.withdrawal;
 
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
@@ -11,6 +13,8 @@ import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.team.TeamService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 public class WithdrawalServiceImpl implements WithdrawalService{
@@ -44,7 +48,7 @@ public class WithdrawalServiceImpl implements WithdrawalService{
 
     @Transactional
     @Override
-    public void memberWithdrawal(final long memberId) {
+    public Response memberWithdrawal(final long memberId) {
 
         fcmRepository.deleteAllByMemberId(memberId);
         giftToastService.deleteAllGiftToast(memberId);
@@ -55,19 +59,23 @@ public class WithdrawalServiceImpl implements WithdrawalService{
         iconMemberRepository.deleteAllByMemberId(memberId);
         memberTokenRepository.deleteByMemberId(memberId);
         memberRepository.deleteById(memberId);
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Transactional
     @Override
-    public void creatorWithdrawal(final long memberId) {
+    public Response creatorWithdrawal(final long memberId) {
         //account 추가
         memberRepository.deleteById(memberId);
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Transactional
     @Override
-    public void adminWithdrawal(final long memberId) {
+    public Response adminWithdrawal(final long memberId) {
         memberRepository.deleteById(memberId);
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 }

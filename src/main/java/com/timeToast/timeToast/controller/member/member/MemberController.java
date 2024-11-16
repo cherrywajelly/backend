@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +31,13 @@ public class MemberController {
     }
 
     @PutMapping("")
-    public void saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
-        memberService.postNickname(nickname, loginMember.id());
+    public MemberInfoResponse saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
+        return memberService.postNickname(nickname, loginMember.id());
     }
 
     @GetMapping ("/nickname-validation")
-    public void isNicknameAvailable(@RequestParam("nickname") final String nickname) {
-        memberService.nicknameValidation(nickname);
+    public Response isNicknameAvailable(@RequestParam("nickname") final String nickname) {
+        return memberService.nicknameValidation(nickname);
     }
 
     @PostMapping("/refreshToken")

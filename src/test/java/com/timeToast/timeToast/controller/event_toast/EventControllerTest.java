@@ -60,7 +60,10 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("title").type(STRING).description("이벤트 토스트 제목"),
                                         fieldWithPath("openedDate").type(STRING).description("토스트 개봉 날짜")
                                 )
-                                .responseFields()
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }
@@ -220,6 +223,10 @@ public class EventControllerTest extends BaseControllerTests {
                                 .summary("이벤트 토스트 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
 

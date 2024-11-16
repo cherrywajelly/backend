@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 
@@ -37,8 +38,8 @@ public class ToastPieceController {
     }
 
     @DeleteMapping("/{toastPieceId}")
-    public void deleteToastPiece(@Login final LoginMember loginMember, final @PathVariable long toastPieceId){
-        toastPieceService.deleteToastPieceByMemberIdAndToastPieceId(loginMember.id(), toastPieceId);
+    public Response deleteToastPiece(@Login final LoginMember loginMember, final @PathVariable long toastPieceId){
+        return toastPieceService.deleteToastPieceByMemberIdAndToastPieceId(loginMember.id(), toastPieceId);
     }
 
 }

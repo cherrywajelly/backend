@@ -2,13 +2,19 @@ package com.timeToast.timeToast.service.follow;
 
 import com.timeToast.timeToast.dto.follow.response.FollowResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+
 public class FollowServiceTest implements FollowService {
     @Override
-    public void saveFollow(long followingId, long memberId) {
+    public Response saveFollow(long followingId, long memberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
 
@@ -31,12 +37,12 @@ public class FollowServiceTest implements FollowService {
     }
 
     @Override
-    public void deleteFollowing(long followingMemberId, long memberId) {
-
+    public Response deleteFollowing(long followingMemberId, long memberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Override
-    public void deleteFollower(long memberId, long followerMemberId) {
-
+    public Response deleteFollower(long memberId, long followerMemberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 }

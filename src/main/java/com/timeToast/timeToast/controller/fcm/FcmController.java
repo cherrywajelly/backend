@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,13 @@ public class FcmController {
     private final FcmService fcmService;
 
     @PutMapping("")
-    public void putFcmToken(@Login LoginMember loginMember, @RequestParam final String token) {
-        fcmService.saveToken(loginMember.id(), token);
+    public Response putFcmToken(@Login LoginMember loginMember, @RequestParam final String token) {
+        return fcmService.saveToken(loginMember.id(), token);
     }
 
     @PostMapping("/send")
-    public void test(@Login LoginMember loginMember, @RequestBody FcmResponse fcmResponse) {
-        fcmService.sendMessageTo(loginMember.id(), fcmResponse);
+    public Response test(@Login LoginMember loginMember, @RequestBody FcmResponse fcmResponse) {
+        return fcmService.sendMessageTo(loginMember.id(), fcmResponse);
     }
 
     @GetMapping("")
@@ -36,8 +37,7 @@ public class FcmController {
 
 
     @GetMapping("/opened/{fcmId}")
-    public void putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
-
-        fcmService.putIsOpened(loginMember.id(), fcmId);
+    public Response putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {
+        return fcmService.putIsOpened(loginMember.id(), fcmId);
     }
 }
