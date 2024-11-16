@@ -75,12 +75,20 @@ public class ToastPieceServiceImpl implements ToastPieceService{
             toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
         }
         sendMessage(memberId, toastPiece);
+
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
-    private void sendMessage(long memberId, ToastPiece toastPiece) {
+    @Transactional
+    public void sendMessage(long memberId, ToastPiece toastPiece) {
         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
+        List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
+
+        if(giftToastOwners.stream().allMatch(giftToastOwner ->
+                        toastPieces.stream().anyMatch(toast-> toast.getMemberId().equals(giftToastOwner.getMemberId())))){
+            giftToast.updateIsOpened(true);
+        }
         giftToastOwners.forEach(giftToastOwner -> {
 
             if(!giftToastOwner.getMemberId().equals(memberId)){
