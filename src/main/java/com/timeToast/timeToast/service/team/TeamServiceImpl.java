@@ -96,7 +96,7 @@ public class TeamServiceImpl implements TeamService {
         return TeamResponse.from(team);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public TeamResponses findLoginMemberTeams(final long memberId) {
 
