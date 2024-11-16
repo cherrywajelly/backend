@@ -86,7 +86,8 @@ public class FcmControllerTest extends BaseControllerTests {
                                         fieldWithPath("[].imageUrl").type(STRING).description("fcm 이미지"),
                                         fieldWithPath("[].time").type(STRING).description("fcm 작성 시간"),
                                         fieldWithPath("[].toastName").type(STRING).description("fcm 관련 토스트 이름"),
-                                        fieldWithPath("[].isOpened").type(BOOLEAN).description("fcm 열어본 여부")
+                                        fieldWithPath("[].isOpened").type(BOOLEAN).description("fcm 열어본 여부"),
+                                        fieldWithPath("[].param").type(NUMBER).description("이동 path param")
                                 )
                                 .build()
                         )));
@@ -108,10 +109,6 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .summary("알림 관련 페이지로 이동")
                                 .pathParameters(
                                         parameterWithName("fcmId").description("알림 id")
-                                )
-                                .responseFields(
-                                        fieldWithPath("fcmConstant").type(STRING).description("fcm 타입"),
-                                        fieldWithPath("param").type(STRING).description("fcm 관련 사용자 닉네임")
                                 )
                                 .build()
                         )));

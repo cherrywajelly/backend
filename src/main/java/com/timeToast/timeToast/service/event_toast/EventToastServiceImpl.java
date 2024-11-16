@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.event_toast;
 
+import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -10,6 +11,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -20,6 +22,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.service.fcm.FcmService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +48,7 @@ public class EventToastServiceImpl implements EventToastService{
     private final FollowRepository followRepository;
     private final JamRepository jamRepository;
     private final ShowcaseRepository showcaseRepository;
+    private final FcmService fcmService;
 
 
     @Transactional
@@ -94,9 +98,16 @@ public class EventToastServiceImpl implements EventToastService{
                                 Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
 
-                                EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
-                                        new IconResponse(icon.getId(), icon.getIconImageUrl()));
-                                eventToastResponses.add(eventToastResponse);
+                                Jam jam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId());
+                                if (jam == null) {
+                                    EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), false);
+                                    eventToastResponses.add(eventToastResponse);
+                                } else {
+                                    EventToastResponses eventToastResponse = EventToastResponses.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), true);
+                                    eventToastResponses.add(eventToastResponse);
+                                }
                             }
                     );
                 }
@@ -134,9 +145,9 @@ public class EventToastServiceImpl implements EventToastService{
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Icon icon = iconRepository.getById(eventToast.getIconId());
-        Member member = memberRepository.getById(eventToast.getMemberId());
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
+        Icon icon = iconRepository.getById(eventToast.getIconId()); //이벤트 토스트 아이콘
+        Member member = memberRepository.getById(eventToast.getMemberId()); // 이벤트 토스트 주인
+        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId); // 이벤트 토스트 잼 조회
 
 //         이벤트 토스트가 열려있을 경우
         if (eventToast.isOpened()) {
@@ -146,19 +157,35 @@ public class EventToastServiceImpl implements EventToastService{
 
             jams.forEach(
                     jam -> {
-                        Member iconMember = memberRepository.getById(jam.getMemberId());
-                        jamResponses.add(new JamResponses(jam.getId(), jam.getImageUrl(), iconMember.getNickname()));
+                        Icon jamIcon = iconRepository.getById(jam.getIconId()); // 잼 아이콘
+                        Member iconMember = memberRepository.getById(jam.getMemberId()); // 잼 작성자
+                        jamResponses.add(JamResponses.fromEntity(jam.getId(), jamIcon.getIconImageUrl(), iconMember.getNickname()));
                     }
             );
 
+            Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, jamResponses);
-            return eventToastResponse;
+
+            return updateWritten(memberId, eventToastId, eventToastResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, null);
+
+            return updateWritten(memberId, eventToastId, eventToastResponse);
+        }
+    }
+
+    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastRes){
+        Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
+
+        if (memberJam == null) {
+            EventToastResponse eventToastResponse = EventToastResponse.of(eventToastRes, false);
+            return eventToastResponse;
+        } else {
+            EventToastResponse eventToastResponse = EventToastResponse.of(eventToastRes, true);
             return eventToastResponse;
         }
     }
@@ -209,7 +236,11 @@ public class EventToastServiceImpl implements EventToastService{
         List<EventToast> eventToasts = eventToastRepository.findAllEventToastToOpen();
 
         eventToasts.forEach(
-                eventToast -> eventToast.updateIsOpened(true));
+                eventToast -> {
+                    eventToast.updateIsOpened(true);
+
+                    fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTOPENED, null, eventToast.getTitle(), eventToast.getId()));
+                });
 
         log.info("update event toast's is open");
     }

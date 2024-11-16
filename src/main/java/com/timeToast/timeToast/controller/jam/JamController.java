@@ -32,7 +32,7 @@ public class JamController {
 
 
     @GetMapping("/eventToast/{eventToastId}")
-    public List<JamResponses> getJam(@PathVariable final long eventToastId) {
+    public List<JamResponses> getJams(@PathVariable final long eventToastId) {
         return jamService.getJams(eventToastId);
     }
 

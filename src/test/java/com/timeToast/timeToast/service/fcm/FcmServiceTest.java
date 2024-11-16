@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class FcmServiceTest implements FcmService {
     @Override
     public List<FcmResponses> getFcmResponses(final long memberId){
         List<FcmResponses> fcmResponses = new ArrayList<>();
-        fcmResponses.add(new FcmResponses(1, FcmConstant.EVENTTOASTSPREAD, "nickname", "text", "imageUrl", "time", "toastName", false));
+        fcmResponses.add(new FcmResponses(1, FcmConstant.EVENTTOASTSPREAD, "nickname", "text", "imageUrl", "time", "toastName", false, 1));
 
         return fcmResponses;
     }
@@ -29,8 +30,6 @@ public class FcmServiceTest implements FcmService {
     }
 
     @Override
-    public FcmLinkResponse putIsOpened(final long memberId, final long fcmId){
-        FcmLinkResponse fcmLinkResponse = new FcmLinkResponse(FcmConstant.EVENTTOASTSPREAD.toString(), "1");
-        return fcmLinkResponse;
+    public void putIsOpened(final long memberId, final long fcmId){
     }
 }

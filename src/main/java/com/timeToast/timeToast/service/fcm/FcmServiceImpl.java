@@ -26,6 +26,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
@@ -94,7 +96,7 @@ public class FcmServiceImpl implements FcmService {
                         time = ChronoUnit.MONTHS.between(fcm.getCreatedAt(), localDateTime) + "달 전";
                     }
 
-                    FcmResponses fcmResponse = FcmResponses.fromEntity(fcm, text, time);
+                    FcmResponses fcmResponse = FcmResponses.fromEntity(fcm, text, time, fcm.getParam());
                     fcmResponses.add(fcmResponse);
                 }
         );
@@ -105,16 +107,13 @@ public class FcmServiceImpl implements FcmService {
     // 알림 눌렀을 때
     @Transactional
     @Override
-    public FcmLinkResponse putIsOpened(final long memberId, final long fcmId){
+    public void putIsOpened(final long memberId, final long fcmId) {
         Fcm fcm = fcmRepository.getById(fcmId);
 
         if (!fcm.isOpened()) {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
-
-        FcmLinkResponse fcmLinkResponse = new FcmLinkResponse(fcm.getFcmConstant().toString(), Long.toString(fcm.getParam()));
-        return fcmLinkResponse;
     }
 
     // 메세지 전송
@@ -123,6 +122,8 @@ public class FcmServiceImpl implements FcmService {
     public void sendMessageTo(final long memberId, FcmResponse fcmResponse)  {
         try{
             String message = createMessage(memberId, fcmResponse);
+
+            if (message != null) {
             RestTemplate restTemplate = new RestTemplate();
 
             restTemplate.getMessageConverters()
@@ -135,8 +136,9 @@ public class FcmServiceImpl implements FcmService {
             HttpEntity entity = new HttpEntity<>(message, headers);
 
             String API_URL = fcmUrl;
-            ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+            restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
             saveFcmInfo(memberId, fcmResponse);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -180,52 +182,63 @@ public class FcmServiceImpl implements FcmService {
     // 메세지 생성
     @Transactional
     public String createMessage(final long memberId, FcmResponse fcmResponse) throws JsonProcessingException {
-        FcmSendRequest fcmSendRequest = makeMessage(memberId, fcmResponse);
+        Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmResponse);
 
-        ObjectMapper om = new ObjectMapper();
+        if(fcmSendRequest.isPresent()){
+            ObjectMapper om = new ObjectMapper();
 
-        FcmNotificationRequest fcmNotificationRequest = new FcmNotificationRequest(fcmSendRequest.notification().title(), fcmSendRequest.notification().body());
-        FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.data(), fcmNotificationRequest, fcmSendRequest.token());
+            FcmNotificationRequest fcmNotificationRequest = new FcmNotificationRequest(fcmSendRequest.get().notification().title(), fcmSendRequest.get().notification().body());
+            FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.get().data(), fcmNotificationRequest, fcmSendRequest.get().token());
 
-        FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
-        return om.writeValueAsString(fcmRequest);
+            FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
+
+            if (fcmSendRequest.get().token() != null) {
+                return om.writeValueAsString(fcmRequest);
+            }
+        }
+        return null;
     }
 
 
     // 메세지 문구 생성 로직
     @Transactional
-    public FcmSendRequest makeMessage(final long memberId, FcmResponse fcmResponse) {
-        MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
-        String token = memberToken.getFcm_token();
+    public Optional<FcmSendRequest> makeMessage(final long memberId, FcmResponse fcmResponse) {
+        Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
 
-        switch (fcmResponse.fcmConstant()){
-            case EVENTTOASTSPREAD:
-                FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmResponse.toastName());
-                FcmSendRequest eventToastSpreadSend = new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return eventToastSpreadSend;
-            case EVENTTOASTOPENED:
-                FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmResponse.toastName());
-                FcmSendRequest eventToastOpenedSend = new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return eventToastOpenedSend;
-            case GIFTTOASTCREATED:
-                FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmResponse.toastName());
-                FcmSendRequest giftToastCreatedSend = new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return giftToastCreatedSend;
-            case GIFTTOASTOPENED:
-                FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmResponse.toastName());
-                FcmSendRequest giftToastOpenedSend = new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return giftToastOpenedSend;
-            case GIFTTOASTBAKED:
-                FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmResponse.toastName());
-                FcmSendRequest giftToastBakedSend = new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return giftToastBakedSend;
-            case FOLLOW:
-                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+FOLLOW.value(), null);
-                FcmSendRequest followSend = new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param())));
-                return followSend;
-            default:
-                return null;
+        if(memberToken.isPresent()){
+            String token = memberToken.get().getFcm_token();
+            switch (fcmResponse.fcmConstant()){
+                case EVENTTOASTSPREAD:
+                    FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmResponse.toastName());
+                    Optional<FcmSendRequest> eventToastSpreadSend = Optional.of(new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return eventToastSpreadSend;
+                case EVENTTOASTOPENED:
+                    FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmResponse.toastName());
+                    Optional<FcmSendRequest> eventToastOpenedSend = Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return eventToastOpenedSend;
+                case GIFTTOASTCREATED:
+                    FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmResponse.toastName());
+                    Optional<FcmSendRequest> giftToastCreatedSend = Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return giftToastCreatedSend;
+                case GIFTTOASTOPENED:
+                    FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmResponse.toastName());
+                    Optional<FcmSendRequest> giftToastOpenedSend = Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return giftToastOpenedSend;
+                case GIFTTOASTBAKED:
+                    FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmResponse.toastName());
+                    Optional<FcmSendRequest> giftToastBakedSend = Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return giftToastBakedSend;
+                case FOLLOW:
+                    FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+FOLLOW.value(), null);
+                    Optional<FcmSendRequest> followSend = Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmResponse.param()))));
+                    return followSend;
+                default:
+                    return Optional.empty();
+                }
+
         }
+        return Optional.empty();
+
     }
 
     // 접근 위한 엑세스 코드 생성

@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
@@ -24,6 +25,7 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
+import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTCREATED;
+import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPENED;
 import static com.timeToast.timeToast.global.constant.BasicImage.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
@@ -51,12 +55,13 @@ public class GiftToastServiceImpl implements GiftToastService{
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
+    private final FcmService fcmService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final ToastPieceImageRepository toastPieceImageRepository, final ToastPieceService toastPieceService,
                                 final ToastPieceRepository toastPieceRepository, final MemberRepository memberRepository,
                                 final TeamRepository teamRepository, final TeamMemberRepository teamMemberRepository,
-                                final IconRepository iconRepository) {
+                                final IconRepository iconRepository, final FcmService fcmService) {
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.toastPieceService = toastPieceService;
@@ -66,6 +71,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         this.teamMemberRepository = teamMemberRepository;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
+        this.fcmService = fcmService;
     }
 
 
@@ -85,11 +91,21 @@ public class GiftToastServiceImpl implements GiftToastService{
         isOpenUpdate(giftToast);
 
         teamMembers.forEach(
-                teamMember -> giftToastOwnerRepository.save(
-                        GiftToastOwner.builder()
-                                .memberId(teamMember.getMemberId())
-                                .giftToastId(giftToast.getId())
-                                .build()));
+                teamMember -> {
+                    giftToastOwnerRepository.save(
+                            GiftToastOwner.builder()
+                                    .memberId(teamMember.getMemberId())
+                                    .giftToastId(giftToast.getId())
+                                    .build());
+                });
+
+        teamMembers.forEach(
+                teamMember -> {
+                    if(!teamMember.getMemberId().equals(memberId)){
+                        sentCreatedMessage(teamMember.getMemberId(), giftToast);
+                    }
+                }
+        );
 
         log.info("save group giftToast {} by {}", giftToast.getId(), memberId);
 
@@ -118,9 +134,19 @@ public class GiftToastServiceImpl implements GiftToastService{
                         .giftToastId(giftToast.getId())
                         .build());
 
-        log.info("save friend giftToast {} by {}", giftToast.getId(), memberId);
+        sentCreatedMessage(giftToastFriendRequest.friendId(), giftToast);
 
+        log.info("save friend giftToast {} by {}", giftToast.getId(), memberId);
         return GiftToastSaveResponse.from(giftToast);
+    }
+
+    private void sentCreatedMessage(final long memberId, GiftToast giftToast) {
+        fcmService.sendMessageTo(memberId,
+                FcmResponse.builder()
+                        .fcmConstant(GIFTTOASTCREATED)
+                        .toastName(giftToast.getTitle())
+                        .param(giftToast.getId())
+                        .build());
     }
 
     @Transactional
@@ -336,6 +362,11 @@ public class GiftToastServiceImpl implements GiftToastService{
 
                     if(isOpen){
                         giftToast.updateIsOpened(true);
+                        giftToastOwners.forEach(
+                                giftToastOwner -> {
+                                    sendOpenedMessage(giftToast, giftToastOwner.getMemberId());
+                                }
+                        );
                     }
 
                 }
@@ -344,6 +375,14 @@ public class GiftToastServiceImpl implements GiftToastService{
         log.info("update gift toast's is open");
     }
 
+    private void sendOpenedMessage(GiftToast giftToast, final long memberId) {
+        fcmService.sendMessageTo(memberId,
+                FcmResponse.builder()
+                        .fcmConstant(GIFTTOASTOPENED)
+                        .toastName(giftToast.getTitle())
+                        .param(giftToast.getId())
+                        .build());
+    }
 
 
 }

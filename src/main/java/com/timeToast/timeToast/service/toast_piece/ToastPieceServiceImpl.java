@@ -1,16 +1,22 @@
 package com.timeToast.timeToast.service.toast_piece;
 
+import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceImage;
+import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
+import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTBAKED;
+import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPENED;
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
@@ -34,15 +42,22 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final FileUploadService fileUploadService;
+    private final GiftToastOwnerRepository giftToastOwnerRepository;
+    private final GiftToastRepository giftToastRepository;
+    private final FcmService fcmService;
 
     public ToastPieceServiceImpl(final ToastPieceRepository toastPieceRepository, final ToastPieceImageRepository toastPieceImageRepository,
                                  final MemberRepository memberRepository, final FileUploadService fileUploadService,
-                                 final IconRepository iconRepository) {
+                                 final IconRepository iconRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
+                                 final FcmService fcmService, final GiftToastRepository giftToastRepository) {
         this.toastPieceRepository = toastPieceRepository;
         this.toastPieceImageRepository = toastPieceImageRepository;
         this.fileUploadService = fileUploadService;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
+        this.giftToastOwnerRepository = giftToastOwnerRepository;
+        this.fcmService = fcmService;
+        this.giftToastRepository = giftToastRepository;
 
     }
 
@@ -54,7 +69,27 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         toastPiece.updateContentsUrl(saveToastPieceContents(toastPiece, contents));
         List<String> toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
         log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
+
+        sendMessage(memberId, toastPiece);
+
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
+    }
+
+    private void sendMessage(long memberId, ToastPiece toastPiece) {
+        List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
+        GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
+        giftToastOwners.forEach(giftToastOwner -> {
+
+            if(!giftToastOwner.getMemberId().equals(memberId)){
+                fcmService.sendMessageTo(giftToastOwner.getMemberId(),
+                        FcmResponse.builder()
+                                .fcmConstant(GIFTTOASTBAKED)
+                                .nickname(memberRepository.getById(memberId).getNickname())
+                                .toastName(giftToast.getTitle())
+                                .param(giftToast.getId())
+                                .build());
+            }
+        });
     }
 
 

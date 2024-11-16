@@ -20,9 +20,11 @@ public record FcmResponses(
 
         String toastName,
 
-        boolean isOpened
+        boolean isOpened,
+
+        long param
 ) {
-    public static FcmResponses fromEntity(Fcm fcm, String text, String time){
+    public static FcmResponses fromEntity(Fcm fcm, String text, String time, long param){
         return FcmResponses.builder()
                 .fcmId(fcm.getId())
                 .fcmConstant(fcm.getFcmConstant())
@@ -31,6 +33,8 @@ public record FcmResponses(
                 .imageUrl(fcm.getImageUrl())
                 .time(time)
                 .toastName(fcm.getToastName())
+                .isOpened(fcm.isOpened())
+                .param(param)
                 .build();
     }
 }

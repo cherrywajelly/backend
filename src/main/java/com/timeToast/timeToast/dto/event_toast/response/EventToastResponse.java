@@ -29,6 +29,8 @@ public record EventToastResponse(
 
         long dDay,
 
+        boolean isWritten,
+
         List<JamResponses> jams
 ){
     public static EventToastResponse fromEntity(EventToast eventToast, final String iconImageUrl, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponses> jams) {
@@ -43,6 +45,22 @@ public record EventToastResponse(
                 .jamCount(jamCount)
                 .dDay(dDay)
                 .jams(jams)
+                .build();
+    }
+
+    public static EventToastResponse of(EventToastResponse eventToastResponse, boolean isWritten) {
+        return EventToastResponse.builder()
+                .eventToastId(eventToastResponse.eventToastId())
+                .title(eventToastResponse.title())
+                .openedDate(eventToastResponse.openedDate())
+                .isOpened(eventToastResponse.isOpened())
+                .iconImageUrl(eventToastResponse.iconImageUrl())
+                .memberProfileUrl(eventToastResponse.memberProfileUrl())
+                .nickname(eventToastResponse.nickname())
+                .jamCount(eventToastResponse.jamCount())
+                .dDay(eventToastResponse.dDay())
+                .isWritten(isWritten)
+                .jams(eventToastResponse.jams())
                 .build();
     }
 }

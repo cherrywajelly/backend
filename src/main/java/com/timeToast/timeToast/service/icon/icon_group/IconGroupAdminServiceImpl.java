@@ -42,24 +42,24 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         }
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public List<IconGroupCreatorResponse> getIconGroupForCreator(final long memberId) {
-//        List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-//        Member member = memberRepository.getById(memberId);
-//
-//        if(member == null) {
-//            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
-//        } else {
-//            List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-//            iconGroups.forEach(
-//                    iconGroup -> {
-//                        List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
-//                        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(icon.get(0).getIconImageUrl(), iconGroup.getName()));
-//                    }
-//            );
-//        }
-//        return iconGroupCreatorResponses;
-//    }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<IconGroupCreatorResponse> getIconGroupForCreator(final long memberId) {
+        List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
+        Member member = memberRepository.getById(memberId);
+
+        if(member == null) {
+            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
+        } else {
+            List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+            iconGroups.forEach(
+                    iconGroup -> {
+                        List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
+                        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.get(0).getIconImageUrl(), iconGroup.getName()));
+                    }
+            );
+        }
+        return iconGroupCreatorResponses;
+    }
 }
