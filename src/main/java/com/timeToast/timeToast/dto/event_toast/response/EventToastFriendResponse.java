@@ -16,7 +16,7 @@ public record EventToastFriendResponse(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
-        boolean postedJam,
+        boolean isWritten,
 
         String nickname,
 
@@ -32,7 +32,7 @@ public record EventToastFriendResponse(
                 .nickname(nickname)
                 .memberProfileUrl(memberProfileUrl)
                 .icon(icon)
-                .postedJam(postedJam)
+                .isWritten(isWritten)
                 .build();
     }
 }
