@@ -51,22 +51,22 @@ public class LoginServiceImpl implements LoginService {
 
         if(findMember.isPresent()){
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
-
-        }else{
-            String nickname = RandomStringUtils.randomAlphabetic(7);
-            Member member = memberRepository.save(
-                    Member.builder()
-                            .email(email)
-                            .nickname(nickname)
-                            .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
-                            .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
-                            .loginType(loginType)
-                            .memberRole(memberRole)
-                            .build()
-            );
-            addBuiltInIconTest(member);
-            return jwtService.createJwts(LoginMember.from(member), true);
         }
+
+        String nickname = RandomStringUtils.randomAlphabetic(7);
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .nickname(nickname)
+                        .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
+                        .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
+                        .loginType(loginType)
+                        .memberRole(memberRole)
+                        .build()
+        );
+        addBuiltInIconTest(member);
+        return jwtService.createJwts(LoginMember.from(member), true);
+
     }
 
 

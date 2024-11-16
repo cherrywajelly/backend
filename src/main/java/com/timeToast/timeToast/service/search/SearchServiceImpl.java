@@ -17,11 +17,9 @@ import java.util.List;
 public class SearchServiceImpl implements SearchService{
 
     private final MemberRepository memberRepository;
-    private final IconRepository iconRepository;
 
-    public SearchServiceImpl(final MemberRepository memberRepository, final IconRepository iconRepository) {
+    public SearchServiceImpl(final MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.iconRepository = iconRepository;
     }
 
     @Transactional
@@ -32,7 +30,6 @@ public class SearchServiceImpl implements SearchService{
         List<SearchResponse> searchMembers = new ArrayList<>();
         memberRepository.findMemberByNickname(searchRequest.searchKeyword(), pageable).forEach(
                 member -> searchMembers.add(SearchResponse.from(member)));
-
 
         return new SearchResponses(searchRequest.page()+1 ,searchRequest.size(), searchMembers);
     }
