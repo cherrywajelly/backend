@@ -122,6 +122,7 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("[].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
                                         fieldWithPath("[].postedJam").type(BOOLEAN).description("사용자가 타사용자에게 잼을 바른 여부"),
                                         fieldWithPath("[].nickname").type(STRING).description("조회 대상 사용자 닉네임"),
+                                        fieldWithPath("[].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
                                         fieldWithPath("[].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
                                         fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
                                 )

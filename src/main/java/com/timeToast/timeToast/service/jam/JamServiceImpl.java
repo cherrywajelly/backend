@@ -129,8 +129,9 @@ public class JamServiceImpl implements JamService {
     @Override
     public Response deleteJam(final long memberId, final long jamId){
         Jam jam = jamRepository.getById(jamId);
+        EventToast eventToast = eventToastRepository.getById(jam.getEventToastId());
 
-        if(!jam.getMemberId().equals(memberId)){
+        if(!eventToast.getMemberId().equals(memberId)){
             throw new BadRequestException(INVALID_JAM.getMessage());
         }
         jamRepository.deleteById(jam.getId());
