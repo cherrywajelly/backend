@@ -49,17 +49,13 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
         Member member = memberRepository.getById(memberId);
 
-        if(member == null) {
-            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
-        } else {
-            List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-            iconGroups.forEach(
-                    iconGroup -> {
-                        List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
-                        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.get(0).getIconImageUrl(), iconGroup.getName()));
-                    }
-            );
-        }
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(member.getId());
+        iconGroups.forEach(
+                iconGroup -> {
+                    List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
+                    iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.get(0).getIconImageUrl(), iconGroup.getName()));
+                });
+
         return iconGroupCreatorResponses;
     }
 }

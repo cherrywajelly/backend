@@ -12,7 +12,6 @@ import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
@@ -48,34 +47,32 @@ public class JamServiceImpl implements JamService {
     @Override
     public void postJam(final JamRequest jamRequest, final MultipartFile contents, final MultipartFile image, final long eventToastId, final long memberId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Jam jam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
 
-        if (eventToast == null) {
-            throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
-        } else if (jam != null) {
-            throw new BadRequestException(INVALID_NEW_JAM.getMessage());
-        } else {
-            Jam newJam = jamRepository.save(jamRequest.toEntity(jamRequest, memberId, eventToastId));
-            newJam.updateContentsUrl(getContentsUrl(contents, newJam));
-            newJam.updateImageUrl(getImageUrl(image, newJam));
-            jamRepository.save(newJam);
-
-            log.info("save jam");
-
-            //알림
-            Member jamMember = memberRepository.getById(memberId);
-            fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTSPREAD, jamMember.getNickname(), eventToast.getTitle(), eventToastId));
+        if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent()) {
+             throw new BadRequestException(INVALID_NEW_JAM.getMessage());
         }
+
+
+        Jam newJam = jamRepository.save(jamRequest.toEntity(jamRequest, memberId, eventToastId));
+        newJam.updateContentsUrl(getContentsUrl(contents, newJam));
+        newJam.updateImageUrl(getImageUrl(image, newJam));
+        jamRepository.save(newJam);
+        log.info("save jam");
+
+        //알림
+        Member jamMember = memberRepository.getById(memberId);
+        fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTSPREAD, jamMember.getNickname(), eventToast.getTitle(), eventToastId));
+
     }
 
-    @Transactional
-    public String getContentsUrl(MultipartFile contents, Jam jam) {
+    @Transactional(readOnly = true)
+    public String getContentsUrl(final MultipartFile contents, final Jam jam) {
         String saveUrl = JAM.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
-    @Transactional
-    public String getImageUrl(MultipartFile image, Jam jam) {
+    @Transactional(readOnly = true)
+    public String getImageUrl(final MultipartFile image, final Jam jam) {
         String saveUrl = JAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(image, saveUrl);
     }
@@ -90,11 +87,10 @@ public class JamServiceImpl implements JamService {
                 jam -> {
                     Icon icon = iconRepository.getById(jam.getIconId());
                     Member member = memberRepository.getById(jam.getMemberId());
-                    JamResponses jamResponses = JamResponses.fromEntity(jam.getId(), icon.getIconImageUrl(), member.getNickname());
+                    JamResponses jamResponses = JamResponses.from(jam.getId(), icon.getIconImageUrl(), member.getNickname());
                     jamResponseList.add(jamResponses);
                 }
         );
-
         return jamResponseList;
     }
 
@@ -105,22 +101,21 @@ public class JamServiceImpl implements JamService {
         Jam jam = jamRepository.getById(jamId);
         EventToast eventToast = eventToastRepository.getById(jam.getEventToastId());
 
-        if (eventToast.getMemberId() == memberId ) {
-            Member eventToastMember = memberRepository.getById(eventToast.getMemberId());
-
-            Member jamMember = memberRepository.getById(jam.getMemberId());
-
-            Icon eventToastIcon = iconRepository.getById(eventToast.getIconId());
-            Icon jamIcon = iconRepository.getById(jam.getIconId());
-
-            EventToastDataResponse eventToastDataResponse = EventToastDataResponse.fromEntity(eventToast, eventToastMember.getNickname(), eventToastMember.getMemberProfileUrl(), eventToastIcon.getIconImageUrl());
-            JamDataResponse jamDataResponse = JamDataResponse.fromEntity(jam, jamIcon.getIconImageUrl(), jamMember.getMemberProfileUrl(), jamMember.getNickname());
-
-            return new JamResponse(eventToastDataResponse, jamDataResponse);
-
-        } else {
+        if(!eventToast.getMemberId().equals(memberId)){
             throw new BadRequestException(INVALID_JAM.getMessage());
         }
+
+        Member eventToastMember = memberRepository.getById(eventToast.getMemberId());
+        Member jamMember = memberRepository.getById(jam.getMemberId());
+
+        Icon eventToastIcon = iconRepository.getById(eventToast.getIconId());
+        Icon jamIcon = iconRepository.getById(jam.getIconId());
+
+        EventToastDataResponse eventToastDataResponse = EventToastDataResponse.fromEntity(eventToast, eventToastMember.getNickname(), eventToastMember.getMemberProfileUrl(), eventToastIcon.getIconImageUrl());
+        JamDataResponse jamDataResponse = JamDataResponse.fromEntity(jam, jamIcon.getIconImageUrl(), jamMember.getMemberProfileUrl(), jamMember.getNickname());
+
+        return new JamResponse(eventToastDataResponse, jamDataResponse);
+
     }
 
     @Transactional
@@ -128,11 +123,12 @@ public class JamServiceImpl implements JamService {
     public void deleteJam(final long memberId, final long jamId){
         Jam jam = jamRepository.getById(jamId);
 
-        if (jam.getMemberId() == memberId) {
-            jamRepository.deleteById(jamId);
-            log.info("delete jam");
-        } else {
+        if(!jam.getMemberId().equals(memberId)){
             throw new BadRequestException(INVALID_JAM.getMessage());
         }
+        jamRepository.deleteById(jam.getId());
+        log.info("delete jam");
     }
+
+
 }

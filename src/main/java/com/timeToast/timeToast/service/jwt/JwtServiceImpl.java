@@ -46,7 +46,6 @@ public class JwtServiceImpl implements JwtService {
         String refreshToken = createToken(loginMember, ONE_DAY.time());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
-
         return LoginResponse.of(accessToken, refreshToken, isNew);
     }
 
@@ -78,7 +77,6 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public LoginResponse tokenRenewal(final String refreshToken) {
-
         if(jwtTokenProvider.validateToken(refreshToken)){
             String claims = jwtTokenProvider.getUserClaims(refreshToken);
 

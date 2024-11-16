@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.event_toast.QEventToast.eventToast;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.EVENT_TOAST_NOT_FOUND;
@@ -38,7 +39,7 @@ public class EventToastRepositoryImpl implements EventToastRepository{
 
 
     @Override
-    public EventToast getByIdAndMemberId(final long eventToastId, final long memberId) {
+    public Optional<EventToast> getByIdAndMemberId(final long eventToastId, final long memberId) {
         return eventToastJpaRepository.findByIdAndMemberId(eventToastId, memberId);
     }
 

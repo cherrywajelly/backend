@@ -35,7 +35,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     //oci 업로드
     @Transactional
     @Override
-    public String uploadfile(MultipartFile file, String endpoint) {
+    public String uploadfile(final MultipartFile file, final String endpoint) {
 
         try {
             InputStream inputStream = file.getInputStream();

@@ -3,7 +3,7 @@ package com.timeToast.timeToast.global.constant;
 public enum ExceptionConstant {
 
     //member
-    MEMBER_NOT_EXISTS("해당 멤버를 찾을 수 없습니다."),
+    MEMBER_NOT_FOUND("해당 멤버를 찾을 수 없습니다."),
     NICKNAME_CONFLICT("이미 존재하는 닉네임입니다."),
     ROLE_FORBIDDEN("역할이 검증되지 않았습니다."),
     UNAUTHORIZED_MEMBER("권한이 없는 사용자입니다,"),
@@ -14,7 +14,7 @@ public enum ExceptionConstant {
     //follow
     FOLLOW_NOT_FOUND("해당 팔로우 정보를 찾을 수 없습니다."),
     FOLLOW_ALREADY_EXISTS("이미 등록된 팔로우 정보입니다."),
-    ICONGROUP_ALREADY_EXISTS("이미 구매한 아이콘입니다."),
+    INVALID_FOLLOW("자기 자신은 팔로우 할 수 없습니다."),
 
     //team
     TEAM_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
@@ -23,7 +23,6 @@ public enum ExceptionConstant {
     //event
     EVENT_TOAST_NOT_FOUND("해당 이벤트 토스트를 찾을 수 없습니다."),
     INVALID_EVENT_TOAST("잘못된 이벤트 토스트 형식입니다."),
-
 
     //jam
     JAM_NOT_FOUNT("해당 잼을 찾을 수 없습니다."),
@@ -36,6 +35,7 @@ public enum ExceptionConstant {
     ICON_MEMBER_NOT_FOUND("해당 조회를 할 수 없습니다."),
     INVALID_ICON("잘목된 아이콘 형식입니다."),
     INVALID_ICON_GROUP("잘못된 아이콘 그룹 형식입니다."),
+    ICONGROUP_ALREADY_EXISTS("이미 구매한 아이콘입니다."),
 
 
     //gift_toast

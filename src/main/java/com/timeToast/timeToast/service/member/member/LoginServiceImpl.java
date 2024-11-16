@@ -51,28 +51,28 @@ public class LoginServiceImpl implements LoginService {
 
         if(findMember.isPresent()){
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
-
-        }else{
-            String nickname = RandomStringUtils.randomAlphabetic(7);
-            Member member = memberRepository.save(
-                    Member.builder()
-                            .email(email)
-                            .nickname(nickname)
-                            .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
-                            .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
-                            .loginType(loginType)
-                            .memberRole(memberRole)
-                            .build()
-            );
-            addBuiltInIconTest(member);
-            return jwtService.createJwts(LoginMember.from(member), true);
         }
+
+        String nickname = RandomStringUtils.randomAlphabetic(7);
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .nickname(nickname)
+                        .memberProfileUrl(BASIC_PROFILE_IMAGE_URL)
+                        .premiumId(premiumRepository.getByPremiumType(PremiumType.BASIC).getId())
+                        .loginType(loginType)
+                        .memberRole(memberRole)
+                        .build()
+        );
+        addBuiltinIcon(member);
+        return jwtService.createJwts(LoginMember.from(member), true);
+
     }
 
 
     @Transactional
     @Override
-    public void addBuiltInIconTest(final Member member) {
+    public void addBuiltinIcon(final Member member) {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             iconMemberRepository.save(IconMember.builder()

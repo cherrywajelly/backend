@@ -5,7 +5,6 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -16,7 +15,7 @@ import com.timeToast.timeToast.util.BaseServiceTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
+
 public class TeamServiceImplTest extends BaseServiceTests {
 
 

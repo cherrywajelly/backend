@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.JAM_NOT_FOUNT;
 
@@ -28,7 +29,7 @@ public class JamRepositoryImpl implements JamRepository {
     }
 
     @Override
-    public Jam findByMemberIdAndEventToastId(final long memberId, final long eventToastId) {
+    public Optional<Jam> findByMemberIdAndEventToastId(final long memberId, final long eventToastId) {
         return jamJpaRepository.findByMemberIdAndEventToastId(memberId, eventToastId);
     }
 

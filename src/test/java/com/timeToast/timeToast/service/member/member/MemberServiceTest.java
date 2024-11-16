@@ -54,9 +54,14 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public PremiumResponse getMemberPremium(long memberId) {
+    public PremiumResponse getMemberPremium(final long memberId) {
         return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
     }
+
+//    @Override
+//    public void getCreatorMonthSettlement(int year, int month) {
+//
+//    }
 
 
 }

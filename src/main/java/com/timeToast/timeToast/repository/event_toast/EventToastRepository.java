@@ -3,6 +3,7 @@ package com.timeToast.timeToast.repository.event_toast;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EventToastRepository {
     List<EventToast> findAllByMemberId(final long memberId);
@@ -13,7 +14,7 @@ public interface EventToastRepository {
 
     EventToast getById(final long eventToastId);
 
-    EventToast getByIdAndMemberId(final long eventToastId, final long memberId);
+    Optional<EventToast> getByIdAndMemberId(final long eventToastId, final long memberId);
 
     List<EventToast> findAllEventToastToOpen();
 
