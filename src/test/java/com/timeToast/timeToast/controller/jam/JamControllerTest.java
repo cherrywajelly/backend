@@ -72,6 +72,10 @@ public class JamControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }
@@ -146,7 +150,7 @@ public class JamControllerTest extends BaseControllerTests {
     @DisplayName("자신의 잼을 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
-    void deleteFollower() throws Exception {
+    void deleteJam() throws Exception {
 
         mockMvc.perform(
                         delete("/api/v1/jams/{jamId}",1)
@@ -162,6 +166,10 @@ public class JamControllerTest extends BaseControllerTests {
                                 .summary("잼 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
 

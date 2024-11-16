@@ -6,8 +6,10 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -36,7 +40,7 @@ public class FollowServiceImpl implements FollowService{
     }
     @Transactional
     @Override
-    public void saveFollow(final long followingId, final long memberId) {
+    public Response saveFollow(final long followingId, final long memberId) {
         if(followingId == memberId){
           throw new BadRequestException(INVALID_FOLLOW.getMessage());
         }
@@ -61,6 +65,7 @@ public class FollowServiceImpl implements FollowService{
                         .param(memberId)
                         .build());
 
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -77,26 +82,26 @@ public class FollowServiceImpl implements FollowService{
 
     @Transactional
     @Override
-    public void deleteFollowing(final long followingMemberId, final long memberId) {
+    public Response deleteFollowing(final long followingMemberId, final long memberId) {
 
         Follow findFollow = followRepository.findByFollowingIdAndFollowerId(followingMemberId, memberId)
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);
         log.info("delete follow {} by {} ", findFollow.getFollowingId(), findFollow.getFollowerId());
-
-
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Transactional
     @Override
-    public void deleteFollower(final long memberId, final long followerMemberId) {
+    public Response deleteFollower(final long memberId, final long followerMemberId) {
 
         Follow findFollow = followRepository.findByFollowingIdAndFollowerId(memberId, followerMemberId)
                 .orElseThrow(() -> new NotFoundException(FOLLOW_NOT_FOUND.getMessage()));
 
         followRepository.deleteFollow(findFollow);
         log.info("delete follower {} by {}", findFollow.getFollowerId(), findFollow.getFollowingId());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
     }
 

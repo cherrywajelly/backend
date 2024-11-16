@@ -11,7 +11,9 @@ import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
@@ -30,6 +32,8 @@ import java.util.List;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.SLASH;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -45,7 +49,7 @@ public class JamServiceImpl implements JamService {
 
     @Transactional
     @Override
-    public void postJam(final JamRequest jamRequest, final MultipartFile contents, final MultipartFile image, final long eventToastId, final long memberId) {
+    public Response postJam(final JamRequest jamRequest, final MultipartFile contents, final MultipartFile image, final long eventToastId, final long memberId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
 
         if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent()) {
@@ -65,6 +69,7 @@ public class JamServiceImpl implements JamService {
         Member jamMember = memberRepository.getById(memberId);
         fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTSPREAD, jamMember.getNickname(), eventToast.getTitle(), eventToastId));
 
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -122,7 +127,7 @@ public class JamServiceImpl implements JamService {
 
     @Transactional
     @Override
-    public void deleteJam(final long memberId, final long jamId){
+    public Response deleteJam(final long memberId, final long jamId){
         Jam jam = jamRepository.getById(jamId);
 
         if(!jam.getMemberId().equals(memberId)){
@@ -130,6 +135,7 @@ public class JamServiceImpl implements JamService {
         }
         jamRepository.deleteById(jam.getId());
         log.info("delete jam");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 

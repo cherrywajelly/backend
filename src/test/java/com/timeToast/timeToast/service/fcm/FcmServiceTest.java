@@ -4,16 +4,21 @@ import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+
 public class FcmServiceTest implements FcmService {
 
     @Override
-    public void saveToken(final long memberId, final String token){
-
+    public Response saveToken(final long memberId, final String token){
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
@@ -25,11 +30,13 @@ public class FcmServiceTest implements FcmService {
     }
 
     @Override
-    public void sendMessageTo(final long memberId, FcmResponse fcmResponse){
-
+    public Response sendMessageTo(final long memberId, FcmResponse fcmResponse){
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
-    public void putIsOpened(final long memberId, final long fcmId){
+    public Response putIsOpened(final long memberId, final long fcmId){
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+
     }
 }

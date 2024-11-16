@@ -1,21 +1,23 @@
 package com.timeToast.timeToast.service.withdrawal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.response.Response;
 
 public class WithdrawalServiceImplTest implements WithdrawalService{
 
     @Override
-    public void memberWithdrawal(long memberId) {
-
+    public Response memberWithdrawal(long memberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 
     @Override
-    public void creatorWithdrawal(long memberId) {
-
+    public Response creatorWithdrawal(long memberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 
     @Override
-    public void adminWithdrawal(long memberId) {
-
+    public Response adminWithdrawal(long memberId) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 }

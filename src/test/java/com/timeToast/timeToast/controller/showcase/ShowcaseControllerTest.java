@@ -175,6 +175,10 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }

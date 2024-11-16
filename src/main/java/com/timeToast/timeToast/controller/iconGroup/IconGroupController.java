@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +21,8 @@ public class IconGroupController {
     private final IconGroupService iconGroupService;
 
     @PostMapping("/members/{iconGroupId}")
-    public void buyIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
+    public Response buyIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
+        return iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
     }
 
     @GetMapping("/members/toasts")
@@ -49,8 +50,8 @@ public class IconGroupController {
     }
 
     @DeleteMapping("/{iconGroupId}")
-    public void deleteIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        iconGroupService.deleteIconGroup(loginMember.id(), iconGroupId);
+    public Response deleteIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
+        return iconGroupService.deleteIconGroup(loginMember.id(), iconGroupId);
     }
 
 }

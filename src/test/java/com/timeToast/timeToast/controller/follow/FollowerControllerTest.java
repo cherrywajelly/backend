@@ -50,6 +50,10 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }
@@ -128,6 +132,10 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
 
                         )));
@@ -152,6 +160,10 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .summary("로그인한 사용자가 팔로워 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
 

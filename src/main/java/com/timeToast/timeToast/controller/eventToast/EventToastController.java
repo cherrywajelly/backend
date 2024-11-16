@@ -7,6 +7,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +26,8 @@ public class EventToastController {
 
     // 이벤트 토스트 등록
     @PostMapping("")
-    public void postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
-        eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
+    public Response postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
+        return eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
     }
 
 
@@ -61,9 +62,9 @@ public class EventToastController {
 
     // 이벤트 토스트 삭제
     @DeleteMapping("/{eventToastId}")
-    public void deleteEventToast(@Login LoginMember loginMember,
+    public Response deleteEventToast(@Login LoginMember loginMember,
                                  @PathVariable final long eventToastId) {
-        eventToastService.deleteEventToast(loginMember.id(), eventToastId);
+        return eventToastService.deleteEventToast(loginMember.id(), eventToastId);
     }
 
 }

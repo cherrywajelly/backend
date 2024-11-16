@@ -6,17 +6,21 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IconGroupServiceTest implements IconGroupService {
 
     @Override
-    public void buyIconGroup(long memberId, long iconGroupId) {
-
+    public Response buyIconGroup(long memberId, long iconGroupId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
@@ -85,7 +89,7 @@ public class IconGroupServiceTest implements IconGroupService {
     }
 
     @Override
-    public void deleteIconGroup(final long memberId, final long iconGroupId) {
-
+    public Response deleteIconGroup(final long memberId, final long iconGroupId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 }

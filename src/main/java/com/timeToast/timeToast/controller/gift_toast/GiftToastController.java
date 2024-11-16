@@ -10,6 +10,7 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastIncompleteRespon
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastSaveResponse;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +55,8 @@ public class GiftToastController {
     }
 
     @DeleteMapping("/{giftToastId}")
-    public void deleteGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){
-        giftToastService.deleteGiftToast(loginMember.id(), giftToastId);
+    public Response deleteGiftToast(@Login final LoginMember loginMember, @PathVariable final long giftToastId){
+        return giftToastService.deleteGiftToast(loginMember.id(), giftToastId);
     }
 
 }

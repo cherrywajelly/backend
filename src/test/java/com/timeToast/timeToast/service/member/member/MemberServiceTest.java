@@ -6,6 +6,9 @@ import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,13 +21,13 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public void postNickname(String nickname, long memberId) {
-
+    public MemberInfoResponse postNickname(String nickname, long memberId) {
+        return new MemberInfoResponse(1L, "nickname","profileUrl");
     }
 
     @Override
-    public void nicknameValidation(String nickname) {
-
+    public Response nicknameValidation(String nickname) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.VALID_NICKNAME.getMessage());
     }
 
     @Override
