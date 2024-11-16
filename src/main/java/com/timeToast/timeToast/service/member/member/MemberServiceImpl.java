@@ -37,8 +37,8 @@ public class MemberServiceImpl implements MemberService{
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final FileUploadService fileUploadService;
-    private final IconRepository iconRepository;
     private final IconGroupRepository iconGroupRepository;
+    private final IconRepository iconRepository;
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
     private final OrdersRepository orderRepository;
@@ -69,20 +69,16 @@ public class MemberServiceImpl implements MemberService{
         String profileImageUrl = fileUploadService.uploadfile(profileImage,url);
 
         member.updateProfileUrl(profileImageUrl);
-
         return MemberInfoResponse.from(member);
     }
 
     @Transactional
     @Override
     public void postNickname(final String nickname, final long memberId){
-
-        Member member = memberRepository.getById(memberId);
-        boolean exist = memberRepository.existsByNickname(nickname);
-
-        if (exist) {
+        if (memberRepository.existsByNickname(nickname)) {
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
+        Member member = memberRepository.getById(memberId);
         member.updateNickname(nickname);
     }
 
@@ -126,7 +122,8 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream().sorted(Comparator.comparing(Member::getNickname)).map(CreatorResponse::from).toList();
+        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname)).map(CreatorResponse::from).toList();
         return new CreatorResponses(creatorResponses);
     }
 
@@ -157,7 +154,6 @@ public class MemberServiceImpl implements MemberService{
         if(findCreatorAccount.isPresent()){
             creatorAccount = findCreatorAccount.get().getAccountNumber();
         }
-
 
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())

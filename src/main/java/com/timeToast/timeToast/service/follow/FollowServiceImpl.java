@@ -37,74 +37,42 @@ public class FollowServiceImpl implements FollowService{
     @Transactional
     @Override
     public void saveFollow(final long followingId, final long memberId) {
-        Optional<Follow> findFollow = followRepository.findByFollowingIdAndFollowerId(followingId,memberId);
+        if(followingId == memberId){
+          throw new BadRequestException(INVALID_FOLLOW.getMessage());
+        }
 
-        if(findFollow.isEmpty()){
-            Member followingMember = memberRepository.findById(followingId).orElseThrow(()-> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
-            Follow saveFollow = followRepository.save(
-                    Follow.builder()
-                            .followingId(followingMember.getId())
-                            .followerId(memberId)
-                            .build()
-            );
-            log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
-
-
-            fcmService.sendMessageTo(
-                    followingId,
-                    FcmResponse.builder()
-                            .fcmConstant(FcmConstant.FOLLOW)
-                            .nickname(memberRepository.getById(memberId).getNickname())
-                            .param(memberId)
-                    .build());
-        }else{
+        if(followRepository.findByFollowingIdAndFollowerId(followingId,memberId).isPresent()) {
             throw new BadRequestException(FOLLOW_ALREADY_EXISTS.getMessage());
         }
+
+        Follow saveFollow = followRepository.save(
+                Follow.builder()
+                        .followingId(memberRepository.getById(followingId).getId())
+                        .followerId(memberId)
+                        .build()
+        );
+        log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
+
+        fcmService.sendMessageTo(
+                followingId,
+                FcmResponse.builder()
+                        .fcmConstant(FcmConstant.FOLLOW)
+                        .nickname(memberRepository.getById(memberId).getNickname())
+                        .param(memberId)
+                        .build());
+
     }
 
     @Transactional(readOnly = true)
     @Override
     public FollowResponses findFollowerList(final long memberId) {
-
-        List<Follow> follows = followRepository.findAllByFollowingId(memberId);
-        return getFollowerResponses(follows);
+        return getFollowerResponses(followRepository.findAllByFollowingId(memberId));
     }
 
     @Transactional(readOnly = true)
     @Override
     public FollowResponses findFollowingList(final long memberId) {
-
-        List<Follow> follows = followRepository.findAllByFollowerId(memberId);
-        return getFollowingResponses(follows);
-
-    }
-
-
-    private FollowResponses getFollowingResponses(final List<Follow> follows) {
-        List<FollowResponse> followResponses = new ArrayList<>();
-
-        follows.forEach(
-                follow -> {
-                    Optional<Member> findMember = memberRepository.findById(follow.getFollowingId());
-                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
-                }
-        );
-
-        return new FollowResponses(followResponses);
-    }
-
-    private FollowResponses getFollowerResponses(final List<Follow> follows) {
-        List<FollowResponse> followResponses = new ArrayList<>();
-
-        follows.forEach(
-                follow -> {
-                    Optional<Member> findMember = memberRepository.findById(follow.getFollowerId());
-                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
-
-                }
-        );
-
-        return new FollowResponses(followResponses);
+        return getFollowingResponses(followRepository.findAllByFollowerId(memberId));
     }
 
     @Transactional
@@ -132,5 +100,31 @@ public class FollowServiceImpl implements FollowService{
 
     }
 
+    private FollowResponses getFollowerResponses(final List<Follow> follows) {
+        List<FollowResponse> followResponses = new ArrayList<>();
+
+        follows.forEach(
+                follow -> {
+                    Optional<Member> findMember = memberRepository.findById(follow.getFollowerId());
+                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
+
+                }
+        );
+
+        return new FollowResponses(followResponses);
+    }
+
+    private FollowResponses getFollowingResponses(final List<Follow> follows) {
+        List<FollowResponse> followResponses = new ArrayList<>();
+
+        follows.forEach(
+                follow -> {
+                    Optional<Member> findMember = memberRepository.findById(follow.getFollowingId());
+                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
+                }
+        );
+
+        return new FollowResponses(followResponses);
+    }
 
 }

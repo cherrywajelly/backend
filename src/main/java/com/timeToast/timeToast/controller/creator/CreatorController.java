@@ -7,10 +7,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.service.member.member.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.UNAUTHORIZED_MEMBER;
 
@@ -39,4 +36,21 @@ public class CreatorController {
         }
         return memberService.getCreatorByCreatorId(creatorId);
     }
+
+//    @GetMapping("/monthSettlement")
+//    public void getCreatorMonthSettlement(@Login LoginMember loginMember, @RequestParam("year") int year, @RequestParam("month") int month) {
+//        if(!loginMember.role().equals(MemberRole.MANAGER)){
+//            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
+//        }
+//        return memberService.getCreatorMonthSettlement(year, month);
+//    }
+//
+//    @GetMapping("/{creatorId}/monthSettlement")
+//    public void getCreatorMonthSettlementByCreatorId(@Login LoginMember loginMember, @RequestParam("creatorId") int creatorId,  @RequestParam("year") int year, @RequestParam("month") int month) {
+//        if(!loginMember.role().equals(MemberRole.MANAGER)){
+//            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
+//        }
+//        return memberService.getCreatorByCreatorId(creatorId);
+//    }
+
 }

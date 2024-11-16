@@ -71,7 +71,6 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
 
         sendMessage(memberId, toastPiece);
-
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
@@ -130,7 +129,9 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         return new ToastPieceResponses(giftToastId, toastPieceResponses);
     }
 
-    public  ToastPieceResponse getToastPieceResponse(final long toastPieceId){
+    @Transactional(readOnly = true)
+    @Override
+    public ToastPieceResponse getToastPieceResponse(final long toastPieceId){
         ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
                 .orElseThrow(()-> new NotFoundException(TOAST_PIECE_NOT_FOUND.getMessage()));
 

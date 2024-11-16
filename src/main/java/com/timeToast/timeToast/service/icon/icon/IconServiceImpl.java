@@ -28,18 +28,15 @@ public class IconServiceImpl implements IconService{
     public void postIconSet(List<MultipartFile> files, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
-        if(iconGroup == null) {
-            throw new BadRequestException(INVALID_ICON.getMessage());
-        } else {
-            files.forEach(file->{
-                Icon icon = iconRepository.save(new Icon("", iconGroupId));
-                String endpoint = "icon/image/" + Long.toString(icon.getId());
-                String imageUrls = fileUploadService.uploadfile(file, endpoint);
-                icon.updateUrl(imageUrls);
-                iconRepository.save(icon);
-            });
-            log.info("save icon images");
-        }
+        files.forEach(file->{
+            Icon icon = iconRepository.save(new Icon("", iconGroup.getId()));
+            String endpoint = "icon/image/" + Long.toString(icon.getId());
+            String imageUrls = fileUploadService.uploadfile(file, endpoint);
+            icon.updateUrl(imageUrls);
+            iconRepository.save(icon);
+        });
+
+        log.info("save icon images");
 
     }
 }

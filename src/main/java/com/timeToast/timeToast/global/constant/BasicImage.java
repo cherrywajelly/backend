@@ -19,12 +19,12 @@ public class BasicImage {
     @Autowired
     public static String NOT_OPEN_IMAGE_URL;
 
-    @Value("https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/basic%2Fimage%2Fprofile")
+    @Value("${spring.cloud.oci.base-profile-image-url}")
     public void setBasicProfileImageUrl(String basicProfileImageUrl){
         BASIC_PROFILE_IMAGE_URL = basicProfileImageUrl;
     }
 
-    @Value("https://axmpikvsv3z9.objectstorage.ap-chuncheon-1.oci.customer-oci.com/n/axmpikvsv3z9/b/timetoast_bucket/o/basic%2Fimage%2Funopened")
+    @Value("${spring.cloud.oci.not-open-image-url}")
     public void setNotOpenImageUrl(String notOpenImageUrl){
         NOT_OPEN_IMAGE_URL = notOpenImageUrl;
     }

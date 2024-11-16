@@ -63,7 +63,7 @@ public class TeamServiceImpl implements TeamService {
 
         teamMembers.forEach(
                 (teamMemberId) -> {
-                    Member findMember = memberRepository.findById(teamMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_EXISTS.getMessage()));
+                    Member findMember = memberRepository.findById(teamMemberId).orElseThrow( () -> new BadRequestException(MEMBER_NOT_FOUND.getMessage()));
 
                     teamMemberRepository.save(
                             TeamMember.builder()
@@ -96,7 +96,7 @@ public class TeamServiceImpl implements TeamService {
         return TeamResponse.from(team);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public TeamResponses findLoginMemberTeams(final long memberId) {
 

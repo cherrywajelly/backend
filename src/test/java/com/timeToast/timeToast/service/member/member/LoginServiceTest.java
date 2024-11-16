@@ -18,7 +18,7 @@ public class LoginServiceTest implements LoginService {
 
     //TODO DB 연결 시 삭제
     @Override
-    public void addBuiltInIconTest(Member member) {
+    public void addBuiltinIcon(Member member) {
 
     }
 

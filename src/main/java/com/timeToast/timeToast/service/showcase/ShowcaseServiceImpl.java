@@ -65,11 +65,10 @@ public class ShowcaseServiceImpl implements ShowcaseService{
     @Transactional(readOnly = true)
     @Override
     public ShowcaseEditResponses getShowcaseSaveList(final long memberId) {
-        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(memberId);
         List<Showcase> showcases = showcaseRepository.findAllByMemberId(memberId);
         List<ShowcaseEditResponse> showcaseEditResponses = new ArrayList<>();
 
-        eventToasts.forEach(
+        eventToastRepository.findAllByMemberId(memberId).forEach(
                 eventToast -> {
 
                     String iconUrl = iconRepository.getById(eventToast.getIconId()).getIconImageUrl();
@@ -83,7 +82,6 @@ public class ShowcaseServiceImpl implements ShowcaseService{
                                 ShowcaseEditResponse.from(eventToast, iconUrl, false,  null));
                     }
 
-
                 }
         );
 
@@ -93,17 +91,15 @@ public class ShowcaseServiceImpl implements ShowcaseService{
     @Transactional(readOnly = true)
     @Override
     public ShowcaseResponses getShowcase(final long memberId) {
-        List<Showcase> showcases = showcaseRepository.findAllByMemberId(memberId);
         List<ShowcaseResponse> showcaseResponses = new ArrayList<>();
 
-        showcases.forEach(
+        showcaseRepository.findAllByMemberId(memberId).forEach(
                 showcase -> {
                     EventToast eventToast = eventToastRepository.getById(showcase.getEventToastId());
                     String iconUrl = iconRepository.getById(eventToast.getIconId()).getIconImageUrl();
                     showcaseResponses.add(new ShowcaseResponse(eventToast.getId(), iconUrl));
                 }
         );
-
         return new ShowcaseResponses(showcaseResponses);
     }
 
@@ -119,7 +115,6 @@ public class ShowcaseServiceImpl implements ShowcaseService{
         }
 
         showcaseRepository.deleteShowcase(showcase);
-
         log.info("delete showcase {} by {}", showcaseId, memberId);
 
     }
