@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService{
         this.orderRepository = orderRepository;
     }
 
-    @Value("$spring.cloud.oci.base-url}")
+    @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
 

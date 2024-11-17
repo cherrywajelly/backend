@@ -65,7 +65,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     }
 
-    @Value("$spring.cloud.oci.base-url}")
+    @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
 

@@ -47,7 +47,7 @@ public class JamServiceImpl implements JamService {
     private final FileUploadService fileUploadService;
     private final FcmService fcmService;
 
-    @Value("$spring.cloud.oci.base-url}")
+    @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
 
