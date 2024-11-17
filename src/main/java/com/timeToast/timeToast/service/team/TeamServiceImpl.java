@@ -45,7 +45,7 @@ public class TeamServiceImpl implements TeamService {
         this.fileUploadService = fileUploadService;
     }
 
-    @Value("$spring.cloud.oci.base-url}")
+    @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
 

@@ -23,7 +23,7 @@ public class IconServiceImpl implements IconService{
     private final IconGroupRepository iconGroupRepository;
     private final FileUploadService fileUploadService;
 
-    @Value("$spring.cloud.oci.base-url}")
+    @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
     @Transactional
@@ -34,6 +34,7 @@ public class IconServiceImpl implements IconService{
         files.forEach(file->{
             Icon icon = iconRepository.save(new Icon("", iconGroup.getId()));
             String endpoint = baseUrl + "icon/image/" + Long.toString(icon.getId());
+            System.out.println(endpoint);
             String imageUrls = fileUploadService.uploadfile(file, endpoint);
             icon.updateUrl(imageUrls);
             iconRepository.save(icon);
