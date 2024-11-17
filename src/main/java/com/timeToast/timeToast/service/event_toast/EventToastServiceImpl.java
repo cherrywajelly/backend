@@ -154,7 +154,7 @@ public class EventToastServiceImpl implements EventToastService{
             );
 
 //            Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).get();
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),  member.getId() ,member.getMemberProfileUrl(), member.getNickname(),
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, jamResponses);
 
             return updateWritten(memberId, eventToastId, eventToastResponse);
