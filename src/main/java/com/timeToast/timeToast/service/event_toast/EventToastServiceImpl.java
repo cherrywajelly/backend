@@ -154,14 +154,14 @@ public class EventToastServiceImpl implements EventToastService{
             );
 
 //            Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).get();
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, jamResponses);
 
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, null);
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
