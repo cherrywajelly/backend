@@ -50,6 +50,7 @@ spring:
         static: ${OCI_URL}
       base-profile-image-url: ${BASIC_PROFILE_IMAGE_URL}
       not-open-image-url: ${NOT_OPEN_IMAGE_URL}
+      base-url: ${OCI_BASEURL}
 
   servlet:
     multipart:

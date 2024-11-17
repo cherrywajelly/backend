@@ -15,6 +15,7 @@ import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +44,10 @@ public class TeamServiceImpl implements TeamService {
         this.memberRepository = memberRepository;
         this.fileUploadService = fileUploadService;
     }
+
+    @Value("$spring.cloud.oci.base-url}")
+    private String baseUrl;
+
 
     @Transactional
     @Override
@@ -90,7 +95,7 @@ public class TeamServiceImpl implements TeamService {
                 new NotFoundException(TEAM_NOT_FOUND.getMessage())
         );
 
-        String teamUrl = TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
+        String teamUrl = baseUrl +  TEAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  team.getId();
         String teamProfileUrl = fileUploadService.uploadfile(teamProfileImage, teamUrl);
 
         team.updateTeamProfileUrl(teamProfileUrl);

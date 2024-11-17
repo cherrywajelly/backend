@@ -22,6 +22,7 @@ import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,9 @@ public class JamServiceImpl implements JamService {
     private final MemberRepository memberRepository;
     private final FileUploadService fileUploadService;
     private final FcmService fcmService;
+
+    @Value("$spring.cloud.oci.base-url}")
+    private String baseUrl;
 
 
     @Transactional
@@ -74,13 +78,13 @@ public class JamServiceImpl implements JamService {
 
     @Transactional(readOnly = true)
     public String getContentsUrl(final MultipartFile contents, final Jam jam) {
-        String saveUrl = JAM.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  jam.getId();
+        String saveUrl = baseUrl + JAM.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
     @Transactional(readOnly = true)
     public String getImageUrl(final MultipartFile image, final Jam jam) {
-        String saveUrl = JAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  jam.getId();
+        String saveUrl = baseUrl + JAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(image, saveUrl);
     }
 
