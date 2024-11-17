@@ -12,7 +12,9 @@ import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -23,6 +25,7 @@ import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import com.timeToast.timeToast.service.image.FileUploadService;
 import java.util.*;
@@ -74,22 +77,23 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public void postNickname(final String nickname, final long memberId){
+    public MemberInfoResponse postNickname(final String nickname, final long memberId){
         if (memberRepository.existsByNickname(nickname)) {
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
         Member member = memberRepository.getById(memberId);
         member.updateNickname(nickname);
+        return MemberInfoResponse.from(member);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public void nicknameValidation(final String nickname) {
+    public Response nicknameValidation(final String nickname) {
 
         if(memberRepository.existsByNickname(nickname)){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
-
+        return new Response(StatusCode.OK.getStatusCode(), VALID_NICKNAME.getMessage());
     }
 
     @Transactional(readOnly = true)

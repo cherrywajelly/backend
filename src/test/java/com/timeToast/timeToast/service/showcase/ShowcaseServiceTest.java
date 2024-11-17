@@ -2,6 +2,9 @@ package com.timeToast.timeToast.service.showcase;
 
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.dto.showcase.response.*;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.response.Response;
 
 
 import java.time.LocalDate;
@@ -34,7 +37,7 @@ public class ShowcaseServiceTest implements ShowcaseService{
     }
 
     @Override
-    public void deleteShowcase(long memberId, long showcaseId) {
-
+    public Response deleteShowcase(long memberId, long showcaseId) {
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 }

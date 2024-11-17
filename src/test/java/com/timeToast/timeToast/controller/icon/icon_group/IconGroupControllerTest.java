@@ -56,6 +56,10 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                 .pathParameters(
                                         parameterWithName("iconGroupId").description("구매하는 아이콘 그룹 Id")
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }
@@ -226,6 +230,10 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                 )
                                 .pathParameters(
                                         parameterWithName("iconGroupId").description("삭제할 아이콘 그룹 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
                         )));

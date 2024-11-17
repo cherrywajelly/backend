@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.team.TeamService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +36,8 @@ public class TeamController {
     }
 
     @DeleteMapping("/{teamId}")
-    public void deleteTeam(@Login final LoginMember loginMember, @PathVariable final  long teamId){
-        teamService.deleteTeam(loginMember.id(), teamId);
+    public Response deleteTeam(@Login final LoginMember loginMember, @PathVariable final  long teamId){
+        return teamService.deleteTeam(loginMember.id(), teamId);
     }
 
 }

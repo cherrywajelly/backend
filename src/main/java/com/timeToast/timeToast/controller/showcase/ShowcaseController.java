@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.showcase.response.ShowcaseResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseEditResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseSaveResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.showcase.ShowcaseService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,8 @@ public class ShowcaseController {
     }
 
     @DeleteMapping("/{showcaseId}")
-    public void deleteShowcase(@Login final LoginMember loginMember, @PathVariable final long showcaseId){
-        showcaseService.deleteShowcase(loginMember.id(), showcaseId);
+    public Response deleteShowcase(@Login final LoginMember loginMember, @PathVariable final long showcaseId){
+        return showcaseService.deleteShowcase(loginMember.id(), showcaseId);
     }
 
 }

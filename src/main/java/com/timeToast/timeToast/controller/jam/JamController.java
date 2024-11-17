@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.annotation.Login;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jam.JamService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class JamController {
     private final JamService jamService;
 
     @PostMapping("/{eventToastId}")
-    public void postJam(@Login LoginMember loginMember,
+    public Response postJam(@Login LoginMember loginMember,
                         @PathVariable final long eventToastId,
                         @RequestPart("jamContents") final MultipartFile jamContents,
-                        @RequestPart("jamImages") final MultipartFile jamImages,
+                        @RequestPart(value = "jamImages",required = false) final MultipartFile jamImages,
                         @RequestPart final JamRequest jamRequest) {
-        jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
+        return jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
 
 
@@ -42,8 +43,8 @@ public class JamController {
     }
 
     @DeleteMapping("/{jamId}")
-    public void deleteJam(@Login LoginMember loginMember, @PathVariable final long jamId) {
-        jamService.deleteJam(loginMember.id(), jamId);
+    public Response deleteJam(@Login LoginMember loginMember, @PathVariable final long jamId) {
+        return jamService.deleteJam(loginMember.id(), jamId);
     }
 
 }

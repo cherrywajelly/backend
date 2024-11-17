@@ -101,6 +101,10 @@ class MemberControllerTest extends BaseControllerTests {
                                 .queryParameters(
                                         parameterWithName("nickname").description("닉네임")
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }

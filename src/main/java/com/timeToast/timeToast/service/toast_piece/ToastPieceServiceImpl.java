@@ -8,8 +8,10 @@ import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceIm
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.*;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -32,6 +34,7 @@ import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPEN
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 @Slf4j
@@ -67,16 +70,25 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                                                  final MultipartFile contents, final List<MultipartFile> toastPieceImages) {
         ToastPiece toastPiece = toastPieceRepository.saveToastPiece(ToastPieceRequest.to(memberId, toastPieceRequest));
         toastPiece.updateContentsUrl(saveToastPieceContents(toastPiece, contents));
-        List<String> toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
-        log.info("save toastPiece {} by {}", toastPiece.getId(), memberId);
-
+        List<String> toastPieceImageUrls = new ArrayList<>();
+        if(toastPieceImages!=null){
+            toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
+        }
         sendMessage(memberId, toastPiece);
+
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
-    private void sendMessage(long memberId, ToastPiece toastPiece) {
+    @Transactional
+    public void sendMessage(long memberId, ToastPiece toastPiece) {
         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
+        List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
+
+        if(giftToastOwners.stream().allMatch(giftToastOwner ->
+                        toastPieces.stream().anyMatch(toast-> toast.getMemberId().equals(giftToastOwner.getMemberId())))){
+            giftToast.updateIsOpened(true);
+        }
         giftToastOwners.forEach(giftToastOwner -> {
 
             if(!giftToastOwner.getMemberId().equals(memberId)){
@@ -154,7 +166,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     @Transactional
     @Override
-    public void deleteToastPieceByMemberIdAndToastPieceId(final long memberId, final long toastPieceId) {
+    public Response deleteToastPieceByMemberIdAndToastPieceId(final long memberId, final long toastPieceId) {
         ToastPiece toastPiece = toastPieceRepository.findById(toastPieceId)
                 .orElseThrow(()-> new NotFoundException(TOAST_PIECE_NOT_EXISTS.getMessage()));
 
@@ -165,6 +177,8 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         log.info("delete toastPiece contents {} by {}", toastPiece.getId(), memberId);
         toastPieceImageRepository.deleteAllByToastPieceId(toastPieceId);
         toastPieceRepository.deleteToastPiece(toastPiece);
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 }

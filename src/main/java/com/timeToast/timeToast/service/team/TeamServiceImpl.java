@@ -6,8 +6,10 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -23,6 +25,7 @@ import java.util.List;
 import static com.timeToast.timeToast.global.constant.BasicImage.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 @Slf4j
@@ -111,7 +114,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public void deleteTeam(final long memberId, final long teamId) {
+    public Response deleteTeam(final long memberId, final long teamId) {
         TeamMember teamMember = teamMemberRepository.findByMemberIdAndTeamId(memberId, teamId)
                 .orElseThrow(()-> new NotFoundException(TEAM_MEMBER_NOT_FOUND.getMessage()));
 
@@ -121,6 +124,7 @@ public class TeamServiceImpl implements TeamService {
             log.info("delete team {}", teamId);
             teamRepository.deleteByTeamId(teamId);
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
     }
 

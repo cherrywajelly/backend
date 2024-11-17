@@ -10,7 +10,10 @@ import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
@@ -38,6 +41,9 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.PREMIUM_NOT_FOUND;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -63,16 +69,42 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     @Override
-    public void saveToken(final long memberId, final String token){
-        MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
+    public Response saveToken(final long memberId, final String token){
+
         if (token != null) {
+
+            fcmTokenValidation(memberId, token);
+
+            MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow(()-> new BadRequestException(INVALID_FCM_TOKEN.getMessage()));
             memberToken.updateFcmToken(token);
             memberTokenRepository.save(memberToken);
+
             log.info("update fcm token");
+
         } else {
             throw new BadRequestException(INVALID_FCM_TOKEN.getMessage());
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
+
+
+    @Transactional
+    public void fcmTokenValidation(final long memberId, final String token) {
+        Optional<MemberToken> memberToken = memberTokenRepository.findByFcmToken(token);
+
+        // 동일한 토큰 존재
+        if (memberToken.isPresent()) {
+            // 기존 저장된 토큰 계정과 새 토큰 계정 불일치
+            if (memberToken.get().getMemberId() != memberId) {
+
+                MemberToken changedMemberToken = memberToken.get();
+                changedMemberToken.updateFcmToken(null);
+                memberTokenRepository.save(changedMemberToken);
+                log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
+            }
+        }
+    }
+
 
     @Transactional(readOnly = true)
     @Override
@@ -107,19 +139,20 @@ public class FcmServiceImpl implements FcmService {
     // 알림 눌렀을 때
     @Transactional
     @Override
-    public void putIsOpened(final long memberId, final long fcmId) {
+    public Response putIsOpened(final long memberId, final long fcmId) {
         Fcm fcm = fcmRepository.getById(fcmId);
 
         if (!fcm.isOpened()) {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     // 메세지 전송
     @Transactional
     @Override
-    public void sendMessageTo(final long memberId, final FcmResponse fcmResponse)  {
+    public Response sendMessageTo(final long memberId, final FcmResponse fcmResponse)  {
         try{
             String message = createMessage(memberId, fcmResponse);
 
@@ -143,6 +176,8 @@ public class FcmServiceImpl implements FcmService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
     }
 
@@ -207,7 +242,7 @@ public class FcmServiceImpl implements FcmService {
         Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
 
         if(memberToken.isPresent()){
-            String token = memberToken.get().getFcm_token();
+            String token = memberToken.get().getFcmToken();
             switch (fcmResponse.fcmConstant()){
                 case EVENTTOASTSPREAD:
                     FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmResponse.toastName());

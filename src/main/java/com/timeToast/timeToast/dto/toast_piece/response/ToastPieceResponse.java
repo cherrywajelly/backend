@@ -9,7 +9,7 @@ import java.util.List;
 
 @Builder
 public record ToastPieceResponse(
-        long memberId,
+        Long memberId,
         long toastPieceId,
         String nickname,
         String profileUrl,

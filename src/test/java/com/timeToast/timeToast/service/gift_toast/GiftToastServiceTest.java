@@ -9,11 +9,15 @@ import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 public class GiftToastServiceTest implements GiftToastService{
 
@@ -130,8 +134,8 @@ public class GiftToastServiceTest implements GiftToastService{
     }
 
     @Override
-    public void deleteGiftToast(long memberId, long giftToastId) {
-
+    public Response deleteGiftToast(long memberId, long giftToastId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Override

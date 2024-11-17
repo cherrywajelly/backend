@@ -4,8 +4,10 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.showcase.Showcase;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.dto.showcase.response.*;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 @Slf4j
@@ -105,7 +108,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
 
     @Transactional
     @Override
-    public void deleteShowcase(final long memberId, final long showcaseId) {
+    public Response deleteShowcase(final long memberId, final long showcaseId) {
 
         Showcase showcase = showcaseRepository.findByShowcaseId(showcaseId)
                 .orElseThrow(() -> new NotFoundException(SHOWCASE_NOT_FOUND.getMessage()));
@@ -116,7 +119,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
 
         showcaseRepository.deleteShowcase(showcase);
         log.info("delete showcase {} by {}", showcaseId, memberId);
-
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 }

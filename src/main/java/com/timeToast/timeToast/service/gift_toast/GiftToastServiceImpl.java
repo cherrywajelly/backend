@@ -14,8 +14,10 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
@@ -41,6 +43,7 @@ import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTCREA
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPENED;
 import static com.timeToast.timeToast.global.constant.BasicImage.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 @Service
 @Slf4j
@@ -89,16 +92,13 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         GiftToast giftToast = giftToastRepository.save(GiftToastGroupRequest.to(giftToastGroupRequest));
         List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(giftToastGroupRequest.teamId());
-        isOpenUpdate(giftToast);
 
         teamMembers.forEach(
-                teamMember -> {
-                    giftToastOwnerRepository.save(
-                            GiftToastOwner.builder()
-                                    .memberId(teamMember.getMemberId())
-                                    .giftToastId(giftToast.getId())
-                                    .build());
-                });
+                teamMember -> giftToastOwnerRepository.save(
+                        GiftToastOwner.builder()
+                                .memberId(teamMember.getMemberId())
+                                .giftToastId(giftToast.getId())
+                                .build()));
 
         teamMembers.forEach(
                 teamMember -> {
@@ -120,7 +120,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastFriendRequest.openedDate(), giftToastFriendRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastFriendRequest.to(giftToastFriendRequest));
-        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(
                 GiftToastOwner.builder()
@@ -148,7 +147,6 @@ public class GiftToastServiceImpl implements GiftToastService{
         _checkDateValidation(giftToastMineRequest.openedDate(), giftToastMineRequest.memorizedDate());
 
         GiftToast giftToast = giftToastRepository.save(GiftToastMineRequest.to(giftToastMineRequest));
-        isOpenUpdate(giftToast);
 
         giftToastOwnerRepository.save(GiftToastOwner.builder()
                 .memberId(memberId)
@@ -282,7 +280,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     @Transactional
     @Override
-    public void deleteGiftToast(final long memberId,final long giftToastId) {
+    public Response deleteGiftToast(final long memberId,final long giftToastId) {
 
         giftToastOwnerRepository.deleteByMemberIdAndGiftToastId(memberId, giftToastId);
         if(giftToastOwnerRepository.findAllByGiftToastId(giftToastId).isEmpty()){
@@ -296,6 +294,7 @@ public class GiftToastServiceImpl implements GiftToastService{
             giftToastRepository.deleteById(giftToastId);
             log.info("delete giftToast {} by {}", giftToastId, memberId);
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
     @Transactional
@@ -303,6 +302,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     public void deleteAllGiftToast(final long memberId){
         giftToastRepository.findAllGiftToastsByMemberId(memberId).forEach(
                 giftToast -> deleteGiftToast(memberId, giftToast.getId()));
+
     }
 
     private ToastPieceResponses getToastPieceResponses(final GiftToast giftToast){
@@ -322,15 +322,8 @@ public class GiftToastServiceImpl implements GiftToastService{
     }
 
     private void _checkDateValidation(final LocalDate openedDate, final LocalDate memorizedDate){
-        if((openedDate.isBefore(LocalDate.now()) || openedDate.isEqual(LocalDate.now()))
-                && (memorizedDate.isEqual(LocalDate.now()) && memorizedDate.isAfter(LocalDate.now()))){
+        if((openedDate.isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
-        }
-    }
-
-    private void isOpenUpdate(final GiftToast giftToast){
-        if (giftToast.getOpenedDate().isEqual(LocalDate.now())) {
-            giftToast.updateIsOpened(true);
         }
     }
 
@@ -370,9 +363,8 @@ public class GiftToastServiceImpl implements GiftToastService{
                     if(isOpen){
                         giftToast.updateIsOpened(true);
                         giftToastOwners.forEach(
-                                giftToastOwner -> {
-                                    sendOpenedMessage(giftToast, giftToastOwner.getMemberId());
-                                }
+                                giftToastOwner -> sendOpenedMessage(giftToast, giftToastOwner.getMemberId())
+
                         );
                     }
 
