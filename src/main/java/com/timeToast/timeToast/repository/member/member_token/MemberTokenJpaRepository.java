@@ -9,5 +9,6 @@ public interface MemberTokenJpaRepository extends JpaRepository<MemberToken, Lon
 
     Optional<MemberToken> findByMemberId(final long memberId);
     void deleteByMemberId(final long memberId);
+    Optional<MemberToken> findByFcmToken(final String token);
 
 }

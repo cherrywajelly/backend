@@ -8,5 +8,6 @@ public interface MemberTokenRepository {
 
     MemberToken save(final MemberToken memberJwtRefreshToken);
     Optional<MemberToken> findByMemberId(final long memberId);
+    Optional<MemberToken> findByFcmToken(final String token);
     void deleteByMemberId(final long memberId);
 }

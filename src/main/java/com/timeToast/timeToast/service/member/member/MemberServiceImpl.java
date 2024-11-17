@@ -29,6 +29,8 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICK
 
 import com.timeToast.timeToast.service.image.FileUploadService;
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,12 +65,16 @@ public class MemberServiceImpl implements MemberService{
         this.orderRepository = orderRepository;
     }
 
+    @Value("$spring.cloud.oci.base-url}")
+    private String baseUrl;
+
+
     @Transactional
     @Override
     public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
 
-        String url = MEMBER.value() + SLASH.value() + IMAGE.value() + SLASH.value() + memberId;
+        String url = baseUrl + MEMBER.value() + SLASH.value() + IMAGE.value() + SLASH.value() + memberId;
         String profileImageUrl = fileUploadService.uploadfile(profileImage,url);
 
         member.updateProfileUrl(profileImageUrl);

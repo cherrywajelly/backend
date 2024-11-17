@@ -12,6 +12,7 @@ import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
@@ -40,6 +41,7 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.PREMIUM_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
@@ -68,16 +70,41 @@ public class FcmServiceImpl implements FcmService {
     @Transactional
     @Override
     public Response saveToken(final long memberId, final String token){
-        MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow();
+
         if (token != null) {
+
+            fcmTokenValidation(memberId, token);
+
+            MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow(()-> new BadRequestException(INVALID_FCM_TOKEN.getMessage()));
             memberToken.updateFcmToken(token);
             memberTokenRepository.save(memberToken);
+
             log.info("update fcm token");
+
         } else {
             throw new BadRequestException(INVALID_FCM_TOKEN.getMessage());
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
+
+
+    @Transactional
+    public void fcmTokenValidation(final long memberId, final String token) {
+        Optional<MemberToken> memberToken = memberTokenRepository.findByFcmToken(token);
+
+        // 동일한 토큰 존재
+        if (memberToken.isPresent()) {
+            // 기존 저장된 토큰 계정과 새 토큰 계정 불일치
+            if (memberToken.get().getMemberId() != memberId) {
+
+                MemberToken changedMemberToken = memberToken.get();
+                changedMemberToken.updateFcmToken(null);
+                memberTokenRepository.save(changedMemberToken);
+                log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
+            }
+        }
+    }
+
 
     @Transactional(readOnly = true)
     @Override
@@ -215,7 +242,7 @@ public class FcmServiceImpl implements FcmService {
         Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
 
         if(memberToken.isPresent()){
-            String token = memberToken.get().getFcm_token();
+            String token = memberToken.get().getFcmToken();
             switch (fcmResponse.fcmConstant()){
                 case EVENTTOASTSPREAD:
                     FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmResponse.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmResponse.toastName());

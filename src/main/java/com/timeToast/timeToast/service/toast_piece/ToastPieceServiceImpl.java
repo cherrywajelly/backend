@@ -21,6 +21,7 @@ import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPie
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +65,10 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     }
 
+    @Value("$spring.cloud.oci.base-url}")
+    private String baseUrl;
+
+
     @Transactional
     @Override
     public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest,
@@ -75,12 +80,20 @@ public class ToastPieceServiceImpl implements ToastPieceService{
             toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
         }
         sendMessage(memberId, toastPiece);
+
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
-    private void sendMessage(long memberId, ToastPiece toastPiece) {
+    @Transactional
+    public void sendMessage(long memberId, ToastPiece toastPiece) {
         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
+        List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
+
+        if(giftToastOwners.stream().allMatch(giftToastOwner ->
+                        toastPieces.stream().anyMatch(toast-> toast.getMemberId().equals(giftToastOwner.getMemberId())))){
+            giftToast.updateIsOpened(true);
+        }
         giftToastOwners.forEach(giftToastOwner -> {
 
             if(!giftToastOwner.getMemberId().equals(memberId)){
@@ -98,7 +111,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
     private String saveToastPieceContents(final ToastPiece toastPiece, final MultipartFile contents ) {
 
-        String saveUrl = TOAST_PIECE.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  toastPiece.getId();
+        String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  toastPiece.getId();
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
@@ -113,7 +126,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                                     .toastPieceId(toastPiece.getId())
                                     .build());
 
-                    String saveUrl = TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
+                    String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
                     String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
                     saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
                     toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());

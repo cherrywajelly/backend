@@ -28,13 +28,14 @@ INSERT INTO member VALUES (2,1,"test2@email.com", "memberProfileUrl2", "testNick
 INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "testNickname4", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
-CREATE TABLE member_jwt_refresh_token (
-                                          team_id BIGINT AUTO_INCREMENT,
-                                          name VARCHAR(255),
-                                          team_profile_url VARCHAR(255),
+CREATE TABLE member_token (
+                                          member_token_id BIGINT AUTO_INCREMENT,
+                                          member_id BIGINT,
+                                          jwt_refresh_token VARCHAR(350),
+                                          fcm_token VARCHAR(350),
                                           created_at datetime,
                                           last_modified_at datetime,
-                                          PRIMARY KEY (team_id)
+                                          PRIMARY KEY (member_token_id)
 );
 
 CREATE TABLE team (
