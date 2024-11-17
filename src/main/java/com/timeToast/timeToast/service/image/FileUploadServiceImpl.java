@@ -36,6 +36,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Transactional
     @Override
     public String uploadfile(final MultipartFile file, final String endpoint) {
+        log.info("endpoint: {}", endpoint);
 
         try {
             InputStream inputStream = file.getInputStream();

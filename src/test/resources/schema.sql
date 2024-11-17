@@ -81,6 +81,7 @@ CREATE TABLE icon_group (
                             name VARCHAR(255) NOT NULL,
                             price BIGINT NOT NULL,
                             icon_state VARCHAR(20),
+                            description VARCHAR(255),
                             created_at datetime,
                             last_modified_at datetime,
                             PRIMARY KEY (icon_group_id)
@@ -207,5 +208,7 @@ CREATE TABLE fcm (
                      is_opened BIT(1),
                      param BIGINT,
                      image_url VARCHAR(255),
+                     created_at DATETIME,
+                     last_modified_at DATETIME,
                      PRIMARY KEY (fcm_id)
 );
