@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequestMapping("/api/v1/eventToasts")
 @Validated
 @RestController
@@ -31,12 +29,12 @@ public class EventToastController {
     }
     //refactor
     @GetMapping("/member/{memberId}")
-    public EventToastMemberResponses getFriendEventToastList(@Login LoginMember loginMember, @PathVariable final long memberId) {
+    public EventToastMemberResponses getMemberEventToastList(@Login LoginMember loginMember, @PathVariable final long memberId) {
         return eventToastService.getMemberEventToastList(loginMember.id(), memberId);
     }
     //refactor
     @GetMapping("/follow/following")
-    public EventToastFriendResponses getEventToastList(@Login LoginMember loginMember) {
+    public EventToastFriendResponses getFriendEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getEventToasts(loginMember.id());
     }
 
