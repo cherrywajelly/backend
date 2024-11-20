@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -228,7 +228,7 @@ public class EventToastServiceImpl implements EventToastService{
                 eventToast -> {
                     eventToast.updateIsOpened(true);
 
-                    fcmService.sendMessageTo(eventToast.getMemberId(), new FcmResponse(FcmConstant.EVENTTOASTOPENED, null, eventToast.getTitle(), eventToast.getId()));
+                    fcmService.sendMessageTo(eventToast.getMemberId(), new FcmPostRequest(FcmConstant.EVENTTOASTOPENED, null, eventToast.getTitle(), eventToast.getId()));
                 });
 
         log.info("update event toast's is open");

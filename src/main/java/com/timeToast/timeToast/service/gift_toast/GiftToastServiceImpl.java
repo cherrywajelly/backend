@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
@@ -329,7 +329,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private void sentCreatedMessage(final long memberId, final GiftToast giftToast) {
         fcmService.sendMessageTo(memberId,
-                FcmResponse.builder()
+                FcmPostRequest.builder()
                         .fcmConstant(GIFTTOASTCREATED)
                         .toastName(giftToast.getTitle())
                         .param(giftToast.getId())
@@ -338,7 +338,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     private void sendOpenedMessage(final GiftToast giftToast, final long memberId) {
         fcmService.sendMessageTo(memberId,
-                FcmResponse.builder()
+                FcmPostRequest.builder()
                         .fcmConstant(GIFTTOASTOPENED)
                         .toastName(giftToast.getTitle())
                         .param(giftToast.getId())

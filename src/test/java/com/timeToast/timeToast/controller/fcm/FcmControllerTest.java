@@ -2,7 +2,7 @@ package com.timeToast.timeToast.controller.fcm;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.fcm.FcmServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -119,7 +119,7 @@ public class FcmControllerTest extends BaseControllerTests {
     @Test
     void test() throws Exception {
 
-        FcmResponse fcmResponse = new FcmResponse(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
+        FcmPostRequest fcmResponse = new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
         String json = objectMapper.writeValueAsString(fcmResponse);
 
         mockMvc.perform(

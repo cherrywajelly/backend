@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.follow;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.follow.response.FollowResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -59,7 +59,7 @@ public class FollowServiceImpl implements FollowService{
 
         fcmService.sendMessageTo(
                 followingId,
-                FcmResponse.builder()
+                FcmPostRequest.builder()
                         .fcmConstant(FcmConstant.FOLLOW)
                         .nickname(memberRepository.getById(memberId).getNickname())
                         .param(memberId)
