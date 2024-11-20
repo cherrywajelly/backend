@@ -1,10 +1,7 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponse;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastResponses;
+import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -25,33 +22,33 @@ public class EventToastServiceTest implements EventToastService {
     }
 
     @Override
-    public List<EventToastOwnResponse> getOwnEventToastList(final long memberId) {
-        List<EventToastOwnResponse> eventToastOwnResponseList = new ArrayList<>();
-        eventToastOwnResponseList.add(new EventToastOwnResponse(1, "title", LocalDate.of(2024, 11, 11), new IconResponse(1, "iconUrl")));
-        return eventToastOwnResponseList;
+    public EventToastOwnResponses getOwnEventToastList(final long memberId) {
+        List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
+        eventToastOwnResponses.add(new EventToastOwnResponse(1, "title", LocalDate.of(2024, 11, 11), new IconResponse(1, "iconUrl")));
+        return new EventToastOwnResponses(eventToastOwnResponses);
     }
 
     @Override
-    public List<EventToastFriendResponse> getFriendEventToastList(final long memberId, final long friendId){
-        List<EventToastFriendResponse> eventToastFriendResponseList = new ArrayList<>();
-        eventToastFriendResponseList.add(new EventToastFriendResponse(1, "title", LocalDate.of(2024, 11, 11), false, "nickname", "imageUrl", new IconResponse(1, "iconUrl")));
-        return eventToastFriendResponseList;
+    public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
+        List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
+        eventToastMemberResponses.add(new EventToastMemberResponse(1, "title", LocalDate.of(2024, 11, 11), false, "nickname", "imageUrl", new IconResponse(1, "iconUrl")));
+        return new EventToastMemberResponses(eventToastMemberResponses);
     }
 
 
     @Override
-    public List<EventToastResponses> getEventToasts(final long memberId){
-        List<EventToastResponses> eventToastResponseList = new ArrayList<>();
-        eventToastResponseList.add(new EventToastResponses(1, "title", LocalDate.of(2024, 11, 11), "nickname", "profileImageUrl", new IconResponse(1, "iconUrl"), false));
-        return eventToastResponseList;
+    public EventToastFriendResponses getEventToasts(final long memberId){
+        List<EventToastFriendResponse> eventToastResponses = new ArrayList<>();
+        eventToastResponses.add(new EventToastFriendResponse(1, "title", LocalDate.of(2024, 11, 11), "nickname", "profileImageUrl", new IconResponse(1, "iconUrl"), false));
+        return new EventToastFriendResponses(eventToastResponses);
     }
 
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
-        List<JamResponses> jamResponseList = new ArrayList<>();
-        jamResponseList.add(new JamResponses(1, "title", "iconUrl"));
+        List<JamResponses> jamResponses = new ArrayList<>();
+        jamResponses.add(new JamResponses(1, "title", "iconUrl"));
         EventToastResponse eventToastResponse = new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11),
-                false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, jamResponseList);
+                false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, jamResponses);
         return eventToastResponse;
     }
 
