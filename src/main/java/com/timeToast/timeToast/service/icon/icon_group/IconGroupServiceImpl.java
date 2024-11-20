@@ -3,10 +3,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 
@@ -59,23 +56,22 @@ public class IconGroupServiceImpl implements IconGroupService{
         log.info("buy icon group {} by member {}", iconGroupId, memberId);
 
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<IconGroupResponses> getToastIconGroups(final long memberId){
-        return getIconGroups(memberId,IconType.TOAST);
+    public IconGroupResponses getToastIconGroups(final long memberId){
+        return new IconGroupResponses(getIconGroups(memberId,IconType.TOAST));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<IconGroupResponses> getJamIconGroups(long memberId) {
-        return getIconGroups(memberId,IconType.JAM);
+    public IconGroupResponses getJamIconGroups(long memberId) {
+        return new IconGroupResponses(getIconGroups(memberId,IconType.JAM));
     }
 
-    private List<IconGroupResponses> getIconGroups(final long memberId, final IconType iconType){
-        List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
+    private List<IconGroupResponse> getIconGroups(final long memberId, final IconType iconType){
+        List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
 
         iconMemberRepository.findByMemberId(memberId).forEach(iconMember -> {
             IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
@@ -85,9 +81,8 @@ public class IconGroupServiceImpl implements IconGroupService{
                 iconRepository.findAllByIconGroupId(iconMember.getIconGroupId())
                         .forEach(icon -> iconResponses.add(new IconResponse(icon.getId(), icon.getIconImageUrl())));
 
-                iconGroupResponses.add(new IconGroupResponses(iconGroup.getId(), iconGroup.getName(), iconResponses));
+                iconGroupResponses.add(new IconGroupResponse(iconGroup.getId(), iconGroup.getName(), iconResponses));
             }
-
         });
         return iconGroupResponses;
     }

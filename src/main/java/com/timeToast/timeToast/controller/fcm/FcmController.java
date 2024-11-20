@@ -28,7 +28,7 @@ public class FcmController {
     public Response test(@Login LoginMember loginMember, @RequestBody FcmPostRequest fcmPostRequest) {
         return fcmService.sendMessageTo(loginMember.id(), fcmPostRequest);
     }
-
+    //refactor
     @GetMapping("")
     public FcmResponses getFcmMessages(@Login LoginMember loginMember) {
         return fcmService.getFcmResponses(loginMember.id());
