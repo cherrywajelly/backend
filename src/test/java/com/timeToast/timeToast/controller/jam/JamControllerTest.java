@@ -94,9 +94,9 @@ public class JamControllerTest extends BaseControllerTests {
                                         parameterWithName("eventToastId").description("조회할 이벤트 토스트 id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].jamId").type(NUMBER).description("잼 id"),
-                                        fieldWithPath("[].iconImageUrl").type(STRING).description("잼 아이콘 이미지"),
-                                        fieldWithPath("[].nickname").type(STRING).description("잼 작성자 닉네임")
+                                        fieldWithPath("jamResponses[0].jamId").type(NUMBER).description("잼 id"),
+                                        fieldWithPath("jamResponses[0].iconImageUrl").type(STRING).description("잼 아이콘 이미지"),
+                                        fieldWithPath("jamResponses[0].nickname").type(STRING).description("잼 작성자 닉네임")
                                 )
                                 .build()
                         )));

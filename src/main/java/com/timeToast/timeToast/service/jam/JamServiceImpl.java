@@ -9,6 +9,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
+import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -90,25 +91,25 @@ public class JamServiceImpl implements JamService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<JamResponses> getJams(final long eventToastId) {
+    public JamResponses getJams(final long eventToastId) {
         List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
-        List<JamResponses> jamResponseList = new ArrayList<>();
+        List<JamResponse> jamResponses = new ArrayList<>();
 
         jams.forEach(
                 jam -> {
                     Icon icon = iconRepository.getById(jam.getIconId());
                     Member member = memberRepository.getById(jam.getMemberId());
-                    JamResponses jamResponses = JamResponses.from(jam.getId(), icon.getIconImageUrl(), member.getNickname());
-                    jamResponseList.add(jamResponses);
+                    JamResponse jamResponse = JamResponse.from(jam.getId(), icon.getIconImageUrl(), member.getNickname());
+                    jamResponses.add(jamResponse);
                 }
         );
-        return jamResponseList;
+        return new JamResponses(jamResponses);
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public JamResponse getJam(final long memberId, final long jamId){
+    public JamDetailResponse getJam(final long memberId, final long jamId){
         Jam jam = jamRepository.getById(jamId);
         EventToast eventToast = eventToastRepository.getById(jam.getEventToastId());
 
@@ -125,7 +126,7 @@ public class JamServiceImpl implements JamService {
         EventToastDataResponse eventToastDataResponse = EventToastDataResponse.fromEntity(eventToast, eventToastMember.getNickname(), eventToastMember.getMemberProfileUrl(), eventToastIcon.getIconImageUrl());
         JamDataResponse jamDataResponse = JamDataResponse.fromEntity(jam, jamIcon.getIconImageUrl(), jamMember.getMemberProfileUrl(), jamMember.getNickname());
 
-        return new JamResponse(eventToastDataResponse, jamDataResponse);
+        return new JamDetailResponse(eventToastDataResponse, jamDataResponse);
 
     }
 

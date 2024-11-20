@@ -56,6 +56,7 @@ public class IconGroupServiceImpl implements IconGroupService{
         log.info("buy icon group {} by member {}", iconGroupId, memberId);
 
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +84,7 @@ public class IconGroupServiceImpl implements IconGroupService{
 
                 iconGroupResponses.add(new IconGroupResponse(iconGroup.getId(), iconGroup.getName(), iconResponses));
             }
+
         });
         return iconGroupResponses;
     }

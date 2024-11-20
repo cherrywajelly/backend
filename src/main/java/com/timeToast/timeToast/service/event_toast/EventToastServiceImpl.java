@@ -9,7 +9,7 @@ import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamResponses;
+import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
@@ -140,13 +140,13 @@ public class EventToastServiceImpl implements EventToastService{
 //         이벤트 토스트가 열려있을 경우
         if (eventToast.isOpened()) {
             long dDay = 0;
-            List<JamResponses> jamResponses = new ArrayList<>();
+            List<JamResponse> jamResponses = new ArrayList<>();
 
             jams.forEach(
                     jam -> {
                         Icon jamIcon = iconRepository.getById(jam.getIconId()); // 잼 아이콘
                         Member iconMember = memberRepository.getById(jam.getMemberId()); // 잼 작성자
-                        jamResponses.add(JamResponses.from(jam.getId(), jamIcon.getIconImageUrl(), iconMember.getNickname()));
+                        jamResponses.add(JamResponse.from(jam.getId(), jamIcon.getIconImageUrl(), iconMember.getNickname()));
                     }
             );
 

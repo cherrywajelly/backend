@@ -2,15 +2,12 @@ package com.timeToast.timeToast.controller.fcm;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/v1/fcm")
 @RestController
@@ -30,7 +27,7 @@ public class FcmController {
     }
     //refactor
     @GetMapping("")
-    public FcmResponses getFcmMessages(@Login LoginMember loginMember) {
+    public FcmResponses getResponses(@Login LoginMember loginMember) {
         return fcmService.getFcmResponses(loginMember.id());
     }
 

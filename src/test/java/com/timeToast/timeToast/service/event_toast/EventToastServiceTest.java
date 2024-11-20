@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.event_toast;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamResponses;
+import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 
@@ -45,8 +45,8 @@ public class EventToastServiceTest implements EventToastService {
 
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
-        List<JamResponses> jamResponses = new ArrayList<>();
-        jamResponses.add(new JamResponses(1, "title", "iconUrl"));
+        List<JamResponse> jamResponses = new ArrayList<>();
+        jamResponses.add(new JamResponse(1, "title", "iconUrl"));
         EventToastResponse eventToastResponse = new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11),
                 false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, jamResponses);
         return eventToastResponse;

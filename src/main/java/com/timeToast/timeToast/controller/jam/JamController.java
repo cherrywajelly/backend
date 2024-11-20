@@ -2,12 +2,12 @@ package com.timeToast.timeToast.controller.jam;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
+import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jam.JamService;
-import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +31,14 @@ public class JamController {
         return jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
 
-
+    //refactor
     @GetMapping("/eventToast/{eventToastId}")
-    public List<JamResponses> getJams(@PathVariable final long eventToastId) {
+    public JamResponses getJams(@PathVariable final long eventToastId) {
         return jamService.getJams(eventToastId);
     }
 
     @GetMapping("/{jamId}")
-    public JamResponse getJam(@Login LoginMember loginMember, @PathVariable final long jamId) {
+    public JamDetailResponse getJam(@Login LoginMember loginMember, @PathVariable final long jamId) {
         return jamService.getJam(loginMember.id(), jamId);
     }
 
