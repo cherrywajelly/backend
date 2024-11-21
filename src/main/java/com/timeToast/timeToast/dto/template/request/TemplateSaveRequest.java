@@ -3,15 +3,14 @@ package com.timeToast.timeToast.dto.template.request;
 import com.timeToast.timeToast.domain.template.Template;
 
 public record TemplateSaveRequest (
-        Long memberId,
         Long eventToastId,
-        String templateText
+        String text
 ) {
-    public static Template toEntity(final Long memberId, final Long eventToastId, final String templateText) {
+    public static Template toEntity(final Long memberId, final TemplateSaveRequest templateSaveRequest) {
         return Template.builder()
                 .memberId(memberId)
-                .eventToastId(eventToastId)
-                .templateText(templateText)
+                .eventToastId(templateSaveRequest.eventToastId)
+                .templateText(templateSaveRequest.text)
                 .build();
     }
 }

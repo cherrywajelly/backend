@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public record EventToastTemplateResponse (
         String title,
+
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate
 

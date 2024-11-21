@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 public record TemplateResponse (
         EventToastTemplateResponse eventToastTemplateResponse,
-        String IconImageUrl,
+        String iconImageUrl,
         String profileImageUrl,
         String nickname,
         String text
@@ -14,7 +14,7 @@ public record TemplateResponse (
     public static TemplateResponse of(EventToastTemplateResponse eventToastTemplateResponse, String iconImageUrl, String profileImageUrl, String nickname, String text) {
         return TemplateResponse.builder()
                 .eventToastTemplateResponse(eventToastTemplateResponse)
-                .IconImageUrl(iconImageUrl)
+                .iconImageUrl(iconImageUrl)
                 .profileImageUrl(profileImageUrl)
                 .nickname(nickname)
                 .text(text)

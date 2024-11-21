@@ -34,22 +34,23 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Transactional
     @Override
-    public Response saveTemplate(final long memberId, final long eventToastId, final String text) {
-        Optional<Template> template = templateRepository.getByEventToastId(eventToastId);
+    public Response saveTemplate(final long memberId, final TemplateSaveRequest templateSaveRequest) {
+        Optional<Template> template = templateRepository.getByEventToastId(templateSaveRequest.eventToastId());
 
         if (template.isPresent()) {
-            template.get().updateTemplateText(text);
+            template.get().updateTemplateText(templateSaveRequest.text());
             templateRepository.save(template.get());
         } else {
-            Template newTemplate = TemplateSaveRequest.toEntity(memberId, eventToastId, text);
+            Template newTemplate = TemplateSaveRequest.toEntity(memberId, templateSaveRequest);
             templateRepository.save(newTemplate);
         }
 
-        log.info("save new template for event toast {}", eventToastId);
+        log.info("save new template for event toast {}", templateSaveRequest.eventToastId());
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
-
+    @Transactional(readOnly = true)
+    @Override
     public TemplateResponse getTemplate(final long eventToastId) {
 
         EventToast eventToast = eventToastRepository.getById(eventToastId);

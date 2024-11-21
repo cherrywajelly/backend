@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.controller.template;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class TemplateController {
     private final TemplateService templateService;
 
-    @PutMapping("/{eventToastId}")
-    public Response saveTemplate(@Login LoginMember loginMember, @PathVariable final long eventToastId, final String text){
-        return templateService.saveTemplate(loginMember.id(), eventToastId, text);
+    @PutMapping("")
+    public Response saveTemplate(@Login LoginMember loginMember, final TemplateSaveRequest templateSaveRequest) {
+        return templateService.saveTemplate(loginMember.id(), templateSaveRequest);
     }
 
     @GetMapping("/{eventToastId}")
