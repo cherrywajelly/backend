@@ -3,9 +3,8 @@ package com.timeToast.timeToast.dto.fcm.response;
 
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.fcm.Fcm;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import lombok.Builder;
-
-import java.time.LocalDateTime;
 
 @Builder
 public record FcmDataResponse(
@@ -22,13 +21,13 @@ public record FcmDataResponse(
     String imageUrl
 
 ) {
-    public static FcmDataResponse fromFcmResponse(FcmResponse fcmResponse, final long memberId) {
+    public static FcmDataResponse fromFcmResponse(FcmPostRequest fcmPostRequest, final long memberId) {
         return FcmDataResponse.builder()
                 .memberId(memberId)
-                .fcmConstant(fcmResponse.fcmConstant())
-                .nickname(fcmResponse.nickname())
-                .toastName(fcmResponse.toastName())
-                .param(fcmResponse.param())
+                .fcmConstant(fcmPostRequest.fcmConstant())
+                .nickname(fcmPostRequest.nickname())
+                .toastName(fcmPostRequest.toastName())
+                .param(fcmPostRequest.param())
                 .build();
     }
 

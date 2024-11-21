@@ -16,15 +16,15 @@ public record EventToastFriendResponse(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
-        boolean isWritten,
-
         String nickname,
 
         String memberProfileUrl,
 
-        IconResponse icon
+        IconResponse icon,
+
+        boolean isWritten
 ){
-    public static EventToastFriendResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean isWritten) {
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten) {
         return EventToastFriendResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
@@ -36,3 +36,4 @@ public record EventToastFriendResponse(
                 .build();
     }
 }
+

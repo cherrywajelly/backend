@@ -5,7 +5,7 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceImage;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTBAKED;
-import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTOPENED;
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
@@ -98,7 +97,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
 
             if(!giftToastOwner.getMemberId().equals(memberId)){
                 fcmService.sendMessageTo(giftToastOwner.getMemberId(),
-                        FcmResponse.builder()
+                        FcmPostRequest.builder()
                                 .fcmConstant(GIFTTOASTBAKED)
                                 .nickname(memberRepository.getById(memberId).getNickname())
                                 .toastName(giftToast.getTitle())

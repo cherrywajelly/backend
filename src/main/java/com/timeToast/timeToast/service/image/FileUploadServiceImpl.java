@@ -32,7 +32,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     private final OsClientConfiguration ociConfig;
 
-    //oci 업로드
     @Transactional
     @Override
     public String uploadfile(final MultipartFile file, final String endpoint) {

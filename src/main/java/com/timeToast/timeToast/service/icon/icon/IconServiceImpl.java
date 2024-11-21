@@ -2,6 +2,8 @@ package com.timeToast.timeToast.service.icon.icon;
 
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 
 @Service
@@ -28,7 +32,7 @@ public class IconServiceImpl implements IconService{
 
     @Transactional
     @Override
-    public void postIconSet(List<MultipartFile> files, final long iconGroupId) {
+    public Response postIconSet(List<MultipartFile> files, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         files.forEach(file->{
@@ -39,8 +43,7 @@ public class IconServiceImpl implements IconService{
             icon.updateUrl(imageUrls);
             iconRepository.save(icon);
         });
-
         log.info("save icon images");
-
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 }

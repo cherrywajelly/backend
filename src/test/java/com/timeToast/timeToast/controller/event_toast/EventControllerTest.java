@@ -86,11 +86,11 @@ public class EventControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
-                                        fieldWithPath("[].title").type(STRING).description("이벤트 토스트 제목"),
-                                        fieldWithPath("[].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
-                                        fieldWithPath("[].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
-                                        fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
+                                        fieldWithPath("eventToastOwnResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastOwnResponses[0].title").type(STRING).description("이벤트 토스트 제목"),
+                                        fieldWithPath("eventToastOwnResponses[0].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
+                                        fieldWithPath("eventToastOwnResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
+                                        fieldWithPath("eventToastOwnResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
                                 )
                                 .build()
                         )));
@@ -99,7 +99,7 @@ public class EventControllerTest extends BaseControllerTests {
     @DisplayName("타사용자의 마이페이지 내 이벤트 토스트 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
-    void getFriendEventToastList() throws Exception {
+    void getMemberEventToastList() throws Exception {
 
         mockMvc.perform(
                         get("/api/v1/eventToasts/member/{memberId}", 1L)
@@ -117,14 +117,14 @@ public class EventControllerTest extends BaseControllerTests {
                                         parameterWithName("memberId").description("타유저 member id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
-                                        fieldWithPath("[].title").type(STRING).description("이벤트 토스트 제목"),
-                                        fieldWithPath("[].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
-                                        fieldWithPath("[].isWritten").type(BOOLEAN).description("사용자가 타사용자에게 잼을 바른 여부"),
-                                        fieldWithPath("[].nickname").type(STRING).description("조회 대상 사용자 닉네임"),
-                                        fieldWithPath("[].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
-                                        fieldWithPath("[].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
-                                        fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
+                                        fieldWithPath("eventToastMemberResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastMemberResponses[0].title").type(STRING).description("이벤트 토스트 제목"),
+                                        fieldWithPath("eventToastMemberResponses[0].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
+                                        fieldWithPath("eventToastMemberResponses[0].isWritten").type(BOOLEAN).description("사용자가 타사용자에게 잼을 바른 여부"),
+                                        fieldWithPath("eventToastMemberResponses[0].nickname").type(STRING).description("조회 대상 사용자 닉네임"),
+                                        fieldWithPath("eventToastMemberResponses[0].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
+                                        fieldWithPath("eventToastMemberResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
+                                        fieldWithPath("eventToastMemberResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
                                 )
                                 .build()
                         )));
@@ -134,7 +134,7 @@ public class EventControllerTest extends BaseControllerTests {
     @DisplayName("사용자가 팔로우 하고 있는 타사용자의 이벤트 토스트 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
-    void getEventToastList() throws Exception {
+    void getFriendEventToastList() throws Exception {
 
         mockMvc.perform(
                         get("/api/v1/eventToasts/follow/following")
@@ -149,14 +149,14 @@ public class EventControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
-                                        fieldWithPath("[].title").type(STRING).description("이벤트 토스트 제목"),
-                                        fieldWithPath("[].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
-                                        fieldWithPath("[].nickname").type(STRING).description("조회 대상 닉네임"),
-                                        fieldWithPath("[].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
-                                        fieldWithPath("[].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
-                                        fieldWithPath("[].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지"),
-                                        fieldWithPath("[].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부")
+                                        fieldWithPath("eventToastFriendResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastFriendResponses[0].title").type(STRING).description("이벤트 토스트 제목"),
+                                        fieldWithPath("eventToastFriendResponses[0].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
+                                        fieldWithPath("eventToastFriendResponses[0].nickname").type(STRING).description("조회 대상 닉네임"),
+                                        fieldWithPath("eventToastFriendResponses[0].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
+                                        fieldWithPath("eventToastFriendResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
+                                        fieldWithPath("eventToastFriendResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지"),
+                                        fieldWithPath("eventToastFriendResponses[0].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부")
                                 )
                                 .build()
                         )));

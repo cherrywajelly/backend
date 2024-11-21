@@ -8,7 +8,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record EventToastResponses(
+public record EventToastMemberResponse(
         long eventToastId,
 
         String title,
@@ -16,16 +16,16 @@ public record EventToastResponses(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
+        boolean isWritten,
+
         String nickname,
 
         String memberProfileUrl,
 
-        IconResponse icon,
-
-        boolean isWritten
+        IconResponse icon
 ){
-    public static EventToastResponses fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten) {
-        return EventToastResponses.builder()
+    public static EventToastMemberResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean isWritten) {
+        return EventToastMemberResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
                 .openedDate(eventToast.getOpenedDate())
@@ -36,4 +36,3 @@ public record EventToastResponses(
                 .build();
     }
 }
-
