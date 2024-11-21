@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.domain.template;
 
+import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,11 +10,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "template")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Template {
+public class Template extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "template_id")
     private Long id;
 
-    private String templateImageUrl;
+    private Long memberId;
+
+    private Long eventToastId;
+
+    private String templateText;
 }
