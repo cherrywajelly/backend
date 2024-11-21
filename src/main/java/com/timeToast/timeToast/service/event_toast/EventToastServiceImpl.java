@@ -81,7 +81,6 @@ public class EventToastServiceImpl implements EventToastService{
 
         followRepository.findAllByFollowerId(memberId).forEach(
                 follow -> {
-                    // 팔로우하고 있는 사용자의 이벤트 토스트 조회
                     List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(follow.getFollowingId());
                     filterEventToasts(eventToasts, false).forEach(
                             eventToast -> {
@@ -115,7 +114,6 @@ public class EventToastServiceImpl implements EventToastService{
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     Member member = memberRepository.getById(friendId);
 
-                    // 작성한 잼이 없는 경우
                     if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isEmpty()) {
                         EventToastMemberResponse eventToastFriendResponse = EventToastMemberResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), false);
                         eventToastMemberResponses.add(eventToastFriendResponse);
@@ -133,24 +131,22 @@ public class EventToastServiceImpl implements EventToastService{
     @Override
     public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Icon icon = iconRepository.getById(eventToast.getIconId()); //이벤트 토스트 아이콘
-        Member member = memberRepository.getById(eventToast.getMemberId()); // 이벤트 토스트 주인
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId); // 이벤트 토스트 잼 조회
+        Icon icon = iconRepository.getById(eventToast.getIconId());
+        Member member = memberRepository.getById(eventToast.getMemberId());
+        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
 
-//         이벤트 토스트가 열려있을 경우
         if (eventToast.isOpened()) {
             long dDay = 0;
             List<JamResponse> jamResponses = new ArrayList<>();
 
             jams.forEach(
                     jam -> {
-                        Icon jamIcon = iconRepository.getById(jam.getIconId()); // 잼 아이콘
-                        Member iconMember = memberRepository.getById(jam.getMemberId()); // 잼 작성자
+                        Icon jamIcon = iconRepository.getById(jam.getIconId());
+                        Member iconMember = memberRepository.getById(jam.getMemberId());
                         jamResponses.add(JamResponse.from(jam.getId(), jamIcon.getIconImageUrl(), iconMember.getNickname()));
                     }
             );
 
-//            Jam memberJam = jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).get();
             EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
                     jams.size(), dDay, jamResponses);
 
@@ -175,7 +171,6 @@ public class EventToastServiceImpl implements EventToastService{
     }
 
 
-    // isOpened ? 열린 토스트 리스트 반환 : 닫힌 토스트 리스트 반환
     @Transactional(readOnly = true)
     public List<EventToast> filterEventToasts(List<EventToast> eventToasts, boolean isOpened) {
         List<EventToast> openedEventToasts = new ArrayList<>();

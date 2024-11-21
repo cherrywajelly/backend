@@ -42,8 +42,6 @@ public class IconGroupServiceImpl implements IconGroupService{
         Member member = memberRepository.getById(memberId);
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
-
-        // 중복 구매 방지
         if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) != null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
 

@@ -27,17 +27,17 @@ public class IconGroupAdminController {
 
     private final IconGroupAdminService iconGroupAdminService;
     private final IconService iconService;
-    //refactor
+
     @PostMapping("")
     public Response postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
         return iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
     }
-    //refactor
+
     @PostMapping("/images/{iconGroupId}")
     public Response postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files, @PathVariable("iconGroupId") final long iconGroupId) {
         return iconService.postIconSet(files, iconGroupId);
     }
-    //refactor
+
     @GetMapping("")
     public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
         return iconGroupAdminService.getIconGroupForCreator(loginMember.id());

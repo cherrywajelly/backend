@@ -70,7 +70,6 @@ public class JamServiceImpl implements JamService {
         }
         log.info("save jam");
 
-        //알림
         Member jamMember = memberRepository.getById(memberId);
         fcmService.sendMessageTo(eventToast.getMemberId(), new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, jamMember.getNickname(), eventToast.getTitle(), eventToastId));
 

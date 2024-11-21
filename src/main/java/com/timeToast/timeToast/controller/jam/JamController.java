@@ -31,7 +31,6 @@ public class JamController {
         return jamService.postJam(jamRequest, jamContents, jamImages, eventToastId, loginMember.id());
     }
 
-    //refactor
     @GetMapping("/eventToast/{eventToastId}")
     public JamResponses getJams(@PathVariable final long eventToastId) {
         return jamService.getJams(eventToastId);

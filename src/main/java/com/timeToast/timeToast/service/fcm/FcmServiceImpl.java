@@ -90,9 +90,7 @@ public class FcmServiceImpl implements FcmService {
     public void fcmTokenValidation(final long memberId, final String token) {
         Optional<MemberToken> memberToken = memberTokenRepository.findByFcmToken(token);
 
-        // 동일한 토큰 존재
         if (memberToken.isPresent()) {
-            // 기존 저장된 토큰 계정과 새 토큰 계정 불일치
             if (memberToken.get().getMemberId() != memberId) {
 
                 MemberToken changedMemberToken = memberToken.get();
@@ -134,7 +132,6 @@ public class FcmServiceImpl implements FcmService {
         return new FcmResponses(fcmResponses);
     }
 
-    // 알림 눌렀을 때
     @Transactional
     @Override
     public Response putIsOpened(final long memberId, final long fcmId) {
@@ -147,7 +144,6 @@ public class FcmServiceImpl implements FcmService {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
-    // 메세지 전송
     @Transactional
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
@@ -179,7 +175,6 @@ public class FcmServiceImpl implements FcmService {
 
     }
 
-    //db에 알림 저장
     @Transactional
     public void saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
@@ -213,7 +208,6 @@ public class FcmServiceImpl implements FcmService {
         log.info("save fcm");
     }
 
-    // 메세지 생성
     @Transactional
     public String createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
@@ -233,8 +227,6 @@ public class FcmServiceImpl implements FcmService {
         return null;
     }
 
-
-    // 메세지 문구 생성 로직
     @Transactional
     public Optional<FcmSendRequest> makeMessage(final long memberId, FcmPostRequest fcmPostRequest) {
         Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
@@ -269,7 +261,6 @@ public class FcmServiceImpl implements FcmService {
 
     }
 
-    // 접근 위한 엑세스 코드 생성
     @Transactional
     public String getAccessToken()  {
         try {

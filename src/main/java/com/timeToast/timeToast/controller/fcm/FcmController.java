@@ -25,12 +25,11 @@ public class FcmController {
     public Response test(@Login LoginMember loginMember, @RequestBody FcmPostRequest fcmPostRequest) {
         return fcmService.sendMessageTo(loginMember.id(), fcmPostRequest);
     }
-    //refactor
+
     @GetMapping("")
     public FcmResponses getResponses(@Login LoginMember loginMember) {
         return fcmService.getFcmResponses(loginMember.id());
     }
-
 
     @GetMapping("/opened/{fcmId}")
     public Response putIsOpened(@Login LoginMember loginMember, @PathVariable final long fcmId) {

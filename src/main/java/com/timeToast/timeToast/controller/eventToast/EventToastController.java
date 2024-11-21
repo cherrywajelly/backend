@@ -22,17 +22,17 @@ public class EventToastController {
     public Response postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
         return eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
     }
-    //refactor
+
     @GetMapping("/member")
     public EventToastOwnResponses getOwnEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getOwnEventToastList(loginMember.id());
     }
-    //refactor
+
     @GetMapping("/member/{memberId}")
     public EventToastMemberResponses getMemberEventToastList(@Login LoginMember loginMember, @PathVariable final long memberId) {
         return eventToastService.getMemberEventToastList(loginMember.id(), memberId);
     }
-    //refactor
+
     @GetMapping("/follow/following")
     public EventToastFriendResponses getFriendEventToastList(@Login LoginMember loginMember) {
         return eventToastService.getEventToasts(loginMember.id());

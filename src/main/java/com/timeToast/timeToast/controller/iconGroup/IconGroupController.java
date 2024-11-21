@@ -25,12 +25,12 @@ public class IconGroupController {
     public Response buyIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
         return iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
     }
-    //refactor
+
     @GetMapping("/members/toasts")
     public IconGroupResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
         return iconGroupService.getToastIconGroups(loginMember.id());
     }
-    //refactor
+
     @GetMapping("/members/jams")
     public IconGroupResponses getJamIconGroupsByMember(@Login LoginMember loginMember) {
         return iconGroupService.getJamIconGroups(loginMember.id());
