@@ -50,6 +50,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
             if (storage != null) {
                 log.info("file still uploading");
+                log.info(endpoint);
                 ociConfig.getObjectStorage().putObject(putObjectRequest);
                 return urlPrefix + putObjectRequest.getObjectName();
             } else {
