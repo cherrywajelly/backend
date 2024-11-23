@@ -48,6 +48,7 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
         return new IconGroupAdminController(iconGroupAdminService, iconService);
     }
 
+
     @DisplayName("새로운 아이콘을 등록할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -76,6 +77,10 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconBuiltin").type(STRING).description("기본 아이콘 여부"),
                                         fieldWithPath("description").type(STRING).description("아이콘 설명")
                                 )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
                                 .build()
                         )));
     }
@@ -99,26 +104,12 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("[].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
-                                        fieldWithPath("[].iconTitle").type(STRING).description("아이콘 제목")
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconGroupId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목")
                                 )
                                 .build()
                         )));
     }
 
 }
-
-//
-//@PostMapping("/images/{iconGroupId}")
-//public void postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files,
-//                                @PathVariable("iconGroupId") final long iconGroupId) {
-//
-//    iconService.postIconSet(files, iconGroupId);
-//
-//}
-//
-//@GetMapping("")
-//public List<IconGroupCreatorResponse> getIconGroup(@Login LoginMember loginMember) {
-//    return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
-//}

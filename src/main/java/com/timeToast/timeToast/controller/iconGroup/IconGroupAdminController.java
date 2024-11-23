@@ -4,8 +4,10 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.exception.ForbiddenException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import lombok.RequiredArgsConstructor;
@@ -27,23 +29,17 @@ public class IconGroupAdminController {
     private final IconService iconService;
 
     @PostMapping("")
-    public void postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
-        iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
+    public Response postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
+        return iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
     }
 
     @PostMapping("/images/{iconGroupId}")
-    public void postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files,
-                                    @PathVariable("iconGroupId") final long iconGroupId) {
-
-        iconService.postIconSet(files, iconGroupId);
-
+    public Response postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files, @PathVariable("iconGroupId") final long iconGroupId) {
+        return iconService.postIconSet(files, iconGroupId);
     }
 
     @GetMapping("")
-    public List<IconGroupCreatorResponse> getIconGroup(@Login LoginMember loginMember) {
+    public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
         return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
     }
-
-    
-
 }

@@ -82,10 +82,10 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
-                                        fieldWithPath("[].name").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("[].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
-                                        fieldWithPath("[].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
+                                        fieldWithPath("iconGroupResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupResponses[0].name").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupResponses[0].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
+                                        fieldWithPath("iconGroupResponses[0].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
                                 )
                                 .build()
                         )));
@@ -109,10 +109,10 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
-                                        fieldWithPath("[].name").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("[].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
-                                        fieldWithPath("[].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
+                                        fieldWithPath("iconGroupResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupResponses[0].name").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupResponses[0].icon[].iconId").type(NUMBER).description("아이콘 그룹내 아이콘 id"),
+                                        fieldWithPath("iconGroupResponses[0].icon[].iconImageUrl").type(STRING).description("아이콘 그룹내 아이콘 이미지")
                                 )
                                 .build()
                         )));

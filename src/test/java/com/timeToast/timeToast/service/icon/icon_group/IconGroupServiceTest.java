@@ -2,10 +2,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 
@@ -14,7 +11,6 @@ import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class IconGroupServiceTest implements IconGroupService {
 
@@ -24,25 +20,25 @@ public class IconGroupServiceTest implements IconGroupService {
     }
 
     @Override
-    public List<IconGroupResponses> getToastIconGroups(final long memberId) {
-        List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
+    public IconGroupResponses getToastIconGroups(final long memberId) {
+        List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
 
         List<IconResponse> iconResponses = new ArrayList<>();
         iconResponses.add(new IconResponse(1, "iconUrl"));
 
-        iconGroupResponses.add(new IconGroupResponses(1, "name", iconResponses));
-        return iconGroupResponses;
+        iconGroupResponses.add(new IconGroupResponse(1, "name", iconResponses));
+        return new IconGroupResponses(iconGroupResponses);
     }
 
     @Override
-    public List<IconGroupResponses> getJamIconGroups(final long memberId) {
-        List<IconGroupResponses> iconGroupResponses = new ArrayList<>();
+    public IconGroupResponses getJamIconGroups(final long memberId) {
+        List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
 
         List<IconResponse> iconResponses = new ArrayList<>();
         iconResponses.add(new IconResponse(1, "iconUrl"));
 
-        iconGroupResponses.add(new IconGroupResponses(1, "name", iconResponses));
-        return iconGroupResponses;
+        iconGroupResponses.add(new IconGroupResponse(1, "name", iconResponses));
+        return new IconGroupResponses(iconGroupResponses);
     }
 
     @Override

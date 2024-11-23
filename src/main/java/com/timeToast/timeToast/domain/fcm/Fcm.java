@@ -32,7 +32,6 @@ public class Fcm extends BaseTime {
 
     private boolean isOpened;
 
-    // pathVariable id
     private long param;
 
     private String imageUrl;
