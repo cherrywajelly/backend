@@ -6,7 +6,7 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 
 import static com.timeToast.timeToast.util.TestConstant.*;
 
-public class MockLoginService implements LoginService {
+public class LoginServiceTest implements LoginService {
 
 
     @Override
