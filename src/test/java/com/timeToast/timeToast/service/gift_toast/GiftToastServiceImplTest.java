@@ -17,6 +17,7 @@ import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
@@ -526,6 +527,32 @@ public class GiftToastServiceImplTest {
 
         //then
         assertEquals(giftToastIncompleteResponses.giftToastResponses().size(), 4);
+
+    }
+
+    @Test
+    @DisplayName("캡슐 토스트 별 토스트 조각 조회 - 실패: 토스트 조각 없음")
+    public void getToastPieceToastPieceFailTest(){
+        //given
+
+        //when
+
+        //then
+        assertThrows(NotFoundException.class, () -> giftToastService.getToastPiece(1L, 1L));
+
+    }
+
+    @Test
+    @DisplayName("캡슐 토스트 별 토스트 조각 조회 - 실패: 캡슐 토스트 없음")
+    public void getToastPieceGiftToastFailTest(){
+        //given
+        ToastPiece toastPiece = toastPieceSetUp(1L);
+        ReflectionTestUtils.setField(toastPiece, "id", 1L);
+        when(toastPieceRepository.findById( 1L)).thenReturn(Optional.of(toastPiece));
+        //when
+
+        //then
+        assertThrows(NotFoundException.class, () -> giftToastService.getToastPiece(1L, 1L));
 
     }
 
