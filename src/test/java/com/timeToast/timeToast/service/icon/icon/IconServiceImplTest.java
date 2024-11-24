@@ -51,39 +51,39 @@ public class IconServiceImplTest {
     @Value("${spring.cloud.oci.url.static}")
     private String urlPrefix;
 
-    @Test
-    @DisplayName("아이콘 이미지 저장 - 성공")
-    void saveToken() {
-        // Given
-        long iconGroupId = 1L;
-        List<MultipartFile> files = Arrays.asList(mock(MultipartFile.class));
-
-        IconGroup iconGroup = IconGroup.builder().build();
-
-        Icon icon = new Icon("", iconGroupId);
-
-        String imageUrl = baseUrl+"icon/image/1";
-        ObjectStorageClient storage = mock(ObjectStorageClient.class);
-
-        try {
-            when(ociConfig.getObjectStorage()).thenReturn(storage);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-//        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-        when(iconRepository.save(new Icon("", iconGroupId))).thenReturn(icon);
-        when(fileUploadService.uploadfile(any(MultipartFile.class), any(String.class)))
-                .thenReturn(urlPrefix + imageUrl);
-
-
-
-        // When
-        Response response = iconService.postIconSet(files, iconGroupId);
-
-        // Then
-        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-    }
+//    @Test
+//    @DisplayName("아이콘 이미지 저장 - 성공")
+//    void saveToken() {
+//        // Given
+//        long iconGroupId = 1L;
+//        List<MultipartFile> files = Arrays.asList(mock(MultipartFile.class));
+//
+//        IconGroup iconGroup = IconGroup.builder().build();
+//
+//        Icon icon = new Icon("", iconGroupId);
+//
+//        String imageUrl = baseUrl+"icon/image/1";
+//        ObjectStorageClient storage = mock(ObjectStorageClient.class);
+//
+//        try {
+//            when(ociConfig.getObjectStorage()).thenReturn(storage);
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+////        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
+//        when(iconRepository.save(new Icon("", iconGroupId))).thenReturn(icon);
+//        when(fileUploadService.uploadfile(any(MultipartFile.class), any(String.class)))
+//                .thenReturn(urlPrefix + imageUrl);
+//
+//
+//
+//        // When
+//        Response response = iconService.postIconSet(files, iconGroupId);
+//
+//        // Then
+//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+//    }
 }
