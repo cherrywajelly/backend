@@ -9,6 +9,8 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TOAST_PIECE;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.TOAST_PIECE_NOT_EXISTS;
 
 public class ToastPieceServiceTest implements ToastPieceService {
 
@@ -54,6 +59,11 @@ public class ToastPieceServiceTest implements ToastPieceService {
 
     @Override
     public Response deleteToastPieceByMemberIdAndToastPieceId(long memberId, long toastPieceId) {
+        if(toastPieceId==2){
+            throw new NotFoundException(TOAST_PIECE_NOT_EXISTS.getMessage());
+        }else if(toastPieceId==3){
+            throw new BadRequestException(INVALID_TOAST_PIECE.getMessage());
+        }
         return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 }

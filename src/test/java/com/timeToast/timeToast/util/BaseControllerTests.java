@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.global.exception.CustomExceptionAdvice;
+import com.timeToast.timeToast.global.exception.GlobalExceptionHandler;
 import com.timeToast.timeToast.global.jwt.CustomUserDetailService;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
@@ -66,6 +68,7 @@ public abstract class BaseControllerTests extends TestContainerSupport{
                 .apply(documentationConfiguration(provider))
                 .addInterceptors()
                 .setCustomArgumentResolvers(new LoginMemberResolver())
+                .setControllerAdvice(new CustomExceptionAdvice())
                 .build();
     }
 

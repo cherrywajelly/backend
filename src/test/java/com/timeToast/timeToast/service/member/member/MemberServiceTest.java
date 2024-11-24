@@ -8,9 +8,11 @@ import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MemberServiceTest implements MemberService{
@@ -22,11 +24,17 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse postNickname(String nickname, long memberId) {
+        if(nickname.equals("conflictNickname")){
+            throw new ConflictException(NICKNAME_CONFLICT.getMessage());
+        }
         return new MemberInfoResponse(1L, "nickname","profileUrl");
     }
 
     @Override
     public Response nicknameValidation(String nickname) {
+        if(nickname.equals("conflictNickname")){
+            throw new ConflictException(NICKNAME_CONFLICT.getMessage());
+        }
         return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.VALID_NICKNAME.getMessage());
     }
 

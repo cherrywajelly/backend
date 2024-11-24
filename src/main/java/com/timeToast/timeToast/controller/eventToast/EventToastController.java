@@ -19,8 +19,8 @@ public class EventToastController {
     private final EventToastService eventToastService;
 
     @PostMapping("")
-    public Response postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
-        return eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
+    public Response saveEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
+        return eventToastService.saveEventToast(eventToastPostRequest, loginMember.id());
     }
 
     @GetMapping("/member")

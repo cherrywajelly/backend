@@ -58,6 +58,62 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. - 실패: 본인 팔로우")
+    @WithMockCustomUser
+    @Test
+    void saveFollowFail() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/follows/followings/{memberId}", 3)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("팔로우 정보 저장",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팔로우")
+                                .summary("사용자를 팔로우 하기")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("자기 자신은 팔로우 할 수 없습니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. - 실패: 재요청")
+    @WithMockCustomUser
+    @Test
+    void saveFollowAlreadyExists() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/follows/followings/{memberId}", 4)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("팔로우 정보 저장",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팔로우")
+                                .summary("사용자를 팔로우 하기")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("이미 등록된 팔로우 정보입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("로그인한 사용자의 팔로잉 리스트를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -141,6 +197,35 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("로그인한 사용자가 팔로잉을 삭제할 수 있다. - 실패: 팔로우 정보 찾을 수 없음.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollowingFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followings/{memberId}",2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("팔로잉 삭제",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로잉의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팔로우")
+                                .summary("로그인한 사용자의 팔로잉 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
     @DisplayName("로그인한 사용자가 자신의 팔로워 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -151,6 +236,35 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
+                .andDo(document("팔로워 삭제",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팔로우")
+                                .summary("로그인한 사용자가 팔로워 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자가 자신의 팔로워 삭제할 수 있다. - 실패: 팔로우 정보 찾을 수 없음.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollowerFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followers/{memberId}",2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
                 .andDo(document("팔로워 삭제",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로워의 memberId")

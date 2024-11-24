@@ -98,6 +98,36 @@ public class TeamControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("팀 프로필 사진을 변경할 수 있다. - 실패: 팀 조회 실패")
+    @WithMockCustomUser
+    @Test
+    void saveProfileImageFail() throws Exception {
+
+        mockMvc.perform(
+                        multipart("/api/v1/teams/{teamId}/image",2)
+                                .file("teamProfileImage", "hello.png".getBytes())
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("팀 프로필 사진 저장",
+                        requestParts(
+                                partWithName("teamProfileImage").description("팀 프로필 이미지 파일")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팀")
+                                .summary("팀 프로필 사진 저장")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("해당 그룹 정보를 찾을 수 없습니다.")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("로그인한 사용자의 팀 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -147,6 +177,34 @@ public class TeamControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자는 자신의 팀을 삭제할 수 있다. - 실패: 팀 멤버 조회 실패")
+    @WithMockCustomUser
+    @Test
+    void deleteTeamFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/teams/{teamId}", 2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("로그인한 사용자의 팀 삭제하기",
+                        pathParameters(
+                                parameterWithName("teamId").description("team id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("팀")
+                                .summary("사용자 팀 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다.")
                                 )
                                 .build()
                         )));
