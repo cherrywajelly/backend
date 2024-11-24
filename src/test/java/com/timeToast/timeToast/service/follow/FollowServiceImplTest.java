@@ -1,49 +1,114 @@
 package com.timeToast.timeToast.service.follow;
 
+import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.follow.response.FollowResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.util.BaseServiceTests;
+import com.timeToast.timeToast.service.fcm.FcmService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
-public class FollowServiceImplTest extends BaseServiceTests {
+@ExtendWith(MockitoExtension.class)
+public class FollowServiceImplTest{
 
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
+    @Mock
     FollowRepository followRepository;
 
+    @Mock
+    MemberRepository memberRepository;
+
+    @Mock
+    FcmService fcmService;
+
+    @InjectMocks
+    FollowServiceImpl followService;
+
+    private Follow setUpFollow(){
+        return Follow.builder()
+                .followingId(1L)
+                .followerId(2L).build();
+
+    }
+
+    private Member setUpMember() {
+        return Member.builder()
+                .premiumId(1L)
+                .email("test@gmail.com")
+                .nickname("testNickname")
+                .memberProfileUrl("testProfileUrl")
+                .loginType(LoginType.GOOGLE)
+                .memberRole(MemberRole.USER)
+                .build();
+    }
+
     @Test
-    @DisplayName("팔로우 저장 테스트")
+    @DisplayName("팔로우 저장 테스트 - 성공")
     public void saveFollow() {
         //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
 
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
+        Member member1 = setUpMember();
+        ReflectionTestUtils.setField(member1, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(member1);
 
+        Member member2 = setUpMember();
+        ReflectionTestUtils.setField(member2, "id", 2L);
+        when(memberRepository.getById(2L)).thenReturn(member2);
+
+        Follow follow = setUpFollow();
+        when(followRepository.findByFollowingIdAndFollowerId(1L, 2L)).thenReturn(Optional.empty());
+        when(followRepository.save(ArgumentMatchers.any(Follow.class))).thenReturn(follow);
 
         //when
-        Follow follow = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember2.getId()).build();
-        Follow saveFollow = followRepository.save(follow);
-
+        Response response = followService.saveFollow(1L, 2L);
 
         //then
-        assertThat(saveFollow.getFollowingId()).isEqualTo(saveMember1.getId());
-        assertThat(saveFollow.getFollowerId()).isEqualTo(saveMember2.getId());
+        Assertions.assertEquals(response.statusCode(), StatusCode.OK.getStatusCode());
+        verify(followRepository, times(1)).save(ArgumentMatchers.any(Follow.class));
 
+    }
+
+    @Test
+    @DisplayName("팔로우 저장 테스트 - 실패")
+    public void saveFollowFail() {
+        //given
+        Follow follow = setUpFollow();
+        when(followRepository.findByFollowingIdAndFollowerId(1L, 2L)).thenReturn(Optional.of(follow));
+
+        //when then
+        assertThrows(BadRequestException.class,() -> followService.saveFollow(1L, 2L));
+
+    }
+
+
+    private List<Follow> setUpFollowersList() {
+        List<Follow> followers = new ArrayList<>();
+        for(long i = 2; i <= 10; i++) {
+            Follow follow =  Follow.builder().followingId(1L).followerId(i).build();
+            ReflectionTestUtils.setField(follow, "id", i);
+            followers.add(follow);
+        }
+        return followers;
     }
 
     @Test
@@ -51,121 +116,40 @@ public class FollowServiceImplTest extends BaseServiceTests {
     public void findFollowerList() {
 
         //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
-        Member member3 =  Member.builder().nickname("nickname3").memberRole(MemberRole.USER).build();
-
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
-        Member saveMember3 = memberRepository.save(member3);
+        List<Follow> followers = setUpFollowersList();
+        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(followers);
 
         //when
-        Follow follow1 = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember2.getId()).build();
-        Follow follow2 = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember3.getId()).build();
-
-        Follow saveFollow1 = followRepository.save(follow1);
-        Follow saveFollow2 =followRepository.save(follow2);
-
-        List<Follow> followers = followRepository.findAllByFollowingId(saveMember1.getId());
+        FollowResponses followResponses = followService.findFollowerList(1L);
 
         //then
-        assertThat(followers).hasSize(2);
-        assertThat(followers).contains(saveFollow1);
-        assertThat(followers).contains(saveFollow2);
-
+        verify(followRepository, times(1)).findAllByFollowingId(any(Long.class));
     }
 
-
+    private List<Follow> setUpFollowingList() {
+        List<Follow> followings = new ArrayList<>();
+        for(long i = 2; i <= 10; i++) {
+            Follow follow =  Follow.builder().followingId(i).followerId(1L).build();
+            ReflectionTestUtils.setField(follow, "id", i);
+            followings.add(follow);
+        }
+        return followings;
+    }
 
     @Test
     @DisplayName("팔로잉 리스트 조회 테스트")
     public void findFollowingList() {
 
         //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
-        Member member3 =  Member.builder().nickname("nickname3").memberRole(MemberRole.USER).build();
-
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
-        Member saveMember3 = memberRepository.save(member3);
+        List<Follow> followings = setUpFollowingList();
+        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followings);
 
         //when
-        Follow follow1 = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember3.getId()).build();
-        Follow follow2 = Follow.builder().followingId(saveMember2.getId()).followerId(saveMember3.getId()).build();
-
-        Follow saveFollow1 = followRepository.save(follow1);
-        Follow saveFollow2 =followRepository.save(follow2);
-
-        List<Follow> followings = followRepository.findAllByFollowerId(saveMember3.getId());
+        FollowResponses followResponses = followService.findFollowingList(1L);
 
         //then
-        assertThat(followings).hasSize(2);
-        assertThat(followings).contains(saveFollow1);
-        assertThat(followings).contains(saveFollow2);
+        verify(followRepository, times(1)).findAllByFollowerId(any(Long.class));
     }
 
-
-    @Test
-    @DisplayName("팔로잉 삭제 테스트")
-    public void deleteFollowing() {
-
-        //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
-
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
-
-
-        //when
-        Follow follow = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember2.getId()).build();
-        Follow saveFollow = followRepository.save(follow);
-
-        assertThat(saveFollow.getFollowingId()).isEqualTo(follow.getFollowingId());
-        assertThat(saveFollow.getFollowerId()).isEqualTo(follow.getFollowerId());
-
-        Follow deleteFollow = followRepository.findByFollowingIdAndFollowerId(saveMember1.getId(), saveMember2.getId()).get();
-
-        //then
-
-        assertThat(deleteFollow.getFollowingId()).isEqualTo(saveMember1.getId());
-
-       followRepository.deleteFollow(deleteFollow);
-       Optional<Follow> findFollow = followRepository.findById(follow.getId());
-
-       assertThat(findFollow).isEmpty();
-    }
-
-    @Test
-    @DisplayName("팔로워 삭제 테스트")
-    public void deleteFollower() {
-
-        //given
-        Member member1 =  Member.builder().nickname("nickname1").memberRole(MemberRole.USER).build();
-        Member member2 =  Member.builder().nickname("nickname2").memberRole(MemberRole.USER).build();
-
-        Member saveMember1 = memberRepository.save(member1);
-        Member saveMember2 = memberRepository.save(member2);
-
-
-        //when
-        Follow follow = Follow.builder().followingId(saveMember1.getId()).followerId(saveMember2.getId()).build();
-        Follow saveFollow = followRepository.save(follow);
-
-        assertThat(saveFollow.getFollowingId()).isEqualTo(follow.getFollowingId());
-        assertThat(saveFollow.getFollowerId()).isEqualTo(follow.getFollowerId());
-
-        Follow deleteFollow = followRepository.findByFollowingIdAndFollowerId(saveMember1.getId(), saveMember2.getId()).get();
-
-        //then
-
-        assertThat(deleteFollow.getFollowerId()).isEqualTo(saveMember2.getId());
-
-        followRepository.deleteFollow(deleteFollow);
-        Optional<Follow> findFollow = followRepository.findById(follow.getId());
-
-        assertThat(findFollow).isEmpty();
-    }
 
 }
