@@ -53,4 +53,13 @@ public class InquiryServiceImpl implements InquiryService {
         return InquiryDetailResponse.from(inquiry);
     }
 
+    @Transactional
+    @Service
+    public String putInquiryState(final long inquiryId) {
+        Inquiry inquiry = inquiryRepository.getById(inquiryId);
+        inquiry.updateInquiryState(InquiryState.RESOLVED);
+        inquiryRepository.save(inquiry);
+        return InquiryState.RESOLVED.value();
+    }
+
 }

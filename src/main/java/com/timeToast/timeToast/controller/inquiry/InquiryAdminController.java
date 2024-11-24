@@ -2,6 +2,7 @@ package com.timeToast.timeToast.controller.inquiry;
 
 import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,5 +21,10 @@ public class InquiryAdminController {
     @GetMapping("/{inquiryId}")
     public InquiryDetailResponse getInquiryDetail(@PathVariable int inquiryId) {
         return inquiryService.getInquiryDetail(inquiryId);
+    }
+
+    @PutMapping("/{inquiryId}")
+    public String putInquiryState(@PathVariable int inquiryId) {
+        return inquiryService.putInquiryState(inquiryId);
     }
 }
