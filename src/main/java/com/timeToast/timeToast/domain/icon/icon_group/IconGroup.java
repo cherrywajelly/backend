@@ -42,7 +42,8 @@ public class IconGroup extends BaseTime {
     private String description;
 
     @Builder
-    public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
+    public IconGroup(final long id, final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.iconType = iconType;
