@@ -5,19 +5,22 @@ import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.EVENT_TOAST_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class EventToastServiceTest implements EventToastService {
 
     @Override
-    public Response postEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
+    public Response saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
@@ -59,6 +62,9 @@ public class EventToastServiceTest implements EventToastService {
 
     @Override
     public Response deleteEventToast(final long memberId,final long eventToastId) {
+        if(eventToastId == 2){
+            throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
+        }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 }
