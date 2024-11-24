@@ -4,6 +4,7 @@ import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.dto.showcase.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
 
 
@@ -11,10 +12,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_SHOWCASE;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_SHOWCASE_COUNT;
+
 public class ShowcaseServiceTest implements ShowcaseService{
 
     @Override
     public ShowcaseSaveResponses saveShowcase(long memberId, ShowcaseSaveRequest showcaseSaveRequest) {
+        if(showcaseSaveRequest.showcases().size() > 3){
+            throw new BadRequestException(INVALID_SHOWCASE_COUNT.getMessage());
+        }
+
         return new ShowcaseSaveResponses(List.of("title"));
     }
 
@@ -38,6 +46,9 @@ public class ShowcaseServiceTest implements ShowcaseService{
 
     @Override
     public Response deleteShowcase(long memberId, long showcaseId) {
+        if(showcaseId==2){
+            throw new BadRequestException(INVALID_SHOWCASE.getMessage());
+        }
         return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
     }
 }
