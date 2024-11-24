@@ -3,6 +3,7 @@ package com.timeToast.timeToast.controller.iconGroup;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetail;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
@@ -41,5 +42,10 @@ public class IconGroupAdminController {
     @GetMapping("")
     public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
         return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
+    }
+
+    @GetMapping("/{iconGroupId}")
+    public IconGroupCreatorDetail getIconGroupDetail(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
+        return iconGroupAdminService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
     }
 }

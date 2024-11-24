@@ -112,4 +112,38 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("제작자가 제작한 아이콘 그룹의 상세 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getIconGroupDetail() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v2/iconGroups/{iconGroupId}", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("아이콘 그룹 상세 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("아이콘 그룹 상세 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .pathParameters(
+                                        parameterWithName("iconGroupId").description("상세조회 하는 아이콘 그룹 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconName").type(STRING).description("아이콘 id"),
+                                        fieldWithPath("price").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("description").type(STRING).description("아이콘 id"),
+                                        fieldWithPath("iconImageUrl").type(STRING).description("아이콘 id"),
+                                        fieldWithPath("creatorProfileUrl").type(STRING).description("아이콘 id"),
+                                        fieldWithPath("creatorNickname").type(STRING).description("아이콘 id"),
+                                        fieldWithPath("orderCount").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("income").type(NUMBER).description("아이콘 id")
+                                )
+                                .build()
+                        )));
+    }
+
 }

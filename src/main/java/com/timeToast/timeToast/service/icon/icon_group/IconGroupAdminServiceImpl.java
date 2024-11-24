@@ -4,7 +4,9 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.orders.Orders;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetail;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -13,6 +15,7 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.orders.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final IconRepository iconRepository;
+    private final OrdersRepository ordersRepository;
 
     @Transactional
     public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
@@ -62,5 +66,23 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 });
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupCreatorDetail getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
+        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
+        List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
+        List<String> iconImageUrls = new ArrayList<>();
+        icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+
+        Member member = memberRepository.getById(memberId);
+
+        List<Orders> orders = ordersRepository.findAllByIconGroupId(iconGroupId);
+        long income = orders.stream()
+                .mapToLong(Orders::getPayment)
+                .sum();
+
+        return IconGroupCreatorDetail.fromEntity(iconGroup, iconImageUrls, member, orders.size(), income);
     }
 }
