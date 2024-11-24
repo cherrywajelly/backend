@@ -7,29 +7,22 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record IconGroupCreatorDetail(
+public record IconGroupCreatorDetailResponse(
 
-        String iconName,
+        IconGroupOrderedResponse iconGroupOrderedResponse,
         int price,
         String description,
-        List<String> iconImageUrl,
         String creatorProfileUrl,
-        String creatorNickname,
-        long orderCount,
-        long income
-
+        String creatorNickname
 
 ) {
-    public static IconGroupCreatorDetail fromEntity(IconGroup iconGroup, List<String> iconImageUrl, Member creator, long orderCount, long income) {
-        return IconGroupCreatorDetail.builder()
-                .iconName(iconGroup.getName())
+    public static IconGroupCreatorDetailResponse fromEntity(IconGroupOrderedResponse iconGroupOrderedResponse, IconGroup iconGroup, Member creator) {
+        return IconGroupCreatorDetailResponse.builder()
+                .iconGroupOrderedResponse(iconGroupOrderedResponse)
                 .price(iconGroup.getPrice())
                 .description(iconGroup.getDescription())
-                .iconImageUrl(iconImageUrl)
                 .creatorProfileUrl(creator.getMemberProfileUrl())
                 .creatorProfileUrl(creator.getNickname())
-                .orderCount(orderCount)
-                .income(income)
                 .build();
     }
 }

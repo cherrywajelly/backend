@@ -6,9 +6,10 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.orders.Orders;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetail;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -70,7 +71,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupCreatorDetail getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
+    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
         List<String> iconImageUrls = new ArrayList<>();
@@ -83,6 +84,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .mapToLong(Orders::getPayment)
                 .sum();
 
-        return IconGroupCreatorDetail.fromEntity(iconGroup, iconImageUrls, member, orders.size(), income);
+        IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income);
+        return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup, member);
     }
 }

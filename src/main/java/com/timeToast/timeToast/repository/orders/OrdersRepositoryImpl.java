@@ -1,6 +1,8 @@
 package com.timeToast.timeToast.repository.orders;
 
 import com.timeToast.timeToast.domain.orders.Orders;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,5 +30,10 @@ public class OrdersRepositoryImpl implements OrdersRepository {
     @Override
     public List<Orders> findAllByIconGroupId(final long iconGroupId) {
         return orderJpaRepository.findAllByIconGroupId(iconGroupId);
+    }
+
+    @Query("SELECT o FROM Orders o WHERE o.iconGroupId = :iconGroupId AND FUNCTION('DATE_FORMAT', o.createdAt, '%Y-%m') = :yearMonth")
+    public List<Orders> findAllByIconGroupIdAndCreatedAtMonth(@Param("iconGroupId") Long iconGroupId, @Param("yearMonth") String yearMonth) {
+        return orderJpaRepository.findAllByIconGroupIdAndCreatedAtMonth(iconGroupId, yearMonth);
     }
 }

@@ -1,13 +1,10 @@
 package com.timeToast.timeToast.controller.iconGroup;
 
-import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetail;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
-import com.timeToast.timeToast.global.exception.ForbiddenException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
 @RequestMapping("/api/v2/iconGroups")
 @Validated
@@ -45,7 +40,7 @@ public class IconGroupAdminController {
     }
 
     @GetMapping("/{iconGroupId}")
-    public IconGroupCreatorDetail getIconGroupDetail(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
+    public IconGroupCreatorDetailResponse getIconGroupDetail(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
         return iconGroupAdminService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
     }
 }
