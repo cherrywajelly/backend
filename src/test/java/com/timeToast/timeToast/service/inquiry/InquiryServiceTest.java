@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PUT;
 
 public class InquiryServiceTest implements InquiryService {
 
@@ -37,8 +38,8 @@ public class InquiryServiceTest implements InquiryService {
 
 
     @Override
-    public String putInquiryState(final long inquiryId) {
-        return InquiryState.RESOLVED.value();
+    public Response putInquiryState(final long inquiryId) {
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_PUT.getMessage());
     }
 }
 

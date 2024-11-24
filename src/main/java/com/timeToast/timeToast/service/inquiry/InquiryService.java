@@ -10,5 +10,5 @@ public interface InquiryService {
     Response saveInquiry(InquiryRequest inquiryRequest);
     InquiryResponses getInquiry();
     InquiryDetailResponse getInquiryDetail(final long inquiryId);
-    String putInquiryState(final long inquiryId);
+    Response putInquiryState(final long inquiryId);
 }

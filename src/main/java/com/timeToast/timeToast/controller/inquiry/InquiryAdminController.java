@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class InquiryAdminController {
+
     private final InquiryService inquiryService;
 
     @GetMapping("")
@@ -24,7 +25,7 @@ public class InquiryAdminController {
     }
 
     @PutMapping("/{inquiryId}")
-    public String putInquiryState(@PathVariable int inquiryId) {
+    public Response putInquiryState(@PathVariable int inquiryId) {
         return inquiryService.putInquiryState(inquiryId);
     }
 }

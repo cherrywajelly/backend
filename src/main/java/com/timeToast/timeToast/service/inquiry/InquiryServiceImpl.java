@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PUT;
 
 @Service
 @Slf4j
@@ -55,11 +56,11 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Transactional
     @Override
-    public String putInquiryState(final long inquiryId) {
+    public Response putInquiryState(final long inquiryId) {
         Inquiry inquiry = inquiryRepository.getById(inquiryId);
         inquiry.updateInquiryState(InquiryState.RESOLVED);
         inquiryRepository.save(inquiry);
-        return InquiryState.RESOLVED.value();
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_PUT.getMessage());
     }
 
 }
