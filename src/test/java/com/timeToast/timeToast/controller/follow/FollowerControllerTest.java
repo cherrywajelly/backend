@@ -203,7 +203,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollowingFail() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/followings/{memberId}",1)
+                        delete("/api/v1/follows/followings/{memberId}",2)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isNotFound())
@@ -261,7 +261,7 @@ public class FollowerControllerTest extends BaseControllerTests {
     void deleteFollowerFail() throws Exception {
 
         mockMvc.perform(
-                        delete("/api/v1/follows/followers/{memberId}",1)
+                        delete("/api/v1/follows/followers/{memberId}",2)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isNotFound())
