@@ -65,11 +65,10 @@ public class MonthSettlementServiceImpl implements MonthSettlementService {
                     .mapToLong(Orders::getPayment)
                     .sum();
 
-            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income);
-            iconGroupOrderedResponses.add(iconGroupOrderedResponse);
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income));
         });
 
-
-        return MonthSettlementDetailResponse.from(member, monthSettlement.getSettlement(), new IconGroupOrderedResponses(iconGroupOrderedResponses));
+        long selledIconCount = iconGroupOrderedResponses.stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+        return MonthSettlementDetailResponse.from(member, monthSettlement.getSettlement(), selledIconCount, new IconGroupOrderedResponses(iconGroupOrderedResponses));
     }
 }

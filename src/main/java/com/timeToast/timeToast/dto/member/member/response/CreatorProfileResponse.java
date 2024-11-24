@@ -6,16 +6,16 @@ import lombok.Builder;
 
 @Builder
 public record CreatorProfileResponse (
-        IconGroupOrderedResponses iconGroupOrderedResponses,
         CreatorInfoResponse creatorInfoResponse,
-        int createdIconCount,
-        int selledIconCount,
+        IconGroupOrderedResponses iconGroupOrderedResponses,
+        long createdIconCount,
+        long selledIconCount,
         long settlement
 ) {
-    public static CreatorProfileResponse from(IconGroupOrderedResponses iconGroupOrderedResponses, CreatorInfoResponse creatorInfoResponse, final int createdIconCount, final int selledIconCount, final long settlement) {
+    public static CreatorProfileResponse from(CreatorInfoResponse creatorInfoResponse, IconGroupOrderedResponses iconGroupOrderedResponses, final int createdIconCount, final int selledIconCount, final long settlement) {
         return CreatorProfileResponse.builder()
-                .iconGroupOrderedResponses(iconGroupOrderedResponses)
                 .creatorInfoResponse(creatorInfoResponse)
+                .iconGroupOrderedResponses(iconGroupOrderedResponses)
                 .createdIconCount(createdIconCount)
                 .selledIconCount(selledIconCount)
                 .settlement(settlement)

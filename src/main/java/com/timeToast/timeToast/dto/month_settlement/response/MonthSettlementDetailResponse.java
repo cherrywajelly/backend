@@ -8,14 +8,16 @@ import lombok.Builder;
 public record MonthSettlementDetailResponse(
         String creatorProfileUrl,
         String creatorNickname,
+        long selledIconCount,
         long settlement,
 
         IconGroupOrderedResponses iconGroupOrderedResponses
 ) {
-    public static MonthSettlementDetailResponse from(final Member member, final long settlement, IconGroupOrderedResponses iconGroupOrderedResponses) {
+    public static MonthSettlementDetailResponse from(final Member member, final long selledIconCount, final long settlement, IconGroupOrderedResponses iconGroupOrderedResponses) {
         return MonthSettlementDetailResponse.builder()
                 .creatorProfileUrl(member.getMemberProfileUrl())
                 .creatorNickname(member.getNickname())
+                .selledIconCount(selledIconCount)
                 .settlement(settlement)
                 .iconGroupOrderedResponses(iconGroupOrderedResponses)
                 .build();

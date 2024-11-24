@@ -1,26 +1,34 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
+import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.orders.Orders;
 import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.member.member.response.CreatorProfileResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.orders.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR_INFO;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -28,6 +36,54 @@ public class CreatorServiceImpl implements CreatorService {
     private final MemberRepository memberRepository;
     private final CreatorAccountRepository creatorAccountRepository;
     private final MemberService memberService;
+    private final IconGroupRepository iconGroupRepository;
+    private final IconRepository iconRepository;
+    private final OrdersRepository ordersRepository;
+    private final CreatorAccountRepository createCreatorAccountRepository;
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorProfileResponse getCreatorProfile(final long memberId){
+        Member member = memberRepository.getById(memberId);
+        Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(member.getId());
+
+        if (creatorAccount.isPresent()) {
+            CreatorInfoResponse creatorInfoResponse = CreatorInfoResponse.from(member.getNickname(), creatorAccount.get().getBank(), creatorAccount.get().getAccountNumber(), member.getMemberProfileUrl());
+            IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
+
+            long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().count();
+            long selledIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+            long settlement = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+
+            return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, selledIconCount, settlement);
+        } else {
+            throw new NotFoundException(INVALID_CREATOR_INFO.getMessage());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public IconGroupOrderedResponses getIconOrderedResponse (final long memberId) {
+
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+
+        iconGroups.forEach(iconGroup -> {
+            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
+
+            List<String> iconImageUrls = new ArrayList<>();
+            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+
+            List<Orders> orders = ordersRepository.findAllByIconGroupId(iconGroup.getId());
+            long income = orders.stream()
+                    .mapToLong(Orders::getPayment)
+                    .sum();
+
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income));
+        });
+        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
+    }
+
 
     @Transactional
     @Override
