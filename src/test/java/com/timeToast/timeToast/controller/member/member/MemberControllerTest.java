@@ -53,6 +53,11 @@ class MemberControllerTest extends BaseControllerTests {
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
+                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                )
                                 .build()
                         )));
     }
@@ -75,6 +80,38 @@ class MemberControllerTest extends BaseControllerTests {
                                 .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
+                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자는 닉네임을 변경할 수 있다. - 실패: 중복")
+    @WithMockCustomUser
+    @Test
+    void saveNicknameConflict() throws Exception {
+
+        mockMvc.perform(
+                        put("/api/v1/members")
+                                .param("nickname", "conflictNickname")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isConflict())
+                .andDo(document("로그인한 사용자의 닉네임 변경",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("멤버")
+                                .summary("로그인한 사용자의 닉네임 변경")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("이미 존재하는 닉네임입니다.")
                                 )
                                 .build()
                         )));
@@ -104,6 +141,35 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자는 닉네임 중복을 확인할 수 있다. - 실패: 중복")
+    @WithMockCustomUser
+    @Test
+    void isNicknameAvailableConflict() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/members/nickname-validation")
+                                .param("nickname", "conflictNickname")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isConflict())
+                .andDo(document("닉네임 중복 확인",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("멤버")
+                                .summary("닉네임 중복 확인")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("nickname").description("닉네임")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("이미 존재하는 닉네임입니다.")
                                 )
                                 .build()
                         )));
