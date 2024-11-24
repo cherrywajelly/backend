@@ -1,65 +1,44 @@
 package com.timeToast.timeToast.service.inquiry;
 
 import com.timeToast.timeToast.domain.enums.inquiry.InquiryState;
-import com.timeToast.timeToast.domain.inquiry.Inquiry;
 import com.timeToast.timeToast.dto.inquiry.request.InquiryRequest;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.inquiry.InquiryRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class InquiryServiceImpl implements InquiryService {
+public class InquiryServiceTest implements InquiryService {
 
-    private final InquiryRepository inquiryRepository;
-
-    @Transactional
     @Override
     public Response saveInquiry(InquiryRequest inquiryRequest) {
-
-        Inquiry inquiry = inquiryRequest.to(inquiryRequest, InquiryState.UNRESOLVED);
-        inquiryRepository.save(inquiry);
-
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
-    @Transactional(readOnly = true)
+
     @Override
     public InquiryResponses getInquiry() {
         List<InquiryResponse> inquiryResponses = new ArrayList<>();
-
-        List<Inquiry> inquiries = inquiryRepository.findAll();
-        inquiries.forEach(inquiry -> inquiryResponses.add(InquiryResponse.from(inquiry)));
+        inquiryResponses.add(new InquiryResponse(1L, "title", InquiryState.RESOLVED));
         return new InquiryResponses(inquiryResponses);
     }
 
-    @Transactional(readOnly = true)
+
     @Override
     public InquiryDetailResponse getInquiryDetail(final long inquiryId) {
-        Inquiry inquiry = inquiryRepository.getById(inquiryId);
-        return InquiryDetailResponse.from(inquiry);
+        return new InquiryDetailResponse("title", InquiryState.RESOLVED, LocalDate.of(2024, 11, 11), "email", "content");
     }
 
-    @Transactional
+
     @Override
     public String putInquiryState(final long inquiryId) {
-        Inquiry inquiry = inquiryRepository.getById(inquiryId);
-        inquiry.updateInquiryState(InquiryState.RESOLVED);
-        inquiryRepository.save(inquiry);
         return InquiryState.RESOLVED.value();
     }
-
 }
+
