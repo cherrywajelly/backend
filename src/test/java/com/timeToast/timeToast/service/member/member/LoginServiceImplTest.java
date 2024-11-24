@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -7,6 +8,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
@@ -18,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +34,9 @@ public class LoginServiceImplTest {
 
     @Mock
     PremiumRepository premiumRepository;
+
+    @Mock
+    IconGroupRepository iconGroupRepository;
 
     @Mock
     JwtService jwtService;
@@ -72,6 +78,8 @@ public class LoginServiceImplTest {
         when(premiumRepository.getByPremiumType(any())).thenReturn(premium);
 
         when(jwtService.createJwts(any(LoginMember.class), any(Boolean.class))).thenReturn(new LoginResponse("accessToken","refreshToken", true));
+
+        when(iconGroupRepository.findAllByIconBuiltin(IconBuiltin.BUILTIN)).thenReturn(List.of());
 
         //when
         loginService.loginToService(member.getEmail(), member.getLoginType(), member.getMemberRole());

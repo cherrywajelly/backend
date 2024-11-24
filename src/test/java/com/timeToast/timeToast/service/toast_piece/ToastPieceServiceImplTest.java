@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -243,7 +244,7 @@ public class ToastPieceServiceImplTest {
         //then
         assertEquals(null, toastPieceResponse.memberId());
         assertEquals(null, toastPieceResponse.nickname());
-        assertEquals(null, toastPieceResponse.profileUrl());
+        assertEquals(BASIC_PROFILE_IMAGE_URL, toastPieceResponse.profileUrl());
         assertEquals(toastPiece.getId(),toastPieceResponse.toastPieceId());
         assertEquals(toastPiece.getTitle(),toastPieceResponse.title());
         assertEquals(toastPiece.getContentsUrl(),toastPieceResponse.contentsUrl());
