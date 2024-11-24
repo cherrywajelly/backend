@@ -52,7 +52,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public Response postEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+    public Response saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
         memberRepository.getById(memberId);
         eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
         log.info("save event toast");
@@ -147,15 +147,15 @@ public class EventToastServiceImpl implements EventToastService{
                     }
             );
 
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
-                    jams.size(), dDay, jamResponses);
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+                    member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, jamResponses);
 
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
-                    jams.size(), dDay, null);
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+                    member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, null);
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
 
