@@ -61,6 +61,9 @@ public enum ExceptionConstant {
     //premium
     PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
+    // inquiry
+    INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+
     //login
     INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");

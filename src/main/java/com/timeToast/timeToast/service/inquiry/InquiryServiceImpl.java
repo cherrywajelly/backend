@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.inquiry;
 import com.timeToast.timeToast.domain.enums.inquiry.InquiryState;
 import com.timeToast.timeToast.domain.inquiry.Inquiry;
 import com.timeToast.timeToast.dto.inquiry.request.InquiryRequest;
+import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -45,6 +46,11 @@ public class InquiryServiceImpl implements InquiryService {
         return new InquiryResponses(inquiryResponses);
     }
 
-
+    @Transactional(readOnly = true)
+    @Override
+    public InquiryDetailResponse getInquiryDetail(final long inquiryId) {
+        Inquiry inquiry = inquiryRepository.getById(inquiryId);
+        return InquiryDetailResponse.from(inquiry);
+    }
 
 }

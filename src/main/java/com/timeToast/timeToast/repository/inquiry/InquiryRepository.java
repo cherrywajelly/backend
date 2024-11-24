@@ -7,6 +7,6 @@ import java.util.List;
 public interface InquiryRepository {
 
     Inquiry save(Inquiry inquiry);
-
     List<Inquiry> findAll();
+    Inquiry getById(final long id);
 }

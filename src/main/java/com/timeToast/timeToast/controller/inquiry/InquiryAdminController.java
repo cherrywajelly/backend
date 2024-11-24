@@ -1,11 +1,10 @@
 package com.timeToast.timeToast.controller.inquiry;
 
+import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/inquiries")
 @RestController
@@ -18,5 +17,8 @@ public class InquiryAdminController {
         return inquiryService.getInquiry();
     }
 
-    //상세조회 , put
+    @GetMapping("/{inquiryId}")
+    public InquiryDetailResponse getInquiryDetail(@PathVariable int inquiryId) {
+        return inquiryService.getInquiryDetail(inquiryId);
+    }
 }

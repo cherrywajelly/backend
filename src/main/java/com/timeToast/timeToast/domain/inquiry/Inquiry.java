@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.domain.inquiry;
 
+import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.inquiry.InquiryState;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "inquiry")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Inquiry {
+public class Inquiry extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquiry_id")
