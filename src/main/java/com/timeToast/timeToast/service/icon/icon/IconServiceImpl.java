@@ -33,10 +33,9 @@ public class IconServiceImpl implements IconService{
     @Transactional
     @Override
     public Response postIconSet(List<MultipartFile> files, final long iconGroupId) {
-        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
 
         files.forEach(file->{
-            Icon icon = iconRepository.save(new Icon("", iconGroup.getId()));
+            Icon icon = iconRepository.save(new Icon("", iconGroupId));
             String endpoint = baseUrl + "icon/image/" + Long.toString(icon.getId());
             System.out.println(endpoint);
             String imageUrls = fileUploadService.uploadfile(file, endpoint);

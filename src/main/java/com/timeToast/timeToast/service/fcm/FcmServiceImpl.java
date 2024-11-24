@@ -92,10 +92,8 @@ public class FcmServiceImpl implements FcmService {
 
         if (memberToken.isPresent()) {
             if (memberToken.get().getMemberId() != memberId) {
-
-                MemberToken changedMemberToken = memberToken.get();
-                changedMemberToken.updateFcmToken(null);
-                memberTokenRepository.save(changedMemberToken);
+                memberToken.get().updateFcmToken(null);
+                memberTokenRepository.save(memberToken.get());
                 log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
             }
         }
