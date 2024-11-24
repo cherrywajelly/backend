@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -63,61 +63,6 @@ public class MemberServiceImplTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("닉네임 저장하기")
-    public void postNicknameTest(){
-        //given
-        Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
-        ReflectionTestUtils.setField(member, "id", 1L);
-
-        String newNickname = "testNewNickname";
-        //when
-        MemberInfoResponse memberInfoResponse = memberService.postNickname(newNickname, member.getId());
-
-        //then
-        assertEquals(memberInfoResponse.nickname(), newNickname);
-    }
-
-    @Test
-    @DisplayName("닉네임 유효성 확인 - 성공")
-    public void nicknameValidationTestSuccess(){
-        //given
-        when(memberRepository.existsByNickname(any(String.class))).thenReturn(false);
-
-        //when
-        Response response = memberService.nicknameValidation("nickname10");
-
-        //then
-        assertEquals(response.statusCode(), StatusCode.OK.getStatusCode());
-    }
-
-    @Test
-    @DisplayName("닉네임 유효성 확인 - 실패")
-    public void nicknameValidationTestFailure(){
-        //given
-        when(memberRepository.existsByNickname(any(String.class))).thenReturn(true);
-
-        //when, then
-        assertThrows(ConflictException.class, () -> memberService.nicknameValidation("nickname6"));
-    }
-
-    @Test
-    @DisplayName("유저 info 조회")
-    public void getMemberInfoTest(){
-        //given
-        Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
-        ReflectionTestUtils.setField(member, "id", 1L);
-
-        //when
-        MemberInfoResponse memberInfoResponse = memberService.getMemberInfo(1L);
-
-        //then
-        assertEquals(memberInfoResponse.nickname(), member.getNickname());
-        assertEquals(memberInfoResponse.profileUrl(), member.getMemberProfileUrl());
-    }
-
     private List<Follow> getFollowers(){
         List<Follow> follows = new ArrayList<>();
         for(int i=0; i<10; i++){
@@ -146,6 +91,72 @@ public class MemberServiceImplTest {
         return teamMembers;
     }
 
+    private Premium setUpPremium(){
+        return Premium.builder()
+                .premiumType(PremiumType.BASIC)
+                .price(0)
+                .count(0)
+                .description("basic")
+                .build();
+    }
+
+    @Test
+    @DisplayName("닉네임 저장하기")
+    public void postNicknameTest(){
+        //given
+        Member member = setUpMember();
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        String newNickname = "testNewNickname";
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.postNickname(newNickname, member.getId());
+
+        //then
+        assertEquals(newNickname, memberInfoResponse.nickname());
+    }
+
+    @Test
+    @DisplayName("닉네임 유효성 확인 - 성공")
+    public void nicknameValidationTestSuccess(){
+        //given
+        when(memberRepository.existsByNickname(any(String.class))).thenReturn(false);
+
+        //when
+        Response response = memberService.nicknameValidation("nickname10");
+
+        //then
+        assertEquals(StatusCode.OK.getStatusCode(), response.statusCode());
+    }
+
+    @Test
+    @DisplayName("닉네임 유효성 확인 - 실패")
+    public void nicknameValidationTestFailure(){
+        //given
+        when(memberRepository.existsByNickname(any(String.class))).thenReturn(true);
+
+        //when, then
+        assertThrows(ConflictException.class, () -> memberService.nicknameValidation("nickname6"));
+    }
+
+    @Test
+    @DisplayName("유저 info 조회")
+    public void getMemberInfoTest(){
+        //given
+        Member member = setUpMember();
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.getMemberInfo(1L);
+
+        //then
+        assertEquals(member.getNickname(), memberInfoResponse.nickname());
+        assertEquals(member.getMemberProfileUrl(), memberInfoResponse.profileUrl());
+    }
+
+
+
     @Test
     @DisplayName("유저 프로필 조회")
     public void getMemberProfileTest(){
@@ -168,22 +179,15 @@ public class MemberServiceImplTest {
         MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L, 2L);
 
         //then
-        assertEquals(memberProfileResponse.nickname(), member.getNickname());
-        assertEquals(memberProfileResponse.profileUrl(), member.getMemberProfileUrl());
-        assertEquals(memberProfileResponse.followerCount(), following.size());
-        assertEquals(memberProfileResponse.followingCount(), followers.size());
-        assertEquals(memberProfileResponse.isFollow(), isFollowing);
-        assertEquals(memberProfileResponse.teamCount(), teamMembers.size());
+        assertEquals(member.getNickname(), memberProfileResponse.nickname());
+        assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
+        assertEquals(following.size(), memberProfileResponse.followerCount());
+        assertEquals(followers.size(), memberProfileResponse.followingCount());
+        assertEquals(isFollowing, memberProfileResponse.isFollow());
+        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
     }
 
-    private Premium setUpPremium(){
-        return Premium.builder()
-                .premiumType(PremiumType.BASIC)
-                .price(0)
-                .count(0)
-                .description("basic")
-                .build();
-    }
+
 
     @Test
     @DisplayName("유저 멤버십 조회")
@@ -201,11 +205,11 @@ public class MemberServiceImplTest {
         PremiumResponse premiumResponse = memberService.getMemberPremium(1L);
 
         //then
-        assertEquals(premiumResponse.premiumId(), premium.getId());
-        assertEquals(premiumResponse.premiumType(), premium.getPremiumType());
-        assertEquals(premiumResponse.price(), premium.getPrice());
-        assertEquals(premiumResponse.count(), premium.getCount());
-        assertEquals(premiumResponse.description(), premium.getDescription());
+        assertEquals(premium.getId(), premiumResponse.premiumId());
+        assertEquals(premium.getPremiumType(), premiumResponse.premiumType());
+        assertEquals(premium.getPrice(), premiumResponse.price());
+        assertEquals(premium.getCount(), premiumResponse.count());
+        assertEquals(premium.getDescription(), premiumResponse.description());
     }
 
 }

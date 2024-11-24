@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -95,8 +95,8 @@ public class TeamServiceImplTest  {
         TeamResponse teamResponse = teamService.saveTeam(1L, teamSaveRequest);
 
         //then
-        assertEquals(teamResponse.teamProfileUrl(), team.getTeamProfileUrl());
-        assertEquals(teamResponse.teamName(), team.getName());
+        assertEquals(team.getTeamProfileUrl(),teamResponse.teamProfileUrl());
+        assertEquals(team.getName(), teamResponse.teamName());
         verify(teamRepository, times(1)).save(any(Team.class));
         verify(teamMemberRepository, times(teamMembers.size()+1)).save(any(TeamMember.class));
     }
@@ -132,7 +132,7 @@ public class TeamServiceImplTest  {
         TeamResponses teamResponses = teamService.findLoginMemberTeams(1L);
 
         //then
-        assertEquals(teamResponses.teamResponses().size(), teamMembers.size());
+        assertEquals(teamMembers.size(), teamResponses.teamResponses().size());
 
     }
 

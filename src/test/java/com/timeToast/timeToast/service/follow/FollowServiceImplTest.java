@@ -62,6 +62,16 @@ public class FollowServiceImplTest{
                 .build();
     }
 
+    private List<Follow> setUpFollowersList() {
+        List<Follow> followers = new ArrayList<>();
+        for(long i = 2; i <= 10; i++) {
+            Follow follow =  Follow.builder().followingId(1L).followerId(i).build();
+            ReflectionTestUtils.setField(follow, "id", i);
+            followers.add(follow);
+        }
+        return followers;
+    }
+
     @Test
     @DisplayName("팔로우 저장 테스트 - 성공")
     public void saveFollow() {
@@ -83,7 +93,7 @@ public class FollowServiceImplTest{
         Response response = followService.saveFollow(1L, 2L);
 
         //then
-        Assertions.assertEquals(response.statusCode(), StatusCode.OK.getStatusCode());
+        Assertions.assertEquals(StatusCode.OK.getStatusCode(), response.statusCode());
         verify(followRepository, times(1)).save(ArgumentMatchers.any(Follow.class));
 
     }
@@ -98,17 +108,6 @@ public class FollowServiceImplTest{
         //when then
         assertThrows(BadRequestException.class,() -> followService.saveFollow(1L, 2L));
 
-    }
-
-
-    private List<Follow> setUpFollowersList() {
-        List<Follow> followers = new ArrayList<>();
-        for(long i = 2; i <= 10; i++) {
-            Follow follow =  Follow.builder().followingId(1L).followerId(i).build();
-            ReflectionTestUtils.setField(follow, "id", i);
-            followers.add(follow);
-        }
-        return followers;
     }
 
     @Test

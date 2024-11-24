@@ -23,13 +23,10 @@ import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastReposit
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,12 +61,6 @@ public class GiftToastServiceImplTest {
 
     @Mock
     ToastPieceRepository toastPieceRepository;
-
-    @Mock
-    ToastPieceImageRepository toastPieceImageRepository;
-
-    @Mock
-    TeamRepository teamRepository;
 
     @Mock
     TeamMemberRepository teamMemberRepository;
@@ -301,12 +292,12 @@ public class GiftToastServiceImplTest {
         GiftToastSaveResponse giftToastSaveResponse = giftToastService.saveGiftToastGroup(1L, giftToastGroupRequest);
 
         //then
-        assertEquals(giftToastSaveResponse.giftToastId(), giftToast.getId());
-        assertEquals(giftToastSaveResponse.title(), giftToast.getTitle());
-        assertEquals(giftToastSaveResponse.giftToastType(), giftToast.getGiftToastType());
-        assertEquals(giftToastSaveResponse.memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(giftToastSaveResponse.openedDate(), giftToast.getOpenedDate());
-        assertEquals(giftToastSaveResponse.isOpened(), false);
+        assertEquals(giftToast.getId(), giftToastSaveResponse.giftToastId());
+        assertEquals(giftToast.getTitle(), giftToastSaveResponse.title());
+        assertEquals(giftToast.getGiftToastType(), giftToastSaveResponse.giftToastType());
+        assertEquals(giftToast.getMemorizedDate(), giftToastSaveResponse.memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), giftToastSaveResponse.openedDate());
+        assertEquals(false, giftToastSaveResponse.isOpened());
 
     }
 
@@ -345,12 +336,12 @@ public class GiftToastServiceImplTest {
         GiftToastSaveResponse giftToastSaveResponse = giftToastService.saveGiftToastFriend(1L, giftToastFriendRequest);
 
         //then
-        assertEquals(giftToastSaveResponse.giftToastId(), giftToast.getId());
-        assertEquals(giftToastSaveResponse.title(), giftToast.getTitle());
-        assertEquals(giftToastSaveResponse.giftToastType(), giftToast.getGiftToastType());
-        assertEquals(giftToastSaveResponse.memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(giftToastSaveResponse.openedDate(), giftToast.getOpenedDate());
-        assertEquals(giftToastSaveResponse.isOpened(), false);
+        assertEquals(giftToast.getId(), giftToastSaveResponse.giftToastId());
+        assertEquals(giftToast.getTitle(), giftToastSaveResponse.title());
+        assertEquals(giftToast.getGiftToastType(), giftToastSaveResponse.giftToastType());
+        assertEquals(giftToast.getMemorizedDate(), giftToastSaveResponse.memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), giftToastSaveResponse.openedDate());
+        assertEquals(false, giftToastSaveResponse.isOpened());
 
     }
 
@@ -388,12 +379,12 @@ public class GiftToastServiceImplTest {
         GiftToastSaveResponse giftToastSaveResponse = giftToastService.saveGiftToastMine(1L, giftToastMineRequest);
 
         //then
-        assertEquals(giftToastSaveResponse.giftToastId(), giftToast.getId());
-        assertEquals(giftToastSaveResponse.title(), giftToast.getTitle());
-        assertEquals(giftToastSaveResponse.giftToastType(), giftToast.getGiftToastType());
-        assertEquals(giftToastSaveResponse.memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(giftToastSaveResponse.openedDate(), giftToast.getOpenedDate());
-        assertEquals(giftToastSaveResponse.isOpened(), false);
+        assertEquals(giftToast.getId(), giftToastSaveResponse.giftToastId());
+        assertEquals(giftToast.getTitle(), giftToastSaveResponse.title());
+        assertEquals(giftToast.getGiftToastType(), giftToastSaveResponse.giftToastType());
+        assertEquals(giftToast.getMemorizedDate(),giftToastSaveResponse.memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), giftToastSaveResponse.openedDate());
+        assertEquals(false, giftToastSaveResponse.isOpened());
     }
 
     @Test
@@ -421,16 +412,16 @@ public class GiftToastServiceImplTest {
         GiftToastDetailResponse giftToastDetailResponse = giftToastService.getGiftToastDetail(1L, 1L);
 
         //then
-        assertEquals(giftToastDetailResponse.giftToastInfo().giftToastId(), giftToast.getId());
-        assertEquals(giftToastDetailResponse.giftToastInfo().title(), giftToast.getTitle());
-        assertEquals(giftToastDetailResponse.giftToastInfo().iconImageUrl(), icon.getIconImageUrl());
-        assertEquals(giftToastDetailResponse.giftToastInfo().giftToastType(), giftToast.getGiftToastType());
-        assertEquals(giftToastDetailResponse.giftToastInfo().profileImageUrl(), member.getMemberProfileUrl());
-        assertEquals(giftToastDetailResponse.giftToastInfo().memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(giftToastDetailResponse.giftToastInfo().openedDate(), giftToast.getOpenedDate());
-        assertEquals(giftToastDetailResponse.giftToastInfo().createdDate(), giftToast.getCreatedAt().toLocalDate());
-        assertEquals(giftToastDetailResponse.giftToastInfo().isOpened(), giftToast.getIsOpened());
-        assertEquals(giftToastDetailResponse.dDay(),  DDayCount.count(LocalDate.now(),giftToast.getOpenedDate()));
+        assertEquals(giftToast.getId(), giftToastDetailResponse.giftToastInfo().giftToastId());
+        assertEquals(giftToast.getTitle(), giftToastDetailResponse.giftToastInfo().title());
+        assertEquals(icon.getIconImageUrl(), giftToastDetailResponse.giftToastInfo().iconImageUrl());
+        assertEquals(giftToast.getGiftToastType(), giftToastDetailResponse.giftToastInfo().giftToastType());
+        assertEquals(member.getMemberProfileUrl(), giftToastDetailResponse.giftToastInfo().profileImageUrl());
+        assertEquals(giftToast.getMemorizedDate(), giftToastDetailResponse.giftToastInfo().memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), giftToastDetailResponse.giftToastInfo().openedDate());
+        assertEquals(giftToast.getCreatedAt().toLocalDate(), giftToastDetailResponse.giftToastInfo().createdDate());
+        assertEquals(giftToast.getIsOpened(), giftToastDetailResponse.giftToastInfo().isOpened());
+        assertEquals(DDayCount.count(LocalDate.now(), giftToast.getOpenedDate()), giftToastDetailResponse.dDay());
 
     }
 
@@ -454,15 +445,15 @@ public class GiftToastServiceImplTest {
         GiftToastInfo giftToastInfo = giftToastService.getGiftToastInfo(1L, giftToast);
 
         //then
-        assertEquals(giftToastInfo.giftToastId(), giftToast.getId());
-        assertEquals(giftToastInfo.title(), giftToast.getTitle());
-        assertEquals(giftToastInfo.iconImageUrl(), icon.getIconImageUrl());
-        assertEquals(giftToastInfo.giftToastType(), giftToast.getGiftToastType());
-        assertEquals(giftToastInfo.profileImageUrl(), member.getMemberProfileUrl());
-        assertEquals(giftToastInfo.memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(giftToastInfo.openedDate(), giftToast.getOpenedDate());
-        assertEquals(giftToastInfo.createdDate(), giftToast.getCreatedAt().toLocalDate());
-        assertEquals(giftToastInfo.isOpened(), giftToast.getIsOpened());
+        assertEquals(giftToast.getId(), giftToastInfo.giftToastId());
+        assertEquals(giftToast.getTitle(), giftToastInfo.title());
+        assertEquals(icon.getIconImageUrl(), giftToastInfo.iconImageUrl());
+        assertEquals(giftToast.getGiftToastType(), giftToastInfo.giftToastType());
+        assertEquals(member.getMemberProfileUrl(), giftToastInfo.profileImageUrl());
+        assertEquals(giftToast.getMemorizedDate(), giftToastInfo.memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), giftToastInfo.openedDate());
+        assertEquals(giftToast.getCreatedAt().toLocalDate(), giftToastInfo.createdDate());
+        assertEquals(giftToast.getIsOpened(), giftToastInfo.isOpened());
     }
 
     @Test
@@ -486,8 +477,8 @@ public class GiftToastServiceImplTest {
         //then
         verify(giftToastRepository,times(1)).findAllGiftToastsByMemberId(1L);
         verify(memberRepository, times(giftToasts.size())).getById(1L);
-        assertEquals(giftToastResponses.giftToastResponses().size(), giftToasts.size());
-        assertEquals(giftToastResponses.giftToastResponses().get(0).giftToastOwner(), member.getNickname());
+        assertEquals(giftToasts.size(), giftToastResponses.giftToastResponses().size());
+        assertEquals(member.getNickname(), giftToastResponses.giftToastResponses().get(0).giftToastOwner());
 
     }
 
@@ -526,7 +517,7 @@ public class GiftToastServiceImplTest {
         GiftToastIncompleteResponses giftToastIncompleteResponses = giftToastService.getGiftToastIncomplete(1L);
 
         //then
-        assertEquals(giftToastIncompleteResponses.giftToastResponses().size(), 4);
+        assertEquals(4, giftToastIncompleteResponses.giftToastResponses().size());
 
     }
 
@@ -584,16 +575,16 @@ public class GiftToastServiceImplTest {
         ToastPieceDetailResponse toastPieceDetailResponse = giftToastService.getToastPiece(1L, 1L);
 
         //then
-        assertEquals(toastPieceDetailResponse.giftToastInfo().giftToastId(), giftToast.getId());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().title(), giftToast.getTitle());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().iconImageUrl(), icon.getIconImageUrl());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().giftToastOwner(), member.getNickname());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().giftToastType(), giftToast.getGiftToastType());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().profileImageUrl(), member.getMemberProfileUrl());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().memorizedDate(), giftToast.getMemorizedDate());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().openedDate(), giftToast.getOpenedDate());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().createdDate(), LocalDateTime.now().toLocalDate());
-        assertEquals(toastPieceDetailResponse.giftToastInfo().isOpened(), giftToast.getIsOpened());
+        assertEquals(giftToast.getId(), toastPieceDetailResponse.giftToastInfo().giftToastId());
+        assertEquals(giftToast.getTitle(), toastPieceDetailResponse.giftToastInfo().title());
+        assertEquals(icon.getIconImageUrl(), toastPieceDetailResponse.giftToastInfo().iconImageUrl());
+        assertEquals(member.getNickname(), toastPieceDetailResponse.giftToastInfo().giftToastOwner());
+        assertEquals(giftToast.getGiftToastType(), toastPieceDetailResponse.giftToastInfo().giftToastType());
+        assertEquals(member.getMemberProfileUrl(), toastPieceDetailResponse.giftToastInfo().profileImageUrl());
+        assertEquals(giftToast.getMemorizedDate(), toastPieceDetailResponse.giftToastInfo().memorizedDate());
+        assertEquals(giftToast.getOpenedDate(), toastPieceDetailResponse.giftToastInfo().openedDate());
+        assertEquals(LocalDateTime.now().toLocalDate(), toastPieceDetailResponse.giftToastInfo().createdDate());
+        assertEquals(giftToast.getIsOpened(), toastPieceDetailResponse.giftToastInfo().isOpened());
 
 
     }
