@@ -49,7 +49,7 @@ public enum ExceptionConstant {
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
-    INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
+    INVALID_SHOWCASE_COUNT("showcase는 최대 3개까지 등록이 가능합니다."),
     SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
     INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
 

@@ -95,7 +95,6 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public Response nicknameValidation(final String nickname) {
-
         if(memberRepository.existsByNickname(nickname)){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }

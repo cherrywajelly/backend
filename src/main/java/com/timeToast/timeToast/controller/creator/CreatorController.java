@@ -23,17 +23,11 @@ public class CreatorController {
 
     @GetMapping("")
     public CreatorResponses getCreators(@Login LoginMember loginMember) {
-        if(!loginMember.role().equals(MemberRole.MANAGER)){
-            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-        }
         return memberService.getCreators();
     }
 
     @GetMapping("/{creatorId}")
     public CreatorDetailResponse getCreatorByCreatorId(@Login LoginMember loginMember, @PathVariable long creatorId) {
-        if(!loginMember.role().equals(MemberRole.MANAGER)){
-            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-        }
         return memberService.getCreatorByCreatorId(creatorId);
     }
 
