@@ -4,6 +4,7 @@ public enum SuccessConstant {
 
     SUCCESS_DELETE("삭제에 성공하였습니다."),
     SUCCESS_POST("저장을 성공하였습니다."),
+    SUCCESS_PUT("수정에 성공하였습니다."),
 
     VALID_NICKNAME("사용가능한 닉네임입니다");
 

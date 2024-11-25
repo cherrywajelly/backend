@@ -40,8 +40,7 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 @Service
 @Slf4j
@@ -139,7 +138,7 @@ public class FcmServiceImpl implements FcmService {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_PUT.getMessage());
     }
 
     @Transactional
@@ -169,12 +168,12 @@ public class FcmServiceImpl implements FcmService {
             throw new RuntimeException(e);
         }
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
 
     }
 
     @Transactional
-    public void saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
+    public Response saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
         String imageUrl = "";
 
@@ -204,6 +203,7 @@ public class FcmServiceImpl implements FcmService {
         Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
         fcmRepository.save(fcm);
         log.info("save fcm");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional
