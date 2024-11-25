@@ -94,6 +94,7 @@ public class JamServiceImplTest {
         Response response = jamService.postJam(jamRequest, content, image, eventToast.getId(), member.getId());
 
         // Then
+        verify(jamRepository, times(1)).save(jam);
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
     }
