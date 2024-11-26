@@ -88,7 +88,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("이벤트 토스트 저장 - 성공")
+    @DisplayName("이벤트 토스트 저장 성공")
     void saveEventToastSuccess() {
         long memberId = 1L;
         EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1),"title", 1L);
@@ -103,7 +103,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("마이페이지 이벤트 토스트 목록 조회 - 성공")
+    @DisplayName("마이페이지 이벤트 토스트 목록 조회 성공")
     void getOwnEventToastListSuccess() {
         long memberId = 1L;
 
@@ -119,7 +119,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("팔로우하고 있는 사용자의 이벤트 토스트 목록 조회 / 잼 미작성 - 성공")
+    @DisplayName("팔로우하고 있는 사용자의 이벤트 토스트 목록 조회 성공 - 잼 미작성")
     void getEventToasts() {
         long memberId = 1L;
         List<Follow> follows = List.of(follow);
@@ -139,7 +139,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("타사용자의 이벤트 토스트 목록 조회 / 잼 미작성 목록 반환 - 성공")
+    @DisplayName("타사용자의 이벤트 토스트 목록 조회 성공 - 잼 미작성 목록 반환")
     void getMemberEventToastsWithUnwrittenJam() {
         long memberId = 1L;
         long friendId = 2L;
@@ -160,7 +160,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("타사용자의 이벤트 토스트 목록 조회 / 잼 작성 목록 반환 - 성공")
+    @DisplayName("타사용자의 이벤트 토스트 목록 조회 성공 - 잼 작성 목록 반환")
     void getMemberEventToastsWithWrittenJam() {
         long memberId = 1L;
         long friendId = 2L;
@@ -181,7 +181,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("이벤트 토스트 상세 조회 - 성공")
+    @DisplayName("이벤트 토스트 상세 조회 성공")
     void getEventToast() {
         long memberId = 1L;
         long eventToastId = 1L;
@@ -204,7 +204,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("잼 작성 여부 수정 - 성공")
+    @DisplayName("잼 작성 여부 수정 성공")
     void updateWritten() {
         long memberId = 1L;
         long eventToastId = 1L;
@@ -221,7 +221,7 @@ public class EventToastServiceImplTest {
 
 
     @Test
-    @DisplayName("열람 가능한 이벤트 토스트 목록 반환 - 성공")
+    @DisplayName("열람 가능한 이벤트 토스트 목록 반환 성공")
     void filterOpenedEventToasts() {
         List<EventToast> eventToasts = List.of(eventToast);
         ReflectionTestUtils.setField(eventToast, "isOpened", true);
@@ -232,7 +232,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("열람 불가능한 이벤트 토스트 목록 반환 - 성공")
+    @DisplayName("열람 불가능한 이벤트 토스트 목록 반환 성공")
     void filterUnopenedEventToasts() {
         List<EventToast> eventToasts = List.of(eventToast);
         ReflectionTestUtils.setField(eventToast, "isOpened", false);
@@ -243,7 +243,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("이벤트 토스트 삭제 - 성공")
+    @DisplayName("이벤트 토스트 삭제 성공")
     void deleteEventToastSuccess() {
         long memberId = 1L;
         long eventToastId = 1L;
@@ -280,7 +280,7 @@ public class EventToastServiceImplTest {
     }
 
     @Test
-    @DisplayName("이벤트 토스트 전체 삭제 - 성공")
+    @DisplayName("이벤트 토스트 전체 삭제 성공")
     void deleteAllEventToastsByMemberId() {
         long memberId = 1L;
         long eventToastId = 1L;
