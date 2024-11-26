@@ -83,4 +83,8 @@ springdoc:
     url: /docs/openapi3.json
     path: /api-docs/index.html
 
-
+payment:
+  toss:
+    client-key: ${TOSS_TEST_CLIENT_KEY}
+    secret-key: ${TOSS_TEST_SECRET_KEY}
+    security-key: ${TOSS_TEST_SECURITY_KEY}
