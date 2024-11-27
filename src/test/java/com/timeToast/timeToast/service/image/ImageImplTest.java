@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.image;
 
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.timeToast.timeToast.global.config.OsClientConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,13 +34,21 @@ public class ImageImplTest {
     @Mock
     OsClientConfiguration ociConfig;
 
+    private MultipartFile file;
+    private ObjectStorageClient storage;
+
+
+    @BeforeEach
+    void setUp() {
+        file = mock(MultipartFile.class);
+        storage = mock(ObjectStorageClient.class);
+    }
+
 
     @Test
     @DisplayName("이미지 업로드 - 성공")
     void saveFile() {
         // Given
-        MultipartFile file = mock(MultipartFile.class);
-        ObjectStorageClient storage = mock(ObjectStorageClient.class);
         String endpoint = baseUrl;
 
         try {

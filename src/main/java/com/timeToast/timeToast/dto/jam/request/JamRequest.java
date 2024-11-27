@@ -2,6 +2,7 @@ package com.timeToast.timeToast.dto.jam.request;
 
 import com.timeToast.timeToast.domain.jam.Jam;
 
+
 public record JamRequest(
 
         String title,
