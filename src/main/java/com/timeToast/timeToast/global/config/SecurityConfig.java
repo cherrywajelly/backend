@@ -44,7 +44,7 @@ public class SecurityConfig {
                             request.requestMatchers("/api/v3/login/**").permitAll()
                                     .requestMatchers("/api/v3/**").hasRole("MANAGER");
 
-                            request.requestMatchers("/api/v2/login/**").permitAll()
+                            request.requestMatchers("/api/v2/login/**","/api/v2/iconGroups/**").permitAll()
                                     .requestMatchers("/api/v2/**").hasRole("CREATOR");
 
                             request.requestMatchers("/api/v1/login/**","/api/v1/members/refreshToken").permitAll().
