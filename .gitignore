@@ -8,7 +8,7 @@ build/
 /src/main/resources/application-local.yml
 /src/main/resources/application-oauth.yml
 /src/main/resources/application-prod.yml
-/src/main/resources/firebase/timetoast-f33b2-firebase-adminsdk-vk1le-6580205b29.json
+/src/main/resources/firebase/firebase-adminsdk.json
 
 ### STS ###
 .apt_generated
