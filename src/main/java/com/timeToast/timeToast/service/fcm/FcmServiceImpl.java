@@ -162,7 +162,10 @@ public class FcmServiceImpl implements FcmService {
 
                 String API_URL = fcmUrl;
                 restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+                log.info("send message to {}", memberId);
                 saveFcmInfo(memberId, fcmPostRequest);
+            } else {
+                log.error("Failed to get fcm message");
             }
 
         } catch (Exception e) {
@@ -219,8 +222,13 @@ public class FcmServiceImpl implements FcmService {
             FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
 
             if (fcmSendRequest.get().token() != null) {
+                log.info("success to create fcm message");
                 return om.writeValueAsString(fcmRequest);
+            } else {
+                log.error("Failed to get fcm token");
             }
+        } else {
+            log.error("Failed to create fcm send request");
         }
         return null;
     }
@@ -254,6 +262,8 @@ public class FcmServiceImpl implements FcmService {
                     return Optional.empty();
                 }
 
+        } else {
+            log.error("{} failed to create Message", memberId);
         }
         return Optional.empty();
 
@@ -270,8 +280,10 @@ public class FcmServiceImpl implements FcmService {
 
             googleCredentials.refreshIfExpired();
             return googleCredentials.getAccessToken().getTokenValue();
-        } catch (Exception e) {}
-        return null;
+        } catch (Exception e) {
+            log.error("Failed to get google access token");
+            throw new RuntimeException(e);
+        }
 
     }
 }
