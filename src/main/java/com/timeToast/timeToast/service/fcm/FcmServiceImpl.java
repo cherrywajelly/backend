@@ -172,7 +172,7 @@ public class FcmServiceImpl implements FcmService {
             throw new RuntimeException(e);
         }
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
 
     }
 
