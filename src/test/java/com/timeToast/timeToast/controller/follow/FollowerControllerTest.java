@@ -68,7 +68,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("팔로우 정보 저장",
+                .andDo(document("팔로우 정보 저장 실패: 본인 팔로우",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
@@ -96,7 +96,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("팔로우 정보 저장",
+                .andDo(document("팔로우 정보 저장 실패: 재요청",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
@@ -207,7 +207,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("팔로잉 삭제",
+                .andDo(document("팔로잉 삭제 실패: 팔로우 정보 찾을 수 없음.",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로잉의 memberId")
                         ),
@@ -265,7 +265,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("팔로워 삭제",
+                .andDo(document("팔로워 삭제 실패: 팔로우 정보 찾을 수 없음.",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로워의 memberId")
                         ),
