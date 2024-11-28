@@ -60,16 +60,16 @@ public class IconGroupServiceImpl implements IconGroupService{
     @Transactional(readOnly = true)
     @Override
     public IconGroupResponses getToastIconGroups(final long memberId){
-        return new IconGroupResponses(getIconGroups(memberId,IconType.TOAST));
+        return getIconGroups(memberId,IconType.TOAST);
     }
 
     @Transactional(readOnly = true)
     @Override
     public IconGroupResponses getJamIconGroups(long memberId) {
-        return new IconGroupResponses(getIconGroups(memberId,IconType.JAM));
+        return getIconGroups(memberId,IconType.JAM);
     }
 
-    private List<IconGroupResponse> getIconGroups(final long memberId, final IconType iconType){
+    private IconGroupResponses getIconGroups(final long memberId, final IconType iconType){
         List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
 
         iconMemberRepository.findByMemberId(memberId).forEach(iconMember -> {
@@ -84,7 +84,7 @@ public class IconGroupServiceImpl implements IconGroupService{
             }
 
         });
-        return iconGroupResponses;
+        return new IconGroupResponses(iconGroupResponses);
     }
 
     @Transactional(readOnly = true)
