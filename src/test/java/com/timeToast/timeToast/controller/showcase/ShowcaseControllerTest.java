@@ -81,7 +81,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("진열장 등록",
+                .andDo(document("진열장 등록 실패: 3개 초과",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("진열장")
                                 .summary("진열장 등록")
@@ -229,7 +229,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("진열장 삭제",
+                .andDo(document("진열장 삭제 실패: 자신의 진열장 아님",
                         pathParameters(
                                 parameterWithName("showcaseId").description("showcase id")
                         ),

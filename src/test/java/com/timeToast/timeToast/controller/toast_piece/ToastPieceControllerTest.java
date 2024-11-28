@@ -175,7 +175,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("토스트 조각 삭제",
+                .andDo(document("토스트 조각 삭제 실패: 토스트 조각 조회 실패",
                         pathParameters(
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),
@@ -205,7 +205,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("토스트 조각 삭제",
+                .andDo(document("토스트 조각 삭제 실패: 자신의 토스트 조각 아님",
                         pathParameters(
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),

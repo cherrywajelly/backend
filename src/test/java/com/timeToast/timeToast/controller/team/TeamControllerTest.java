@@ -192,7 +192,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("로그인한 사용자의 팀 삭제하기",
+                .andDo(document("로그인한 사용자의 팀 삭제하기 실패",
                         pathParameters(
                                 parameterWithName("teamId").description("team id")
                         ),

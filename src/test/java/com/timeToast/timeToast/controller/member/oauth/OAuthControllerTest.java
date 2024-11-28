@@ -30,7 +30,7 @@ public class OAuthControllerTest extends BaseControllerTests {
 
     @DisplayName("인가 코드를 사용하여 카카오 로그인에 성공한다.")
     @Test()
-    void kakaoLogin() throws Exception {
+    void userKakaoLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v1/login/kakao")
@@ -56,7 +56,7 @@ public class OAuthControllerTest extends BaseControllerTests {
 
     @DisplayName("인가 코드를 사용하여 구글 로그인에 성공한다.")
     @Test()
-    void googleLogin() throws Exception {
+    void userGoogleLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v1/login/google")
