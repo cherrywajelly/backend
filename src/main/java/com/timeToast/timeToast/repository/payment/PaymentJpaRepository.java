@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PaymentJpaRepository extends JpaRepository<Payment, Long> {
 
-    List<Payment> findAllByIconGroupId(final long iconGroupId);
+    List<Payment> findAllByItemId(final long itemId);
 }

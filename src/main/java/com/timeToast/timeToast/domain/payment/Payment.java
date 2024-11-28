@@ -23,19 +23,23 @@ public class Payment extends BaseTime {
 
     private String orderId;
 
+    @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
+    @Enumerated(EnumType.STRING)
     private PaymentState paymentState;
 
-    private long amount;
+    private int amount;
 
     private long itemId;
 
 
     @Builder
     public Payment(final long memberId, final ItemType itemType, final PaymentState paymentState,
-                   final long amount, final long itemId) {
+                   final int amount, final long itemId) {
         this.memberId = memberId;
+        this.itemType = itemType;
+        this.paymentState = paymentState;
         this.itemId = itemId;
         this.amount = amount;
     }

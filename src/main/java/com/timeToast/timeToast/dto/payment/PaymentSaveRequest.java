@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.payment.Payment;
 
 public record PaymentSaveRequest(
         long itemId,
-        long amount,
+        int amount,
         ItemType itemType,
         String successUrl,
         String failUrl

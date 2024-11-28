@@ -85,6 +85,6 @@ springdoc:
 
 payment:
   toss:
-    client-key: ${TOSS_TEST_CLIENT_KEY}
+    confirm-url: ${TOSS_CONFIRM_URL}
+
     secret-key: ${TOSS_TEST_SECRET_KEY}
-    security-key: ${TOSS_TEST_SECURITY_KEY}
