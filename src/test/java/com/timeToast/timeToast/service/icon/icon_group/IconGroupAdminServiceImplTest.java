@@ -14,12 +14,14 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -49,13 +51,25 @@ public class IconGroupAdminServiceImplTest {
     @InjectMocks
     private IconGroupAdminServiceImpl iconGroupAdminService;
 
+    private Member member;
+    private IconGroup iconGroup;
+    private Icon icon;
+
+    @BeforeEach
+    void setUp() {
+        long memberId = 1L;
+        long iconGroupId = 1L;
+
+        member = Member.builder().build();
+        iconGroup = IconGroup.builder().memberId(memberId).build();
+        icon = Icon.builder().iconGroupId(iconGroupId).build();
+    }
+
     @Test
     @DisplayName("아이콘 그룹 생성 - 성공")
     void saveIconGroupSuccess() {
         // Given
         long memberId = 1L;
-        Member member = Member.builder().build();
-        IconGroup iconGroup = IconGroup.builder().memberId(memberId).build();
         IconGroupPostRequest iconGroupPostRequest = new IconGroupPostRequest("name", 1100, IconType.TOAST, IconBuiltin.BUILTIN, "description");
 
         when(memberRepository.getById(memberId)).thenReturn(member);
@@ -93,13 +107,12 @@ public class IconGroupAdminServiceImplTest {
         // Given
         long memberId = 1L;
         long iconGroupId = 1L;
-        Member member = Member.builder().id(1L).build();
-        List<IconGroup> iconGroups = List.of(IconGroup.builder().memberId(memberId).id(iconGroupId).build());
-        List<Icon> icons = List.of(Icon.builder().iconGroupId(iconGroupId).build());
+        ReflectionTestUtils.setField(member, "id", memberId);
+        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
 
         when(memberRepository.getById(1L)).thenReturn(member);
-        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(iconGroups);
-        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(icons);
+        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
+        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
 
         // When
         IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
