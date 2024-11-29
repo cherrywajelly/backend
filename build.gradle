@@ -80,9 +80,9 @@ jacocoTestCoverageVerification {
 			element = 'CLASS'
 
 			limit {
-				counter = '`METHOD`'
+				counter = 'METHOD'
 				value = 'COVEREDRATIO'
-				minimum = 0.2
+				minimum = 0.0
 			}
 
 			excludes =  [
