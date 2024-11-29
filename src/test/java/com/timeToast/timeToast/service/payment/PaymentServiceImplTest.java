@@ -265,7 +265,8 @@ public class PaymentServiceImplTest {
         //given
         Payment payment = setPremiumPayment();
         ReflectionTestUtils.setField(payment, "id", 1L);
-        when(paymentRepository.findById(1L)).thenReturn(Optional.of(payment));
+        ReflectionTestUtils.setField(payment, "orderId", "jdhaeudjkioeudjc");
+        when(paymentRepository.findByOrderId("jdhaeudjkioeudjc")).thenReturn(Optional.of(payment));
 
         //when
         PaymentFailResponse paymentFailResponse = paymentService.failPayment(1L, "jdhaeudjkioeudjc");
