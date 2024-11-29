@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.controller.iconGroup;
 
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponses;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
@@ -22,8 +23,8 @@ public class IconGroupManagerController {
     }
 
     @GetMapping("/{iconGroupId}")
-    public IconGroupInfoResponses iconGroupDetail(@PathVariable String iconGroupId) {
-        return iconGroupAdminService.();
+    public IconGroupDetailResponse iconGroupDetail(@PathVariable long iconGroupId) {
+        return iconGroupAdminService.getIconGroupDetail(iconGroupId);
     }
 
     @GetMapping("")
