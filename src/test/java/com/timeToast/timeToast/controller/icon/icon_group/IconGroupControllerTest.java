@@ -203,6 +203,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("creatorNickname").type(STRING).description("아이콘 그룹 제작자 nickname"),
                                         fieldWithPath("price").type(NUMBER).description("아이콘 그룹 가격"),
+                                        fieldWithPath("iconState").type(STRING).description("아이콘 state"),
                                         fieldWithPath("iconResponses[0].iconId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconResponses[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
