@@ -21,11 +21,6 @@ import java.util.List;
 public class IconGroupController {
     private final IconGroupService iconGroupService;
 
-    @PostMapping("/members/{iconGroupId}")
-    public Response buyIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        return iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
-    }
-
     @GetMapping("/members/toasts")
     public IconGroupResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
         return iconGroupService.getToastIconGroups(loginMember.id());

@@ -2,6 +2,8 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
@@ -76,4 +78,17 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         return new IconGroupInfoResponses(iconGroupInfoResponses);
     }
 
+    @Override
+    public CreatorIconInfos getIconGroupsByCreator(final long creatorId) {
+        List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
+        creatorIconInfos.add(
+          CreatorIconInfo.builder()
+                  .title("title")
+                  .revenue(1000)
+                  .salesCount(1)
+                  .iconImageUrl(List.of("iconImageUrl"))
+                  .build()
+        );
+        return new CreatorIconInfos(1, 1000, creatorIconInfos);
+    }
 }

@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.repository.payment;
 
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.payment.Payment;
 import org.springframework.stereotype.Repository;
 
@@ -26,8 +27,8 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
-    public List<Payment> findAllByIconGroupId(final long iconGroupId) {
-        return orderJpaRepository.findAllByItemId(iconGroupId);
+    public List<Payment> findAllByItemIdAndItemType(final long itemId, final ItemType itemType) {
+        return orderJpaRepository.findAllByItemIdAndItemType(itemId, itemType);
     }
 
     @Override

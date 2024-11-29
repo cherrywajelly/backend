@@ -67,6 +67,8 @@ public enum ExceptionConstant {
     ICON_PAYMENT_EXISTS("이미 결제 완료한 아이콘입니다."),
     PREMIUM_PAYMENT_EXISTS("이미 프리미엄 멤버십입니다."),
 
+    //creator
+    INVALID_CREATOR("잘못된 제작자 요청입니다."),
 
     //JSON
     JSON_PROCESSING_ERROR("json processing error"),

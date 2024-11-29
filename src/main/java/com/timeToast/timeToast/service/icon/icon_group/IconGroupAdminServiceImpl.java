@@ -2,9 +2,12 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
@@ -15,6 +18,7 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,8 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final IconRepository iconRepository;
+    private final PaymentRepository paymentRepository;
+
 
     @Transactional
     public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
@@ -133,6 +139,32 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorIconInfos getIconGroupsByCreator(long creatorId) {
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(creatorId);
+        List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
+        iconGroups.forEach(
+                iconGroup ->
+                {
+                    int salesIconCount = paymentRepository.findAllByItemIdAndItemType(iconGroup.getId(), ItemType.ICON).size();
+                    creatorIconInfos.add(
+                            CreatorIconInfo.builder()
+                                    .title(iconGroup.getName())
+                                    .revenue(salesIconCount * iconGroup.getPrice())
+                                    .salesCount(salesIconCount)
+                                    .iconImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(Icon::getIconImageUrl).toList())
+                                    .build()
+                    );
+                }
+        );
+
+        return CreatorIconInfos.builder()
+                .salesIconCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesCount).sum())
+                .revenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
+                .creatorIconInfos(creatorIconInfos)
+                .build();
+    }
 
 
 }

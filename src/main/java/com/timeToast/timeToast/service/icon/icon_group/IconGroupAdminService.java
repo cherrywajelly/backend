@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
@@ -14,5 +15,6 @@ public interface IconGroupAdminService {
     IconGroupDetailResponse getIconGroupDetail(final long iconGroupId);
     IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest);
     IconGroupInfoResponses getIconGroupForNonApproval();
+    CreatorIconInfos getIconGroupsByCreator(final long creatorId);
     IconGroupInfoResponses getAllIconGroups();
 }

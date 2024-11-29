@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -13,6 +14,7 @@ import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
@@ -23,7 +25,8 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
@@ -46,13 +49,13 @@ public class MemberServiceImpl implements MemberService{
     private final IconRepository iconRepository;
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
-    private final PaymentRepository orderRepository;
+    private final PaymentRepository paymentRepository;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
                              final IconRepository iconRepository, final PremiumRepository premiumRepository,
                              final IconGroupRepository iconGroupRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository orderRepository) {
+                             final PaymentRepository paymentRepository) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -62,7 +65,7 @@ public class MemberServiceImpl implements MemberService{
         this.premiumRepository = premiumRepository;
         this.iconGroupRepository = iconGroupRepository;
         this.creatorAccountRepository = creatorAccountRepository;
-        this.orderRepository = orderRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -139,23 +142,9 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public CreatorDetailResponse getCreatorByCreatorId(final long creatorId) {
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(creatorId);
-        List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
-        iconGroups.forEach(
-        iconGroup ->
-                {
-                    int salesIconCount = orderRepository.findAllByIconGroupId(iconGroup.getId()).size();
-                    creatorIconInfos.add(
-                            CreatorIconInfo.builder()
-                                    .title(iconGroup.getName())
-                                    //TODO
-                                    .revenue(salesIconCount*iconGroup.getPrice())
-                                    .salesIconCount(salesIconCount)
-                                    .iconImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(Icon::getIconImageUrl).toList())
-                                    .build()
-                    );
-                }
-        );
+        if(!memberRepository.getById(creatorId).getMemberRole().equals(MemberRole.CREATOR)){
+            throw new BadRequestException(INVALID_CREATOR.getMessage());
+        }
 
         Member member = memberRepository.getById(creatorId);
         String creatorAccount = null;
@@ -167,11 +156,8 @@ public class MemberServiceImpl implements MemberService{
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
-                .iconTotalCount(iconGroups.size())
-                .salesIconTotalCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesIconCount).sum())
-                .totalRevenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
+                .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
                 .accountNumber(creatorAccount)
-                .creatorIconInfos(creatorIconInfos)
                 .build();
     }
 
