@@ -40,7 +40,7 @@ public class TemplateControllerTest extends BaseControllerTests {
         String json = objectMapper.writeValueAsString(templateSaveRequest);
 
         mockMvc.perform(
-                post("/api/v1/template")
+                post("/api/v1/templates")
                         .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                         .contentType(APPLICATION_JSON)
                         .content(json)
@@ -71,7 +71,7 @@ public class TemplateControllerTest extends BaseControllerTests {
     void getTemplate() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/template/{eventToastId}", 1L)
+                        get("/api/v1/templates/{eventToastId}", 1L)
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
