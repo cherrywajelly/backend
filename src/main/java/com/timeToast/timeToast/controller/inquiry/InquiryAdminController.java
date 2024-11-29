@@ -20,12 +20,12 @@ public class InquiryAdminController {
     }
 
     @GetMapping("/{inquiryId}")
-    public InquiryDetailResponse getInquiryDetail(@PathVariable int inquiryId) {
+    public InquiryDetailResponse getInquiryDetail(@PathVariable long inquiryId) {
         return inquiryService.getInquiryDetail(inquiryId);
     }
 
     @PutMapping("/{inquiryId}")
-    public Response putInquiryState(@PathVariable int inquiryId) {
+    public Response putInquiryState(@PathVariable long inquiryId) {
         return inquiryService.putInquiryState(inquiryId);
     }
 }

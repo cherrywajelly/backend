@@ -209,13 +209,42 @@ public class EventControllerTest extends BaseControllerTests {
     @DisplayName("자신의 이벤트 토스트를 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
-    void deleteFollower() throws Exception {
+    void deleteEventToasts() throws Exception {
 
         mockMvc.perform(
                         delete("/api/v1/eventToasts/{eventToastId}",1)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
+                .andDo(document("이벤트 토스트 삭제",
+                        pathParameters(
+                                parameterWithName("eventToastId").description("삭제하는 eventToastId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("이벤트 토스트")
+                                .summary("이벤트 토스트 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("자신의 이벤트 토스트를 삭제할 수 있다. - 실패")
+    @WithMockCustomUser
+    @Test
+    void deleteEventToastsFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/eventToasts/{eventToastId}",2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
                 .andDo(document("이벤트 토스트 삭제",
                         pathParameters(
                                 parameterWithName("eventToastId").description("삭제하는 eventToastId")

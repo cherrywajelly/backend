@@ -10,6 +10,8 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 
 import java.time.LocalDate;
@@ -17,27 +19,46 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.GIFT_TOAST_NOT_FOUND;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_GIFT_TOAST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
 public class GiftToastServiceTest implements GiftToastService{
 
     @Override
     public GiftToastSaveResponse saveGiftToastGroup(long memberId, GiftToastGroupRequest giftToastGroupRequest) {
+        if(giftToastGroupRequest.teamId()==2L){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+
+        if((giftToastGroupRequest.openedDate().isBefore(LocalDate.now()))){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
         return new GiftToastSaveResponse(1, "title", GiftToastType.GROUP, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
     public GiftToastSaveResponse saveGiftToastFriend(long memberId, GiftToastFriendRequest giftToastFriendRequest) {
+        if((giftToastFriendRequest.openedDate().isBefore(LocalDate.now()))){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
         return new GiftToastSaveResponse(1, "title", GiftToastType.FRIEND, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
     public GiftToastSaveResponse saveGiftToastMine(long memberId, GiftToastMineRequest giftToastMineRequest) {
+        if((giftToastMineRequest.openedDate().isBefore(LocalDate.now()))){
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
         return new GiftToastSaveResponse(1, "title", GiftToastType.MINE, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
     public GiftToastDetailResponse getGiftToastDetail(long memberId, long giftToastId) {
+
+        if(giftToastId==2L){
+            throw  new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage());
+        }
 
         GiftToastInfo giftToastInfo =  GiftToastInfo.builder()
                 .giftToastId(1L)

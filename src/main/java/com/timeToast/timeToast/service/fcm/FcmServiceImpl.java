@@ -40,8 +40,7 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 @Service
 @Slf4j
@@ -92,10 +91,8 @@ public class FcmServiceImpl implements FcmService {
 
         if (memberToken.isPresent()) {
             if (memberToken.get().getMemberId() != memberId) {
-
-                MemberToken changedMemberToken = memberToken.get();
-                changedMemberToken.updateFcmToken(null);
-                memberTokenRepository.save(changedMemberToken);
+                memberToken.get().updateFcmToken(null);
+                memberTokenRepository.save(memberToken.get());
                 log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
             }
         }
@@ -141,7 +138,7 @@ public class FcmServiceImpl implements FcmService {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_PUT.getMessage());
     }
 
     @Transactional
@@ -164,19 +161,22 @@ public class FcmServiceImpl implements FcmService {
 
                 String API_URL = fcmUrl;
                 restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+                log.info("send message to {}", memberId);
                 saveFcmInfo(memberId, fcmPostRequest);
+            } else {
+                log.error("Failed to get fcm message");
             }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
 
     }
 
     @Transactional
-    public void saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
+    public Response saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
         String imageUrl = "";
 
@@ -206,6 +206,7 @@ public class FcmServiceImpl implements FcmService {
         Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
         fcmRepository.save(fcm);
         log.info("save fcm");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional
@@ -221,8 +222,13 @@ public class FcmServiceImpl implements FcmService {
             FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
 
             if (fcmSendRequest.get().token() != null) {
+                log.info("success to create fcm message");
                 return om.writeValueAsString(fcmRequest);
+            } else {
+                log.error("Failed to get fcm token");
             }
+        } else {
+            log.error("Failed to create fcm send request");
         }
         return null;
     }
@@ -256,6 +262,8 @@ public class FcmServiceImpl implements FcmService {
                     return Optional.empty();
                 }
 
+        } else {
+            log.error("{} failed to create Message", memberId);
         }
         return Optional.empty();
 
@@ -272,8 +280,10 @@ public class FcmServiceImpl implements FcmService {
 
             googleCredentials.refreshIfExpired();
             return googleCredentials.getAccessToken().getTokenValue();
-        } catch (Exception e) {}
-        return null;
+        } catch (Exception e) {
+            log.error("Failed to get google access token");
+            throw new RuntimeException(e);
+        }
 
     }
 }
