@@ -9,7 +9,7 @@ public class PaymentServiceTest implements PaymentService {
 
 
     @Override
-    public PaymentSaveResponse savePayment(final long memberId, PaymentSaveRequest paymentSaveRequest) {
+    public PaymentSaveResponse savePayment(final long memberId, final PaymentSaveRequest paymentSaveRequest) {
         return PaymentSaveResponse.builder()
                 .paymentId(1L)
                 .orderId("dsinjfn8dfyjwn")
@@ -20,7 +20,7 @@ public class PaymentServiceTest implements PaymentService {
     }
 
     @Override
-    public PaymentSuccessResponse successPayment(long memberId, long paymentId, PaymentSuccessRequest paymentConfirmRequest) {
+    public PaymentSuccessResponse successPayment(final long memberId, final PaymentSuccessRequest paymentConfirmRequest) {
         return PaymentSuccessResponse.builder()
                 .paymentId(1L)
                 .orderId("dsinjfn8dfyjwn")
@@ -29,7 +29,7 @@ public class PaymentServiceTest implements PaymentService {
     }
 
     @Override
-    public PaymentFailResponse failPayment(long memberId, long paymentId) {
+    public PaymentFailResponse failPayment(final long memberId,final String orderId) {
         return new PaymentFailResponse(1L, "diosfhjuih","실패했습니다");
     }
 }

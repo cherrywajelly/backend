@@ -21,15 +21,15 @@ public class PaymentController {
         return paymentService.savePayment(loginMember.id(), paymentSaveRequest);
     }
 
-    @PostMapping("/{paymentId}/success")
-    public PaymentSuccessResponse successPayment(@Login LoginMember loginMember, @PathVariable long paymentId,
+    @PostMapping("/success")
+    public PaymentSuccessResponse successPayment(@Login LoginMember loginMember,
                                                  @RequestBody PaymentSuccessRequest paymentSuccessRequest) {
-        return paymentService.successPayment(loginMember.id(), paymentId, paymentSuccessRequest);
+        return paymentService.successPayment(loginMember.id(),paymentSuccessRequest);
     }
 
-    @PostMapping("/{paymentId}/fail")
-    public PaymentFailResponse failPayment(@Login LoginMember loginMember, @PathVariable long paymentId) {
-        return paymentService.failPayment(loginMember.id(), paymentId);
+    @PostMapping("/fail")
+    public PaymentFailResponse failPayment(@Login LoginMember loginMember,@RequestParam("orderId") final String orderId ) {
+        return paymentService.failPayment(loginMember.id(), orderId);
 
     }
 

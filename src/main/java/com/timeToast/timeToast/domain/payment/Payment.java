@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 @Entity
 @Table(name = "payment")
@@ -19,8 +20,10 @@ public class Payment extends BaseTime {
     @Column(name = "payment_id")
     private long id;
 
+    @Column(nullable = false)
     private long memberId;
 
+    @Column(unique = true)
     private String orderId;
 
     @Enumerated(EnumType.STRING)

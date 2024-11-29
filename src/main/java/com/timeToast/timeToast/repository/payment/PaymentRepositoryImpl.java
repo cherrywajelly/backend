@@ -29,4 +29,9 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     public List<Payment> findAllByIconGroupId(final long iconGroupId) {
         return orderJpaRepository.findAllByItemId(iconGroupId);
     }
+
+    @Override
+    public Optional<Payment> findByOrderId(final String orderId){
+        return orderJpaRepository.findByOrderId(orderId);
+    }
 }

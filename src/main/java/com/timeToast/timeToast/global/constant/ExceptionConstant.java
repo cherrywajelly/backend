@@ -64,6 +64,8 @@ public enum ExceptionConstant {
     //payment
     PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),
     INVALID_PAYMENT("잘못된 결제 요청입니다."),
+    ICON_PAYMENT_EXISTS("이미 결제 완료한 아이콘입니다."),
+    PREMIUM_PAYMENT_EXISTS("이미 프리미엄 멤버십입니다."),
 
 
     //JSON
