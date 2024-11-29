@@ -13,7 +13,7 @@ public record InquiryDetailResponse (
         InquiryState inquiryState,
         LocalDate createdAt,
         String email,
-        String content
+        String contentsUrl
 ) {
     public static InquiryDetailResponse from(Inquiry inquiry) {
         return InquiryDetailResponse.builder()
@@ -22,7 +22,7 @@ public record InquiryDetailResponse (
                 .inquiryState(inquiry.getInquiryState())
                 .createdAt(inquiry.getCreatedAt().toLocalDate())
                 .email(inquiry.getEmail())
-                .content(inquiry.getContent())
+                .contentsUrl(inquiry.getContentsUrl())
                 .build();
     }
 }

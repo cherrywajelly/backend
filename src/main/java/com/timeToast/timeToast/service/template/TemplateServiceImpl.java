@@ -50,8 +50,6 @@ public class TemplateServiceImpl implements TemplateService {
             }
 
             log.info("save new template for event toast {}", templateSaveRequest.eventToastId());
-        } else {
-            throw new BadRequestException(INVALID_TEMPLATE.getMessage());
         }
 
 

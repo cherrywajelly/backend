@@ -82,7 +82,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("inquiryState").type(STRING).description("문의사항 해결 타입"),
                                         fieldWithPath("createdAt").type(ARRAY).description("문의사항 작성 날짜"),
                                         fieldWithPath("email").type(STRING).description("문의자 이메일"),
-                                        fieldWithPath("content").type(STRING).description("문의사항 내용")
+                                        fieldWithPath("contentsUrl").type(STRING).description("문의사항 내용")
                                 )
                                 .build()
                         )));

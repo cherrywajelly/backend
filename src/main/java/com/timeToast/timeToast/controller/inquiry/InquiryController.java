@@ -5,10 +5,8 @@ import com.timeToast.timeToast.dto.inquiry.request.InquiryRequest;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/api/v1/inquiries")
 @RestController
@@ -17,7 +15,7 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     @PostMapping("")
-    public Response saveInquiry(@RequestBody InquiryRequest inquiryRequest) {
-        return inquiryService.saveInquiry(inquiryRequest);
+    public Response saveInquiry(@RequestPart InquiryRequest inquiryRequest, @RequestPart("inquiryContents") final MultipartFile inquiryContents) {
+        return inquiryService.saveInquiry(inquiryRequest, inquiryContents);
     }
 }
