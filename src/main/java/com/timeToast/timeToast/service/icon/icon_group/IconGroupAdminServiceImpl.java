@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
@@ -69,9 +70,15 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Transactional
     @Override
     public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
+        System.out.println(iconGroupStateRequest.toString());
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
         iconGroup.updateIconState(iconGroupStateRequest.iconState());
-        return IconGroupInfoResponse.from(iconGroup,iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl());
+        String thumbnailImageUrl = null;
+        Optional<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst();
+        if(icon.isPresent()){
+            thumbnailImageUrl = icon.get().getIconImageUrl();
+        }
+        return IconGroupInfoResponse.from(iconGroup,thumbnailImageUrl);
     }
 
     @Transactional(readOnly = true)
@@ -80,8 +87,12 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         List<IconGroupInfoResponse> iconGroupNonApprovalResponses =
                 iconGroupRepository.findAllByIconState(IconState.WAITING).stream().map(
                         iconGroup -> {
-                            return IconGroupInfoResponse.from(iconGroup,
-                                    iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl());
+                            String thumbnail = null;
+                            Optional<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst();
+                            if(icon.isPresent()){
+                                thumbnail = icon.get().getIconImageUrl();
+                            }
+                            return IconGroupInfoResponse.from(iconGroup, thumbnail);
                         }
                 ).toList();
 
