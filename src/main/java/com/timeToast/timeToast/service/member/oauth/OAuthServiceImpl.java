@@ -10,6 +10,7 @@ import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.OAuthResponseDto;
 import com.timeToast.timeToast.service.member.member.LoginService;
 import io.jsonwebtoken.impl.Base64UrlCodec;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class OAuthServiceImpl implements OAuthService {
 
@@ -123,6 +125,7 @@ public class OAuthServiceImpl implements OAuthService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
 
+        log.info("redirect Url: {}", redirectUrl);
         ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
         Optional<KakaoUserDataDto> decodeInfo = decodeKakaoToken(responseEntity.getBody().getId_token().split("\\.")[1]);
 
