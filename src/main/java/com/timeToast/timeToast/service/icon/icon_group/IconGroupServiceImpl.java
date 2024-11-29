@@ -132,6 +132,7 @@ public class IconGroupServiceImpl implements IconGroupService{
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
+                .iconState(iconGroup.getIconState())
                 .iconResponses(iconResponses)
                 .build();
     }

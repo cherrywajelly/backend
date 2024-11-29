@@ -1,30 +1,18 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.iconGroup.IconGroupAdminController;
-import com.timeToast.timeToast.controller.iconGroup.IconGroupController;
+import com.timeToast.timeToast.controller.iconGroup.IconGroupCreatorController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
-import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.icon.icon.IconServiceTest;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -35,7 +23,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +32,7 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
 
     @Override
     protected Object initController() {
-        return new IconGroupAdminController(iconGroupAdminService, iconService);
+        return new IconGroupCreatorController(iconGroupAdminService, iconService);
     }
 
 

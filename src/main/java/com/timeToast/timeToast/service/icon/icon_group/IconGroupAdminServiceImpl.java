@@ -1,12 +1,14 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -40,7 +42,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         } else {
             IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId);
-            iconGroup.updateIconState(IconState.UNREGISTERED);
+            iconGroup.updateIconState(IconState.WAITING);
             iconGroupRepository.save(iconGroup);
             log.info("save icon group");
         }
@@ -63,4 +65,63 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
+
+    @Transactional
+    @Override
+    public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
+        IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
+        iconGroup.updateIconState(iconGroupStateRequest.iconState());
+        return IconGroupInfoResponse.from(iconGroup,iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupInfoResponses getIconGroupForNonApproval() {
+        List<IconGroupInfoResponse> iconGroupNonApprovalResponses =
+                iconGroupRepository.findAllByIconState(IconState.WAITING).stream().map(
+                        iconGroup -> {
+                            return IconGroupInfoResponse.from(iconGroup,
+                                    iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl());
+                        }
+                ).toList();
+
+        return new IconGroupInfoResponses(iconGroupNonApprovalResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
+        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
+        Member creator = memberRepository.getById(iconGroup.getMemberId());
+        List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
+        String thumbnailImageUrl = null;
+        if(iconResponses.stream().findFirst().isPresent()){
+            thumbnailImageUrl = iconResponses.stream().findFirst().get().iconImageUrl();
+        }
+        return IconGroupDetailResponse.builder()
+                .thumbnailImageUrl(thumbnailImageUrl)
+                .title(iconGroup.getName())
+                .creatorNickname(creator.getNickname())
+                .price(iconGroup.getPrice())
+                .iconState(iconGroup.getIconState())
+                .iconResponses(iconResponses)
+                .build();
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupInfoResponses getAllIconGroups(){
+        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
+                iconGroup -> {
+                    return IconGroupInfoResponse.from( iconGroup,
+                            iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl());
+                }
+        ).toList();
+        return new IconGroupInfoResponses(iconGroupInfoResponses);
+    }
+
+
+
+
 }
