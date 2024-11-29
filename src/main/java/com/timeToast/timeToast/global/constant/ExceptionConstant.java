@@ -63,6 +63,7 @@ public enum ExceptionConstant {
 
     // inquiry
     INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+    INVALID_INQUIRY("잘못된 문의 형식입니다."),
 
     //payment
     PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),

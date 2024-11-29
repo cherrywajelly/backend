@@ -7,6 +7,7 @@ import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.inquiry.InquiryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_INQUIRY;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PUT;
 
@@ -32,7 +34,13 @@ public class InquiryServiceImpl implements InquiryService {
     public Response saveInquiry(InquiryRequest inquiryRequest) {
 
         Inquiry inquiry = inquiryRequest.to(inquiryRequest, InquiryState.UNRESOLVED);
-        inquiryRepository.save(inquiry);
+
+        if(inquiry != null) {
+            inquiryRepository.save(inquiry);
+        } else {
+            throw new BadRequestException(INVALID_INQUIRY.getMessage());
+        }
+
 
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
