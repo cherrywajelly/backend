@@ -49,7 +49,7 @@ public enum ExceptionConstant {
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
-    INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
+    INVALID_SHOWCASE_COUNT("showcase는 최대 3개까지 등록이 가능합니다."),
     SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
     INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
 
@@ -61,6 +61,19 @@ public enum ExceptionConstant {
     //premium
     PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다."),
 
+    // inquiry
+    INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+    INVALID_INQUIRY("잘못된 문의 형식입니다."),
+
+    //payment
+    PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),
+    INVALID_PAYMENT("잘못된 결제 요청입니다."),
+    ICON_PAYMENT_EXISTS("이미 결제 완료한 아이콘입니다."),
+    PREMIUM_PAYMENT_EXISTS("이미 프리미엄 멤버십입니다."),
+
+
+    //JSON
+    JSON_PROCESSING_ERROR("json processing error"),
     //login
     INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");

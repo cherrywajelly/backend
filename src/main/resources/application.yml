@@ -50,7 +50,7 @@ spring:
         static: ${OCI_URL}
       base-profile-image-url: ${BASIC_PROFILE_IMAGE_URL}
       not-open-image-url: ${NOT_OPEN_IMAGE_URL}
-      base-url: ${OCI_BASEURL}
+      base-url: ${OCI_BASEURL:local/}
 
   servlet:
     multipart:
@@ -83,4 +83,8 @@ springdoc:
     url: /docs/openapi3.json
     path: /api-docs/index.html
 
+payment:
+  toss:
+    confirm-url: ${TOSS_CONFIRM_URL}
 
+    secret-key: ${TOSS_TEST_SECRET_KEY}

@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.dto.gift_toast.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 

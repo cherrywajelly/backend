@@ -20,7 +20,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.orders.OrdersRepository;
+import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
@@ -46,13 +46,13 @@ public class MemberServiceImpl implements MemberService{
     private final IconRepository iconRepository;
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
-    private final OrdersRepository orderRepository;
+    private final PaymentRepository orderRepository;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
                              final IconRepository iconRepository, final PremiumRepository premiumRepository,
                              final IconGroupRepository iconGroupRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final OrdersRepository orderRepository) {
+                             final PaymentRepository orderRepository) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -95,7 +95,6 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public Response nicknameValidation(final String nickname) {
-
         if(memberRepository.existsByNickname(nickname)){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }

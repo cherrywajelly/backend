@@ -2,7 +2,7 @@ package com.timeToast.timeToast.controller.fcm;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponse;
+import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.fcm.FcmServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -62,7 +62,7 @@ public class FcmControllerTest extends BaseControllerTests {
     @DisplayName("알림 목록을 조회할 수 있다.")
     @WithMockCustomUser
     @Test
-    void getFcmMessages() throws Exception {
+    void getResponses() throws Exception {
 
         mockMvc.perform(
                         get("/api/v1/fcm")
@@ -74,15 +74,15 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .tag("알림")
                                 .summary("알림 목록 조회")
                                 .responseFields(
-                                        fieldWithPath("[].fcmId").type(NUMBER).description("fcm id"),
-                                        fieldWithPath("[].fcmConstant").type(STRING).description("fcm 타입"),
-                                        fieldWithPath("[].nickname").type(STRING).description("fcm 관련 사용자 닉네임"),
-                                        fieldWithPath("[].text").type(STRING).description("fcm 텍스트"),
-                                        fieldWithPath("[].imageUrl").type(STRING).description("fcm 이미지"),
-                                        fieldWithPath("[].time").type(STRING).description("fcm 작성 시간"),
-                                        fieldWithPath("[].toastName").type(STRING).description("fcm 관련 토스트 이름"),
-                                        fieldWithPath("[].isOpened").type(BOOLEAN).description("fcm 열어본 여부"),
-                                        fieldWithPath("[].param").type(NUMBER).description("이동 path param")
+                                        fieldWithPath("fcmResponses[0].fcmId").type(NUMBER).description("fcm id"),
+                                        fieldWithPath("fcmResponses[0].fcmConstant").type(STRING).description("fcm 타입"),
+                                        fieldWithPath("fcmResponses[0].nickname").type(STRING).description("fcm 관련 사용자 닉네임"),
+                                        fieldWithPath("fcmResponses[0].text").type(STRING).description("fcm 텍스트"),
+                                        fieldWithPath("fcmResponses[0].imageUrl").type(STRING).description("fcm 이미지"),
+                                        fieldWithPath("fcmResponses[0].time").type(STRING).description("fcm 작성 시간"),
+                                        fieldWithPath("fcmResponses[0].toastName").type(STRING).description("fcm 관련 토스트 이름"),
+                                        fieldWithPath("fcmResponses[0].isOpened").type(BOOLEAN).description("fcm 열어본 여부"),
+                                        fieldWithPath("fcmResponses[0].param").type(NUMBER).description("이동 path param")
                                 )
                                 .build()
                         )));
@@ -119,7 +119,7 @@ public class FcmControllerTest extends BaseControllerTests {
     @Test
     void test() throws Exception {
 
-        FcmResponse fcmResponse = new FcmResponse(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
+        FcmPostRequest fcmResponse = new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
         String json = objectMapper.writeValueAsString(fcmResponse);
 
         mockMvc.perform(

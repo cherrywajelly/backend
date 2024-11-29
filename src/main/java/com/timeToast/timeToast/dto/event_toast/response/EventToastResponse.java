@@ -2,7 +2,7 @@ package com.timeToast.timeToast.dto.event_toast.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.dto.jam.response.JamResponses;
+import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -33,9 +33,9 @@ public record EventToastResponse(
 
         boolean isWritten,
 
-        List<JamResponses> jams
+        List<JamResponse> jams
 ){
-    public static EventToastResponse fromEntity(EventToast eventToast, final String iconImageUrl, final long memberId, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponses> jams) {
+    public static EventToastResponse fromEntity(EventToast eventToast, final String iconImageUrl, final long memberId, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
         return EventToastResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())

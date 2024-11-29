@@ -8,5 +8,4 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 public interface LoginService {
 
     LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole);
-    void addBuiltinIcon(Member member);
 }

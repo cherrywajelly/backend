@@ -6,7 +6,10 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -29,7 +33,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconRepository iconRepository;
 
     @Transactional
-    public void postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
         Member member = memberRepository.getById(memberId);
 
         if(member == null) {
@@ -40,12 +44,13 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             iconGroupRepository.save(iconGroup);
             log.info("save icon group");
         }
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public List<IconGroupCreatorResponse> getIconGroupForCreator(final long memberId) {
+    public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
         Member member = memberRepository.getById(memberId);
 
@@ -56,6 +61,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                     iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.get(0).getIconImageUrl(), iconGroup.getName()));
                 });
 
-        return iconGroupCreatorResponses;
+        return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 }
