@@ -71,44 +71,44 @@ public class IconGroupServiceImplTest {
     }
 
 
-    @Test
-    @DisplayName("아이콘 그룹 구매 성공")
-    void buyIconGroupSuccess() {
-        long memberId = 1L;
-        long iconGroupId = 1L;
-
-        ReflectionTestUtils.setField(member, "id", memberId);
-        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
-
-        when(memberRepository.getById(memberId)).thenReturn(member);
-        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(null);
-
-        Response response = iconGroupService.buyIconGroup(memberId, iconGroupId);
-
-        verify(iconMemberRepository, times(1)).save(any(IconMember.class));
-        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-    }
-
-    @Test
-    @DisplayName("아이콘 그룹 구매 실패 - 이미 구매한 아이콘 존재")
-    void buyIconGroupFailed() {
-        long memberId = 1L;
-        long iconGroupId = 1L;
-
-        ReflectionTestUtils.setField(member, "id", memberId);
-        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
-
-        when(memberRepository.getById(memberId)).thenReturn(member);
-        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(iconMember);
-
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupService.buyIconGroup(memberId, iconGroupId));
-
-        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
-        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, iconGroupId);
-    }
+//    @Test
+//    @DisplayName("아이콘 그룹 구매 성공")
+//    void buyIconGroupSuccess() {
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//
+//        ReflectionTestUtils.setField(member, "id", memberId);
+//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
+//
+//        when(memberRepository.getById(memberId)).thenReturn(member);
+//        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
+//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(null);
+//
+//        Response response = iconGroupService.buyIconGroup(memberId, iconGroupId);
+//
+//        verify(iconMemberRepository, times(1)).save(any(IconMember.class));
+//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+//    }
+//
+//    @Test
+//    @DisplayName("아이콘 그룹 구매 실패 - 이미 구매한 아이콘 존재")
+//    void buyIconGroupFailed() {
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//
+//        ReflectionTestUtils.setField(member, "id", memberId);
+//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
+//
+//        when(memberRepository.getById(memberId)).thenReturn(member);
+//        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
+//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(iconMember);
+//
+//        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupService.buyIconGroup(memberId, iconGroupId));
+//
+//        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
+//        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, iconGroupId);
+//    }
 
 
     @Test

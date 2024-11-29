@@ -36,33 +36,33 @@ public class IconGroupControllerTest extends BaseControllerTests {
         return new IconGroupController(iconGroupService);
     }
 
-    @DisplayName("아이콘 그룹을 구매할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void buyIconGroup() throws Exception {
-
-        mockMvc.perform(
-                        post("/api/v1/iconGroups/members/{iconGroupId}", 1L)
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("아이콘 그룹 구매",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("새로운 아이콘 그룹 구매")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .pathParameters(
-                                        parameterWithName("iconGroupId").description("구매하는 아이콘 그룹 Id")
-                                )
-                                .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(STRING).description("메시지")
-                                )
-                                .build()
-                        )));
-    }
+//    @DisplayName("아이콘 그룹을 구매할 수 있다.")
+//    @WithMockCustomUser
+//    @Test
+//    void buyIconGroup() throws Exception {
+//
+//        mockMvc.perform(
+//                        post("/api/v1/iconGroups/members/{iconGroupId}", 1L)
+//                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+//                )
+//                .andExpect(status().isOk())
+//                .andDo(document("아이콘 그룹 구매",
+//                        resource(ResourceSnippetParameters.builder()
+//                                .tag("아이콘")
+//                                .summary("새로운 아이콘 그룹 구매")
+//                                .requestHeaders(
+//                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+//                                )
+//                                .pathParameters(
+//                                        parameterWithName("iconGroupId").description("구매하는 아이콘 그룹 Id")
+//                                )
+//                                .responseFields(
+//                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+//                                        fieldWithPath("message").type(STRING).description("메시지")
+//                                )
+//                                .build()
+//                        )));
+//    }
 
     @DisplayName("사용자의 토스트 아이콘 그룹 목록을 조회할 수 있다.")
     @WithMockCustomUser

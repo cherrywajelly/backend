@@ -60,7 +60,7 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
-        return new CreatorDetailResponse("profileUrl", "nickname",100,100, 1000, "accountNumber");
+        return new CreatorDetailResponse("profileUrl", "nickname",100, "accountNumber");
     }
 
     @Override
