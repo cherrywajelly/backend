@@ -33,7 +33,7 @@ public class InquiryServiceTest implements InquiryService {
 
     @Override
     public InquiryDetailResponse getInquiryDetail(final long inquiryId) {
-        return new InquiryDetailResponse("title", InquiryState.RESOLVED, LocalDate.of(2024, 11, 11), "email", "content");
+        return new InquiryDetailResponse(1L, "title", InquiryState.RESOLVED, LocalDate.of(2024, 11, 11), "email", "content");
     }
 
 

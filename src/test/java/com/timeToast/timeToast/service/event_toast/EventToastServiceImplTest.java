@@ -11,6 +11,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -95,7 +96,7 @@ public class EventToastServiceImplTest {
 
         when(eventToastRepository.save(any(EventToast.class))).thenReturn(eventToast);
 
-        Response response = eventToastService.saveEventToast(eventToastPostRequest, memberId);
+        ResponseWithId response = eventToastService.saveEventToast(eventToastPostRequest, memberId);
 
         verify(eventToastRepository, times(1)).save(any(EventToast.class));
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
