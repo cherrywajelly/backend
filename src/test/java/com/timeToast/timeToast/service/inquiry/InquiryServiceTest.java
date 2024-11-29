@@ -7,6 +7,7 @@ import com.timeToast.timeToast.dto.inquiry.response.InquiryResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PU
 public class InquiryServiceTest implements InquiryService {
 
     @Override
-    public Response saveInquiry(InquiryRequest inquiryRequest) {
+    public Response saveInquiry(InquiryRequest inquiryRequest, MultipartFile inquiryContents) {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
@@ -33,7 +34,7 @@ public class InquiryServiceTest implements InquiryService {
 
     @Override
     public InquiryDetailResponse getInquiryDetail(final long inquiryId) {
-        return new InquiryDetailResponse("title", InquiryState.RESOLVED, LocalDate.of(2024, 11, 11), "email", "content");
+        return new InquiryDetailResponse(1L, "title", InquiryState.RESOLVED, LocalDate.of(2024, 11, 11), "email", "content");
     }
 
 

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,11 +47,12 @@ public class InquiryServiceImplTest {
     @Test
     @DisplayName("문의사항 저장 성공")
     void saveInquirySuccess() {
-        InquiryRequest inquiryRequest = new InquiryRequest("title", "content", "email");
+        InquiryRequest inquiryRequest = new InquiryRequest("title", "email");
+        MultipartFile image = mock(MultipartFile.class);
 
         when(inquiryRepository.save(any(Inquiry.class))).thenReturn(inquiry);
 
-        Response response = inquiryService.saveInquiry(inquiryRequest);
+        Response response = inquiryService.saveInquiry(inquiryRequest, image);
 
         verify(inquiryRepository, times(1)).save(any(Inquiry.class));
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());

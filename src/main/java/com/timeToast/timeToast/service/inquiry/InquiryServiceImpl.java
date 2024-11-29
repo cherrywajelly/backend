@@ -10,15 +10,20 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.inquiry.InquiryRepository;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_INQUIRY;
+import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.FileConstant.SLASH;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PUT;
 
@@ -27,17 +32,22 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PU
 @RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
+    @Value("${spring.cloud.oci.base-url}")
+    private String baseUrl;
+
     private final InquiryRepository inquiryRepository;
+    private final FileUploadService fileUploadService;
 
     @Transactional
     @Override
-    public Response saveInquiry(InquiryRequest inquiryRequest) {
-        System.out.println(inquiryRequest.content());
+    public Response saveInquiry(InquiryRequest inquiryRequest, MultipartFile inquiryContents) {
 
         Inquiry inquiry = inquiryRequest.to(inquiryRequest, InquiryState.UNRESOLVED);
 
         if(inquiry != null) {
             inquiryRepository.save(inquiry);
+            String saveUrl = baseUrl + INQUIRY.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  inquiry.getId();
+            fileUploadService.uploadfile(inquiryContents, saveUrl);
         } else {
             throw new BadRequestException(INVALID_INQUIRY.getMessage());
         }

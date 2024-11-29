@@ -20,7 +20,7 @@ public class Inquiry extends BaseTime {
 
     String title;
 
-    String content;
+    String contents;
 
     String email;
 
@@ -28,9 +28,9 @@ public class Inquiry extends BaseTime {
     InquiryState inquiryState;
 
     @Builder
-    public Inquiry(final String title, final String content, final String email, final InquiryState inquiryState) {
+    public Inquiry(final String title, final String contents, final String email, final InquiryState inquiryState) {
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.email = email;
         this.inquiryState = inquiryState;
     }

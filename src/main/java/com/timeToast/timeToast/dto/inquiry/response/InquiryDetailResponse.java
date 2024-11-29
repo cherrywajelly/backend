@@ -8,19 +8,21 @@ import java.time.LocalDate;
 
 @Builder
 public record InquiryDetailResponse (
+        Long id,
         String title,
         InquiryState inquiryState,
         LocalDate createdAt,
         String email,
-        String content
+        String contents
 ) {
     public static InquiryDetailResponse from(Inquiry inquiry) {
         return InquiryDetailResponse.builder()
+                .id(inquiry.getId())
                 .title(inquiry.getTitle())
                 .inquiryState(inquiry.getInquiryState())
                 .createdAt(inquiry.getCreatedAt().toLocalDate())
                 .email(inquiry.getEmail())
-                .content(inquiry.getContent())
+                .contents(inquiry.getContents())
                 .build();
     }
 }
