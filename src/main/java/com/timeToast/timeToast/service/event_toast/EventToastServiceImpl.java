@@ -13,6 +13,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -52,10 +53,10 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public Response saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
-        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
+    public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+        EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
         log.info("save event toast");
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new ResponseWithId(eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)

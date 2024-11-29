@@ -8,6 +8,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class EventToastServiceTest implements EventToastService {
 
     @Override
-    public Response saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    public ResponseWithId saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
+        return new ResponseWithId(1L, StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
