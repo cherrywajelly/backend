@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
@@ -101,7 +102,7 @@ public class IconGroupServiceImpl implements IconGroupService{
 
     private IconGroupMarketResponses getAllIconGroups(final long memberId, final IconType iconType){
         List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
-        iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN).forEach(
+        iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN, IconState.REGISTERED).forEach(
                 iconGroup ->
                     iconGroupMarketResponses.add(
                             IconGroupMarketResponse.builder()

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IconGroupJpaRepository extends JpaRepository<IconGroup, Long> {
     List<IconGroup> findAllByIconBuiltin(final IconBuiltin iconBuiltin);
-    List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin);
+    List<IconGroup> findAllByIconTypeAndIconBuiltinAndIconState(final IconType iconType, final IconBuiltin iconBuiltin, final IconState iconState);
     List<IconGroup> findAllByIconState(final IconState iconState);
     List<IconGroup> findAllByMemberId(final long memberId);
 }

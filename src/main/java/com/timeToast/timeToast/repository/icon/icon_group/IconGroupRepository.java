@@ -12,7 +12,7 @@ public interface IconGroupRepository {
     IconGroup getById(final long iconGroupId);
     List<IconGroup> findAllByIconBuiltin(final IconBuiltin iconBuiltin);
     List<IconGroup> findAllByMemberId(final long memberId);
-    List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin);
+    List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin,final IconState iconState);
     List<IconGroup> findAllByIconState(final IconState iconState);
 
     void deleteById(final long iconGroupId);

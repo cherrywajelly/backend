@@ -32,8 +32,8 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     }
 
     @Override
-    public List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin){
-        return iconGroupJpaRepository.findAllByIconTypeAndIconBuiltin(iconType, iconBuiltin);
+    public List<IconGroup> findAllByIconTypeAndIconBuiltin(final IconType iconType, final IconBuiltin iconBuiltin, final IconState iconState){
+        return iconGroupJpaRepository.findAllByIconTypeAndIconBuiltinAndIconState(iconType, iconBuiltin,iconState);
     }
 
     @Override
