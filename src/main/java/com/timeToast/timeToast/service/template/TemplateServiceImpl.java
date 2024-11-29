@@ -60,7 +60,7 @@ public class TemplateServiceImpl implements TemplateService {
 
         String text = null;
 
-        if (template.isEmpty()) {
+        if (template.isPresent()) {
             text = template.get().getTemplateText();
         }
 

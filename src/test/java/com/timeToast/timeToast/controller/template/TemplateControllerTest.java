@@ -33,7 +33,7 @@ public class TemplateControllerTest extends BaseControllerTests {
         return new TemplateController(templateService);
     }
 
-    @DisplayName("공유 템플릿 텍스트를 수정할 수 있다.")
+    @DisplayName("공유 템플릿 텍스트를 작성할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveTemplate() throws Exception {
@@ -47,16 +47,16 @@ public class TemplateControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("공유 템플릿 텍스트 수정",
+                .andDo(document("공유 템플릿 텍스트 작성",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("공유 템플릿")
-                                .summary("공유 템플릿 수정")
+                                .summary("공유 템플릿 작성")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .requestFields(
                                         fieldWithPath("eventToastId").type(NUMBER).description("공유할 이벤트 토스트 id"),
-                                        fieldWithPath("text").type(STRING).description("수정할 텍스트")
+                                        fieldWithPath("text").type(STRING).description("작성할 텍스트")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
