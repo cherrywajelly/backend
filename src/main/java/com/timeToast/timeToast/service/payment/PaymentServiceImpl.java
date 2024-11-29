@@ -76,9 +76,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public PaymentSuccessResponse successPayment(final long memberId, final long paymentId,
-                                                 final PaymentSuccessRequest paymentSuccessRequest) {
-        Payment payment = verifyAmount(paymentSuccessRequest.amount(), paymentId);
+    public PaymentSuccessResponse successPayment(final long memberId, final PaymentSuccessRequest paymentSuccessRequest) {
+        Payment payment = verifyAmount(paymentSuccessRequest);
         if(!tossConfirm(paymentSuccessRequest)){
             throw new BadRequestException(INVALID_PAYMENT.getMessage());
         }
@@ -100,8 +99,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public PaymentFailResponse failPayment(final long memberId, final long paymentId) {
-        Payment payment = paymentRepository.findById(paymentId).orElseThrow(
+    public PaymentFailResponse failPayment(final long memberId, final String orderId) {
+        Payment payment = paymentRepository.findByOrderId(orderId).orElseThrow(
                 () -> new NotFoundException(PAYMENT_NOT_FOUND.getMessage()));
 
         payment.updatePaymentState(PaymentState.FAILURE);
@@ -134,11 +133,11 @@ public class PaymentServiceImpl implements PaymentService {
 
     }
 
-    private Payment verifyAmount(final long amount, final long paymentId) {
-        Payment payment = paymentRepository.findById(paymentId).orElseThrow(
+    private Payment verifyAmount(final PaymentSuccessRequest paymentSuccessRequest) {
+        Payment payment = paymentRepository.findByOrderId(paymentSuccessRequest.orderId()).orElseThrow(
                 () -> new NotFoundException(PAYMENT_NOT_FOUND.getMessage()));
 
-        if(payment.getAmount() != amount){
+        if(payment.getAmount() != paymentSuccessRequest.amount()){
             throw new BadRequestException(INVALID_PAYMENT.getMessage());
         }
         return payment;

@@ -10,4 +10,5 @@ public interface PaymentRepository {
     Payment save(final Payment order);
     Optional<Payment> findById(final long orderId);
     List<Payment> findAllByIconGroupId(final long iconGroupId);
+    Optional<Payment> findByOrderId(final String orderId);
 }

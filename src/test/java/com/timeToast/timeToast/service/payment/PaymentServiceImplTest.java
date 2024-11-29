@@ -19,7 +19,6 @@ import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -269,7 +268,7 @@ public class PaymentServiceImplTest {
         when(paymentRepository.findById(1L)).thenReturn(Optional.of(payment));
 
         //when
-        PaymentFailResponse paymentFailResponse = paymentService.failPayment(1L, 1L);
+        PaymentFailResponse paymentFailResponse = paymentService.failPayment(1L, "jdhaeudjkioeudjc");
 
         //then
         assertEquals(payment.getId(), paymentFailResponse.paymentId());
