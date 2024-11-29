@@ -84,7 +84,7 @@ public class PaymentControllerTest extends BaseControllerTests {
         String json = objectMapper.writeValueAsString(paymentSuccessRequest);
 
         mockMvc.perform(
-                        post("/api/v1/payments/{paymentId}/success",1)
+                        post("/api/v1/payments/success")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
@@ -92,9 +92,6 @@ public class PaymentControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("결제 성공 승인 요청",
-                        pathParameters(
-                                parameterWithName("paymentId").description("paymentId")
-                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("결제")
                                 .summary("결제 성공 승인 요청하기")
@@ -124,15 +121,13 @@ public class PaymentControllerTest extends BaseControllerTests {
 
 
         mockMvc.perform(
-                        post("/api/v1/payments/{paymentId}/fail",1L)
+                        post("/api/v1/payments/fail")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .param("orderId", "orderId")
 
                 )
                 .andExpect(status().isOk())
                 .andDo(document("결제 실패 요청",
-                        pathParameters(
-                                parameterWithName("paymentId").description("paymentId")
-                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("결제")
                                 .summary("결제 실패 요청하기")
