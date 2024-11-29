@@ -47,7 +47,9 @@ public class InquiryServiceImpl implements InquiryService {
         if(inquiry != null) {
             inquiryRepository.save(inquiry);
             String saveUrl = baseUrl + INQUIRY.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  inquiry.getId();
-            fileUploadService.uploadfile(inquiryContents, saveUrl);
+            inquiry.updateInquiryContentsUrl(fileUploadService.uploadfile(inquiryContents, saveUrl));
+            inquiryRepository.save(inquiry);
+            log.info("Save inquiry {}", inquiry.getId());
         } else {
             throw new BadRequestException(INVALID_INQUIRY.getMessage());
         }
