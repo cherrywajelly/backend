@@ -17,8 +17,7 @@ import static com.timeToast.timeToast.util.TestConstant.TEST_AUTH_CODE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
@@ -29,12 +28,11 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
 
     @Override
     protected Object initController() {
-        return new InquiryController(inquiryService);
+        return new InquiryAdminController(inquiryService);
     }
 
 
     @DisplayName("문의사항 목록을 조회할 수 있다.")
-    @WithMockCustomUser
     @Test
     void getAllInquiry() throws Exception {
 
@@ -53,14 +51,13 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("inquiryResponses[0].inquiryId").type(NUMBER).description("문의사항 id"),
                                         fieldWithPath("inquiryResponses[0].title").type(STRING).description("문의사항 제목"),
-                                        fieldWithPath("inquiryResponse[0].inquiryState").type(STRING).description("문의사항 작성 날짜")
+                                        fieldWithPath("inquiryResponses[0].inquiryState").type(STRING).description("문의사항 작성 날짜")
                                 )
                                 .build()
                         )));
     }
 
     @DisplayName("문의사항을 상세 조회할 수 있다.")
-    @WithMockCustomUser
     @Test
     void getInquiryDetail() throws Exception {
 
@@ -82,7 +79,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("title").type(STRING).description("문의사항 제목"),
                                         fieldWithPath("inquiryState").type(STRING).description("문의사항 해결 타입"),
-                                        fieldWithPath("createdAt").type(STRING).description("문의사항 작성 날짜"),
+                                        fieldWithPath("createdAt").type(ARRAY).description("문의사항 작성 날짜"),
                                         fieldWithPath("email").type(STRING).description("문의자 이메일"),
                                         fieldWithPath("content").type(STRING).description("문의사항 내용")
                                 )
