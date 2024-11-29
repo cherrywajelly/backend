@@ -61,6 +61,7 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("openedDate").type(STRING).description("토스트 개봉 날짜")
                                 )
                                 .responseFields(
+                                        fieldWithPath("id").type(NUMBER).description("저장한 이벤트 토스트의 id 값"),
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("메시지")
                                 )

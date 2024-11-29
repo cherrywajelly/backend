@@ -209,3 +209,20 @@ CREATE TABLE fcm (
                      image_url VARCHAR(255),
                      PRIMARY KEY (fcm_id)
 );
+
+CREATE TABLE template (
+                     template_id BIGINT AUTO_INCREMENT,
+                     member_id BIGINT,
+                     event_toast_id BIGINT,
+                     template_text VARCHAR(200),
+                     PRIMARY KEY (template_id)
+);
+
+CREATE TABLE inquiry (
+                     inquiry_id BIGINT AUTO_INCREMENT,
+                     title VARCHAR(100),
+                     content VARCHAR(255),
+                     email VARCHAR(100),
+                     inquiry_state VARCHAR(40),
+                     PRIMARY KEY (inquiry_id)
+);
