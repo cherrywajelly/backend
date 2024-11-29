@@ -42,7 +42,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
-        String accessToken = createToken(loginMember, ONE_DAY.time());
+        String accessToken = createToken(loginMember, 7*ONE_DAY.time());
         String refreshToken = createToken(loginMember, 30*ONE_DAY.time());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
