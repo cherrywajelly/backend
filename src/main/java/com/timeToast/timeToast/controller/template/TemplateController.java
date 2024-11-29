@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class TemplateController {
     private final TemplateService templateService;
 
-    @PutMapping("")
-    public Response saveTemplate(@Login LoginMember loginMember, final TemplateSaveRequest templateSaveRequest) {
+    @PostMapping("")
+    public Response saveTemplate(@Login LoginMember loginMember, @RequestBody final TemplateSaveRequest templateSaveRequest) {
         return templateService.saveTemplate(loginMember.id(), templateSaveRequest);
     }
 

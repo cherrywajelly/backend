@@ -4,7 +4,6 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.template.Template;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateResponse;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
@@ -69,9 +68,10 @@ public class TemplateServiceImplTest {
     @DisplayName("새로운 공유 템플릿 저장 성공")
     void saveTemplate() {
         long memberId = 1L;
+        long eventToastId = 1L;
         TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(1L, "text");
 
-
+        when(eventToastRepository.getByIdAndMemberId(memberId, eventToastId)).thenReturn(Optional.of(eventToast));
         when(templateRepository.getByEventToastId(templateSaveRequest.eventToastId())).thenReturn(Optional.empty());
         when(templateRepository.save(any(Template.class))).thenReturn(template);
 
@@ -86,9 +86,10 @@ public class TemplateServiceImplTest {
     @DisplayName("공유 템플릿 새로운 텍스트 저장 성공")
     void saveTemplateUpdateText() {
         long memberId = 1L;
+        long eventToastId = 1L;
         TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(1L, "text");
 
-
+        when(eventToastRepository.getByIdAndMemberId(memberId, eventToastId)).thenReturn(Optional.of(eventToast));
         when(templateRepository.getByEventToastId(templateSaveRequest.eventToastId())).thenReturn(Optional.of(template));
         when(templateRepository.save(any(Template.class))).thenReturn(template);
 

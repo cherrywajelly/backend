@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class TemplateServiceTest implements TemplateService{
     @Override
     public Response saveTemplate(final long memberId, final TemplateSaveRequest templateSaveRequest) {
-        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_DELETE.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SuccessConstant.SUCCESS_POST.getMessage());
     }
 
     @Override

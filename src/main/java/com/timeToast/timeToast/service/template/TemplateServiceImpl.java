@@ -8,6 +8,7 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateRespon
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TEMPLATE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
@@ -35,17 +37,24 @@ public class TemplateServiceImpl implements TemplateService {
     @Transactional
     @Override
     public Response saveTemplate(final long memberId, final TemplateSaveRequest templateSaveRequest) {
+        Optional<EventToast> eventToast = eventToastRepository.getByIdAndMemberId(templateSaveRequest.eventToastId(), memberId);
         Optional<Template> template = templateRepository.getByEventToastId(templateSaveRequest.eventToastId());
 
-        if (template.isPresent()) {
-            template.get().updateTemplateText(templateSaveRequest.text());
-            templateRepository.save(template.get());
+        if (eventToast.isPresent()) {
+            if (template.isPresent()) {
+                template.get().updateTemplateText(templateSaveRequest.text());
+                templateRepository.save(template.get());
+            } else {
+                Template newTemplate = TemplateSaveRequest.toEntity(memberId, templateSaveRequest);
+                templateRepository.save(newTemplate);
+            }
+
+            log.info("save new template for event toast {}", templateSaveRequest.eventToastId());
         } else {
-            Template newTemplate = TemplateSaveRequest.toEntity(memberId, templateSaveRequest);
-            templateRepository.save(newTemplate);
+            throw new BadRequestException(INVALID_TEMPLATE.getMessage());
         }
 
-        log.info("save new template for event toast {}", templateSaveRequest.eventToastId());
+
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 

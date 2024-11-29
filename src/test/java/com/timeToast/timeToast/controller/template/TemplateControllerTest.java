@@ -17,8 +17,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -37,14 +36,14 @@ public class TemplateControllerTest extends BaseControllerTests {
     @WithMockCustomUser
     @Test
     void saveTemplate() throws Exception {
-        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(1L, "텍스트");
+        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(1L, "text");
         String json = objectMapper.writeValueAsString(templateSaveRequest);
 
         mockMvc.perform(
-                        put("/api/v1/template")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                                .contentType(APPLICATION_JSON)
-                                .content(json)
+                post("/api/v1/template")
+                        .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("공유 템플릿 텍스트 작성",

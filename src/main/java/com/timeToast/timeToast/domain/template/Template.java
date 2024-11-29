@@ -21,6 +21,7 @@ public class Template extends BaseTime {
 
     private Long eventToastId;
 
+    @Column(length = 200)
     private String templateText;
 
     @Builder
