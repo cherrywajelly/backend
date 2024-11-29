@@ -32,6 +32,7 @@ public class InquiryServiceImpl implements InquiryService {
     @Transactional
     @Override
     public Response saveInquiry(InquiryRequest inquiryRequest) {
+        System.out.println(inquiryRequest.content());
 
         Inquiry inquiry = inquiryRequest.to(inquiryRequest, InquiryState.UNRESOLVED);
 

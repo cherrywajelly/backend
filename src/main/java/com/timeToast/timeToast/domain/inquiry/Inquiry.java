@@ -24,6 +24,7 @@ public class Inquiry extends BaseTime {
 
     String email;
 
+    @Enumerated(EnumType.STRING)
     InquiryState inquiryState;
 
     @Builder

@@ -6,6 +6,7 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     @PostMapping("")
-    public Response saveInquiry(InquiryRequest inquiryRequest) {
+    public Response saveInquiry(@RequestBody InquiryRequest inquiryRequest) {
         return inquiryService.saveInquiry(inquiryRequest);
     }
 }
