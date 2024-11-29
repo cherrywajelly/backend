@@ -61,6 +61,10 @@ public enum ExceptionConstant {
     //premium
     PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
 
+    // inquiry
+    INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+    INVALID_INQUIRY("잘못된 문의 형식입니다."),
+
     //payment
     PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),
     INVALID_PAYMENT("잘못된 결제 요청입니다."),
