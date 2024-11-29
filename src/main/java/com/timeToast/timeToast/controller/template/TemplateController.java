@@ -9,7 +9,7 @@ import com.timeToast.timeToast.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/template")
+@RequestMapping("/api/v1/templates")
 @RestController
 @RequiredArgsConstructor
 public class TemplateController {
