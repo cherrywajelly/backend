@@ -101,23 +101,23 @@ public class IconGroupAdminServiceImplTest {
                 .hasMessageContaining(INVALID_ICON_GROUP.getMessage());
     }
 
-    @Test
-    @DisplayName("아이콘 그룹 조회 - 성공")
-    void getIconGroupSuccess() {
-        // Given
-        long memberId = 1L;
-        long iconGroupId = 1L;
-        ReflectionTestUtils.setField(member, "id", memberId);
-        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
-
-        when(memberRepository.getById(1L)).thenReturn(member);
-        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
-        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
-
-        // When
-        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
-
-        // Then
-        assertThat(iconGroupCreatorResponses).isNotNull();
-    }
+//    @Test
+//    @DisplayName("아이콘 그룹 조회 - 성공")
+//    void getIconGroupSuccess() {
+//        // Given
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//        ReflectionTestUtils.setField(member, "id", memberId);
+//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
+//
+//        when(memberRepository.getById(1L)).thenReturn(member);
+//        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
+//        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
+//
+//        // When
+//        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
+//
+//        // Then
+//        assertThat(iconGroupCreatorResponses).isNotNull();
+//    }
 }

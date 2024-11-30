@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.domain.month_settlement;
 
 import com.google.type.DateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import jakarta.persistence.*;
@@ -10,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Entity
 @Table(name = "month_settlement")
@@ -47,4 +51,6 @@ public class MonthSettlement extends BaseTime {
     public void updateSettlementState(final SettlementState settlementState) {
         this.settlementState = settlementState;
     }
+
+    public void updateSettlementDate(final DateTime settlementDate) { this.settlementDate = settlementDate; }
 }

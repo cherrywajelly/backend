@@ -6,6 +6,9 @@ import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -91,4 +94,14 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         );
         return new CreatorIconInfos(1, 1000, creatorIconInfos);
     }
+
+    @Override
+    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
+        List<String> iconImageUrls = new ArrayList<>();
+        List<String> iconTitles = new ArrayList<>();
+        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", iconTitles, 1, 1);
+        IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
+        return iconGroupCreatorDetail;
+    }
+
 }
