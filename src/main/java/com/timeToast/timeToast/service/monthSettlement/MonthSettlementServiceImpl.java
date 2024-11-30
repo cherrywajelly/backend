@@ -17,32 +17,32 @@ public class MonthSettlementServiceImpl implements MonthSettlementService {
 
     private final MonthSettlementRepository monthSettlementRepository;
 
-    @Scheduled(cron = "0 0 0 0 0 *")
-    @Transactional
-    public void updateMonthSettlement() {
-        List<GiftToast> giftToasts = monthSettlementRepository.findAllGiftToastToOpen();
-
-        giftToasts.forEach(
-                giftToast -> {
-                    List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
-                    List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
-
-                    boolean isOpen = giftToastOwners.stream()
-                            .allMatch(giftToastOwner ->
-                                    toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId()))
-                            );
-
-                    if(isOpen){
-                        giftToast.updateIsOpened(true);
-                        giftToastOwners.forEach(
-                                giftToastOwner -> sendOpenedMessage(giftToast, giftToastOwner.getMemberId())
-
-                        );
-                    }
-
-                }
-        );
-
-        log.info("update gift toast's is open");
-    }
+//    @Scheduled(cron = "0 0 0 0 0 *")
+//    @Transactional
+//    public void updateMonthSettlement() {
+//        List<GiftToast> giftToasts = monthSettlementRepository.findAllGiftToastToOpen();
+//
+//        giftToasts.forEach(
+//                giftToast -> {
+//                    List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
+//                    List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
+//
+//                    boolean isOpen = giftToastOwners.stream()
+//                            .allMatch(giftToastOwner ->
+//                                    toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(giftToastOwner.getMemberId()))
+//                            );
+//
+//                    if(isOpen){
+//                        giftToast.updateIsOpened(true);
+//                        giftToastOwners.forEach(
+//                                giftToastOwner -> sendOpenedMessage(giftToast, giftToastOwner.getMemberId())
+//
+//                        );
+//                    }
+//
+//                }
+//        );
+//
+//        log.info("update gift toast's is open");
+//    }
 }
