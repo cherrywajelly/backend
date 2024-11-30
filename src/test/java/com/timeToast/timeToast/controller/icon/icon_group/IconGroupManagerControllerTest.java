@@ -51,7 +51,7 @@ public class IconGroupManagerControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 승인",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 아이콘")
+                                .tag("아이콘")
                                 .summary("관리자 아이콘 승인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -82,7 +82,7 @@ public class IconGroupManagerControllerTest extends BaseControllerTests {
                                 parameterWithName("iconGroupId").description("iconGroup Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 아이콘")
+                                .tag("아이콘")
                                 .summary("관리자 아이콘 그룹 단일 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -111,7 +111,7 @@ public class IconGroupManagerControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 전체 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 아이콘")
+                                .tag("아이콘")
                                 .summary("관리자 아이콘 그룹 전체 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -138,7 +138,7 @@ public class IconGroupManagerControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 승인 리스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 아이콘")
+                                .tag("아이콘")
                                 .summary("관리자 아이콘 그룹 승인 리스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
