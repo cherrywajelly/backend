@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
+import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementDetailRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
@@ -50,15 +51,15 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional
     @Override
-    public SettlementCreatorInfoResponse approvalSettlement(final SettlementDetailRequest settlementDetailRequest) {
-        settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementDetailRequest.year(), settlementDetailRequest.month(),1),
-                settlementDetailRequest.creatorId()).forEach(
+    public SettlementCreatorInfoResponse approvalSettlement(final SettlementApprovalRequest settlementApprovalRequest) {
+        settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementApprovalRequest.year(), settlementApprovalRequest.month(),1),
+                settlementApprovalRequest.creatorId()).forEach(
                         settlement -> {
-                            settlement.updateSettlementState(SettlementState.AFTER_SETTLEMENT);
+                            settlement.updateSettlementState(settlementApprovalRequest.settlementState());
                             settlement.updateSettlementDate(LocalDate.now());
                         }
         );
-        return new SettlementCreatorInfoResponse(settlementDetailRequest.year(), settlementDetailRequest.month(), LocalDate.now());
+        return new SettlementCreatorInfoResponse(settlementApprovalRequest.year(), settlementApprovalRequest.month(), LocalDate.now());
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +72,7 @@ public class SettlementServiceImpl implements SettlementService {
                 (existing, replacement) -> existing)).values().stream().toList().forEach(
                         settlementResponse -> {
 
-                            if(settlementResponse.getSettlementState().equals(SettlementState.AFTER_SETTLEMENT)){
+                            if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
                                 settlementCreatorInfoResponses.add(
                                         SettlementCreatorInfoResponse.builder()
                                                 .year(settlementResponse.getYearsMonth().getYear())
@@ -102,7 +103,7 @@ public class SettlementServiceImpl implements SettlementService {
                                         .memberId(monthSettlement.getMemberId())
                                         .nickname(creator.get().getNickname())
                                         .profileUrl(creator.get().getMemberProfileUrl())
-                                        .settlementState(SettlementState.BEFORE_SETTLEMENT)
+                                        .settlementState(SettlementState.WAITING)
                                         .build());
                             }
                         }
@@ -125,7 +126,7 @@ public class SettlementServiceImpl implements SettlementService {
 
         SettlementState settlementState;
         if(settlementIcons.isEmpty()){
-            settlementState = SettlementState.BEFORE_SETTLEMENT;
+            settlementState = SettlementState.WAITING;
         }else{
             settlementState = settlementIcons.stream().findFirst().get().settlementState();
         }
@@ -155,7 +156,7 @@ public class SettlementServiceImpl implements SettlementService {
 
         SettlementState settlementState;
         if(settlementIcons.isEmpty()){
-            settlementState = SettlementState.BEFORE_SETTLEMENT;
+            settlementState = SettlementState.WAITING;
         }else{
             settlementState = settlementIcons.stream().findFirst().get().settlementState();
         }
@@ -199,7 +200,7 @@ public class SettlementServiceImpl implements SettlementService {
                                 .yearMonth(LocalDate.now())
                                 .revenue(paymentDto.salesRevenue())
                                 .settlements((long) (paymentDto.salesRevenue()*0.7))
-                                .settlementState(SettlementState.BEFORE_SETTLEMENT)
+                                .settlementState(SettlementState.WAITING)
                                 .build()));
 
     }
