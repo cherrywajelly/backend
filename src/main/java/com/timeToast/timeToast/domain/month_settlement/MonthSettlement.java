@@ -1,5 +1,6 @@
-package com.timeToast.timeToast.domain.monthSettlement;
+package com.timeToast.timeToast.domain.month_settlement;
 
+import com.google.type.DateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
@@ -8,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -24,19 +27,20 @@ public class MonthSettlement extends BaseTime {
 
     private long memberId;
 
-    private YearMonth month;
+    private Date yearMonth;
+
+    private long revenue;
 
     private long settlement;
 
     private SettlementState settlementState;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate settlementDate;
+    private DateTime settlementDate;
 
     @Builder
-    public MonthSettlement(final long memberId, final YearMonth month, final long settlement, final SettlementState settlementState) {
+    public MonthSettlement(final long memberId, final Date yearMonth, final long settlement, final SettlementState settlementState) {
         this.memberId = memberId;
-        this.month = month;
+        this.yearMonth = yearMonth;
         this.settlement = settlement;
         this.settlementState = settlementState;
     }
@@ -45,5 +49,5 @@ public class MonthSettlement extends BaseTime {
         this.settlementState = settlementState;
     }
 
-    public void updateSettlementDate(final LocalDate settlementDate) { this.settlementDate = settlementDate; }
+    public void updateSettlementDate(final DateTime settlementDate) { this.settlementDate = settlementDate; }
 }

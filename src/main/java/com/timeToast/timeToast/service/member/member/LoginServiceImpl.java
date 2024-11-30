@@ -9,6 +9,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 
 @Service
@@ -43,6 +45,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
 
+
     @Transactional
     @Override
     public LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {
@@ -51,6 +54,10 @@ public class LoginServiceImpl implements LoginService {
 
         if(findMember.isPresent()){
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
+        }
+
+        if(memberRole.equals(MemberRole.MANAGER)){
+            throw new NotFoundException(MEMBER_NOT_FOUND.getMessage());
         }
 
         String nickname = RandomStringUtils.randomAlphabetic(7);
@@ -70,9 +77,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
 
-    @Transactional
-    @Override
-    public void addBuiltinIcon(final Member member) {
+    private void addBuiltinIcon(final Member member) {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.BUILTIN);
         for (IconGroup iconGroup : iconGroups) {
             iconMemberRepository.save(IconMember.builder()

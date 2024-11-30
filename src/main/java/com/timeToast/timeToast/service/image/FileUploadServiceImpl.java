@@ -54,14 +54,18 @@ public class FileUploadServiceImpl implements FileUploadService {
                 ociConfig.getObjectStorage().putObject(putObjectRequest);
                 return urlPrefix + putObjectRequest.getObjectName();
             } else {
+                //전송 형식
                 throw new BadRequestException("ObjectStorage_client_is_null. Cannot perform putObject.");
             }
         } catch (IOException e) {
+            // ObjectStorageClient
             throw new RuntimeException(e);
+
         } finally {
             try {
                 ociConfig.getObjectStorage().close();
             } catch (Exception e) {
+                //t서버
                 throw new RuntimeException(e);
             }
         }

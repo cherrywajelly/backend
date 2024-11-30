@@ -19,7 +19,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-public class IconGroupAdminController {
+public class IconGroupCreatorController {
 
     private final IconGroupAdminService iconGroupAdminService;
     private final IconService iconService;

@@ -1,13 +1,10 @@
 package com.timeToast.timeToast.repository.monthSettlement;
 
-import com.timeToast.timeToast.domain.monthSettlement.MonthSettlement;
-import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.SETTLEMENT_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor

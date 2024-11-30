@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
@@ -9,7 +10,6 @@ import com.timeToast.timeToast.global.response.Response;
 import java.util.List;
 
 public interface IconGroupService {
-    Response buyIconGroup(final long memberId, final long iconGroupId);
     IconGroupResponses getToastIconGroups(final long memberId);
     IconGroupResponses getJamIconGroups(final long memberId);
     IconGroupMarketResponses getAllToastsIconGroups(final long memberId);

@@ -37,7 +37,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastGroup() throws Exception {
 
-        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), "title");
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.now(), LocalDate.now(), "title");
         String json = objectMapper.writeValueAsString(giftToastGroupRequest);
 
         mockMvc.perform(
@@ -48,7 +48,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 그룹",
+                .andDo(document("선물 토스트 저장 - 그룹 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("선물 토스트")
                                 .summary("선물 토스트 저장 - 그룹")
@@ -73,12 +73,126 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
+
+    @DisplayName("group 선물 토스트를 저장할 수 있다.-실패: 자신의 그룹이 아닌 경우")
+    @WithMockCustomUser
+    @Test
+    void saveGiftToastGroupFail() throws Exception {
+
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now(), "title");
+        String json = objectMapper.writeValueAsString(giftToastGroupRequest);
+
+        mockMvc.perform(
+                        post("/api/v1/giftToasts/group")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("선물 토스트 저장 - 그룹 실패: 자신의 그룹이 아닌 경우",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("선물 토스트")
+                                .summary("선물 토스트 저장 - 그룹")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 Id"),
+                                        fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
+                                        fieldWithPath("openedDate").type(STRING).description("opened date"),
+                                        fieldWithPath("title").type(STRING).description("제목")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("잘못된 선물 토스트 형식입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("group 선물 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
+    @WithMockCustomUser
+    @Test
+    void saveGiftToastGroupDateFail() throws Exception {
+
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now().minusDays(1), "title");
+        String json = objectMapper.writeValueAsString(giftToastGroupRequest);
+
+        mockMvc.perform(
+                        post("/api/v1/giftToasts/group")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("선물 토스트 저장 - 그룹 실패: 잘못된 openedDate",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("선물 토스트")
+                                .summary("선물 토스트 저장 - 그룹")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 Id"),
+                                        fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
+                                        fieldWithPath("openedDate").type(STRING).description("opened date"),
+                                        fieldWithPath("title").type(STRING).description("제목")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("잘못된 선물 토스트 형식입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("friend 선물 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
+    @WithMockCustomUser
+    @Test
+    void saveGiftToastFriendDateFail() throws Exception {
+
+        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(1),  "title");
+        String json = objectMapper.writeValueAsString(giftToastFriendRequest);
+
+        mockMvc.perform(
+                        post("/api/v1/giftToasts/friend")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("선물 토스트 저장 - 팔로잉 실패: 잘못된 openedDate",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("선물 토스트")
+                                .summary("선물 토스트 저장 - 팔로잉")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
+                                        fieldWithPath("friendId").type(NUMBER).description("팔로잉 Id"),
+                                        fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
+                                        fieldWithPath("openedDate").type(STRING).description("opened date"),
+                                        fieldWithPath("title").type(STRING).description("제목")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("잘못된 선물 토스트 형식입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("friend 선물 토스트를 저장할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveGiftToastFriend() throws Exception {
 
-        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), "title");
+        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
         String json = objectMapper.writeValueAsString(giftToastFriendRequest);
 
         mockMvc.perform(
@@ -88,10 +202,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 팔로잉",
+                .andDo(document("선물 토스트 저장 - 팔로잉 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 팔로잉")
+                                .summary("선물 토스트 저장 - 팔로잉 ")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -113,12 +227,50 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
+
+
+    @DisplayName("mine 선물 토스트를 저장할 수 있다. - 실패: 잘못된 openedDate")
+    @WithMockCustomUser
+    @Test
+    void saveGiftToastMineDateFail() throws Exception {
+
+        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now().minusDays(1),"title");
+        String json = objectMapper.writeValueAsString(giftToastMineRequest);
+
+        mockMvc.perform(
+                        post("/api/v1/giftToasts/mine")
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("선물 토스트 저장 - 나에게  실패: 잘못된 openedDate",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("선물 토스트")
+                                .summary("선물 토스트 저장 - 나에게")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
+                                        fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
+                                        fieldWithPath("openedDate").type(STRING).description("opened date"),
+                                        fieldWithPath("title").type(STRING).description("제목")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("잘못된 선물 토스트 형식입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("mine 선물 토스트를 저장할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveGiftToastMine() throws Exception {
 
-        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), "title");
+        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now(), "title");
         String json = objectMapper.writeValueAsString(giftToastMineRequest);
 
         mockMvc.perform(
@@ -128,7 +280,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 나에게",
+                .andDo(document("선물 토스트 저장 - 나에게 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("선물 토스트")
                                 .summary("선물 토스트 저장 - 나에게")
@@ -153,7 +305,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("선물 토스트 단일 상세 조회를 할 수 있다. ")
+    @DisplayName("선물 토스트 단일 상세 조회를 할 수 있다.")
     @WithMockCustomUser
     @Test
     void getGiftToast() throws Exception {
@@ -165,7 +317,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 단일 상세 조회",
+                .andDo(document("선물 토스트 단일 상세 조회 성공",
                         pathParameters(
                                 parameterWithName("giftToastId").description("giftToast Id")
                         ),
@@ -199,6 +351,36 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("toastPieceResponses.toastPieceResponses[0].toastPieceImages[0]").type(ARRAY).description("토스트의 이미지 리스트")
 
                                         )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("선물 토스트 단일 상세 조회를 할 수 있다. - 실패: 찾을 수 없음. ")
+    @WithMockCustomUser
+    @Test
+    void getGiftToastFail() throws Exception {
+
+
+        mockMvc.perform(
+                        get("/api/v1/giftToasts/{giftToastId}", 2L)
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("선물 토스트 단일 상세 조회 실패",
+                        pathParameters(
+                                parameterWithName("giftToastId").description("giftToast Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("선물 토스트")
+                                .summary("선물 토스트 단일 상세 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("404"),
+                                        fieldWithPath("message").type(STRING).description("선물 토스트를 찾을 수 없습니다.")
+                                )
                                 .build()
                         )));
     }
@@ -264,7 +446,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("자신의 선물 토스트를 삭제할 수 있다..")
+    @DisplayName("자신의 선물 토스트를 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
     void deleteGiftToast() throws Exception {

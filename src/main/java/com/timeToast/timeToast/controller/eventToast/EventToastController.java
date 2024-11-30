@@ -5,6 +5,7 @@ import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -19,8 +20,8 @@ public class EventToastController {
     private final EventToastService eventToastService;
 
     @PostMapping("")
-    public Response postEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
-        return eventToastService.postEventToast(eventToastPostRequest, loginMember.id());
+    public ResponseWithId saveEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
+        return eventToastService.saveEventToast(eventToastPostRequest, loginMember.id());
     }
 
     @GetMapping("/member")

@@ -39,7 +39,6 @@ public class CreatorServiceImpl implements CreatorService {
     private final IconGroupRepository iconGroupRepository;
     private final IconRepository iconRepository;
     private final OrdersRepository ordersRepository;
-    private final CreatorAccountRepository createCreatorAccountRepository;
 
 
     @Transactional(readOnly = true)

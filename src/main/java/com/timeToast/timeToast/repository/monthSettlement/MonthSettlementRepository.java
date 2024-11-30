@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.monthSettlement;
 
-import com.timeToast.timeToast.domain.monthSettlement.MonthSettlement;
+import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
 
 import java.util.List;
 

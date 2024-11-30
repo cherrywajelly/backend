@@ -11,32 +11,31 @@ import org.junit.jupiter.api.Test;
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_AUTH_CODE;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class OAuthAdminControllerTest extends BaseControllerTests {
+public class OAuthManagerControllerTest extends BaseControllerTests {
 
     private final OAuthService oAuthService = new OAuthServiceTest();
 
     @Override
     protected Object initController() {
-        return new OAuthAdminController(oAuthService);
+        return new OAuthManagerController(oAuthService);
     }
 
     @DisplayName("관리자는 인가 코드를 사용하여 카카오 로그인에 성공한다.")
     @Test()
-    void kakaoLogin() throws Exception {
+    void managerKakaoLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v3/login/kakao")
                                 .param("code", TEST_AUTH_CODE.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentationWrapper.document("카카오 로그인 성공",
+                .andDo(MockMvcRestDocumentationWrapper.document("관리자 카카오 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("관리자 카카오 로그인")
@@ -55,14 +54,14 @@ public class OAuthAdminControllerTest extends BaseControllerTests {
 
     @DisplayName("관리자는 인가 코드를 사용하여 구글 로그인에 성공한다.")
     @Test()
-    void googleLogin() throws Exception {
+    void managerGoogleLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v3/login/google")
                                 .param("code", TEST_AUTH_CODE.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentationWrapper.document("구글 로그인 성공",
+                .andDo(MockMvcRestDocumentationWrapper.document("관리자 구글 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("관리자 구글 로그인")

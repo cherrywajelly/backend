@@ -163,4 +163,64 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("로그인한 사용자는 자신의 토스트 조각을 삭제할 수 있다. - 실패: 토스트 조각 조회 실패")
+    @WithMockCustomUser
+    @Test
+    void deleteToastPieceToastPieceFail() throws Exception {
+
+
+        mockMvc.perform(
+                        delete("/api/v1/toastPieces/{toastPieceId}", 2L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("토스트 조각 삭제 실패: 토스트 조각 조회 실패",
+                        pathParameters(
+                                parameterWithName("toastPieceId").description("토스트 조각 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("토스트 조각")
+                                .summary("토스트 조각 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("토스트 조각을 존재하지 않습니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자는 자신의 토스트 조각을 삭제할 수 있다. - 실패: 자신의 토스트 조각 아님")
+    @WithMockCustomUser
+    @Test
+    void deleteToastPieceMemberFail() throws Exception {
+
+
+        mockMvc.perform(
+                        delete("/api/v1/toastPieces/{toastPieceId}", 3L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("토스트 조각 삭제 실패: 자신의 토스트 조각 아님",
+                        pathParameters(
+                                parameterWithName("toastPieceId").description("토스트 조각 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("토스트 조각")
+                                .summary("토스트 조각 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("자신의 토스트 조각이 아닙니다.")
+                                )
+                                .build()
+                        )));
+    }
+
 }
