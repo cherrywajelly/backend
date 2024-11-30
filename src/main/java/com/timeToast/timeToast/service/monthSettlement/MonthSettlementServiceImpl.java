@@ -3,12 +3,14 @@ package com.timeToast.timeToast.service.monthSettlement;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
+import com.timeToast.timeToast.dto.payment.PaymentDto;
 import com.timeToast.timeToast.repository.monthSettlement.MonthSettlementRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class MonthSettlementServiceImpl implements MonthSettlementService {
 
@@ -21,29 +23,33 @@ public class MonthSettlementServiceImpl implements MonthSettlementService {
     }
 
 
-//    @Scheduled(cron = "0 0 0 1 * *")
-//    @Transactional
-//    public void updateMonthSettlement() {
-//        paymentRepository.findAllByMonthlyPayments(LocalDate.now().minusMonths(1), LocalDate.now()).forEach(
-//                paymentDto -> {
-//                    if(paymentDto.itemType().equals(ItemType.ICON){
+    public void test(){
+        System.out.println(paymentRepository.findAllByMonthlyPayments(LocalDate.now().minusMonths(1), LocalDate.now()));
+    }
+
+    @Scheduled(cron = "0 0 0 1 * *")
+    @Transactional
+    public void updateMonthSettlement() {
+        System.out.println(paymentRepository.findAllByMonthlyPayments(LocalDate.now().minusMonths(1), LocalDate.now()));
+//        paymentRepository.findAllByMonthlyPayments(LocalDate.now().minusMonths(1), LocalDate.now()).stream()
+//                .map(Collectors.groupingBy(PaymentDto::memberId)).toList().forEach(
+//                paymentDtos -> {
 //
-//                        MonthSettlement monthSettlement = monthSettlementRepository.save(
-//                                        MonthSettlement.builder()
-//                                                .settlement()
-//                                                .revenue()
-//                                                .yearMonth()
-//                                                .settlementState(SettlementState.BEFORE_SETTLEMENT)
-//                                                .settlementDate()
-//                                                .build()
+//                    monthSettlementRepository.save(
+//                            MonthSettlement.builder()
+//                                    .memberId(paymentDtos)
+//                                    .settlement((long) (paymentDto.salesRevenue()*0.7))
+//                                    .revenue(paymentDto.salesRevenue())
+//                                    .yearMonth(LocalDate.now())
+//                                    .settlementState(SettlementState.BEFORE_SETTLEMENT)
+//                                    .settlementDate(null)
+//                                    .build());
 //
-//                                );
-//                    }
 //
 //                }
 //        );
-//
-//    }
+
+    }
 
 
 }

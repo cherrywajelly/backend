@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,7 +24,7 @@ public class MonthSettlement extends BaseTime {
 
     private long memberId;
 
-    private Date yearMonth;
+    private LocalDate yearMonth;
 
     private long revenue;
 
@@ -34,7 +35,7 @@ public class MonthSettlement extends BaseTime {
     private DateTime settlementDate;
 
     @Builder
-    public MonthSettlement(final long memberId, final Date yearMonth, final long revenue,
+    public MonthSettlement(final long memberId, final LocalDate yearMonth, final long revenue,
                            final long settlement, final SettlementState settlementState, final DateTime settlementDate) {
         this.memberId = memberId;
         this.yearMonth = yearMonth;
