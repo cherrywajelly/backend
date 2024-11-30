@@ -1,7 +1,11 @@
 package com.timeToast.timeToast.controller.payment;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.payment.*;
+import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
+import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.payment.PaymentService;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +32,7 @@ public class PaymentController {
     }
 
     @PostMapping("/fail")
-    public PaymentFailResponse failPayment(@Login LoginMember loginMember,@RequestParam("orderId") final String orderId ) {
+    public PaymentFailResponse failPayment(@Login LoginMember loginMember, @RequestParam("orderId") final String orderId ) {
         return paymentService.failPayment(loginMember.id(), orderId);
 
     }

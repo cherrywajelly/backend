@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.payment;
+package com.timeToast.timeToast.dto.payment.request;
 
 public record PaymentSuccessRequest(
         String paymentKey,

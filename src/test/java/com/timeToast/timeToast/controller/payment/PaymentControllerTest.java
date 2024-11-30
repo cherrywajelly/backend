@@ -2,8 +2,8 @@ package com.timeToast.timeToast.controller.payment;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
-import com.timeToast.timeToast.dto.payment.PaymentSaveRequest;
-import com.timeToast.timeToast.dto.payment.PaymentSuccessRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.service.payment.PaymentService;
 import com.timeToast.timeToast.service.payment.PaymentServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -21,7 +21,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
