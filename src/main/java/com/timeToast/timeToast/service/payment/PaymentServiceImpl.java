@@ -69,15 +69,6 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         payment.updateOrderId(RandomStringUtils.randomAlphanumeric(6, 64));
 
-        if(payment.getItemType().equals(ItemType.ICON)){
-            iconMemberRepository.save(iconMemberRepository.save(IconMember.builder()
-                    .memberId(memberId)
-                    .iconGroupId(payment.getItemId())
-                    .build()));
-        }else{
-            Member member = memberRepository.getById(memberId);
-            member.updatePremiumId(payment.getItemId());
-        }
 
         return PaymentSaveResponse.builder()
                 .paymentId(payment.getId())
@@ -100,8 +91,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         String orderName;
         if(payment.getItemType().equals(ItemType.ICON)){
+            iconMemberRepository.save(iconMemberRepository.save(IconMember.builder()
+                    .memberId(memberId)
+                    .iconGroupId(payment.getItemId())
+                    .build()));
             orderName = iconGroupRepository.getById(payment.getItemId()).getName();
         }else{
+            Member member = memberRepository.getById(memberId);
+            member.updatePremiumId(payment.getItemId());
             orderName = premiumRepository.getById(payment.getItemId()).getPremiumType().toString();
         }
 
