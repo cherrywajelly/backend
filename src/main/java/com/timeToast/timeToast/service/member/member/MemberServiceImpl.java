@@ -176,7 +176,9 @@ public class MemberServiceImpl implements MemberService{
          Member member = memberRepository.getById(creatorId);
          member.updateNickname(creatorRequest.nickname());
          memberRepository.save(member);
-         creatorAccountRepository.save(CreatorRequest.toCreatorAccount(creatorRequest, creatorId));
+
+         CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, creatorId);
+         creatorAccountRepository.save(creatorAccount);
 
          return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
