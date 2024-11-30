@@ -190,7 +190,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
         return CreatorIconInfos.builder()
                 .salesIconCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesCount).sum())
-                .revenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
+                .totalRevenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
                 .creatorIconInfos(creatorIconInfos)
                 .build();
     }

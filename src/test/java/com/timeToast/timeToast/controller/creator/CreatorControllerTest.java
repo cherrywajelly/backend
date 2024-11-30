@@ -109,7 +109,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("salesIconCount").type(NUMBER).description("전체 판매 갯수"),
-                                        fieldWithPath("revenue").type(NUMBER).description("전체 수익"),
+                                        fieldWithPath("totalRevenue").type(NUMBER).description("전체 수익"),
                                         fieldWithPath("creatorIconInfos[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("creatorIconInfos[0].revenue").type(NUMBER).description("아이콘 그룹 수익"),
                                         fieldWithPath("creatorIconInfos[0].salesCount").type(NUMBER).description("아이콘 그룹 판매 갯수"),

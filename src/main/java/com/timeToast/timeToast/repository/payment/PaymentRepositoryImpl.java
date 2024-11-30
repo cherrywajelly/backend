@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.domain.icon.icon_group.QIconGroup.iconGroup;
 import static com.timeToast.timeToast.domain.payment.QPayment.payment;
 
 @Repository
@@ -45,12 +46,15 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     @Override
     public List<PaymentDto> findAllByMonthlyPayments(final LocalDate start, final LocalDate end) {
         return queryFactory.select(
-                Projections.constructor(
-                        PaymentDto.class,
-                        payment.itemId, payment.itemType, payment.count(),payment.amount.count()))
+                        Projections.constructor(
+                                PaymentDto.class,
+                                iconGroup.memberId,payment.itemId, payment.itemType, payment.count(), payment.amount.sum()))
                 .from(payment)
-                .where(payment.createdAt.between(start.atStartOfDay(),end.atStartOfDay()), payment.paymentState.eq(PaymentState.SUCCESS))
-                .groupBy(payment.itemId)
+                .join(iconGroup).on(payment.itemId.eq(iconGroup.id))
+                .where(payment.createdAt.between(start.atStartOfDay(), end.atStartOfDay()),
+                        payment.paymentState.eq(PaymentState.SUCCESS),
+                        payment.itemType.eq(ItemType.ICON))
+                .groupBy(iconGroup.memberId, payment.itemId)
                 .fetch();
     }
 
