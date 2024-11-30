@@ -13,6 +13,7 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -106,7 +107,7 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
     void getIconGroupDetail() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v2/iconGroups/{iconGroupId}", 1L)
+                        get("/api/v2/iconGroups/{itemId}", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
@@ -121,14 +122,14 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                         parameterWithName("itemId").description("상세조회 하는 아이콘 그룹 Id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconName").type(STRING).description("아이콘 id"),
-                                        fieldWithPath("price").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("description").type(STRING).description("아이콘 id"),
-                                        fieldWithPath("iconImageUrl").type(STRING).description("아이콘 id"),
-                                        fieldWithPath("creatorProfileUrl").type(STRING).description("아이콘 id"),
-                                        fieldWithPath("creatorNickname").type(STRING).description("아이콘 id"),
-                                        fieldWithPath("orderCount").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("income").type(NUMBER).description("아이콘 id")
+                                        fieldWithPath("iconGroupOrderedResponse.iconName").type(STRING).description("아이콘 이름"),
+                                        fieldWithPath("iconGroupOrderedResponse.iconImageUrl[]").type(JsonFieldType.ARRAY).description("아이콘 이미지 url"),
+                                        fieldWithPath("iconGroupOrderedResponse.orderCount").type(NUMBER).description("아이콘 주문 개수"),
+                                        fieldWithPath("iconGroupOrderedResponse.income").type(NUMBER).description("아이콘 수익"),
+                                        fieldWithPath("price").type(NUMBER).description("아이콘 가격"),
+                                        fieldWithPath("description").type(STRING).description("아이콘 설명"),
+                                        fieldWithPath("creatorProfileUrl").type(STRING).description("제작자 프로필 url"),
+                                        fieldWithPath("creatorNickname").type(STRING).description("제작자 닉네임")
                                 )
                                 .build()
                         )));

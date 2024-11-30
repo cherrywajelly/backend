@@ -98,7 +98,9 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
         List<String> iconImageUrls = new ArrayList<>();
-        IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse("name", 1100, "description", iconImageUrls, "creatorUrl", "nickname", 0, 0);
+        List<String> iconTitles = new ArrayList<>();
+        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", iconTitles, 1, 1);
+        IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
         return iconGroupCreatorDetail;
     }
 
