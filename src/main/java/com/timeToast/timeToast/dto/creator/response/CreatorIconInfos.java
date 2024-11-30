@@ -6,8 +6,8 @@ import java.util.List;
 
 @Builder
 public record CreatorIconInfos(
-        int salesIconCount,
-        int revenue,
+        long salesIconCount,
+        long totalRevenue,
         List<CreatorIconInfo> creatorIconInfos
 ) {
 }
