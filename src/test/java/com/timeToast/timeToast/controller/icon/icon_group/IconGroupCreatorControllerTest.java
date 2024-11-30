@@ -13,6 +13,7 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -23,6 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,6 +96,40 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupCreatorResponses[0].iconGroupId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("제작자가 제작한 아이콘 그룹의 상세 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getIconGroupDetail() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v2/iconGroups/{itemId}", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("아이콘 그룹 상세 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("아이콘 그룹 상세 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .pathParameters(
+                                        parameterWithName("itemId").description("상세조회 하는 아이콘 그룹 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupOrderedResponse.iconName").type(STRING).description("아이콘 이름"),
+                                        fieldWithPath("iconGroupOrderedResponse.iconImageUrl[]").type(JsonFieldType.ARRAY).description("아이콘 이미지 url"),
+                                        fieldWithPath("iconGroupOrderedResponse.orderCount").type(NUMBER).description("아이콘 주문 개수"),
+                                        fieldWithPath("iconGroupOrderedResponse.income").type(NUMBER).description("아이콘 수익"),
+                                        fieldWithPath("price").type(NUMBER).description("아이콘 가격"),
+                                        fieldWithPath("description").type(STRING).description("아이콘 설명"),
+                                        fieldWithPath("creatorProfileUrl").type(STRING).description("제작자 프로필 url"),
+                                        fieldWithPath("creatorNickname").type(STRING).description("제작자 닉네임")
                                 )
                                 .build()
                         )));

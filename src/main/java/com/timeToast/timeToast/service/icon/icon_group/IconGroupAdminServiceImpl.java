@@ -6,10 +6,15 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -61,9 +66,9 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        Member member = memberRepository.getById(memberId);
 
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(member.getId());
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+
         iconGroups.forEach(
                 iconGroup -> {
                     List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
@@ -71,6 +76,30 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 });
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
+        Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
+
+        if (iconGroup.isPresent()) {
+            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
+            List<String> iconImageUrls = new ArrayList<>();
+            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+
+            Member member = memberRepository.getById(memberId);
+
+            List<Payment> payments = paymentRepository.findAllByItemId(iconGroupId);
+            long income = payments.stream()
+                    .mapToLong(Payment::getAmount)
+                    .sum();
+
+            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get().getName(), iconImageUrls, payments.size(), income);
+            return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup.get(), member);
+        } else {
+            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
+        }
     }
 
     @Transactional
