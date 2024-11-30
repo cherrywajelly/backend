@@ -1,8 +1,8 @@
-package com.timeToast.timeToast.dto.month_settlement;
+package com.timeToast.timeToast.dto.settlement;
 
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 
-public record MonthSettlementDto(
+public record SettlementDto(
         long memberId,
         SettlementState settlementState
 ) {

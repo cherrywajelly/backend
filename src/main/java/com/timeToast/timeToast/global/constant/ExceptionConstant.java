@@ -81,7 +81,6 @@ public enum ExceptionConstant {
     JSON_PROCESSING_ERROR("json processing error"),
     // creator settlement
     SETTLEMENT_NOT_FOUND("관련 수익 정보를 찾을 수 없습니다"),
-
     INVALID_CREATOR_INFO("잘못된 아이콘 제작자 정보 접근 형식입니다."),
 
     //login

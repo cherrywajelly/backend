@@ -1,7 +1,5 @@
-package com.timeToast.timeToast.domain.month_settlement;
+package com.timeToast.timeToast.domain.settlement;
 
-import com.google.type.DateTime;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import jakarta.persistence.*;
@@ -11,19 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-
-import java.time.LocalDate;
-import java.time.YearMonth;
 
 @Entity
-@Table(name = "month_settlement")
+@Table(name = "settlement")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MonthSettlement extends BaseTime {
+public class Settlement extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "month_settlement_id")
+    @Column(name = "settlement_id")
     private long id;
 
     @Column(nullable = false)
@@ -40,7 +34,7 @@ public class MonthSettlement extends BaseTime {
 
     private long revenue;
 
-    private long settlement;
+    private long settlements;
 
     @Enumerated(EnumType.STRING)
     private SettlementState settlementState;
@@ -49,14 +43,14 @@ public class MonthSettlement extends BaseTime {
     private LocalDate settlementDate;
 
     @Builder
-    public MonthSettlement(final long memberId, final long iconGroupId, final LocalDate yearMonth, final int salesCount,
-                           final long revenue, final long settlement, final SettlementState settlementState) {
+    public Settlement(final long memberId, final long iconGroupId, final LocalDate yearMonth, final int salesCount,
+                      final long revenue, final long settlements, final SettlementState settlementState) {
         this.memberId = memberId;
         this.iconGroupId = iconGroupId;
         this.yearsMonth = yearMonth;
         this.salesCount = salesCount;
         this.revenue = revenue;
-        this.settlement = settlement;
+        this.settlements = settlements;
         this.settlementState = settlementState;
     }
 
