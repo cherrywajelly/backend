@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.jam;
 
+import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
@@ -7,12 +8,14 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
+import com.timeToast.timeToast.global.config.OsClientConfiguration;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.service.image.FileUploadServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,9 +23,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +55,14 @@ public class JamServiceImplTest {
     @Mock
     private IconRepository iconRepository;
 
+    @Mock
+    OsClientConfiguration ociConfig;
+
     @InjectMocks
     private JamServiceImpl jamService;
+
+    @InjectMocks
+    private FileUploadServiceImpl fileUploadService;
 
     private Member member;
     private EventToast eventToast;
@@ -72,32 +84,48 @@ public class JamServiceImplTest {
         jam = Jam.builder().memberId(memberId2).eventToastId(eventToastId).iconId(iconId).build();
     }
 
-//    @Test
-//    @DisplayName("잼 생성 - 성공")
-//    void saveJam() {
-//        // Given
-//        MultipartFile content = mock(MultipartFile.class);
-//        MultipartFile image = mock(MultipartFile.class);
-//        JamRequest jamRequest = new JamRequest("title", 1L);
-//
-//        ReflectionTestUtils.setField(eventToast, "id", eventToast.getId());
-//
-//        ReflectionTestUtils.setField(member, "id", member.getId());
-//
-//        when(eventToastRepository.getById(eventToast.getId())).thenReturn(eventToast);
-//        when(jamRepository.findByMemberIdAndEventToastId(member.getId(), eventToast.getId())).thenReturn(Optional.empty());
-//        when(jamRepository.save(any(Jam.class))).thenReturn(jam);
-//        when(memberRepository.getById(member.getId())).thenReturn(member);
-////        when(fileUploadService.uploadfile(any(), any())).thenReturn("file url");
-//
-//        // When
-//        Response response = jamService.postJam(jamRequest, content, image, eventToast.getId(), member.getId());
-//
-//        // Then
-//        verify(jamRepository, times(1)).save(jam);
-//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-//    }
+    @Test
+    @DisplayName("잼 생성 - 성공")
+    void saveJam () throws IOException {
+        // Given
+        long jamId = 1L;
+        long memberId = 1L;
+        long eventToastId = 1L;
+
+        MockMultipartFile content = new MockMultipartFile(
+                "contents", //name
+                "test_image.jpg", //originalFilename
+                "JPG",
+                new FileInputStream("src/test/resources/test_image.jpg")
+        );
+
+        MockMultipartFile image = new MockMultipartFile(
+                "contents", //name
+                "test_image.jpg", //originalFilename
+                "JPG",
+                new FileInputStream("src/test/resources/test_image.jpg")
+        );
+
+        JamRequest jamRequest = new JamRequest("title", jamId);
+
+        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+        ReflectionTestUtils.setField(member, "id", memberId);
+
+        when(eventToastRepository.getById(eventToast.getId())).thenReturn(eventToast);
+        when(jamRepository.findByMemberIdAndEventToastId(member.getId(), eventToast.getId())).thenReturn(Optional.empty());
+        when(jamRepository.save(any(Jam.class))).thenReturn(jam);
+        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("content"))).thenReturn("contentsUrl");
+        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("image"))).thenReturn("imageUrl");
+
+
+        // When
+        Response response = jamService.postJam(jamRequest, content, image, eventToast.getId(), member.getId());
+
+        // Then
+        verify(jamRepository, times(1)).save(jam);
+        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+    }
 
     @Test
     @DisplayName("잼 목록 조회 - 성공")
