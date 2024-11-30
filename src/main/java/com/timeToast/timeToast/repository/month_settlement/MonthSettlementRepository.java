@@ -1,11 +1,9 @@
-package com.timeToast.timeToast.repository.monthSettlement;
+package com.timeToast.timeToast.repository.month_settlement;
 
 import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
 import java.util.List;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
 
 public interface MonthSettlementRepository {
     MonthSettlement save(MonthSettlement monthSettlement);

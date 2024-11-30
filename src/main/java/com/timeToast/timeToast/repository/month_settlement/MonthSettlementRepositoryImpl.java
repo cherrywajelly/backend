@@ -1,15 +1,11 @@
-package com.timeToast.timeToast.repository.monthSettlement;
+package com.timeToast.timeToast.repository.month_settlement;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
 import com.timeToast.timeToast.global.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
-
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.SETTLEMENT_NOT_FOUND;

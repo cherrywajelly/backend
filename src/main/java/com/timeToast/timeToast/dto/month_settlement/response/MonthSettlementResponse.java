@@ -17,20 +17,7 @@ public record MonthSettlementResponse(
         String profileUrl,
         SettlementState settlementState
 
-
-//        long monthSettlementId,
-//        Date yearMonth,
-//        long settlement,
-//        @JsonFormat(pattern = "yyyy-MM-dd")
-//        DateTime settlementDate
 ) {
-//    public static MonthSettlementResponse from(MonthSettlement monthSettlement) {
-//        return MonthSettlementResponse.builder()
-//                .monthSettlementId(monthSettlement.getId())
-//                .yearMonth(monthSettlement.getYearMonth())
-//                .settlement(monthSettlement.getSettlement())
-//                .settlementDate(monthSettlement.getSettlementDate())
-//                .build();
-//    }
+
 
 }
