@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
@@ -81,6 +82,9 @@ public class MemberServiceTest implements MemberService{
         return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
     }
 
+    @Override
+    public Response saveCreatorInfo(final long creatorId, final CreatorRequest creatorRequest) {
 
+    }
 
 }
