@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.payment;
+package com.timeToast.timeToast.dto.payment.response;
 
 public record PaymentFailResponse(
         long paymentId,

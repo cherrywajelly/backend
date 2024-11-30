@@ -1,9 +1,10 @@
 package com.timeToast.timeToast.service.payment;
 
-import com.timeToast.timeToast.dto.payment.*;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
+import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
 
 public class PaymentServiceTest implements PaymentService {
 
@@ -29,7 +30,7 @@ public class PaymentServiceTest implements PaymentService {
     }
 
     @Override
-    public PaymentFailResponse failPayment(final long memberId,final String orderId) {
+    public PaymentFailResponse failPayment(final long memberId, final String orderId) {
         return new PaymentFailResponse(1L, "diosfhjuih","실패했습니다");
     }
 }
