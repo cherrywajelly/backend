@@ -2,6 +2,8 @@ package com.timeToast.timeToast.repository.payment;
 
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.payment.Payment;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,10 +33,10 @@ public class PaymentRepositoryImpl implements PaymentRepository {
         return orderJpaRepository.findAllByItemIdAndItemType(itemId, itemType);
     }
 
-    @Override
-    public List<Payment> findAllByIconGroupId(final long iconGroupId) {
-        return
-    }
+//    @Query("SELECT o FROM Payment o WHERE o.iconGroupId = :iconGroupId AND FUNCTION('DATE_FORMAT', o.createdAt, '%Y-%m') = :yearMonth")
+//    public List<Payment> findAllByIconGroupIdAndCreatedAtMonth(@Param("iconGroupId") Long iconGroupId, @Param("yearMonth") String yearMonth) {
+//        return orderJpaRepository.findAllByIconGroupIdAndCreatedAtMonth(iconGroupId, yearMonth);
+//    }
 
     @Override
     public Optional<Payment> findByOrderId(final String orderId){

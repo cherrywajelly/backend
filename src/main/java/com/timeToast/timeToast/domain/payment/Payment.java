@@ -23,9 +23,6 @@ public class Payment extends BaseTime {
     @Column(nullable = false)
     private long memberId;
 
-    @Column(nullable = false)
-    private long iconGroupId;
-
     @Column(unique = true)
     private String orderId;
 
@@ -42,13 +39,12 @@ public class Payment extends BaseTime {
 
     @Builder
     public Payment(final long memberId, final ItemType itemType, final PaymentState paymentState,
-                   final int amount, final long itemId, final long iconGroupId) {
+                   final int amount, final long itemId) {
         this.memberId = memberId;
         this.itemType = itemType;
         this.paymentState = paymentState;
         this.itemId = itemId;
         this.amount = amount;
-        this.iconGroupId = iconGroupId;
     }
 
     public void updateOrderId(final String orderId) {

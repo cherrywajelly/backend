@@ -6,6 +6,7 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
@@ -22,7 +23,6 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.orders.OrdersRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final IconRepository iconRepository;
-    private final OrdersRepository ordersRepository;
     private final PaymentRepository paymentRepository;
 
 
@@ -89,11 +88,12 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
         Member member = memberRepository.getById(memberId);
 
-        List<Orders> orders = ordersRepository.findAllByIconGroupId(iconGroupId);
-        long income = orders.stream()
-                .mapToLong(Orders::getPayment)
+        List<Payment> payments = paymentRepository.findAllByItemId(iconGroupId);
+        long income = payments.stream()
+                .mapToLong(Payment::getAmount)
                 .sum();
-        IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income);
+
+        IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, payments.size(), income);
         return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup, member);
     }
 

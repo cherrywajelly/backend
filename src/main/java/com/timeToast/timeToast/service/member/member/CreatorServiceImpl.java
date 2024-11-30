@@ -4,7 +4,7 @@ import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.orders.Orders;
+import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponses;
@@ -17,7 +17,7 @@ import com.timeToast.timeToast.repository.creator_account.CreatorAccountReposito
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.orders.OrdersRepository;
+import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class CreatorServiceImpl implements CreatorService {
     private final MemberService memberService;
     private final IconGroupRepository iconGroupRepository;
     private final IconRepository iconRepository;
-    private final OrdersRepository ordersRepository;
+    private final PaymentRepository paymentRepository;
 
 
     @Transactional(readOnly = true)
@@ -73,12 +73,13 @@ public class CreatorServiceImpl implements CreatorService {
             List<String> iconImageUrls = new ArrayList<>();
             icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
-            List<Orders> orders = ordersRepository.findAllByIconGroupId(iconGroup.getId());
-            long income = orders.stream()
-                    .mapToLong(Orders::getPayment)
+
+            List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+            long income = payments.stream()
+                    .mapToLong(Payment::getAmount)
                     .sum();
 
-            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, orders.size(), income));
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, payments.size(), income));
         });
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }
