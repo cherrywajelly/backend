@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.domain.month_settlement;
 
-import com.google.type.DateTime;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import jakarta.persistence.*;
@@ -10,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.YearMonth;
 
 @Entity
 @Table(name = "month_settlement")
@@ -22,30 +21,42 @@ public class MonthSettlement extends BaseTime {
     @Column(name = "month_settlement_id")
     private long id;
 
+    @Column(nullable = false)
     private long memberId;
 
-    private LocalDate yearMonth;
+    @Column(nullable = false)
+    private long iconGroupId;
+
+    @Column(nullable = false)
+    private LocalDate yearsMonth;
+
+    @Column(nullable = false)
+    private int salesCount;
 
     private long revenue;
 
     private long settlement;
 
+    @Enumerated(EnumType.STRING)
     private SettlementState settlementState;
 
-    private DateTime settlementDate;
+    @Column(nullable = true)
+    private LocalDate settlementDate;
 
     @Builder
-    public MonthSettlement(final long memberId, final LocalDate yearMonth, final long revenue,
-                           final long settlement, final SettlementState settlementState, final DateTime settlementDate) {
+    public MonthSettlement(final long memberId, final long iconGroupId, final LocalDate yearMonth, final int salesCount,
+                           final long revenue, final long settlement, final SettlementState settlementState) {
         this.memberId = memberId;
-        this.yearMonth = yearMonth;
+        this.iconGroupId = iconGroupId;
+        this.yearsMonth = yearMonth;
+        this.salesCount = salesCount;
         this.revenue = revenue;
         this.settlement = settlement;
         this.settlementState = settlementState;
-        this.settlementDate = settlementDate;
     }
 
     public void updateSettlementState(final SettlementState settlementState) {
         this.settlementState = settlementState;
     }
+    public void updateSettlementDate(final LocalDate settlementDate) {this.settlementDate = settlementDate;}
 }

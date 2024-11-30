@@ -46,7 +46,7 @@ public class PaymentRepositoryImpl implements PaymentRepository {
         return queryFactory.select(
                         Projections.constructor(
                                 PaymentDto.class,
-                                iconGroup.memberId,payment.itemId, payment.itemType, payment.count(), payment.amount.count()))
+                                iconGroup.memberId,payment.itemId, payment.itemType, payment.count(), payment.amount.sum()))
                 .from(payment)
                 .join(iconGroup).on(payment.itemId.eq(iconGroup.id))
                 .where(payment.createdAt.between(start.atStartOfDay(), end.atStartOfDay()),
