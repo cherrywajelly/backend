@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.domain.creator_account;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.google.protobuf.Enum;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
@@ -19,10 +20,14 @@ public class CreatorAccount extends BaseTime {
     @Column(name = "creator_account_id")
     private long id;
 
+    @NotNull
     private long memberId;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Bank bank;
 
+    @NotNull
     private String accountNumber;
 
     @Builder
