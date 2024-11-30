@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MemberServiceTest implements MemberService{
@@ -84,7 +85,6 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public Response saveCreatorInfo(final long creatorId, final CreatorRequest creatorRequest) {
-
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
-
 }

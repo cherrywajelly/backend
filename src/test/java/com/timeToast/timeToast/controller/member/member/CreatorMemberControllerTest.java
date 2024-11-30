@@ -36,7 +36,7 @@ public class CreatorMemberControllerTest extends BaseControllerTests {
 
     @Override
     protected Object initController() {
-        return new CreatorMemberController(memberService, creatorService);
+        return new CreatorMemberController(creatorService,memberService);
     }
 
     @DisplayName("닉네임의 중복 여부를 검증할 수 있다.")
