@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PaymentJpaRepository extends JpaRepository<Payment, Long> {
-    List<Payment> findAllByIconGroupIdAndCreatedAtMonth(@Param("iconGroupId") Long iconGroupId, @Param("yearMonth") String yearMonth);
+//    List<Payment> findAllByItemIdAndCreatedAtMonth(@Param("iconGroupId") Long iconGroupId, @Param("yearMonth") String yearMonth);
     List<Payment> findAllByItemIdAndItemType(final long itemId, final ItemType itemType);
     Optional<Payment> findByOrderId(final String orderId);
+    List<Payment> findAllByItemId(final long itemId);
 }

@@ -23,6 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -117,7 +118,7 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("iconGroupId").description("상세조회 하는 아이콘 그룹 Id")
+                                        parameterWithName("itemId").description("상세조회 하는 아이콘 그룹 Id")
                                 )
                                 .responseFields(
                                         fieldWithPath("iconName").type(STRING).description("아이콘 id"),

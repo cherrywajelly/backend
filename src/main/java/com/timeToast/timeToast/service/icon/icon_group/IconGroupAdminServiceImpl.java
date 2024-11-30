@@ -66,9 +66,9 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        Member member = memberRepository.getById(memberId);
 
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(member.getId());
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+
         iconGroups.forEach(
                 iconGroup -> {
                     List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
@@ -81,20 +81,25 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Transactional(readOnly = true)
     @Override
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
-        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
-        List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
-        List<String> iconImageUrls = new ArrayList<>();
-        icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+        Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
 
-        Member member = memberRepository.getById(memberId);
+        if (iconGroup.isPresent()) {
+            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
+            List<String> iconImageUrls = new ArrayList<>();
+            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
-        List<Payment> payments = paymentRepository.findAllByItemId(iconGroupId);
-        long income = payments.stream()
-                .mapToLong(Payment::getAmount)
-                .sum();
+            Member member = memberRepository.getById(memberId);
 
-        IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, payments.size(), income);
-        return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup, member);
+            List<Payment> payments = paymentRepository.findAllByItemId(iconGroupId);
+            long income = payments.stream()
+                    .mapToLong(Payment::getAmount)
+                    .sum();
+
+            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get().getName(), iconImageUrls, payments.size(), income);
+            return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup.get(), member);
+        } else {
+            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
+        }
     }
 
     @Transactional

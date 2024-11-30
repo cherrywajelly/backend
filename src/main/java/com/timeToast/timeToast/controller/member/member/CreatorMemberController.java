@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v2/members")
 @RestController
 @RequiredArgsConstructor
-public class CreatorController {
+public class CreatorMemberController {
 
     private final CreatorService creatorService;
 
@@ -23,7 +23,7 @@ public class CreatorController {
     }
 
     @PutMapping("")
-    public CreatorInfoResponse putCreatorInfo(@Login LoginMember loginMember, MultipartFile file, @RequestPart final CreatorRequest creatorRequest) {
-        return creatorService.putCreatorInfo(loginMember.id(), file, creatorRequest);
+    public CreatorInfoResponse putCreatorInfo(@Login LoginMember loginMember, @RequestPart(value = "profile") final MultipartFile profile, @RequestPart final CreatorRequest creatorRequest) {
+        return creatorService.putCreatorInfo(loginMember.id(), profile, creatorRequest);
     }
 }

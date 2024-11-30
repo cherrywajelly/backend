@@ -24,8 +24,8 @@ public class MonthSettlementController {
     }
 
 
-    @GetMapping("/{monthSettlementId}")
-    public MonthSettlementDetailResponse getMonthSettlementDetail(@Login LoginMember loginMember, @PathVariable("monthSettlementId") long monthSettlementId) {
-        return monthSettlementService.getMonthSettlementDetail(loginMember.id(), monthSettlementId);
-    }
+//    @GetMapping("/{monthSettlementId}")
+//    public MonthSettlementDetailResponse getMonthSettlementDetail(@Login LoginMember loginMember, @PathVariable("monthSettlementId") long monthSettlementId) {
+//        return monthSettlementService.getMonthSettlementDetail(loginMember.id(), monthSettlementId);
+//    }
 }

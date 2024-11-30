@@ -54,9 +54,19 @@ public class PaymentRepositoryImpl implements PaymentRepository {
                 .fetch();
     }
 
-//    @Query("SELECT o FROM Payment o WHERE o.iconGroupId = :iconGroupId AND FUNCTION('DATE_FORMAT', o.createdAt, '%Y-%m') = :yearMonth")
-//    public List<Payment> findAllByIconGroupIdAndCreatedAtMonth(@Param("iconGroupId") Long iconGroupId, @Param("yearMonth") String yearMonth) {
-//        return orderJpaRepository.findAllByIconGroupIdAndCreatedAtMonth(iconGroupId, yearMonth);
+    @Override
+    public List<Payment> findAllByItemId(final long itemId) {
+        return paymentJpaRepository.findAllByItemId(itemId);
+    }
+
+//
+//    @Override
+//    @Query(
+//            value = "SELECT * FROM Payment p WHERE p.item_id = :itemId AND DATE_FORMAT(p.created_at, '%Y-%m') = :yearMonth",
+//            nativeQuery = true
+//    )
+//    public List<Payment> findAllByItemIdAndCreatedAtMonth(@Param("itemId") final long itemId, @Param("yearMonth") String yearMonth) {
+//        return paymentJpaRepository.findAllByItemIdAndCreatedAtMonth(itemId, yearMonth);
 //    }
 
     @Override

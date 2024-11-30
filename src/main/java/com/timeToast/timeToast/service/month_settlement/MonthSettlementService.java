@@ -5,5 +5,5 @@ import com.timeToast.timeToast.dto.month_settlement.response.MonthSettlementResp
 
 public interface MonthSettlementService {
     MonthSettlementResponses getMonthSettlements(final long creatorId);
-    MonthSettlementDetailResponse getMonthSettlementDetail(final long memberId, final long monthSettlementId);
+//    MonthSettlementDetailResponse getMonthSettlementDetail(final long memberId, final long monthSettlementId);
 }

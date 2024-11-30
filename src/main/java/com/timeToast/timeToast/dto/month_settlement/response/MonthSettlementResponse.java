@@ -1,24 +1,26 @@
 package com.timeToast.timeToast.dto.month_settlement.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.timeToast.timeToast.domain.monthSettlement.MonthSettlement;
+import com.google.type.DateTime;
+import com.timeToast.timeToast.domain.month_settlement.MonthSettlement;
 import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Date;
 
 @Builder
 public record MonthSettlementResponse(
         long monthSettlementId,
-        YearMonth yearMonth,
+        Date yearMonth,
         long settlement,
         @JsonFormat(pattern = "yyyy-MM-dd")
-        LocalDate settlementDate
+        DateTime settlementDate
 ) {
     public static MonthSettlementResponse from(MonthSettlement monthSettlement) {
         return MonthSettlementResponse.builder()
                 .monthSettlementId(monthSettlement.getId())
-                .yearMonth(monthSettlement.getMonth())
+                .yearMonth(monthSettlement.getYearMonth())
                 .settlement(monthSettlement.getSettlement())
                 .settlementDate(monthSettlement.getSettlementDate())
                 .build();
