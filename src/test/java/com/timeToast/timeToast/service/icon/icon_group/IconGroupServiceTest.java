@@ -1,6 +1,8 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -14,10 +16,6 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 
 public class IconGroupServiceTest implements IconGroupService {
 
-    @Override
-    public Response buyIconGroup(long memberId, long iconGroupId) {
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-    }
 
     @Override
     public IconGroupResponses getToastIconGroups(final long memberId) {
@@ -81,6 +79,7 @@ public class IconGroupServiceTest implements IconGroupService {
                 .creatorNickname("nickname")
                 .price(0)
                 .iconResponses(List.of(new IconResponse(1L, "iconImageUrl")))
+                .iconState(IconState.REGISTERED)
                 .build();
     }
 

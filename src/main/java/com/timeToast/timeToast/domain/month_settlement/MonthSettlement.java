@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.domain.month_settlement;
 
+import com.google.type.DateTime;
 import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "month_settlement")
@@ -20,16 +23,20 @@ public class MonthSettlement extends BaseTime {
 
     private long memberId;
 
-    private long month;
+    private Date yearMonth;
+
+    private long revenue;
 
     private long settlement;
 
     private SettlementState settlementState;
 
+    private DateTime settlementDate;
+
     @Builder
-    public MonthSettlement(final long memberId, final long month, final long settlement, final SettlementState settlementState) {
+    public MonthSettlement(final long memberId, final Date yearMonth, final long settlement, final SettlementState settlementState) {
         this.memberId = memberId;
-        this.month = month;
+        this.yearMonth = yearMonth;
         this.settlement = settlement;
         this.settlementState = settlementState;
     }

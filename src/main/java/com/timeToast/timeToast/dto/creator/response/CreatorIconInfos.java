@@ -5,10 +5,9 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record CreatorIconInfo(
-        String title,
+public record CreatorIconInfos(
+        int salesIconCount,
         int revenue,
-        int salesCount,
-        List<String> iconImageUrl
+        List<CreatorIconInfo> creatorIconInfos
 ) {
 }

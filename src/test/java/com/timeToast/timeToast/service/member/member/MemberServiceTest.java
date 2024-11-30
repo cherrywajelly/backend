@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
@@ -11,6 +12,9 @@ import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,12 +60,20 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
-        return null;
+        return new CreatorDetailResponse("profileUrl", "nickname",100, "accountNumber");
     }
 
     @Override
     public CreatorResponses getCreators() {
-        return null;
+        List<CreatorResponse> creatorResponses = new ArrayList<>();
+        creatorResponses.add(
+                CreatorResponse.builder()
+                        .memberId(1L)
+                        .profileUrl("profileUrl")
+                        .nickname("nickname")
+                        .build()
+        );
+        return new CreatorResponses(creatorResponses) ;
     }
 
     @Override
@@ -69,10 +81,6 @@ public class MemberServiceTest implements MemberService{
         return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
     }
 
-//    @Override
-//    public void getCreatorMonthSettlement(int year, int month) {
-//
-//    }
 
 
 }

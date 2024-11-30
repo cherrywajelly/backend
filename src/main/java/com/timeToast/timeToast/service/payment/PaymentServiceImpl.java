@@ -6,6 +6,8 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.payment.*;
@@ -63,6 +65,15 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         payment.updateOrderId(RandomStringUtils.randomAlphanumeric(6, 64));
 
+        if(payment.getItemType().equals(ItemType.ICON)){
+            iconMemberRepository.save(iconMemberRepository.save(IconMember.builder()
+                    .memberId(memberId)
+                    .iconGroupId(payment.getItemId())
+                    .build()));
+        }else{
+            Member member = memberRepository.getById(memberId);
+            member.updatePremiumId(payment.getItemId());
+        }
 
         return PaymentSaveResponse.builder()
                 .paymentId(payment.getId())

@@ -45,6 +45,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
 
+
     @Transactional
     @Override
     public LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {

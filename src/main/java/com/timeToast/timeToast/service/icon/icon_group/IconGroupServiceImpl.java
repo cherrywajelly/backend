@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
@@ -25,7 +26,6 @@ import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service
 @Slf4j
@@ -36,26 +36,6 @@ public class IconGroupServiceImpl implements IconGroupService{
     private final IconRepository iconRepository;
     private final IconMemberRepository iconMemberRepository;
 
-    @Transactional
-    @Override
-    public Response buyIconGroup(final long memberId, final long iconGroupId){
-        Member member = memberRepository.getById(memberId);
-        IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
-
-        if(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId) != null) {
-            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
-
-        }
-
-        iconMemberRepository.save(IconMember.builder()
-                .memberId(member.getId())
-                .iconGroupId(iconGroup.getId())
-                .build());
-        log.info("buy icon group {} by member {}", iconGroupId, memberId);
-
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -99,23 +79,7 @@ public class IconGroupServiceImpl implements IconGroupService{
         return getAllIconGroups(memberId, IconType.JAM);
     }
 
-    private IconGroupMarketResponses getAllIconGroups(final long memberId, final IconType iconType){
-        List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
-        iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN).forEach(
-                iconGroup ->
-                    iconGroupMarketResponses.add(
-                            IconGroupMarketResponse.builder()
-                                    .iconGroupId(iconGroup.getId())
-                                    .title(iconGroup.getName())
-                                    .thumbnailImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl())
-                                    .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
-                                    .iconType(iconGroup.getIconType())
-                                    .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
-                                    .build()
-                    ));
 
-        return new IconGroupMarketResponses(iconGroupMarketResponses);
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -132,9 +96,11 @@ public class IconGroupServiceImpl implements IconGroupService{
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
+                .iconState(iconGroup.getIconState())
                 .iconResponses(iconResponses)
                 .build();
     }
+
 
     @Transactional
     @Override
@@ -147,5 +113,23 @@ public class IconGroupServiceImpl implements IconGroupService{
 
         iconMemberRepository.deleteById(iconMember.getId());
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+    }
+
+    private IconGroupMarketResponses getAllIconGroups(final long memberId, final IconType iconType){
+        List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
+        iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN, IconState.REGISTERED).forEach(
+                iconGroup ->
+                        iconGroupMarketResponses.add(
+                                IconGroupMarketResponse.builder()
+                                        .iconGroupId(iconGroup.getId())
+                                        .title(iconGroup.getName())
+                                        .thumbnailImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl())
+                                        .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
+                                        .iconType(iconGroup.getIconType())
+                                        .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
+                                        .build()
+                        ));
+
+        return new IconGroupMarketResponses(iconGroupMarketResponses);
     }
 }
