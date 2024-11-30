@@ -59,7 +59,14 @@ public enum ExceptionConstant {
     FCM_TOKEN_ALREADY_EXIST("이미 업데이트 된 토큰입니다."),
 
     //premium
-    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
+    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다."),
+
+    // inquiry
+    INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+    INVALID_INQUIRY("잘못된 문의 형식입니다."),
+
+    // template
+    INVALID_TEMPLATE("잘못된 공유 템플릿 텍스트 등록 형식입니다."),
 
     //payment
     PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),

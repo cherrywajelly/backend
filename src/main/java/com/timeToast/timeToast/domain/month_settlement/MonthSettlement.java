@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.monthSettlement;
+package com.timeToast.timeToast.domain.month_settlement;
 
 import com.google.type.DateTime;
 import com.timeToast.timeToast.domain.BaseTime;

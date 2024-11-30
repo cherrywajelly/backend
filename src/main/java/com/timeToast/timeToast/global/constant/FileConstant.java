@@ -8,6 +8,7 @@ public enum FileConstant {
     TOAST_PIECE("toastPiece"),
     ICON("icon"),
     JAM("jam"),
+    INQUIRY("inquiry"),
     SLASH("/");
 
     private final String value;

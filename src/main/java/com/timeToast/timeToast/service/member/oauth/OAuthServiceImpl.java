@@ -119,6 +119,7 @@ public class OAuthServiceImpl implements OAuthService {
         params.add("client_secret", kakaoClientSecret);
         params.add("redirect_uri", redirectUrl);
         params.add("grant_type", "authorization_code");
+        log.info("kakao redirect uri {}", redirectUrl);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
