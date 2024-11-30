@@ -10,6 +10,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
@@ -28,6 +29,7 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import com.timeToast.timeToast.service.image.FileUploadService;
@@ -168,4 +170,14 @@ public class MemberServiceImpl implements MemberService{
         return PremiumResponse.from(premiumRepository.getById(member.getPremiumId()));
     }
 
+    @Transactional
+    @Override
+    public Response saveCreatorInfo(final long creatorId, final CreatorRequest creatorRequest) {
+         Member member = memberRepository.getById(creatorId);
+         member.updateNickname(creatorRequest.nickname());
+         memberRepository.save(member);
+         creatorAccountRepository.save(CreatorRequest.toCreatorAccount(creatorRequest, creatorId));
+
+         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    }
 }
