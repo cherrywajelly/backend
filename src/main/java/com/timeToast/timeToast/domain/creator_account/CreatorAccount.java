@@ -21,6 +21,7 @@ public class CreatorAccount extends BaseTime {
 
     private long memberId;
 
+    @Enumerated(EnumType.STRING)
     private Bank bank;
 
     private String accountNumber;

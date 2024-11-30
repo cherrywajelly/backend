@@ -38,11 +38,14 @@ public class MonthSettlement extends BaseTime {
     private DateTime settlementDate;
 
     @Builder
-    public MonthSettlement(final long memberId, final Date yearMonth, final long settlement, final SettlementState settlementState) {
+    public MonthSettlement(final long memberId, final Date yearMonth, final long revenue,
+                           final long settlement, final SettlementState settlementState, final DateTime settlementDate) {
         this.memberId = memberId;
         this.yearMonth = yearMonth;
+        this.revenue = revenue;
         this.settlement = settlement;
         this.settlementState = settlementState;
+        this.settlementDate = settlementDate;
     }
 
     public void updateSettlementState(final SettlementState settlementState) {

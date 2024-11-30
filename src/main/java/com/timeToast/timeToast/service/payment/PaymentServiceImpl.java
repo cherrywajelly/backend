@@ -10,7 +10,11 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.payment.*;
+import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
+import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -65,15 +69,6 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
         payment.updateOrderId(RandomStringUtils.randomAlphanumeric(6, 64));
 
-        if(payment.getItemType().equals(ItemType.ICON)){
-            iconMemberRepository.save(iconMemberRepository.save(IconMember.builder()
-                    .memberId(memberId)
-                    .iconGroupId(payment.getItemId())
-                    .build()));
-        }else{
-            Member member = memberRepository.getById(memberId);
-            member.updatePremiumId(payment.getItemId());
-        }
 
         return PaymentSaveResponse.builder()
                 .paymentId(payment.getId())
@@ -96,8 +91,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         String orderName;
         if(payment.getItemType().equals(ItemType.ICON)){
+            iconMemberRepository.save(iconMemberRepository.save(IconMember.builder()
+                    .memberId(memberId)
+                    .iconGroupId(payment.getItemId())
+                    .build()));
             orderName = iconGroupRepository.getById(payment.getItemId()).getName();
         }else{
+            Member member = memberRepository.getById(memberId);
+            member.updatePremiumId(payment.getItemId());
             orderName = premiumRepository.getById(payment.getItemId()).getPremiumType().toString();
         }
 

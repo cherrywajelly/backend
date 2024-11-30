@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.payment;
+package com.timeToast.timeToast.dto.payment.request;
 
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
