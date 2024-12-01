@@ -85,7 +85,7 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public Response saveCreatorInfo(final long creatorId, final CreatorRequest creatorRequest) {
+    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 }

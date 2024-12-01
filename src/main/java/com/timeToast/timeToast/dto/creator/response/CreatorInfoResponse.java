@@ -6,11 +6,11 @@ import lombok.Builder;
 @Builder
 public record CreatorInfoResponse(
         String nickname,
-        Bank bank,
+        String bank,
         String accountNumber,
         String profileUrl
 ) {
-    public static CreatorInfoResponse from(String nickname, Bank bank, String accountNumber, String profileUrl) {
+    public static CreatorInfoResponse from(String nickname, String bank, String accountNumber, String profileUrl) {
         return CreatorInfoResponse.builder()
                 .nickname(nickname)
                 .bank(bank)

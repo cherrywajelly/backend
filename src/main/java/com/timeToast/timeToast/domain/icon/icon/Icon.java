@@ -22,17 +22,12 @@ public class Icon extends BaseTime {
 
     private String iconImageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private ThumbnailIcon thumbnailIcon;
-
     @Builder
-    public Icon(final String iconImageUrl, final Long iconGroupId, final ThumbnailIcon thumbnailIcon) {
+    public Icon(final String iconImageUrl, final Long iconGroupId) {
         this.iconImageUrl = iconImageUrl;
         this.iconGroupId = iconGroupId;
-        this.thumbnailIcon = thumbnailIcon;
     }
 
-    public void updateThumbnailIcon(final ThumbnailIcon thumbnailIcon) { this.thumbnailIcon = thumbnailIcon; }
 
     public void updateUrl(final String iconImageUrl) {
         this.iconImageUrl = iconImageUrl;

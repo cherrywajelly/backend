@@ -27,7 +27,7 @@ public class IconGroup extends BaseTime {
     @Enumerated(EnumType.STRING)
     private IconType iconType;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private IconBuiltin iconBuiltin;
 
@@ -42,6 +42,8 @@ public class IconGroup extends BaseTime {
 
     private String description;
 
+    private long thumbnailId;
+
     @Builder
     public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
         this.name = name;
@@ -51,6 +53,9 @@ public class IconGroup extends BaseTime {
         this.memberId = memberId;
         this.description = description;
     }
+
+    public void updateThumbnailId(final long thumbnailId) { this.thumbnailId = thumbnailId; }
+
 
     public void updateIconState(IconState iconState) { this.iconState = iconState; }
 }
