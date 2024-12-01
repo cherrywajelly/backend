@@ -157,6 +157,7 @@ public class IconGroupServiceImplTest {
     void getIconGroupDetailResponse() {
         long iconGroupId = 1L;
         long iconId = 1L;
+        long memberId = 1L;
         IconResponse iconResponse = new IconResponse(iconId, "imageUrl");
 
 
@@ -164,7 +165,7 @@ public class IconGroupServiceImplTest {
         when(memberRepository.getById(iconGroup.getMemberId())).thenReturn(member);
         when(iconRepository.findAllByIconGroupId(0L)).thenReturn(List.of(icon));
 
-        IconGroupMarketDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(iconGroupId);
+        IconGroupMarketDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
 
         assertThat(iconGroupDetailResponse).isNotNull();
     }
