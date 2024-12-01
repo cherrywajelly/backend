@@ -49,14 +49,15 @@ public class CreatorServiceImpl implements CreatorService {
         Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(member.getId());
 
         if (creatorAccount.isPresent()) {
-            CreatorInfoResponse creatorInfoResponse = CreatorInfoResponse.from(member.getNickname(), creatorAccount.get().getBank(), creatorAccount.get().getAccountNumber(), member.getMemberProfileUrl());
+            CreatorInfoResponse creatorInfoResponse = CreatorInfoResponse.from(member.getNickname(), creatorAccount.get().getBank().value(), creatorAccount.get().getAccountNumber(), member.getMemberProfileUrl());
             IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
 
             long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().count();
             long selledIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
-            long settlement = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+            long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+            long settlement = (long) (revenue * 0.7);
 
-            return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, selledIconCount, settlement);
+            return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, selledIconCount, revenue, settlement);
         } else {
             throw new NotFoundException(INVALID_CREATOR_INFO.getMessage());
         }
@@ -80,7 +81,7 @@ public class CreatorServiceImpl implements CreatorService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            Icon thumbnailIcon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON);
+            Icon thumbnailIcon = iconRepository.getById(iconGroup.getThumbnailId());
 
             iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), thumbnailIcon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.getIconState()));
         });
@@ -97,11 +98,12 @@ public class CreatorServiceImpl implements CreatorService {
         if(creatorAccount.isPresent() && member != null) {
             member.updateNickname(creatorRequest.nickname());
             MemberInfoResponse memberInfoResponse = memberService.saveProfileImageByLogin(memberId, multipartFile);
+
             creatorAccount.get().updateAccount(creatorRequest.creatorAccountResponse().bank(), creatorRequest.creatorAccountResponse().accountNumber());
-            memberRepository.save(member);
+
             creatorAccountRepository.save(creatorAccount.get());
 
-            return CreatorInfoResponse.from(creatorRequest.nickname(), creatorRequest.creatorAccountResponse().bank(), creatorRequest.creatorAccountResponse().accountNumber(), memberInfoResponse.profileUrl());
+            return CreatorInfoResponse.from(creatorRequest.nickname(), creatorRequest.creatorAccountResponse().bank().value(), creatorRequest.creatorAccountResponse().accountNumber(), memberInfoResponse.profileUrl());
         } else {
             throw new BadRequestException(INVALID_CREATOR_INFO.getMessage());
         }

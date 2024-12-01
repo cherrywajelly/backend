@@ -172,9 +172,10 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public Response saveCreatorInfo(final long creatorId, final CreatorRequest creatorRequest) {
+    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
         Member member = memberRepository.getById(creatorId);
         member.updateNickname(creatorRequest.nickname());
+        saveProfileImageByLogin(creatorId, profile);
         memberRepository.save(member);
 
         CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, creatorId);

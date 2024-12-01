@@ -2,7 +2,6 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
-import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -36,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_NOT_FOUND;
@@ -63,18 +63,22 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         if(member == null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         } else {
-
             IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId);
             iconGroup.updateIconState(IconState.WAITING);
             iconGroupRepository.save(iconGroup);
 
-            iconService.postIconSet(files, iconGroup.getId());
-            Icon icon = iconRepository.save(new Icon("", iconGroup.getId(), ThumbnailIcon.THUMBNAILICON));
+            Map<MultipartFile, String> iconSet = iconService.postIconSet(files, iconGroup.getId());
 
-            String endpoint = baseUrl + "thumbnailIcon/image/" + Long.toString(icon.getId());
-            String imageUrl = fileUploadService.uploadfile(thumbnailIcon, endpoint);
-            icon.updateUrl(imageUrl);
-            iconRepository.save(icon);
+            files.forEach(
+                    file -> {
+                        System.out.println(iconSet.get(file));
+                        if (file.getOriginalFilename().equals(thumbnailIcon.getOriginalFilename()) && file.getSize() == thumbnailIcon.getSize()) {
+                            Icon icon = iconRepository.findByIconImageUrl(iconSet.get(file));
+                            iconGroup.updateThumbnailId(icon.getId());
+                        }
+                    }
+            );
+
             log.info("save icon group");
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
@@ -90,18 +94,14 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
         iconGroups.forEach(
                 iconGroup -> {
-                    if(iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON) != null) {
-                        Icon icon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON);
+                        Icon icon = iconRepository.getById(iconGroup.getThumbnailId());
                         iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.getIconImageUrl(), iconGroup.getName(), iconGroup.getIconState()));
-                    } else {
-                        throw new BadRequestException(ICON_NOT_FOUND.getMessage());
                     }
-                });
+                );
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
-    // TODO iconState, imageUrl
     @Transactional(readOnly = true)
     @Override
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
@@ -119,7 +119,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            Icon icon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroupId, ThumbnailIcon.THUMBNAILICON);
+            Icon icon = iconRepository.getById(iconGroup.get().getThumbnailId());
 
             IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get().getName(), icon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.get().getIconState());
             return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup.get(), member);

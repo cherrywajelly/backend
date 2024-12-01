@@ -14,7 +14,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
@@ -33,16 +37,19 @@ public class IconServiceImpl implements IconService{
 
     @Transactional
     @Override
-    public Response postIconSet(List<MultipartFile> files, final long iconGroupId) {
+    public Map<MultipartFile, String> postIconSet(List<MultipartFile> files, final long iconGroupId) {
+        Map<MultipartFile, String> imageUrls = new HashMap<>();
 
         files.forEach(file->{
-            Icon icon = iconRepository.save(new Icon("", iconGroupId, ThumbnailIcon.NONTHUMBNAILICON));
+            Icon icon = iconRepository.save(new Icon("", iconGroupId));
             String endpoint = baseUrl + "icon/image/" + Long.toString(icon.getId());
-            String imageUrls = fileUploadService.uploadfile(file, endpoint);
-            icon.updateUrl(imageUrls);
+            String imageUrl = fileUploadService.uploadfile(file, endpoint);
+            icon.updateUrl(imageUrl);
             iconRepository.save(icon);
+            imageUrls.put(file, imageUrl);
         });
+
         log.info("save icon images");
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return imageUrls;
     }
 }
