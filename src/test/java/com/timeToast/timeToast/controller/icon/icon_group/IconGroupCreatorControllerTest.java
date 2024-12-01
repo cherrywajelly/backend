@@ -95,7 +95,8 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("iconGroupCreatorResponses[0].iconGroupId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
-                                        fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목")
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconState").type(STRING).description("아이콘 등록 상태")
                                 )
                                 .build()
                         )));

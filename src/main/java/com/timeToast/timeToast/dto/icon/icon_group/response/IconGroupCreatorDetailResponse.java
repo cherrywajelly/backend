@@ -22,7 +22,7 @@ public record IconGroupCreatorDetailResponse(
                 .price(iconGroup.getPrice())
                 .description(iconGroup.getDescription())
                 .creatorProfileUrl(creator.getMemberProfileUrl())
-                .creatorProfileUrl(creator.getNickname())
+                .creatorNickname(creator.getNickname())
                 .build();
     }
 }
