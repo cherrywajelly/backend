@@ -23,7 +23,7 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
-        return new MemberInfoResponse(1L, "nickname","profileUrl");
+        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MemberServiceTest implements MemberService{
         if(nickname.equals("conflictNickname")){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
-        return new MemberInfoResponse(1L, "nickname","profileUrl");
+        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MemberServiceTest implements MemberService{
     @Override
     public MemberInfoResponse getMemberInfo(long memberId) {
 
-        return new MemberInfoResponse(1L,"nickname","profileUrl");
+        return new MemberInfoResponse(1L,"nickname","profileUrl","email");
     }
 
     @Override
