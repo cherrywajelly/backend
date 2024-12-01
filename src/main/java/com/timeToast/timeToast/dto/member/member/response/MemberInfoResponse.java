@@ -7,7 +7,8 @@ import lombok.Builder;
 public record MemberInfoResponse(
         long memberId,
         String nickname,
-        String profileUrl
+        String profileUrl,
+        String email
 ) {
 
     public static MemberInfoResponse from(final Member member){
@@ -15,6 +16,7 @@ public record MemberInfoResponse(
                 .memberId(member.getId())
                 .nickname(member.getNickname())
                 .profileUrl(member.getMemberProfileUrl())
+                .email(member.getEmail())
                 .build();
     }
 }

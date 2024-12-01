@@ -56,7 +56,8 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
+                                        fieldWithPath("email").type(STRING).description("이메일")
                                 )
                                 .build()
                         )));
@@ -84,7 +85,8 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
+                                        fieldWithPath("email").type(STRING).description("이메일")
                                 )
                                 .build()
                         )));
@@ -220,7 +222,8 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
+                                        fieldWithPath("email").type(STRING).description("이메일")
                                 )
                                 .build()
                         )));
@@ -249,7 +252,8 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url")
+                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
+                                        fieldWithPath("email").type(STRING).description("이메일")
                                 )
                                 .build()
                         )));

@@ -45,7 +45,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자의 제작자 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 제작자 목록")
+                                .tag("제작자")
                                 .summary("관리자는 제작자 목록을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -73,7 +73,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                                 parameterWithName("creatorId").description("제작자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 제작자 상세 정보 조회")
+                                .tag("제작자")
                                 .summary("관리자는 제작자 상세 정보를 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -102,7 +102,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                                 parameterWithName("creatorId").description("제작자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 제작자의 모든 아이콘 조회")
+                                .tag("제작자")
                                 .summary("관리자는 제작자의 모든 아이콘을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
