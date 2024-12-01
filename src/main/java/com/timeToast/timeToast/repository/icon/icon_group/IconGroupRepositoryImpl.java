@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_GROUP_NOT_FOUND;
 
@@ -50,5 +51,10 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     @Override
     public void deleteById(final long iconGroupId) {
         iconGroupJpaRepository.deleteById(iconGroupId);
+    }
+
+    @Override
+    public Optional<IconGroup> getByIdAndMemberId(final long iconGroupId, final long memberId) {
+        return iconGroupJpaRepository.findByIdAndMemberId(iconGroupId, memberId);
     }
 }

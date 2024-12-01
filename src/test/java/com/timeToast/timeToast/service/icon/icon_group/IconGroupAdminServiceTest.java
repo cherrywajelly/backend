@@ -6,10 +6,14 @@ import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +22,14 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 
 public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
-    public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, final long userId){
+    public Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId){
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle"));
+        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED));
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
@@ -89,6 +93,16 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
                   .iconImageUrl(List.of("iconImageUrl"))
                   .build()
         );
-        return new CreatorIconInfos(1, 1000, creatorIconInfos);
+        return new CreatorIconInfos(1, 1000, 10,creatorIconInfos);
     }
+
+    @Override
+    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
+        List<String> iconImageUrls = new ArrayList<>();
+        List<String> iconTitles = new ArrayList<>();
+        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", "thumbnailUrl", List.of("iconImageUrl"), 1, 1, IconState.REGISTERED);
+        IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
+        return iconGroupCreatorDetail;
+    }
+
 }

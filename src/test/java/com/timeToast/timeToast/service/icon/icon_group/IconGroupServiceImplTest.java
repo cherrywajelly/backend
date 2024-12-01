@@ -6,6 +6,7 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -156,6 +157,7 @@ public class IconGroupServiceImplTest {
     void getIconGroupDetailResponse() {
         long iconGroupId = 1L;
         long iconId = 1L;
+        long memberId = 1L;
         IconResponse iconResponse = new IconResponse(iconId, "imageUrl");
 
 
@@ -163,7 +165,7 @@ public class IconGroupServiceImplTest {
         when(memberRepository.getById(iconGroup.getMemberId())).thenReturn(member);
         when(iconRepository.findAllByIconGroupId(0L)).thenReturn(List.of(icon));
 
-        IconGroupDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(iconGroupId);
+        IconGroupMarketDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
 
         assertThat(iconGroupDetailResponse).isNotNull();
     }

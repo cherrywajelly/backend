@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -10,6 +11,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
@@ -28,6 +30,7 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import com.timeToast.timeToast.service.image.FileUploadService;
@@ -148,15 +151,17 @@ public class MemberServiceImpl implements MemberService{
 
         Member member = memberRepository.getById(creatorId);
         String creatorAccount = null;
+        Bank bank = null;
         Optional<CreatorAccount> findCreatorAccount = creatorAccountRepository.findByMemberId(creatorId);
         if(findCreatorAccount.isPresent()){
+            bank = findCreatorAccount.get().getBank();
             creatorAccount = findCreatorAccount.get().getAccountNumber();
         }
 
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
-                .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
+                .bank(bank)
                 .accountNumber(creatorAccount)
                 .build();
     }
@@ -168,4 +173,17 @@ public class MemberServiceImpl implements MemberService{
         return PremiumResponse.from(premiumRepository.getById(member.getPremiumId()));
     }
 
+    @Transactional
+    @Override
+    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
+        Member member = memberRepository.getById(creatorId);
+        member.updateNickname(creatorRequest.nickname());
+        saveProfileImageByLogin(creatorId, profile);
+        memberRepository.save(member);
+
+        CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, creatorId);
+        creatorAccountRepository.save(creatorAccount);
+
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    }
 }

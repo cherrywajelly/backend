@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,6 +42,8 @@ public class IconGroup extends BaseTime {
 
     private String description;
 
+    private long thumbnailId;
+
     @Builder
     public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
         this.name = name;
@@ -50,6 +53,9 @@ public class IconGroup extends BaseTime {
         this.memberId = memberId;
         this.description = description;
     }
+
+    public void updateThumbnailId(final long thumbnailId) { this.thumbnailId = thumbnailId; }
+
 
     public void updateIconState(IconState iconState) { this.iconState = iconState; }
 }
