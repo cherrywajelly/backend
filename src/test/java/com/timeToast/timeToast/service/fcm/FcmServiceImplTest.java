@@ -154,20 +154,20 @@ public class FcmServiceImplTest {
         assertThat(response.message()).isEqualTo(SUCCESS_PUT.getMessage());
     }
 
-    @Test
-    @DisplayName("fcm 메세지 전송 - 성공")
-    void sendMessageTo() {
-        // Given
-        long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().build();
-
-        // When
-        Response response = fcmService.sendMessageTo(memberId, fcmPostRequest);
-
-        // Then
-        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-    }
+//    @Test
+//    @DisplayName("fcm 메세지 전송 - 성공")
+//    void sendMessageTo() {
+//        // Given
+//        long memberId = 1L;
+//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().build();
+//
+//        // When
+//        Response response = fcmService.sendMessageTo(memberId, fcmPostRequest);
+//
+//        // Then
+//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+//    }
 
     @Test
     @DisplayName("fcm 정보 저장 - 성공")

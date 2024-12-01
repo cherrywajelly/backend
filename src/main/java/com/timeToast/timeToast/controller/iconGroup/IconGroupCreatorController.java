@@ -25,14 +25,14 @@ public class IconGroupCreatorController {
     private final IconService iconService;
 
     @PostMapping("")
-    public Response postIconGroup(@Login LoginMember loginMember, @RequestBody IconGroupPostRequest iconGroupPostRequest) {
-        return iconGroupAdminService.postIconGroup(iconGroupPostRequest, loginMember.id());
+    public Response postIconGroup(@Login LoginMember loginMember, @RequestPart final IconGroupPostRequest iconGroupPostRequest, @RequestParam("mainIcon") MultipartFile mainIcon, @RequestParam("files") List<MultipartFile> files) {
+        return iconGroupAdminService.postIconGroup(mainIcon, files, iconGroupPostRequest, loginMember.id());
     }
 
-    @PostMapping("/images/{iconGroupId}")
-    public Response postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files, @PathVariable("iconGroupId") final long iconGroupId) {
-        return iconService.postIconSet(files, iconGroupId);
-    }
+//    @PostMapping("/images/{iconGroupId}")
+//    public Response postIconGroupImages(@Login LoginMember loginMember, @RequestParam("files") List<MultipartFile> files, @PathVariable("iconGroupId") final long iconGroupId) {
+//        return iconService.postIconSet(files, iconGroupId);
+//    }
 
     @GetMapping("")
     public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
