@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_YEAR_MONTH;
 
 @Service
 @Slf4j
@@ -34,22 +35,10 @@ public class SettlementServiceImpl implements SettlementService {
     private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public SettlementCreatorResponses getCreatorMonthSettlements(final long creatorId) {
-//        List<MonthSettlement> monthSettlements = settlementRepository.findAllByMemberId(creatorId);
-//        List<SettlementCreatorResponse> monthSettlementResponses = new ArrayList<>();
-//
-//        monthSettlements.forEach(monthSettlement -> {
-//            monthSettlementResponses.add(SettlementCreatorResponse.from(monthSettlement));
-//        });
-//        return new SettlementCreatorResponses(monthSettlementResponses);
-//    }
-
-
     @Transactional
     @Override
     public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
+        yearMonthValidation(settlementRequest.year(), settlementRequest.month());
         settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementRequest.year(), settlementRequest.month(),1), creatorId).forEach(
                         settlement -> {
                             settlement.updateSettlementState(SettlementState.APPROVAL);
@@ -86,6 +75,7 @@ public class SettlementServiceImpl implements SettlementService {
     @Transactional(readOnly = true)
     @Override
     public SettlementResponses getSettlementByYearMonth(final int year, final int month) {
+        yearMonthValidation(year, month);
         List<SettlementResponse> settlementResponses = new ArrayList<>();
         settlementRepository.findAllByYearMonth(LocalDate.of(year, month,1))
                 .stream().collect(Collectors.toMap(
@@ -116,17 +106,24 @@ public class SettlementServiceImpl implements SettlementService {
     @Transactional(readOnly = true)
     @Override
     public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final int year, final int month) {
-        return getSettlementByYeaerMonth(memberId, year, month);
+        yearMonthValidation(year, month);
+        return getSettlementByYearMonth(memberId, year, month);
     }
 
     @Transactional(readOnly = true)
     @Override
     public SettlementDetailResponse getSettlementByYearMonthAndCreator(final long creatorId, final int year, final int month) {
-        return getSettlementByYeaerMonth(creatorId, year, month);
+        yearMonthValidation(year, month);
+        return getSettlementByYearMonth(creatorId, year, month);
     }
 
+    private void yearMonthValidation(final int year, final int month){
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+    }
 
-    private SettlementDetailResponse getSettlementByYeaerMonth(final long creatorId, final int year, final int month) {
+    private SettlementDetailResponse getSettlementByYearMonth(final long creatorId, final int year, final int month) {
         CreatorAccount creatorAccount = getCreatorAccount(creatorId);
 
         List<SettlementIcon> settlementIcons = getMonthSettlementIcons(year, month, creatorId);
@@ -183,28 +180,4 @@ public class SettlementServiceImpl implements SettlementService {
 
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public MonthSettlementDetailResponse getMonthSettlementDetail(final long memberId, final long monthSettlementId) {
-//        Member member = memberRepository.getById(memberId);
-//        MonthSettlement monthSettlement = monthSettlementRepository.getById(monthSettlementId);
-//
-//        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
-//        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-//        iconGroups.forEach(iconGroup -> {
-//            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
-//            List<String> iconImageUrls = new ArrayList<>();
-//            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
-//
-//            List<Payment> payments = paymentRepository.findAllByItemIdAndCreatedAtMonth(iconGroup.getId(), monthSettlement.getYearMonth().toString());
-//            long income = payments.stream()
-//                    .mapToLong(Payment::getAmount)
-//                    .sum();
-//
-//            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, payments.size(), income));
-//        });
-//
-//        long selledIconCount = iconGroupOrderedResponses.stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
-//        return MonthSettlementDetailResponse.from(member, monthSettlement.getSettlement(), selledIconCount, new IconGroupOrderedResponses(iconGroupOrderedResponses));
-//    }
 }
