@@ -57,7 +57,6 @@ public class SettlementServiceImpl implements SettlementService {
                 response -> response,
                 (existing, replacement) -> existing)).values().stream().toList().forEach(
                         settlementResponse -> {
-
                             if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
                                 settlementCreatorInfoResponses.add(
                                         SettlementCreatorInfoResponse.builder()
@@ -90,13 +89,11 @@ public class SettlementServiceImpl implements SettlementService {
                                         .memberId(monthSettlement.getMemberId())
                                         .nickname(creator.get().getNickname())
                                         .profileUrl(creator.get().getMemberProfileUrl())
-                                        .settlementState(SettlementState.WAITING)
+                                        .settlementState(monthSettlement.getSettlementState())
                                         .build());
                             }
                         }
                 );
-
-
 
         return new SettlementResponses(settlementResponses);
     }
