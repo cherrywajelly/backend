@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
@@ -119,17 +121,23 @@ public class IconGroupServiceImpl implements IconGroupService{
     private IconGroupMarketResponses getAllIconGroups(final long memberId, final IconType iconType){
         List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
         iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN, IconState.REGISTERED).forEach(
-                iconGroup ->
+                iconGroup ->{
+                    Optional<Icon> icon =  iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst();
+                    if(icon.isPresent()){
                         iconGroupMarketResponses.add(
-                                IconGroupMarketResponse.builder()
-                                        .iconGroupId(iconGroup.getId())
-                                        .title(iconGroup.getName())
-                                        .thumbnailImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst().get().getIconImageUrl())
-                                        .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
-                                        .iconType(iconGroup.getIconType())
-                                        .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
-                                        .build()
-                        ));
+                                        IconGroupMarketResponse.builder()
+                                                .iconGroupId(iconGroup.getId())
+                                                .title(iconGroup.getName())
+                                                .thumbnailImageUrl(icon.get().getIconImageUrl())
+                                .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
+                                .iconType(iconGroup.getIconType())
+                                .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
+                                .build());
+                    }
+
+                }
+
+        );
 
         return new IconGroupMarketResponses(iconGroupMarketResponses);
     }
