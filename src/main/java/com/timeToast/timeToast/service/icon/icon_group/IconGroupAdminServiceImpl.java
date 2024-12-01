@@ -176,6 +176,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
                 .iconState(iconGroup.getIconState())
+                .description(iconGroup.getDescription())
                 .iconResponses(iconResponses)
                 .build();
 

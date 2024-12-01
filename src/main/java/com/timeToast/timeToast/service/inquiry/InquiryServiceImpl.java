@@ -54,7 +54,6 @@ public class InquiryServiceImpl implements InquiryService {
             throw new BadRequestException(INVALID_INQUIRY.getMessage());
         }
 
-
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
