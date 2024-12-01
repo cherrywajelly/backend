@@ -26,7 +26,7 @@ public class SettlementCreatorController {
     }
 
 
-    @GetMapping("/creators")
+    @GetMapping("/detail")
     public SettlementDetailResponse getSettlement(@Login LoginMember loginMember,@RequestBody SettlementRequest settlementRequest ){
         return settlementService.getAllSettlementByCreator(loginMember.id(),settlementRequest);
     }
