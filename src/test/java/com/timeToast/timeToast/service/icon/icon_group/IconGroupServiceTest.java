@@ -72,14 +72,15 @@ public class IconGroupServiceTest implements IconGroupService {
     }
 
     @Override
-    public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId) {
-        return IconGroupDetailResponse.builder()
+    public IconGroupMarketDetailResponse getIconGroupDetail(final long iconGroupId) {
+        return IconGroupMarketDetailResponse.builder()
                 .thumbnailImageUrl("thumbnailImageUrl")
                 .title("title")
                 .creatorNickname("nickname")
                 .price(0)
                 .iconResponses(List.of(new IconResponse(1L, "iconImageUrl")))
                 .iconState(IconState.REGISTERED)
+                .isBuy(false)
                 .build();
     }
 
