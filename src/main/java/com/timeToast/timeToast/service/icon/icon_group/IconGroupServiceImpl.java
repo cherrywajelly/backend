@@ -85,7 +85,7 @@ public class IconGroupServiceImpl implements IconGroupService{
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupMarketDetailResponse getIconGroupDetail(final long iconGroupId) {
+    public IconGroupMarketDetailResponse getIconGroupDetail(final long memberId, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
         List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
@@ -100,7 +100,7 @@ public class IconGroupServiceImpl implements IconGroupService{
                 .price(iconGroup.getPrice())
                 .iconState(iconGroup.getIconState())
                 .iconResponses(iconResponses)
-                .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(iconGroup.getId(), iconGroup.getId()).isPresent())
+                .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
                 .build();
     }
 

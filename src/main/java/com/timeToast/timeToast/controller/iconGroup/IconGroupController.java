@@ -39,8 +39,8 @@ public class IconGroupController {
     }
 
     @GetMapping("/{iconGroupId}")
-    public IconGroupMarketDetailResponse getIconGroupDetail(final @PathVariable long iconGroupId) {
-        return iconGroupService.getIconGroupDetail(iconGroupId);
+    public IconGroupMarketDetailResponse getIconGroupDetail(final @Login LoginMember loginMember, final @PathVariable long iconGroupId) {
+        return iconGroupService.getIconGroupDetail(loginMember.id(), iconGroupId);
     }
 
     @DeleteMapping("/{iconGroupId}")
