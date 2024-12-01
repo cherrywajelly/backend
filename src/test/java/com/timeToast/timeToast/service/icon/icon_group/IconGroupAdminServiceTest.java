@@ -41,6 +41,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
                 .title("title")
                 .creatorNickname("nickname")
                 .price(0)
+                .description("description")
                 .iconResponses(List.of(new IconResponse(1L, "iconImageUrl")))
                 .iconState(IconState.REGISTERED)
                 .build();
