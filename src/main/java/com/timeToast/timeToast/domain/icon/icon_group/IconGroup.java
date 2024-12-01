@@ -27,7 +27,7 @@ public class IconGroup extends BaseTime {
     @Enumerated(EnumType.STRING)
     private IconType iconType;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private IconBuiltin iconBuiltin;
 

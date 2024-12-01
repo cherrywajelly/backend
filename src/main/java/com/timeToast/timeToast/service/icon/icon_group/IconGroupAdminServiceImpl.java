@@ -63,6 +63,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         if(member == null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         } else {
+
             IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId);
             iconGroup.updateIconState(IconState.WAITING);
             iconGroupRepository.save(iconGroup);
@@ -71,7 +72,9 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             Icon icon = iconRepository.save(new Icon("", iconGroup.getId(), ThumbnailIcon.THUMBNAILICON));
 
             String endpoint = baseUrl + "thumbnailIcon/image/" + Long.toString(icon.getId());
-            fileUploadService.uploadfile(thumbnailIcon, endpoint);
+            String imageUrl = fileUploadService.uploadfile(thumbnailIcon, endpoint);
+            icon.updateUrl(imageUrl);
+            iconRepository.save(icon);
             log.info("save icon group");
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());

@@ -124,9 +124,11 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("iconGroupOrderedResponse.iconName").type(STRING).description("아이콘 이름"),
+                                        fieldWithPath("iconGroupOrderedResponse.thumbnailImageUrl").type(STRING).description("아이콘 대표 이미지"),
                                         fieldWithPath("iconGroupOrderedResponse.iconImageUrl[]").type(JsonFieldType.ARRAY).description("아이콘 이미지 url"),
                                         fieldWithPath("iconGroupOrderedResponse.orderCount").type(NUMBER).description("아이콘 주문 개수"),
                                         fieldWithPath("iconGroupOrderedResponse.income").type(NUMBER).description("아이콘 수익"),
+                                        fieldWithPath("iconGroupOrderedResponse.iconState").type(STRING).description("아이콘 등록 상태"),
                                         fieldWithPath("price").type(NUMBER).description("아이콘 가격"),
                                         fieldWithPath("description").type(STRING).description("아이콘 설명"),
                                         fieldWithPath("creatorProfileUrl").type(STRING).description("제작자 프로필 url"),

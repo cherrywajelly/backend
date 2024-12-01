@@ -169,7 +169,7 @@ public class FcmServiceImpl implements FcmService {
                     saveFcmInfo(memberId, fcmPostRequest);
                 } catch (Exception e){
                         memberTokenRepository.deleteByMemberId(memberId);
-                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(),FCM_TOKEN_EXPIRED.getMessage());
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), FCM_TOKEN_EXPIRED.getMessage());
                     }
             }
             else {
@@ -293,7 +293,7 @@ public class FcmServiceImpl implements FcmService {
 
             googleCredentials.refreshIfExpired();
 
-            if (googleCredentials.getAccessToken() == null) {
+            if (googleCredentials.getAccessToken() != null) {
                 return googleCredentials.getAccessToken().getTokenValue();
             } else {
                 throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());

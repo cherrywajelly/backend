@@ -1,7 +1,16 @@
 package com.timeToast.timeToast.domain.enums.creator_account;
 
 public enum Bank {
-    IBKOKRSE, NACFKRSE, NFFCKRSE, CZNBKRSE, HVBKKRSE, SCBLKRSE, KOEXKRSE, SHBKKRSE, KAKOKR22, TOBNKRSE
+    IBK("IBKOKRSE"),
+    NH("NACFKRSE"),
+    Sh("NFFCKRSE"),
+    KB("CZNBKRSE"),
+    WOORI("HVBKKRSE"),
+    SC("SCBLKRSE"),
+    HANA("KOEXKRSE"),
+    SHINHAN("SHBKKRSE"),
+    KAKAO("KAKOKR22"),
+    TOSS("TOBNKRSE");
 
     private final String value;
 
@@ -13,4 +22,3 @@ public enum Bank {
         return value;
     }
 }
-
