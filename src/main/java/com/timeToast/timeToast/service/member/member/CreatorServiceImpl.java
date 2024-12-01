@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -79,7 +80,9 @@ public class CreatorServiceImpl implements CreatorService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), iconImageUrls, payments.size(), income));
+            Icon thumbnailIcon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON);
+
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), thumbnailIcon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.getIconState()));
         });
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }

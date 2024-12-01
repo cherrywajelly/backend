@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.icon.icon;
 
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -35,7 +36,7 @@ public class IconServiceImpl implements IconService{
     public Response postIconSet(List<MultipartFile> files, final long iconGroupId) {
 
         files.forEach(file->{
-            Icon icon = iconRepository.save(new Icon("", iconGroupId));
+            Icon icon = iconRepository.save(new Icon("", iconGroupId, ThumbnailIcon.NONTHUMBNAILICON));
             String endpoint = baseUrl + "icon/image/" + Long.toString(icon.getId());
             String imageUrls = fileUploadService.uploadfile(file, endpoint);
             icon.updateUrl(imageUrls);

@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.BaseTime;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,7 +27,7 @@ public class IconGroup extends BaseTime {
     @Enumerated(EnumType.STRING)
     private IconType iconType;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private IconBuiltin iconBuiltin;
 

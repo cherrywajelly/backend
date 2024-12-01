@@ -138,7 +138,7 @@ public class SettlementServiceImpl implements SettlementService {
                 .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
                 .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
                 .settlement((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7))
-                .bank(creatorAccount.getBank())
+                .bank(creatorAccount.getBank().value())
                 .accountNumber(creatorAccount.getAccountNumber())
                 .settlementState(settlementState)
                 .settlementIcons(settlementIcons)
@@ -168,7 +168,7 @@ public class SettlementServiceImpl implements SettlementService {
                 .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
                 .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
                 .settlement((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7))
-                .bank(creatorAccount.getBank())
+                .bank(creatorAccount.getBank().value())
                 .accountNumber(creatorAccount.getAccountNumber())
                 .settlementState(settlementState)
                 .build();
