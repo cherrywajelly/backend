@@ -146,6 +146,7 @@ public class FcmServiceImpl implements FcmService {
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
         try{
+
             Message message = createMessage(memberId, fcmPostRequest);
 
             if (message != null) {
@@ -154,9 +155,14 @@ public class FcmServiceImpl implements FcmService {
                     log.info("send message to {}", memberId);
                     saveFcmInfo(memberId, fcmPostRequest);
                 } catch (FirebaseMessagingException e){
-                        memberTokenRepository.deleteByMemberId(memberId);
-                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), FCM_TOKEN_EXPIRED.getMessage());
+                    if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
+                        log.error("fcm token is expired");
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
+                    } else if (e.getMessagingErrorCode().equals(MessagingErrorCode.UNREGISTERED)) {
+                        log.error("please login again");
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
                     }
+                }
             }
             else {
                 log.error("Failed to get fcm message");
@@ -166,7 +172,6 @@ public class FcmServiceImpl implements FcmService {
             throw new RuntimeException(e);
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-
     }
 
     @Transactional
