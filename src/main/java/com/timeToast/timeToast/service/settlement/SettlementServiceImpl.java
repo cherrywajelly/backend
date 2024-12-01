@@ -116,40 +116,20 @@ public class SettlementServiceImpl implements SettlementService {
     @Transactional(readOnly = true)
     @Override
     public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final int year, final int month) {
-        CreatorAccount creatorAccount = getCreatorAccount(memberId);
-
-        List<SettlementIcon> settlementIcons =
-                getMonthSettlementIcons(year, month, memberId);
-
-        SettlementState settlementState;
-        if(settlementIcons.isEmpty()){
-            settlementState = SettlementState.WAITING;
-        }else{
-            settlementState = settlementIcons.stream().findFirst().get().settlementState();
-        }
-
-        return SettlementDetailResponse.builder()
-                .year(year)
-                .month(month)
-                .creatorNickname(memberRepository.getById(memberId).getNickname())
-                .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
-                .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
-                .settlement((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7))
-                .bank(creatorAccount.getBank().value())
-                .accountNumber(creatorAccount.getAccountNumber())
-                .settlementState(settlementState)
-                .settlementIcons(settlementIcons)
-                .build();
+        return getSettlementByYeaerMonth(memberId, year, month);
     }
 
     @Transactional(readOnly = true)
     @Override
     public SettlementDetailResponse getSettlementByYearMonthAndCreator(final long creatorId, final int year, final int month) {
+        return getSettlementByYeaerMonth(creatorId, year, month);
+    }
 
+
+    private SettlementDetailResponse getSettlementByYeaerMonth(final long creatorId, final int year, final int month) {
         CreatorAccount creatorAccount = getCreatorAccount(creatorId);
 
-        List<SettlementIcon> settlementIcons =
-                getMonthSettlementIcons(year, month, creatorId);
+        List<SettlementIcon> settlementIcons = getMonthSettlementIcons(year, month, creatorId);
 
         SettlementState settlementState;
         if(settlementIcons.isEmpty()){
@@ -168,6 +148,7 @@ public class SettlementServiceImpl implements SettlementService {
                 .bank(creatorAccount.getBank().value())
                 .accountNumber(creatorAccount.getAccountNumber())
                 .settlementState(settlementState)
+                .settlementIcons(settlementIcons)
                 .build();
     }
 
