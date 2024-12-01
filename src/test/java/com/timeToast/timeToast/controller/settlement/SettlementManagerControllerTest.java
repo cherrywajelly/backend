@@ -2,6 +2,7 @@ package com.timeToast.timeToast.controller.settlement;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.service.settlement.SettlementService;
@@ -10,6 +11,8 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -21,6 +24,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SettlementManagerControllerTest extends BaseControllerTests {
@@ -36,29 +40,31 @@ public class SettlementManagerControllerTest extends BaseControllerTests {
     @WithMockCustomUser
     @Test
     void approvalSettlement() throws Exception {
-
-        SettlementApprovalRequest settlementApprovalRequest = new SettlementApprovalRequest(1L, 1, 1, SettlementState.APPROVAL);
-        String json = objectMapper.writeValueAsString(settlementApprovalRequest);
+        SettlementRequest settlementRequest = new SettlementRequest(1,1);
+        String json = objectMapper.writeValueAsString(settlementRequest);
 
         mockMvc.perform(
-                        post("/api/v3/settlements")
+                        post("/api/v3/settlements/creators/{creatorId}",1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)
+
+
                 )
                 .andExpect(status().isOk())
                 .andDo(document("관리자의 제작자 정산 승인",
+                        pathParameters(
+                                parameterWithName("creatorId").description("조회 대상의 creatorId")
+                        ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 제작자의 정산 승인")
+                                .tag("정산")
                                 .summary("관리자는 제작자의 정산을 승인할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .requestFields(
-                                        fieldWithPath("creatorId").type(NUMBER).description("제작자 id"),
                                         fieldWithPath("year").type(NUMBER).description("year"),
-                                        fieldWithPath("month").type(NUMBER).description("month"),
-                                        fieldWithPath("settlementState").type(STRING).description("정산 승인/거절")
+                                        fieldWithPath("month").type(NUMBER).description("month")
                                 )
                                 .responseFields(
                                         fieldWithPath("year").type(NUMBER).description("year"),
@@ -76,26 +82,25 @@ public class SettlementManagerControllerTest extends BaseControllerTests {
     @Test
     void getMonthSettlement() throws Exception {
 
-        SettlementRequest settlementRequest = new SettlementRequest(1, 1);
-        String json = objectMapper.writeValueAsString(settlementRequest);
 
         mockMvc.perform(
                         get("/api/v3/settlements")
+                                .param("year", "1")
+                                .param("month", "1")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                                .contentType(APPLICATION_JSON)
-                                .content(json)
+
                 )
                 .andExpect(status().isOk())
                 .andDo(document("관리자의 정산 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 정산 목록 조회")
+                                .tag("정산")
                                 .summary("관리자는 정산 목록을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
-                                .requestFields(
-                                        fieldWithPath("year").type(NUMBER).description("year"),
-                                        fieldWithPath("month").type(NUMBER).description("month")
+                                .queryParameters(
+                                        parameterWithName("year").description("year"),
+                                        parameterWithName("month").description("month")
                                 )
                                 .responseFields(
                                         fieldWithPath("settlementResponses[0].memberId").type(NUMBER).description("제작자 id"),
@@ -112,29 +117,26 @@ public class SettlementManagerControllerTest extends BaseControllerTests {
     @Test
     void getMonthSettlementByYearMonthAndCreator() throws Exception {
 
-        SettlementApprovalRequest settlementApprovalRequest = new SettlementApprovalRequest(1L, 1, 1, SettlementState.APPROVAL);
-        String json = objectMapper.writeValueAsString(settlementApprovalRequest);
-
         mockMvc.perform(
-                        get("/api/v3/settlements/creators")
+                        get("/api/v3/settlements/creators/{creatorId}",1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                                .contentType(APPLICATION_JSON)
-                                .content(json)
+                                .param("year", "1")
+                                .param("month", "1")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자의  제작자 별 정산 상세 조회",
+                .andDo(document("관리자의 제작자 별 정산 상세 조회",
+                        pathParameters(
+                                parameterWithName("creatorId").description("조회 대상의 creatorId")
+                        ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 -  제작자 별 정산 상세 조회")
-                                .summary("관리자는  제작자 별 정산 상세 조회할 수 있다.")
+                                .tag("정산")
+                                .summary("관리자는 제작자 별 정산 상세 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
-                                .requestFields(
-                                        fieldWithPath("creatorId").type(NUMBER).description("creatorId"),
-                                        fieldWithPath("year").type(NUMBER).description("year"),
-                                        fieldWithPath("month").type(NUMBER).description("month"),
-                                        fieldWithPath("settlementState").type(STRING).description("정산 승인 상태")
-
+                                .queryParameters(
+                                        parameterWithName("year").description("year"),
+                                        parameterWithName("month").description("month")
                                 )
                                 .responseFields(
                                         fieldWithPath("year").type(NUMBER).description("year"),

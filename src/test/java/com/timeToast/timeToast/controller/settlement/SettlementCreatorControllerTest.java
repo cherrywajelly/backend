@@ -21,6 +21,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SettlementCreatorControllerTest extends BaseControllerTests {
@@ -46,7 +47,7 @@ public class SettlementCreatorControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("제작자 정산 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자 - 정산 목록 조회")
+                                .tag("정산")
                                 .summary("제작자는 자신의 정산 목록을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -67,26 +68,25 @@ public class SettlementCreatorControllerTest extends BaseControllerTests {
     @Test
     void getMonthSettlement() throws Exception {
 
-        SettlementRequest settlementRequest = new SettlementRequest(1, 1);
-        String json = objectMapper.writeValueAsString(settlementRequest);
 
         mockMvc.perform(
                         get("/api/v2/settlements/detail")
+                                .param("year", "1")
+                                .param("month", "1")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                                .contentType(APPLICATION_JSON)
-                                .content(json)
+
                 )
                 .andExpect(status().isOk())
                 .andDo(document("제작자 정산 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자 - 정산 상세 조회")
+                                .tag("정산")
                                 .summary("제작자는 정산 상세 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
-                                .requestFields(
-                                        fieldWithPath("year").type(NUMBER).description("year"),
-                                        fieldWithPath("month").type(NUMBER).description("month")
+                                .queryParameters(
+                                        parameterWithName("year").description("year"),
+                                        parameterWithName("month").description("month")
                                 )
                                 .responseFields(
                                         fieldWithPath("year").type(NUMBER).description("year"),
