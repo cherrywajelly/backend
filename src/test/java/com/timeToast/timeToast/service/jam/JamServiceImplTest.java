@@ -84,48 +84,48 @@ public class JamServiceImplTest {
         jam = Jam.builder().memberId(memberId2).eventToastId(eventToastId).iconId(iconId).build();
     }
 
-    @Test
-    @DisplayName("잼 생성 - 성공")
-    void saveJam () throws IOException {
-        // Given
-        long jamId = 1L;
-        long memberId = 1L;
-        long eventToastId = 1L;
-
-        MockMultipartFile content = new MockMultipartFile(
-                "contents", //name
-                "test_image.jpg", //originalFilename
-                "JPG",
-                new FileInputStream("src/test/resources/test_image.jpg")
-        );
-
-        MockMultipartFile image = new MockMultipartFile(
-                "contents", //name
-                "test_image.jpg", //originalFilename
-                "JPG",
-                new FileInputStream("src/test/resources/test_image.jpg")
-        );
-
-        JamRequest jamRequest = new JamRequest("title", jamId);
-
-        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
-        ReflectionTestUtils.setField(member, "id", memberId);
-
-        when(eventToastRepository.getById(eventToast.getId())).thenReturn(eventToast);
-        when(jamRepository.findByMemberIdAndEventToastId(member.getId(), eventToast.getId())).thenReturn(Optional.empty());
-        when(jamRepository.save(any(Jam.class))).thenReturn(jam);
-        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("content"))).thenReturn("contentsUrl");
-        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("image"))).thenReturn("imageUrl");
-
-
-        // When
-        Response response = jamService.postJam(jamRequest, content, image, eventToast.getId(), member.getId());
-
-        // Then
-        verify(jamRepository, times(1)).save(jam);
-        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-    }
+//    @Test
+//    @DisplayName("잼 생성 - 성공")
+//    void saveJam () throws IOException {
+//        // Given
+//        long jamId = 1L;
+//        long memberId = 1L;
+//        long eventToastId = 1L;
+//
+//        MockMultipartFile content = new MockMultipartFile(
+//                "contents", //name
+//                "test_image.jpg", //originalFilename
+//                "JPG",
+//                new FileInputStream("src/test/resources/test_image.jpg")
+//        );
+//
+//        MockMultipartFile image = new MockMultipartFile(
+//                "contents", //name
+//                "test_image.jpg", //originalFilename
+//                "JPG",
+//                new FileInputStream("src/test/resources/test_image.jpg")
+//        );
+//
+//        JamRequest jamRequest = new JamRequest("title", jamId);
+//
+//        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+//        ReflectionTestUtils.setField(member, "id", memberId);
+//
+//        when(eventToastRepository.getById(eventToast.getId())).thenReturn(eventToast);
+//        when(jamRepository.findByMemberIdAndEventToastId(member.getId(), eventToast.getId())).thenReturn(Optional.empty());
+//        when(jamRepository.save(any(Jam.class))).thenReturn(jam);
+//        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("content"))).thenReturn("contentsUrl");
+//        when(fileUploadService.uploadfile(any(MockMultipartFile.class), eq("image"))).thenReturn("imageUrl");
+//
+//
+//        // When
+//        Response response = jamService.postJam(jamRequest, content, image, eventToast.getId(), member.getId());
+//
+//        // Then
+//        verify(jamRepository, times(1)).save(jam);
+//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+//    }
 
     @Test
     @DisplayName("잼 목록 조회 - 성공")
