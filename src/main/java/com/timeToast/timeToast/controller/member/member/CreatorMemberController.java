@@ -26,8 +26,8 @@ public class CreatorMemberController {
     }
 
     @PostMapping("/creator-info")
-    public Response saveCreatorInfo(@Login LoginMember loginMember, @RequestBody CreatorRequest creatorRequest) {
-        return memberService.saveCreatorInfo(loginMember.id(), creatorRequest);
+    public Response saveCreatorInfo(@Login LoginMember loginMember, @RequestPart(value = "profile") final MultipartFile profile, @RequestPart CreatorRequest creatorRequest) {
+        return memberService.saveCreatorInfo(loginMember.id(), profile, creatorRequest);
     }
 
     @GetMapping("")

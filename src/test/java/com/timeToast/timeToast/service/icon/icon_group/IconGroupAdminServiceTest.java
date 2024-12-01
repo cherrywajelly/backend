@@ -23,6 +23,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
     public Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId){
+
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 

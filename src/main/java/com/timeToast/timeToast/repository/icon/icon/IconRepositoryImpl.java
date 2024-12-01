@@ -45,7 +45,7 @@ public class IconRepositoryImpl implements IconRepository {
     }
 
     @Override
-    public Icon findByIconGroupIdAndThumbnailIcon(final long iconGroupId, final ThumbnailIcon thumbnailIcon){
-        return iconJpaRepository.findByIconGroupIdAndThumbnailIcon(iconGroupId, thumbnailIcon);
+    public Icon findByIconImageUrl(final String iconImageUrl) {
+        return iconJpaRepository.findByIconImageUrl(iconImageUrl);
     }
 }

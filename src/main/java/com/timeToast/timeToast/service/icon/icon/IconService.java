@@ -4,7 +4,8 @@ import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IconService {
-    Response postIconSet(List<MultipartFile> files, long iconGroupId);
+    Map<MultipartFile, String> postIconSet(List<MultipartFile> files, long iconGroupId);
 }

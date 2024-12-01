@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.fcm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.firebase.messaging.Message;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -198,7 +199,7 @@ public class FcmServiceImplTest {
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
 
         // When
-        String message = fcmService.createMessage(memberId, fcmPostRequest);
+        Message message = fcmService.createMessage(memberId, fcmPostRequest);
 
         // Then
         assertThat(message).isNotNull();

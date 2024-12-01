@@ -76,14 +76,12 @@ public class JamServiceImpl implements JamService {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
-    @Transactional(readOnly = true)
-    public String getContentsUrl(final MultipartFile contents, final Jam jam) {
+    private String getContentsUrl(final MultipartFile contents, final Jam jam) {
         String saveUrl = baseUrl + JAM.value() + SLASH.value() + CONTENTS.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
-    @Transactional(readOnly = true)
-    public String getImageUrl(final MultipartFile image, final Jam jam) {
+    private String getImageUrl(final MultipartFile image, final Jam jam) {
         String saveUrl = baseUrl + JAM.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  jam.getId();
         return fileUploadService.uploadfile(image, saveUrl);
     }

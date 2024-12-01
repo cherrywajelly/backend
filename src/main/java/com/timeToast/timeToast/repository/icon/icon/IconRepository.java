@@ -11,5 +11,5 @@ public interface IconRepository {
     List<Icon> findAllByIconGroupId(final long iconGroupId);
     Icon save(final Icon icon);
     void deleteById(final long iconId);
-    Icon findByIconGroupIdAndThumbnailIcon(final long iconGroupId, final ThumbnailIcon thumbnailIcon);
+    Icon findByIconImageUrl(final String iconImageUrl);
 }

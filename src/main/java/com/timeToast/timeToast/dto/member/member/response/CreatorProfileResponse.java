@@ -10,14 +10,16 @@ public record CreatorProfileResponse (
         IconGroupOrderedResponses iconGroupOrderedResponses,
         long createdIconCount,
         long selledIconCount,
+        long revenue,
         long settlement
 ) {
-    public static CreatorProfileResponse from(CreatorInfoResponse creatorInfoResponse, IconGroupOrderedResponses iconGroupOrderedResponses, final int createdIconCount, final int selledIconCount, final long settlement) {
+    public static CreatorProfileResponse from(CreatorInfoResponse creatorInfoResponse, IconGroupOrderedResponses iconGroupOrderedResponses, final int createdIconCount, final int selledIconCount, final long revenue, final long settlement) {
         return CreatorProfileResponse.builder()
                 .creatorInfoResponse(creatorInfoResponse)
                 .iconGroupOrderedResponses(iconGroupOrderedResponses)
                 .createdIconCount(createdIconCount)
                 .selledIconCount(selledIconCount)
+                .revenue(revenue)
                 .settlement(settlement)
                 .build();
     }
