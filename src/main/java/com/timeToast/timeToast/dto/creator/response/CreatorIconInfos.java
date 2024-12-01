@@ -8,6 +8,7 @@ import java.util.List;
 public record CreatorIconInfos(
         long salesIconCount,
         long totalRevenue,
+        int createdIconCount,
         List<CreatorIconInfo> creatorIconInfos
 ) {
 }

@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
@@ -62,7 +63,7 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
-        return new CreatorDetailResponse("profileUrl", "nickname",100, "accountNumber");
+        return new CreatorDetailResponse("profileUrl", "nickname", Bank.CZNBKRSE,"accountNumber");
     }
 
     @Override

@@ -81,7 +81,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("profileUrl").type(STRING).description("제작자 프로필 url"),
                                         fieldWithPath("nickname").type(STRING).description("제작자 닉네임"),
-                                        fieldWithPath("createdIconCount").type(NUMBER).description("제작 아이콘 수"),
+                                        fieldWithPath("bank").type(STRING).description("은행"),
                                         fieldWithPath("accountNumber").type(STRING).description("제작자 계좌 번호")
                                 )
                                 .build()
@@ -110,6 +110,7 @@ public class CreatorControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("salesIconCount").type(NUMBER).description("전체 판매 갯수"),
                                         fieldWithPath("totalRevenue").type(NUMBER).description("전체 수익"),
+                                        fieldWithPath("createdIconCount").type(NUMBER).description("제작 아이콘 수"),
                                         fieldWithPath("creatorIconInfos[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("creatorIconInfos[0].revenue").type(NUMBER).description("아이콘 그룹 수익"),
                                         fieldWithPath("creatorIconInfos[0].salesCount").type(NUMBER).description("아이콘 그룹 판매 갯수"),

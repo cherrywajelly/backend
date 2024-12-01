@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.creator.response;
 
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import lombok.Builder;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public record CreatorDetailResponse(
         String profileUrl,
         String nickname,
-        int createdIconCount,
+        Bank bank,
         String accountNumber
 
 ) {

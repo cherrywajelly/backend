@@ -93,7 +93,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
                   .iconImageUrl(List.of("iconImageUrl"))
                   .build()
         );
-        return new CreatorIconInfos(1, 1000, creatorIconInfos);
+        return new CreatorIconInfos(1, 1000, 10,creatorIconInfos);
     }
 
     @Override
