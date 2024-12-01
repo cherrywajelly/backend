@@ -9,6 +9,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_USER;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 
@@ -53,6 +55,11 @@ public class LoginServiceImpl implements LoginService {
         Optional<Member> findMember = memberRepository.findByEmail(email);
 
         if(findMember.isPresent()){
+
+            if(!findMember.get().getMemberRole().equals(memberRole)){
+                throw new BadRequestException(INVALID_USER.getMessage());
+            }
+
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
         }
 
