@@ -4,8 +4,6 @@ import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementDetailRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -51,15 +49,14 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional
     @Override
-    public SettlementCreatorInfoResponse approvalSettlement(final SettlementApprovalRequest settlementApprovalRequest) {
-        settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementApprovalRequest.year(), settlementApprovalRequest.month(),1),
-                settlementApprovalRequest.creatorId()).forEach(
+    public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
+        settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementRequest.year(), settlementRequest.month(),1), creatorId).forEach(
                         settlement -> {
-                            settlement.updateSettlementState(settlementApprovalRequest.settlementState());
+                            settlement.updateSettlementState(SettlementState.APPROVAL);
                             settlement.updateSettlementDate(LocalDate.now());
                         }
         );
-        return new SettlementCreatorInfoResponse(settlementApprovalRequest.year(), settlementApprovalRequest.month(), LocalDate.now());
+        return new SettlementCreatorInfoResponse(settlementRequest.year(), settlementRequest.month(), LocalDate.now());
     }
 
     @Transactional(readOnly = true)
@@ -88,9 +85,9 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional(readOnly = true)
     @Override
-    public SettlementResponses getSettlementByYearMonth(final SettlementRequest settlementRequest) {
+    public SettlementResponses getSettlementByYearMonth(final int year, final int month) {
         List<SettlementResponse> settlementResponses = new ArrayList<>();
-        settlementRepository.findAllByYearMonth(LocalDate.of(settlementRequest.year(), settlementRequest.month(),1))
+        settlementRepository.findAllByYearMonth(LocalDate.of(year, month,1))
                 .stream().collect(Collectors.toMap(
                         Settlement::getMemberId,
                         response -> response,
@@ -118,11 +115,11 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional(readOnly = true)
     @Override
-    public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final SettlementRequest settlementRequest) {
+    public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final int year, final int month) {
         CreatorAccount creatorAccount = getCreatorAccount(memberId);
 
         List<SettlementIcon> settlementIcons =
-                getMonthSettlementIcons(settlementRequest.year(), settlementRequest.month(), memberId);
+                getMonthSettlementIcons(year, month, memberId);
 
         SettlementState settlementState;
         if(settlementIcons.isEmpty()){
@@ -132,8 +129,8 @@ public class SettlementServiceImpl implements SettlementService {
         }
 
         return SettlementDetailResponse.builder()
-                .year(settlementRequest.year())
-                .month(settlementRequest.month())
+                .year(year)
+                .month(month)
                 .creatorNickname(memberRepository.getById(memberId).getNickname())
                 .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
                 .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
@@ -147,12 +144,12 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional(readOnly = true)
     @Override
-    public SettlementDetailResponse getSettlementByYearMonthAndCreator(SettlementDetailRequest settlementDetailRequest) {
+    public SettlementDetailResponse getSettlementByYearMonthAndCreator(final long creatorId, final int year, final int month) {
 
-        CreatorAccount creatorAccount = getCreatorAccount(settlementDetailRequest.creatorId());
+        CreatorAccount creatorAccount = getCreatorAccount(creatorId);
 
         List<SettlementIcon> settlementIcons =
-                getMonthSettlementIcons(settlementDetailRequest.year(), settlementDetailRequest.month(), settlementDetailRequest.creatorId());
+                getMonthSettlementIcons(year, month, creatorId);
 
         SettlementState settlementState;
         if(settlementIcons.isEmpty()){
@@ -162,9 +159,9 @@ public class SettlementServiceImpl implements SettlementService {
         }
 
         return SettlementDetailResponse.builder()
-                .year(settlementDetailRequest.year())
-                .month(settlementDetailRequest.month())
-                .creatorNickname(memberRepository.getById(settlementDetailRequest.creatorId()).getNickname())
+                .year(year)
+                .month(month)
+                .creatorNickname(memberRepository.getById(creatorId).getNickname())
                 .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
                 .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
                 .settlement((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7))
@@ -174,7 +171,7 @@ public class SettlementServiceImpl implements SettlementService {
                 .build();
     }
 
-    private CreatorAccount getCreatorAccount(long monthSettlementDetailRequest) {
+    private CreatorAccount getCreatorAccount(final long monthSettlementDetailRequest) {
         Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(monthSettlementDetailRequest);
 
         if (creatorAccount.isEmpty()) {

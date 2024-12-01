@@ -6,10 +6,7 @@ import com.timeToast.timeToast.dto.settlement.response.SettlementCreatorInfoResp
 import com.timeToast.timeToast.dto.settlement.response.SettlementDetailResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.settlement.SettlementService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v2/settlements")
 @RestController
@@ -27,8 +24,8 @@ public class SettlementCreatorController {
 
 
     @GetMapping("/detail")
-    public SettlementDetailResponse getSettlement(@Login LoginMember loginMember,@RequestBody SettlementRequest settlementRequest ){
-        return settlementService.getAllSettlementByCreator(loginMember.id(),settlementRequest);
+    public SettlementDetailResponse getSettlement(@Login LoginMember loginMember, @RequestParam("year") final int year, @RequestParam("month") final int month){
+        return settlementService.getAllSettlementByCreator(loginMember.id(),year,month);
     }
 
 

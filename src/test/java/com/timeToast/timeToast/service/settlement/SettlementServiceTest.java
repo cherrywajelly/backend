@@ -2,10 +2,9 @@ package com.timeToast.timeToast.service.settlement;
 
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementDetailRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 public class SettlementServiceTest implements SettlementService{
 
     @Override
-    public SettlementCreatorInfoResponse approvalSettlement(final SettlementApprovalRequest settlementApprovalRequest) {
+    public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
         return SettlementCreatorInfoResponse.builder()
                 .year(1)
                 .month(1)
@@ -35,7 +34,7 @@ public class SettlementServiceTest implements SettlementService{
     }
 
     @Override
-    public SettlementResponses getSettlementByYearMonth(final SettlementRequest settlementRequest) {
+    public SettlementResponses getSettlementByYearMonth(final int year, final int month) {
         List<SettlementResponse> settlementResponses = new ArrayList<>();
         settlementResponses.add(
                 SettlementResponse.builder()
@@ -48,7 +47,7 @@ public class SettlementServiceTest implements SettlementService{
     }
 
     @Override
-    public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final SettlementRequest settlementRequest) {
+    public SettlementDetailResponse getAllSettlementByCreator(final long memberId, final int year, final int month) {
         return SettlementDetailResponse.builder()
                 .year(1)
                 .month(1)
@@ -64,7 +63,7 @@ public class SettlementServiceTest implements SettlementService{
     }
 
     @Override
-    public SettlementDetailResponse getSettlementByYearMonthAndCreator(final SettlementDetailRequest settlementDetailRequest) {
+    public SettlementDetailResponse getSettlementByYearMonthAndCreator(final long creatorId, final int year, final int month) {
         return SettlementDetailResponse.builder()
                 .year(1)
                 .month(1)

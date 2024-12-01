@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -150,15 +151,17 @@ public class MemberServiceImpl implements MemberService{
 
         Member member = memberRepository.getById(creatorId);
         String creatorAccount = null;
+        Bank bank = null;
         Optional<CreatorAccount> findCreatorAccount = creatorAccountRepository.findByMemberId(creatorId);
         if(findCreatorAccount.isPresent()){
+            bank = findCreatorAccount.get().getBank();
             creatorAccount = findCreatorAccount.get().getAccountNumber();
         }
 
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
-                .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
+                .bank(bank)
                 .accountNumber(creatorAccount)
                 .build();
     }

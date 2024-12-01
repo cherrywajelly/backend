@@ -217,6 +217,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         return CreatorIconInfos.builder()
                 .salesIconCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesCount).sum())
                 .totalRevenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
+                .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
                 .creatorIconInfos(creatorIconInfos)
                 .build();
     }

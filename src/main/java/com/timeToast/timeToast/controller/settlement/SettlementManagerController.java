@@ -1,7 +1,5 @@
 package com.timeToast.timeToast.controller.settlement;
 
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementDetailRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.SettlementCreatorInfoResponse;
 import com.timeToast.timeToast.dto.settlement.response.SettlementDetailResponse;
@@ -19,18 +17,18 @@ public class SettlementManagerController {
         this.settlementService = settlementService;
     }
 
-    @PostMapping("")
-    public SettlementCreatorInfoResponse approvalSettlement(@RequestBody SettlementApprovalRequest settlementApprovalRequest){
-        return settlementService.approvalSettlement(settlementApprovalRequest);
+    @PostMapping("/creators/{creatorId}")
+    public SettlementCreatorInfoResponse approvalSettlement(@PathVariable long creatorId, @RequestBody SettlementRequest settlementRequest){
+        return settlementService.approvalSettlement(creatorId, settlementRequest);
     }
 
     @GetMapping("")
-    public SettlementResponses getMonthSettlement(@RequestBody SettlementRequest settlementRequest){
-        return settlementService.getSettlementByYearMonth(settlementRequest);
+    public SettlementResponses getMonthSettlement(@RequestParam("year") final int year, @RequestParam("month") final int month){
+        return settlementService.getSettlementByYearMonth(year, month);
     }
 
-    @GetMapping("/creators")
-    public SettlementDetailResponse getMonthSettlementByYearMonthAndCreator(@RequestBody SettlementDetailRequest settlementDetailRequest){
-        return settlementService.getSettlementByYearMonthAndCreator(settlementDetailRequest);
+    @GetMapping("/creators/{creatorId}")
+    public SettlementDetailResponse getMonthSettlementByYearMonthAndCreator(@PathVariable long creatorId, @RequestParam("year") final int year, @RequestParam("month") final int month){
+        return settlementService.getSettlementByYearMonthAndCreator(creatorId,year, month);
     }
 }
