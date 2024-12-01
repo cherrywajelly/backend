@@ -3,12 +3,13 @@ package com.timeToast.timeToast.service.icon.icon;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.global.config.OsClientConfiguration;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.service.image.FileUploadServiceImpl;
+import com.timeToast.timeToast.service.fcm.FcmService;
+import com.timeToast.timeToast.service.image.FileUploadService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,15 +19,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class IconServiceImplTest {
@@ -34,16 +34,10 @@ public class IconServiceImplTest {
     private IconRepository iconRepository;
 
     @Mock
-    private IconGroupRepository iconGroupRepository;
-
-    @Mock
-    OsClientConfiguration ociConfig;
+    private FileUploadService fileUploadService;
 
     @InjectMocks
-    FileUploadServiceImpl fileUploadService;
-
-    @InjectMocks
-    IconServiceImpl iconService;
+    private IconServiceImpl iconService;
 
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
@@ -51,39 +45,26 @@ public class IconServiceImplTest {
     @Value("${spring.cloud.oci.url.static}")
     private String urlPrefix;
 
-//    @Test
-//    @DisplayName("아이콘 이미지 저장 - 성공")
-//    void saveToken() {
-//        // Given
-//        long iconGroupId = 1L;
-//        List<MultipartFile> files = Arrays.asList(mock(MultipartFile.class));
-//
-//        IconGroup iconGroup = IconGroup.builder().build();
-//
-//        Icon icon = new Icon("", iconGroupId);
-//
-//        String imageUrl = baseUrl+"icon/image/1";
-//        ObjectStorageClient storage = mock(ObjectStorageClient.class);
-//
-//        try {
-//            when(ociConfig.getObjectStorage()).thenReturn(storage);
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-////        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-//        when(iconRepository.save(new Icon("", iconGroupId))).thenReturn(icon);
-//        when(fileUploadService.uploadfile(any(MultipartFile.class), any(String.class)))
-//                .thenReturn(urlPrefix + imageUrl);
-//
-//
-//
-//        // When
-//        Response response = iconService.postIconSet(files, iconGroupId);
-//
-//        // Then
-//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-//    }
+    private IconGroup iconGroup;
+    private Icon icon;
+
+    @BeforeEach
+    void setUp() {
+        iconGroup = IconGroup.builder().build();
+        icon = Icon.builder().build();
+    }
+
+    @Test
+    @DisplayName("아이콘 이미지 저장 - 성공")
+    void saveToken() {
+        // Given
+        long iconGroupId = 1L;
+        List<MultipartFile> files = Arrays.asList();
+
+        // When
+        Map<MultipartFile, String> response = iconService.postIconSet(files, iconGroupId);
+
+        // Then
+        assertThat(response).isNotNull();
+    }
 }
