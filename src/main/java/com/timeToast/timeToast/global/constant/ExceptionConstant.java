@@ -57,6 +57,9 @@ public enum ExceptionConstant {
     INVALID_FCM_TOKEN("잘못된 토큰 등록 형식입니다."),
     FCM_NOT_FOUND("해당 알림을 찾을 수 없습니다."),
     FCM_TOKEN_ALREADY_EXIST("이미 업데이트 된 토큰입니다."),
+    INVALID_FCM_CREATE_MESSAGE("잘못된 메세지 생성 형식입니다."),
+    INVALID_FCM_GOOGLE_TOKEN("잘못된 fcm 구글 토큰 발급 형식입니다."),
+    FCM_TOKEN_EXPIRED("fcm 토큰이 만료되었습니다."),
 
     //premium
     PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다."),

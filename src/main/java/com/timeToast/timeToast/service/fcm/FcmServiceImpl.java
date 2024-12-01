@@ -3,6 +3,9 @@ package com.timeToast.timeToast.service.fcm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.MessagingErrorCode;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
@@ -39,7 +42,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 @Service
@@ -160,10 +163,16 @@ public class FcmServiceImpl implements FcmService {
                 HttpEntity entity = new HttpEntity<>(message, headers);
 
                 String API_URL = fcmUrl;
-                restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-                log.info("send message to {}", memberId);
-                saveFcmInfo(memberId, fcmPostRequest);
-            } else {
+                try {
+                    restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+                    log.info("send message to {}", memberId);
+                    saveFcmInfo(memberId, fcmPostRequest);
+                } catch (Exception e){
+                        memberTokenRepository.deleteByMemberId(memberId);
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(),FCM_TOKEN_EXPIRED.getMessage());
+                    }
+            }
+            else {
                 log.error("Failed to get fcm message");
             }
 
@@ -203,10 +212,14 @@ public class FcmServiceImpl implements FcmService {
                 imageUrl = null;
         }
 
-        Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
-        fcmRepository.save(fcm);
-        log.info("save fcm");
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        if (imageUrl != null) {
+            Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
+            fcmRepository.save(fcm);
+            log.info("save fcm");
+            return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        } else {
+            throw new BadRequestException(INVALID_FCM_CREATE_MESSAGE.getMessage());
+        }
     }
 
     @Transactional
@@ -230,7 +243,7 @@ public class FcmServiceImpl implements FcmService {
         } else {
             log.error("Failed to create fcm send request");
         }
-        return null;
+        throw new BadRequestException(INVALID_FCM_CREATE_MESSAGE.getMessage());
     }
 
     @Transactional
@@ -259,7 +272,7 @@ public class FcmServiceImpl implements FcmService {
                     FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), null);
                     return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
                 default:
-                    return Optional.empty();
+                    throw new BadRequestException(INVALID_FCM_CREATE_MESSAGE.getMessage());
                 }
 
         } else {
@@ -279,12 +292,17 @@ public class FcmServiceImpl implements FcmService {
                     .createScoped(List.of(fcmCredential));
 
             googleCredentials.refreshIfExpired();
-            return googleCredentials.getAccessToken().getTokenValue();
+
+            if (googleCredentials.getAccessToken() == null) {
+                return googleCredentials.getAccessToken().getTokenValue();
+            } else {
+                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
+            }
+
         } catch (Exception e) {
             log.error("Failed to get google access token");
             throw new RuntimeException(e);
         }
-
     }
 }
 

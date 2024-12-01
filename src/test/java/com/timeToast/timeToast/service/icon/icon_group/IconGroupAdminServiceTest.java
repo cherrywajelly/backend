@@ -13,6 +13,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest
 import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 
 public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
-    public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, final long userId){
+    public Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId){
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 

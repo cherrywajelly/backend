@@ -24,10 +24,13 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
+import com.timeToast.timeToast.service.icon.icon.IconService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +47,13 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private  final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final PaymentRepository paymentRepository;
+    private final IconService iconService;
 
+    @Value("${spring.cloud.oci.base-url}")
+    private String baseUrl;
 
     @Transactional
-    public Response postIconGroup(IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
         Member member = memberRepository.getById(memberId);
 
         if(member == null) {
@@ -56,6 +62,8 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId);
             iconGroup.updateIconState(IconState.WAITING);
             iconGroupRepository.save(iconGroup);
+
+            iconService.postIconSet(files, iconGroup.getId());
             log.info("save icon group");
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
