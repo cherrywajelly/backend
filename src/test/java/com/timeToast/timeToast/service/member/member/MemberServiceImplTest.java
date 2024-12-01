@@ -211,5 +211,4 @@ public class MemberServiceImplTest {
         assertEquals(premium.getCount(), premiumResponse.count());
         assertEquals(premium.getDescription(), premiumResponse.description());
     }
-
 }
