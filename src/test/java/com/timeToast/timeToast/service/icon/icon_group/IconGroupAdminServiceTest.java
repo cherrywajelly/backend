@@ -29,7 +29,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle"));
+        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED));
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
@@ -100,7 +100,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
         List<String> iconImageUrls = new ArrayList<>();
         List<String> iconTitles = new ArrayList<>();
-        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", iconTitles, 1, 1);
+        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", "thumbnailUrl", List.of("iconImageUrl"), 1, 1, IconState.REGISTERED);
         IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
         return iconGroupCreatorDetail;
     }

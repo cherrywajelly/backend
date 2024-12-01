@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -25,6 +26,7 @@ import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.service.icon.icon.IconService;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
@@ -48,22 +51,30 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconRepository iconRepository;
     private final PaymentRepository paymentRepository;
     private final IconService iconService;
+    private final FileUploadService fileUploadService;
 
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
     @Transactional
-    public Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
         Member member = memberRepository.getById(memberId);
 
         if(member == null) {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         } else {
+
             IconGroup iconGroup = iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId);
             iconGroup.updateIconState(IconState.WAITING);
             iconGroupRepository.save(iconGroup);
 
             iconService.postIconSet(files, iconGroup.getId());
+            Icon icon = iconRepository.save(new Icon("", iconGroup.getId(), ThumbnailIcon.THUMBNAILICON));
+
+            String endpoint = baseUrl + "thumbnailIcon/image/" + Long.toString(icon.getId());
+            String imageUrl = fileUploadService.uploadfile(thumbnailIcon, endpoint);
+            icon.updateUrl(imageUrl);
+            iconRepository.save(icon);
             log.info("save icon group");
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
@@ -79,22 +90,27 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
         iconGroups.forEach(
                 iconGroup -> {
-                    List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
-                    iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.get(0).getIconImageUrl(), iconGroup.getName()));
+                    if(iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON) != null) {
+                        Icon icon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroup.getId(), ThumbnailIcon.THUMBNAILICON);
+                        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(iconGroup.getId(), icon.getIconImageUrl(), iconGroup.getName(), iconGroup.getIconState()));
+                    } else {
+                        throw new BadRequestException(ICON_NOT_FOUND.getMessage());
+                    }
                 });
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
+    // TODO iconState, imageUrl
     @Transactional(readOnly = true)
     @Override
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
         Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
 
         if (iconGroup.isPresent()) {
-            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroupId);
+            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroupId);
             List<String> iconImageUrls = new ArrayList<>();
-            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+            icons.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
             Member member = memberRepository.getById(memberId);
 
@@ -103,7 +119,9 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get().getName(), iconImageUrls, payments.size(), income);
+            Icon icon = iconRepository.findByIconGroupIdAndThumbnailIcon(iconGroupId, ThumbnailIcon.THUMBNAILICON);
+
+            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get().getName(), icon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.get().getIconState());
             return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup.get(), member);
         } else {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());

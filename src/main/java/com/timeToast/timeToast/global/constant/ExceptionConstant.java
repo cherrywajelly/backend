@@ -30,7 +30,7 @@ public enum ExceptionConstant {
     INVALID_JAM("잘못된 잼 형식입니다."),
 
     //icon
-    ICON_NOT_FOUND("해당 아이콘을 찾을 수 없습니다."),
+    ICON_NOT_FOUND("관련 아이콘을 찾을 수 없습니다."),
     ICON_GROUP_NOT_FOUND("해당 아이콘 그룹을 찾을 수 없습니다."),
     ICON_MEMBER_NOT_FOUND("해당 조회를 할 수 없습니다."),
     INVALID_ICON("잘목된 아이콘 형식입니다."),

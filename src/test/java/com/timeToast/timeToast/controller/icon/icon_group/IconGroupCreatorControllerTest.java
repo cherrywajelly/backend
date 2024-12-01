@@ -95,7 +95,8 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("iconGroupCreatorResponses[0].iconGroupId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
-                                        fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목")
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconState").type(STRING).description("아이콘 등록 상태")
                                 )
                                 .build()
                         )));
@@ -123,9 +124,11 @@ public class IconGroupCreatorControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("iconGroupOrderedResponse.iconName").type(STRING).description("아이콘 이름"),
+                                        fieldWithPath("iconGroupOrderedResponse.thumbnailImageUrl").type(STRING).description("아이콘 대표 이미지"),
                                         fieldWithPath("iconGroupOrderedResponse.iconImageUrl[]").type(JsonFieldType.ARRAY).description("아이콘 이미지 url"),
                                         fieldWithPath("iconGroupOrderedResponse.orderCount").type(NUMBER).description("아이콘 주문 개수"),
                                         fieldWithPath("iconGroupOrderedResponse.income").type(NUMBER).description("아이콘 수익"),
+                                        fieldWithPath("iconGroupOrderedResponse.iconState").type(STRING).description("아이콘 등록 상태"),
                                         fieldWithPath("price").type(NUMBER).description("아이콘 가격"),
                                         fieldWithPath("description").type(STRING).description("아이콘 설명"),
                                         fieldWithPath("creatorProfileUrl").type(STRING).description("제작자 프로필 url"),
