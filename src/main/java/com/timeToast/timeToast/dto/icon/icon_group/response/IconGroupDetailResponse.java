@@ -13,6 +13,7 @@ public record IconGroupDetailResponse(
         String creatorNickname,
         IconState iconState,
         int price,
+        String description,
         List<IconResponse> iconResponses
 
 ) {
