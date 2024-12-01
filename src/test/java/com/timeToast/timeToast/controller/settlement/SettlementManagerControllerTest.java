@@ -1,9 +1,6 @@
 package com.timeToast.timeToast.controller.settlement;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
-import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.service.settlement.SettlementService;
 import com.timeToast.timeToast.service.settlement.SettlementServiceTest;
@@ -11,8 +8,6 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;

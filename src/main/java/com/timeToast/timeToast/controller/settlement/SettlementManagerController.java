@@ -1,7 +1,5 @@
 package com.timeToast.timeToast.controller.settlement;
 
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementDetailRequest;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.SettlementCreatorInfoResponse;
 import com.timeToast.timeToast.dto.settlement.response.SettlementDetailResponse;

@@ -2,14 +2,10 @@ package com.timeToast.timeToast.service.settlement;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
-import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
-import com.timeToast.timeToast.dto.settlement.request.SettlementApprovalRequest;
-import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -150,7 +146,7 @@ class SettlementServiceImplTest {
     private CreatorAccount creatorAccountSetUp(){
         return CreatorAccount.builder()
                 .memberId(1L)
-                .bank(Bank.CZNBKRSE)
+                .bank(Bank.IBK)
                 .accountNumber("accountNumber")
                 .build();
     }
