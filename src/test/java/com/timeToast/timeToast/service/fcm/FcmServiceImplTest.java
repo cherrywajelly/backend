@@ -118,7 +118,6 @@ public class FcmServiceImplTest {
         assertNull(memberToken.getFcmToken());
     }
 
-    //TODO createdAt 날짜 설정
     @Test
     @DisplayName("fcm 목록 조회 - 성공")
     void getFcmResponses() {
@@ -160,9 +159,12 @@ public class FcmServiceImplTest {
 //    void sendMessageTo() {
 //        // Given
 //        long memberId = 1L;
-//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().build();
+//        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcmToken");
+//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.EVENTTOASTOPENED).nickname("nickname").toastName("toastName").param(1L).build();
 //
 //        // When
+//        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+//
 //        Response response = fcmService.sendMessageTo(memberId, fcmPostRequest);
 //
 //        // Then

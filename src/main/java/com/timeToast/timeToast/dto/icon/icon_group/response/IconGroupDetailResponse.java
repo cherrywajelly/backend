@@ -15,7 +15,6 @@ public record IconGroupDetailResponse(
         int price,
         String description,
         List<IconResponse> iconResponses
-
 ) {
 
 
