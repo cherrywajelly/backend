@@ -71,7 +71,7 @@ public class SettlementCreatorControllerTest extends BaseControllerTests {
         String json = objectMapper.writeValueAsString(settlementRequest);
 
         mockMvc.perform(
-                        get("/api/v2/settlements/creators")
+                        get("/api/v2/settlements/detail")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                                 .contentType(APPLICATION_JSON)
                                 .content(json)

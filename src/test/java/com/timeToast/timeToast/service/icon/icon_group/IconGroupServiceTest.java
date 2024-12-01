@@ -72,7 +72,7 @@ public class IconGroupServiceTest implements IconGroupService {
     }
 
     @Override
-    public IconGroupMarketDetailResponse getIconGroupDetail(final long iconGroupId) {
+    public IconGroupMarketDetailResponse getIconGroupDetail(final long memberId, final long iconGroupId) {
         return IconGroupMarketDetailResponse.builder()
                 .thumbnailImageUrl("thumbnailImageUrl")
                 .title("title")
