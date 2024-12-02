@@ -217,7 +217,7 @@ public class FcmServiceImpl implements FcmService {
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
 
         if(fcmSendRequest.isPresent()){
-            if (fcmSendRequest.get().token().isEmpty()) {
+            if (fcmSendRequest.get().token() == null || fcmSendRequest.get().token().isEmpty()) {
                 log.error("Failed to get fcm token");
                 saveFcmInfo(memberId, fcmPostRequest);
                 return null;
@@ -248,7 +248,7 @@ public class FcmServiceImpl implements FcmService {
         Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
         String token = "";
 
-        if (memberToken.isPresent()) {
+        if (memberToken != null && memberToken.isPresent()) {
             token = memberToken.get().getFcmToken();
         } else {
             token = null;
