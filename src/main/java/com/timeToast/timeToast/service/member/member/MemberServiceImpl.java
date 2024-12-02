@@ -173,16 +173,23 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
-        Member member = memberRepository.getById(creatorId);
-        member.updateNickname(creatorRequest.nickname());
-        saveProfileImageByLogin(creatorId, profile);
-        memberRepository.save(member);
 
         for (Bank bank : Bank.values()) {
             if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
-                CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
-                creatorAccountRepository.save(creatorAccount);
-                return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+                Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByBankAndAccountNumber(bank, creatorRequest.creatorAccountResponse().accountNumber());
+
+                if (creatorAccount.isEmpty()) {
+                    Member member = memberRepository.getById(creatorId);
+                    member.updateNickname(creatorRequest.nickname());
+                    saveProfileImageByLogin(creatorId, profile);
+                    memberRepository.save(member);
+
+                    CreatorAccount newCreatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
+                    creatorAccountRepository.save(newCreatorAccount);
+                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+                } else {
+                    return new Response(StatusCode.BAD_REQUEST.getStatusCode(), ACCOUNT_ALREADY_EXIST.getMessage());
+                }
             }
         }
 
