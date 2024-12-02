@@ -167,6 +167,7 @@ public class FcmServiceImpl implements FcmService {
             }
             else {
                 log.error("Failed to get fcm message");
+                return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_FCM_MESSAGE.getMessage());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
