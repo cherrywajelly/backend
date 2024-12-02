@@ -7,10 +7,7 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
@@ -181,9 +178,14 @@ public class MemberServiceImpl implements MemberService{
         saveProfileImageByLogin(creatorId, profile);
         memberRepository.save(member);
 
-        CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, creatorId);
-        creatorAccountRepository.save(creatorAccount);
+        for (Bank bank : Bank.values()) {
+            if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
+                CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
+                creatorAccountRepository.save(creatorAccount);
+                return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+            }
+        }
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
     }
 }

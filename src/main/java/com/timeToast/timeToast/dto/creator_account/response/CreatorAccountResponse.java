@@ -6,12 +6,12 @@ import lombok.Builder;
 
 @Builder
 public record CreatorAccountResponse (
-        Bank bank,
+        String bank,
         String accountNumber
 ){
-    public static CreatorAccountResponse from(CreatorAccount creatorAccount) {
+    public static CreatorAccountResponse from(CreatorAccount creatorAccount, final String bank) {
         return CreatorAccountResponse.builder()
-                .bank(creatorAccount.getBank())
+                .bank(bank)
                 .accountNumber(creatorAccount.getAccountNumber())
                 .build();
     }
