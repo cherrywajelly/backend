@@ -188,7 +188,7 @@ public class FcmServiceImplTest {
     }
 
     @Test
-    @DisplayName("fcm 조회 여부 변경 - 성공")
+    @DisplayName("fcm 조회 여부 변경 성공 - 조회된 fcm 열람")
     void putIsOpened() {
         // Given
         long memberId = 1L;
@@ -203,6 +203,28 @@ public class FcmServiceImplTest {
         Response response = fcmService.putIsOpened(memberId, fcmId);
 
         // Then
+        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+        assertThat(response.message()).isEqualTo(SUCCESS_PUT.getMessage());
+    }
+
+    @Test
+    @DisplayName("fcm 조회 여부 변경 성공 - 미조회된 fcm 열람")
+    void putIsOpenedUnOpened() {
+        // Given
+        long memberId = 1L;
+        long fcmId = 1L;
+
+        ReflectionTestUtils.setField(fcm, "id", 1L);
+        ReflectionTestUtils.setField(fcm, "isOpened", false);
+
+        when(fcmRepository.getById(fcmId)).thenReturn(fcm);
+        when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
+
+        // When
+        Response response = fcmService.putIsOpened(memberId, fcmId);
+
+        // Then
+        verify(fcmRepository, times(1)).save(fcm);
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         assertThat(response.message()).isEqualTo(SUCCESS_PUT.getMessage());
     }

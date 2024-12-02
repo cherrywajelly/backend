@@ -59,9 +59,9 @@ spring:
 
 fcm:
   url: ${FCM_URL}
-  path: ${FCM_PATH:firebase/firebase-adminsdk.json}
+  path: ${FCM_LOCAL_CONFIG_PATH}
   credential: ${FCM_CREDENTIAL}
-  projectId: ${timetoast-1abe6}
+  projectId: ${FCM_PROJECT_ID}
 
 oauth2:
   client:

@@ -278,28 +278,28 @@ public class FcmServiceImpl implements FcmService {
         }
     }
 
-    @Transactional
-    public String getAccessToken()  {
-        try {
-            String firebaseConfigPath = fcmPath;
-
-            GoogleCredentials googleCredentials = GoogleCredentials
-                    .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                    .createScoped(List.of(fcmCredential));
-
-            googleCredentials.refreshIfExpired();
-
-            if (googleCredentials.getAccessToken() != null) {
-                return googleCredentials.getAccessToken().getTokenValue();
-            } else {
-                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
-            }
-
-        } catch (Exception e) {
-            log.error("Failed to get google access token");
-            throw new RuntimeException(e);
-        }
-    }
+//    @Transactional
+//    public String getAccessToken()  {
+//        try {
+//            String firebaseConfigPath = fcmPath;
+//
+//            GoogleCredentials googleCredentials = GoogleCredentials
+//                    .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
+//                    .createScoped(List.of(fcmCredential));
+//
+//            googleCredentials.refreshIfExpired();
+//
+//            if (googleCredentials.getAccessToken() != null) {
+//                return googleCredentials.getAccessToken().getTokenValue();
+//            } else {
+//                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
+//            }
+//
+//        } catch (Exception e) {
+//            log.error("Failed to get google access token");
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
 
 
