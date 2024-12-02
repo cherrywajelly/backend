@@ -146,8 +146,8 @@ public class FcmServiceImpl implements FcmService {
     @Transactional
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
-        try{
 
+        try {
             Message message = createMessage(memberId, fcmPostRequest);
             if (message != null) {
                 try {
@@ -168,9 +168,11 @@ public class FcmServiceImpl implements FcmService {
             else {
                 log.error("Failed to get fcm message");
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+            return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessage());
         }
+
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 

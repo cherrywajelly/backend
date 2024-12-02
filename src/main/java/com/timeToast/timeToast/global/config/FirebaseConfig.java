@@ -16,6 +16,10 @@ public class FirebaseConfig {
     @Value("${fcm.path}")
     private String fcmPath;
 
+    @Value("${fcm.projectId}")
+    private String projectId;
+
+
     @PostConstruct
     public void initializeFirebase() throws IOException {
         try {
@@ -25,6 +29,7 @@ public class FirebaseConfig {
                 FirebaseOptions options = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(fcmPath).getInputStream()))
                         .setDatabaseUrl(fcmPath)
+                        .setProjectId(projectId)
                         .build();
 
                 FirebaseApp.initializeApp(options);
