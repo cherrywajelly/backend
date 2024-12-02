@@ -148,25 +148,27 @@ public class FcmServiceImpl implements FcmService {
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
         try{
 
-            Message message = createMessage(memberId, fcmPostRequest);
+            String message = createMessage(memberId, fcmPostRequest);
             if (message != null) {
-                try {
-                    FirebaseMessaging.getInstance().send(message);
-                    log.info("send message to {}", memberId);
-                    saveFcmInfo(memberId, fcmPostRequest);
-                } catch (FirebaseMessagingException e){
-                    if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
-                        log.error("fcm token is expired");
-                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
-                    } else if (e.getMessagingErrorCode().equals(MessagingErrorCode.UNREGISTERED)) {
-                        log.error("please login again");
-                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
-                    }
-                    log.error(e.getMessage());
-                }
+                RestTemplate restTemplate = new RestTemplate();
+
+                restTemplate.getMessageConverters()
+                        .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.set("Authorization", "Bearer " + getAccessToken());
+
+                HttpEntity entity = new HttpEntity<>(message, headers);
+
+                String API_URL = fcmUrl;
+                restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+                log.info("send message to {}", memberId);
+                saveFcmInfo(memberId, fcmPostRequest);
             }
             else {
                 log.error("Failed to get fcm message");
+                return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_FCM_MESSAGE.getMessage());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -213,7 +215,7 @@ public class FcmServiceImpl implements FcmService {
     }
 
     @Transactional
-    public Message createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
+    public String createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
 
         if(fcmSendRequest.isPresent()){
@@ -224,18 +226,11 @@ public class FcmServiceImpl implements FcmService {
             } else {
                 ObjectMapper om = new ObjectMapper();
 
-                Message message = Message.builder()
-                        .setNotification(Notification.builder()
-                                .setTitle(fcmSendRequest.get().notification().title())
-                                .setBody(fcmSendRequest.get().notification().body())
-                                .build())
-                        .putData("fcmConstant", fcmSendRequest.get().data().fcmConstant())
-                        .putData("param", fcmSendRequest.get().data().param())
-                        .setToken(fcmSendRequest.get().token())
-                        .build();
+                FcmNotificationRequest fcmNotificationRequest = new FcmNotificationRequest(fcmSendRequest.get().notification().title(), fcmSendRequest.get().notification().body());
+                FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.get().data(), fcmNotificationRequest, fcmSendRequest.get().token());
 
-                log.info("success to create fcm message");
-                return message;
+                FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
+                return om.writeValueAsString(fcmRequest);
             }
         } else {
             log.error("Failed to create fcm send request");
