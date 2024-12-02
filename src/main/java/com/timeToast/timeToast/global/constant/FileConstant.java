@@ -9,6 +9,7 @@ public enum FileConstant {
     ICON("icon"),
     JAM("jam"),
     INQUIRY("inquiry"),
+    ICON_GROUP("iconGroup"),
     SLASH("/");
 
     private final String value;

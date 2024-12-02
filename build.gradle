@@ -59,7 +59,9 @@ jacocoTestReport {
 					'**/dto/**',
 					'**/domain/**',
 					'**/global/**',
-					'**/repository/**'
+					'**/repository/**',
+					'**/service/member/oauth/**',
+					'com/timeToast/timeToast/TimeToastApplication.class'
 			] + QDomainList)
 		}))
 	}

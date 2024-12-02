@@ -82,9 +82,7 @@ public class CreatorServiceImpl implements CreatorService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            Icon thumbnailIcon = iconRepository.getById(iconGroup.getThumbnailId());
-
-            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), thumbnailIcon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.getIconState()));
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
         });
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }

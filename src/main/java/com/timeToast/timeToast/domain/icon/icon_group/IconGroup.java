@@ -42,19 +42,21 @@ public class IconGroup extends BaseTime {
 
     private String description;
 
-    private long thumbnailId;
+    private String thumbnailImageUrl;
 
     @Builder
-    public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description) {
+    public IconGroup(final String name, final int price, final IconType iconType, final IconBuiltin iconBuiltin, final long memberId, final String description,
+                     final IconState iconState) {
         this.name = name;
         this.price = price;
         this.iconType = iconType;
         this.iconBuiltin = iconBuiltin;
         this.memberId = memberId;
         this.description = description;
+        this.iconState = iconState;
     }
 
-    public void updateThumbnailId(final long thumbnailId) { this.thumbnailId = thumbnailId; }
+    public void updateThumbnailImageUrl(final String thumbnailImageUrl) { this.thumbnailImageUrl = thumbnailImageUrl; }
 
 
     public void updateIconState(IconState iconState) { this.iconState = iconState; }

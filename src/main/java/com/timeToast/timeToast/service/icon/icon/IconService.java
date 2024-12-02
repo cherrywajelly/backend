@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface IconService {
-    Map<MultipartFile, String> postIconSet(List<MultipartFile> files, long iconGroupId);
+    void postIconSet(List<MultipartFile> files, long iconGroupId);
 }

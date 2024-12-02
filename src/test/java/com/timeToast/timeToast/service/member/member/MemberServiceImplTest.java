@@ -1,5 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -7,16 +9,20 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
+import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,14 +30,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,6 +58,12 @@ public class MemberServiceImplTest {
     @Mock
     PremiumRepository premiumRepository;
 
+    @Mock
+    FileUploadService fileUploadService;
+
+    @Mock
+    CreatorAccountRepository creatorAccountRepository;
+
     @InjectMocks
     MemberServiceImpl memberService;
 
@@ -61,6 +76,34 @@ public class MemberServiceImplTest {
                 .loginType(LoginType.GOOGLE)
                 .memberRole(MemberRole.USER)
                 .build();
+    }
+
+    private Member setUpCreator() {
+        return Member.builder()
+                .premiumId(1L)
+                .email("test@gmail.com")
+                .nickname("testNickname")
+                .memberProfileUrl("testProfileUrl")
+                .loginType(LoginType.GOOGLE)
+                .memberRole(MemberRole.CREATOR)
+                .build();
+    }
+
+    private List<Member> setUpCreators(){
+        List<Member> members = new ArrayList<>();
+        for(long i=1; i<5; i++){
+            Member member = Member.builder()
+                            .premiumId(1L)
+                            .email("test@gmail.com")
+                            .nickname("testNickname"+i)
+                            .memberProfileUrl("testProfileUrl")
+                            .loginType(LoginType.GOOGLE)
+                            .memberRole(MemberRole.CREATOR)
+                            .build();
+            ReflectionTestUtils.setField(member, "id", i);
+            members.add(member);
+        }
+        return members;
     }
 
     private List<Follow> getFollowers(){
@@ -98,6 +141,35 @@ public class MemberServiceImplTest {
                 .count(0)
                 .description("basic")
                 .build();
+    }
+
+    private CreatorAccount creatorAccountSetUp(){
+        return CreatorAccount.builder()
+                .memberId(1L)
+                .bank(Bank.IBK)
+                .accountNumber("accountNumber")
+                .build();
+    }
+
+    @Test
+    @DisplayName("프로필 이미지 등록")
+    public void saveProfileImageByLogin(){
+        //given
+        Member member = setUpMember();
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        MultipartFile profileImage = mock(MultipartFile.class);
+
+        String fileUrl = "fileUrl";
+
+        when(fileUploadService.uploadfile(any(), any())).thenReturn(fileUrl);
+
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.saveProfileImageByLogin(1L,profileImage );
+
+        //then
+        assertEquals(fileUrl,memberInfoResponse.profileUrl());
     }
 
     @Test
@@ -155,6 +227,35 @@ public class MemberServiceImplTest {
         assertEquals(member.getMemberProfileUrl(), memberInfoResponse.profileUrl());
     }
 
+    @Test
+    @DisplayName("로그인한 유저 프로필 조회")
+    public void getMemberProfileByLoginTest(){
+        //given
+        Member member = setUpMember();
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+        ReflectionTestUtils.setField(member, "id", 1L);
+        List<Follow> followers = getFollowers();
+        List<Follow> following = getFollowing();
+        List<TeamMember> teamMembers = getTeams();
+        boolean isFollowing = true;
+
+        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followers);
+        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(following);
+        when(followRepository.findByFollowingIdAndFollowerId(any(Long.class),any(Long.class))).thenReturn(Optional.of(getFollow()));
+
+        when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
+
+        //when
+        MemberProfileResponse memberProfileResponse = memberService.getMemberProfileByLogin(1L);
+
+        //then
+        assertEquals(member.getNickname(), memberProfileResponse.nickname());
+        assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
+        assertEquals(following.size(), memberProfileResponse.followerCount());
+        assertEquals(followers.size(), memberProfileResponse.followingCount());
+        assertEquals(isFollowing, memberProfileResponse.isFollow());
+        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
+    }
 
 
     @Test
@@ -211,4 +312,45 @@ public class MemberServiceImplTest {
         assertEquals(premium.getCount(), premiumResponse.count());
         assertEquals(premium.getDescription(), premiumResponse.description());
     }
+
+    @Test
+    @DisplayName("제작자 리스트 조회")
+    public void getCreators(){
+        //given
+        List<Member> members = setUpCreators();
+        when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(members);
+
+        //when
+        CreatorResponses creatorResponses = memberService.getCreators();
+
+        //then
+        assertEquals(members.size(), creatorResponses.creatorResponses().size());
+    }
+
+    @Test
+    @DisplayName("제작자 id로 제작자 조회")
+    public void getCreatorByCreatorId(){
+        //given
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(creator);
+
+        CreatorAccount creatorAccount = creatorAccountSetUp();
+        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
+
+
+        //when
+        CreatorDetailResponse creatorDetailResponse = memberService.getCreatorByCreatorId(1L);
+
+        //then
+        assertEquals(creator.getMemberProfileUrl(), creatorDetailResponse.profileUrl());
+        assertEquals(creator.getNickname(), creatorDetailResponse.nickname());
+        assertEquals(creatorAccount.getAccountNumber(), creatorDetailResponse.accountNumber());
+        assertEquals(creatorAccount.getBank(), creatorDetailResponse.bank());
+
+    }
+    
+    
+    
+    
 }

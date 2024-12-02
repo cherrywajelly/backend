@@ -17,10 +17,10 @@ import static org.mockito.Mockito.mock;
 public class IconServiceTest implements IconService{
 
     @Override
-    public Map<MultipartFile, String> postIconSet(List<MultipartFile> files, long iconGroupId) {
-        Map<MultipartFile, String> result = new HashMap<>();
-        result.put(mock(MockMultipartFile.class), "imageUrl");
-        return result;
+    public void postIconSet(List<MultipartFile> files, long iconGroupId) {
+//        Map<MultipartFile, String> result = new HashMap<>();
+//        result.put(mock(MockMultipartFile.class), "imageUrl");
+//        return result;
     }
 
 }

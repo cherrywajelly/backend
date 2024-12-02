@@ -31,7 +31,7 @@ public class PremiumServiceImpl implements PremiumService{
 
     @Transactional(readOnly = true)
     @Override
-    public PremiumResponses getPremium() {
+        public PremiumResponses getPremium() {
         List<PremiumResponse> premiumResponses = new ArrayList<>();
         premiumRepository.getPremiums().forEach(
                 premium -> premiumResponses.add(PremiumResponse.from(premium)));

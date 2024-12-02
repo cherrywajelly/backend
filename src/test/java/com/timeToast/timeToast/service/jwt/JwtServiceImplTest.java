@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.service.jwt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
@@ -8,24 +7,15 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.service.member_token.MemberTokenService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 class JwtServiceImplTest {
