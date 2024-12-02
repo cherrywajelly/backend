@@ -19,7 +19,6 @@ public class FirebaseConfig {
     @PostConstruct
     public void initializeFirebase() throws IOException {
         try {
-            System.out.println("fcm====="+fcmPath);
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseOptions options = FirebaseOptions.builder()

@@ -163,6 +163,7 @@ public class FcmServiceImpl implements FcmService {
                         return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
                     }
                     log.error(e.getMessage());
+                    return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_FCM_MESSAGE.getMessage());
                 }
             }
             else {
