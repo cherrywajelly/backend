@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
@@ -71,11 +70,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
             files.forEach(
                     file -> {
-                        System.out.println(iconSet.get(file));
-                        if (file.getOriginalFilename().equals(thumbnailIcon.getOriginalFilename()) && file.getSize() == thumbnailIcon.getSize()) {
-                            Icon icon = iconRepository.findByIconImageUrl(iconSet.get(file));
-                            iconGroup.updateThumbnailId(icon.getId());
-                        }
+                        
                     }
             );
 
