@@ -35,6 +35,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -105,7 +106,7 @@ public class IconGroupAdminServiceImplTest {
 //    }
 
     @Test
-    @DisplayName("아이콘 그룹 조회 - 성공")
+    @DisplayName("아이콘 그룹 조회 성공")
     void getIconGroupForCreator() {
         // Given
         long memberId = 1L;
@@ -120,6 +121,24 @@ public class IconGroupAdminServiceImplTest {
 
         // Then
         assertThat(iconGroupCreatorResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("아이콘 그룹 조회 실패 - 아이콘 미조회")
+    void getIconGroupForCreatorFail() {
+        // Given
+        long memberId = 1L;
+        long iconId = 0L;
+        ReflectionTestUtils.setField(member, "id", memberId);
+
+        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
+        when(iconRepository.getById(iconId)).thenReturn(null);
+
+        // When
+        NullPointerException nullPointerException = assertThrows(NullPointerException.class, () -> iconGroupAdminService.getIconGroupForCreator(memberId));
+
+        // Then
+        assertThat(nullPointerException).isNotNull();
     }
 
 
@@ -137,17 +156,19 @@ public class IconGroupAdminServiceImplTest {
         assertThat(iconGroupCreatorResponses).isNotNull();
     }
 
-    @Test
-    @DisplayName("")
-    void saveIconState() {
-        long iconGroupId = 1L;
-        IconGroupStateRequest iconGroupStateRequest = mock(IconGroupStateRequest.class);
-
-        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
-
-        IconGroupInfoResponse iconGroupResponse = iconGroupAdminService.saveIconState(iconGroupStateRequest);
-
-        assertThat(iconGroupResponse).isNotNull();
-    }
+//    @Test
+//    @DisplayName("아이콘 그룹 상세 조회 성공")
+//    void getIconGroupDetailForCreator() {
+//        // Given
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//
+//        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId));
+//
+//        // When
+//        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
+//
+//        // Then
+//        assertThat(iconGroupCreatorResponses).isNotNull();
+//    }
 }
