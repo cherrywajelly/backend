@@ -346,7 +346,7 @@ public class MemberServiceImplTest {
         assertEquals(creator.getMemberProfileUrl(), creatorDetailResponse.profileUrl());
         assertEquals(creator.getNickname(), creatorDetailResponse.nickname());
         assertEquals(creatorAccount.getAccountNumber(), creatorDetailResponse.accountNumber());
-        assertEquals(creatorAccount.getBank(), creatorDetailResponse.bank());
+        assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
     

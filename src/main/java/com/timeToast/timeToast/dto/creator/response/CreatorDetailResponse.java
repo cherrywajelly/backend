@@ -9,7 +9,7 @@ import java.util.List;
 public record CreatorDetailResponse(
         String profileUrl,
         String nickname,
-        Bank bank,
+        String bank,
         String accountNumber
 
 ) {

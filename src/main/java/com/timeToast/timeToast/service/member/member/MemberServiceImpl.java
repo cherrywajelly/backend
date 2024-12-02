@@ -158,7 +158,7 @@ public class MemberServiceImpl implements MemberService{
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
-                .bank(bank)
+                .bank(bank.value())
                 .accountNumber(creatorAccount)
                 .build();
     }
