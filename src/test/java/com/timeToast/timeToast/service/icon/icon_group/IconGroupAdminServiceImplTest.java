@@ -8,6 +8,7 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
@@ -156,19 +157,18 @@ public class IconGroupAdminServiceImplTest {
         assertThat(iconGroupCreatorResponses).isNotNull();
     }
 
-//    @Test
-//    @DisplayName("아이콘 그룹 상세 조회 성공")
-//    void getIconGroupDetailForCreator() {
-//        // Given
-//        long memberId = 1L;
-//        long iconGroupId = 1L;
-//
-//        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId));
-//
-//        // When
-//        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
-//
-//        // Then
-//        assertThat(iconGroupCreatorResponses).isNotNull();
-//    }
+    @Test
+    @DisplayName("아이콘 그룹 상세 조회 실패 - 아이콘 그룹 미조회")
+    void getIconGroupDetailForCreatorFail() {
+        // Given
+        long memberId = 1L;
+        long iconGroupId = 1L;
+
+        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId)).thenReturn(Optional.empty());
+
+        // When
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupAdminService.getIconGroupDetailForCreator(memberId, iconGroupId));
+        // Then
+        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
+    }
 }
