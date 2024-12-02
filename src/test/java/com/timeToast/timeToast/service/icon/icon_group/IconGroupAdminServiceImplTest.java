@@ -14,6 +14,8 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.service.icon.icon.IconService;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,6 +51,12 @@ public class IconGroupAdminServiceImplTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private FileUploadService fileUploadService;
+
+    @Mock
+    private IconService iconService;
+
     @InjectMocks
     private IconGroupAdminServiceImpl iconGroupAdminService;
 
@@ -62,7 +71,7 @@ public class IconGroupAdminServiceImplTest {
 
         member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
-        icon = Icon.builder().iconGroupId(iconGroupId).build();
+        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl("imageUrl").build();
     }
 
 //    @Test
@@ -70,13 +79,16 @@ public class IconGroupAdminServiceImplTest {
 //    void saveIconGroupSuccess() {
 //        // Given
 //        long memberId = 1L;
+//        MockMultipartFile thumbnailIcon = mock(MockMultipartFile.class);
+//        ReflectionTestUtils.setField(thumbnailIcon, "originalFilename", "filename");
+//        List<MultipartFile> files = List.of(thumbnailIcon);
 //        IconGroupPostRequest iconGroupPostRequest = new IconGroupPostRequest("name", 1100, IconType.TOAST, IconBuiltin.BUILTIN, "description");
 //
 //        when(memberRepository.getById(memberId)).thenReturn(member);
 //        when(iconGroupRepository.save(any(IconGroup.class))).thenReturn(iconGroup);
 //
 //        // When
-//        Response response = iconGroupAdminService.postIconGroup(iconGroupPostRequest, memberId);
+//        Response response = iconGroupAdminService.postIconGroup(thumbnailIcon, files, iconGroupPostRequest, memberId);
 //
 //        // Then
 //        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
@@ -102,8 +114,8 @@ public class IconGroupAdminServiceImplTest {
 //    }
 
 //    @Test
-//    @DisplayName("아이콘 그룹 조회 - 성공")
-//    void getIconGroupSuccess() {
+//    @DisplayName("아이콘 제작자 소유 아이콘 그룹 조회 성공")
+//    void getIconGroupDetailForCreator() {
 //        // Given
 //        long memberId = 1L;
 //        long iconGroupId = 1L;

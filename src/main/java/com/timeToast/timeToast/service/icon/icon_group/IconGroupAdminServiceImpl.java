@@ -71,11 +71,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
             files.forEach(
                     file -> {
-                        System.out.println(iconSet.get(file));
-                        if (file.getOriginalFilename().equals(thumbnailIcon.getOriginalFilename()) && file.getSize() == thumbnailIcon.getSize()) {
-                            Icon icon = iconRepository.findByIconImageUrl(iconSet.get(file));
-                            iconGroup.updateThumbnailId(icon.getId());
-                        }
+                        
                     }
             );
 

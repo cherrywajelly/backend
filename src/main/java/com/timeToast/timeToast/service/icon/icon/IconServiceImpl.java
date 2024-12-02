@@ -40,7 +40,7 @@ public class IconServiceImpl implements IconService{
     public Map<MultipartFile, String> postIconSet(List<MultipartFile> files, final long iconGroupId) {
         Map<MultipartFile, String> imageUrls = new HashMap<>();
 
-        files.forEach(file->{
+        files.forEach(file-> {
             Icon icon = iconRepository.save(new Icon("", iconGroupId));
             String endpoint = baseUrl + "icon/image/" + Long.toString(icon.getId());
             String imageUrl = fileUploadService.uploadfile(file, endpoint);
