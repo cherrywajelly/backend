@@ -160,7 +160,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public CreatorIconInfos getIconGroupsByCreator(long creatorId) {
+    public CreatorIconInfos getIconGroupsByCreator(final long creatorId) {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(creatorId);
         List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
         iconGroups.forEach(
