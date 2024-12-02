@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
@@ -40,6 +41,7 @@ public class JwtServiceImpl implements JwtService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Transactional
     @Override
     public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
         String accessToken = createToken(loginMember, 7*ONE_DAY.time());
@@ -50,8 +52,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
 
-    @Override
-    public String createToken(final LoginMember loginMember, final long expired) {
+    private String createToken(final LoginMember loginMember, final long expired) {
 
         Date now = new Date();
         Date expiredDate = new Date( now.getTime() + expired);
@@ -75,6 +76,7 @@ public class JwtServiceImpl implements JwtService {
 
     }
 
+    @Transactional
     @Override
     public LoginResponse tokenRenewal(final String refreshToken) {
         if(jwtTokenProvider.validateToken(refreshToken)){

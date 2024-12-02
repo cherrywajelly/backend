@@ -6,6 +6,7 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
+import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -155,33 +157,38 @@ class SettlementServiceImplTest {
         List<SettlementIcon> settlementIcons = new ArrayList<>();
 
         for(long i = 1; i < 10; i++) {
-
+            settlementIcons.add(
+                    SettlementIcon.builder()
+                            .title("title"+i)
+                            .revenue(100L)
+                            .salesCount(12)
+                            .settlementState(SettlementState.APPROVAL)
+                            .build());
 
         }
 
         return settlementIcons;
     }
 
-//    @Test
-//    @DisplayName("제작자 월 별 정산 승인 성공")
-//    public void approvalSettlement(){
-//        //given
-//        List<Settlement> settlements = settlementsSetUp();
-//
-//
-//        when(settlementRepository.findAllByYearMonthAndMemberId(
-//                LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(),1),1L)).thenReturn(settlements);
-//
-//
-//        SettlementRequest settlementRequest = new SettlementRequest(1, 1);
-//        //when
-//        SettlementCreatorInfoResponse creatorInfoResponse = settlementService.approvalSettlement(1L, settlementRequest);
-//
-//        //then
-//        assertEquals(creatorInfoResponse.month(), LocalDate.now().getMonthValue());
-//        assertEquals(creatorInfoResponse.year(),  LocalDate.now().getYear());
-//        assertEquals(creatorInfoResponse.settlementDate(), LocalDate.now());
-//    }
+    @Test
+    @DisplayName("제작자 월 별 정산 승인 성공")
+    public void approvalSettlement(){
+        //given
+        List<Settlement> settlements = settlementsSetUp();
+
+        when(settlementRepository.findAllByYearMonthAndMemberId(
+                LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(),1),1L)).thenReturn(settlements);
+
+        SettlementRequest settlementRequest = new SettlementRequest(LocalDate.now().getYear(),LocalDate.now().getMonthValue() );
+
+        //when
+        SettlementCreatorInfoResponse creatorInfoResponse = settlementService.approvalSettlement(1L, settlementRequest);
+
+        //then
+        assertEquals(creatorInfoResponse.month(), LocalDate.now().getMonthValue());
+        assertEquals(creatorInfoResponse.year(),  LocalDate.now().getYear());
+        assertEquals(creatorInfoResponse.settlementDate(), LocalDate.now());
+    }
 
     @Test
     @DisplayName("제작자는 자신의 월 별 정산 내역 목록을 조회할 수 있다.: 성공 - 중복 제거 확인")
@@ -190,7 +197,6 @@ class SettlementServiceImplTest {
         List<Settlement> settlements = settlementsByCreatorSetUp();
         final long memberId = 1L;
         when(settlementRepository.findAllByMemberId(memberId)).thenReturn(settlements);
-
 
         //when
         SettlementCreatorInfoResponses creatorInfoResponse = settlementService.getSettlementByYearMonthByCreator(1L);
@@ -215,7 +221,6 @@ class SettlementServiceImplTest {
         Member member4 = memberSetUp(4L);
         when(memberRepository.findById(4L)).thenReturn(Optional.of(member4));
 
-
         //when
         SettlementResponses settlementResponses = settlementService.getSettlementByYearMonth(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
 
@@ -227,27 +232,59 @@ class SettlementServiceImplTest {
     @DisplayName("관리자는 선택한 년도와 월에 대하여 정산 목록 조회를 할 수 있다.")
     public void getAllSettlementByCreator(){
         //given
-        //TODO
-//        Member member = memberSetUp(1L);
-//
-//        CreatorAccount creatorAccount = creatorAccountSetUp();
-//        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
-//
-//
-//        List<Settlement> settlements = settlementsByAdminSetup();
-//        when(settlementRepository.findAllByYearMonth(any(LocalDate.class))).thenReturn(settlements);
-//
-//
-//        SettlementRequest settlementRequest = new SettlementRequest(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
-//
-//        //when
-//        SettlementDetailResponse settlementDetailResponse = settlementService.getAllSettlementByCreator(member.getId(), settlementRequest);
-//
-//        //then
-//        assertEquals(settlements.size()-1, settlementResponses.settlementResponses().size());
+        Member member = memberSetUp(1L);
+        when(memberRepository.getById(1L)).thenReturn(member);
+
+        CreatorAccount creatorAccount = creatorAccountSetUp();
+        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
+
+        List<SettlementIcon> settlementIcons = settlementIconSetUp();
+        when(settlementRepository.findAllByYearMonthAndMemberIdToIcon(any(LocalDate.class), eq(1L))).thenReturn(settlementIcons);
+
+        //when
+        SettlementDetailResponse settlementDetailResponse = settlementService.getAllSettlementByCreator(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue());
+
+        //then
+        assertEquals(LocalDate.now().getYear(), settlementDetailResponse.year());
+        assertEquals(LocalDate.now().getMonthValue(), settlementDetailResponse.month());
+        assertEquals(member.getNickname(), settlementDetailResponse.creatorNickname());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
+        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
+        assertEquals(creatorAccount.getBank().value(), settlementDetailResponse.bank());
+        assertEquals(creatorAccount.getAccountNumber(), settlementDetailResponse.accountNumber());
+        assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());
+        assertEquals(settlementIcons.size(), settlementDetailResponse.settlementIcons().size());
     }
 
 
+    @Test
+    @DisplayName("관리자는 선택한 년도와 월에 대하여 특정 제작자의 정산 목록 조회를 할 수 있다.")
+    public void getSettlementByYearMonthAndCreator(){
+        //given
+        Member member = memberSetUp(1L);
+        when(memberRepository.getById(1L)).thenReturn(member);
 
+        CreatorAccount creatorAccount = creatorAccountSetUp();
+        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
+
+        List<SettlementIcon> settlementIcons = settlementIconSetUp();
+        when(settlementRepository.findAllByYearMonthAndMemberIdToIcon(any(LocalDate.class), eq(1L))).thenReturn(settlementIcons);
+
+        //when
+        SettlementDetailResponse settlementDetailResponse = settlementService.getAllSettlementByCreator(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue());
+
+        //then
+        assertEquals(LocalDate.now().getYear(), settlementDetailResponse.year());
+        assertEquals(LocalDate.now().getMonthValue(), settlementDetailResponse.month());
+        assertEquals(member.getNickname(), settlementDetailResponse.creatorNickname());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
+        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
+        assertEquals(creatorAccount.getBank().value(), settlementDetailResponse.bank());
+        assertEquals(creatorAccount.getAccountNumber(), settlementDetailResponse.accountNumber());
+        assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());
+        assertEquals(settlementIcons.size(), settlementDetailResponse.settlementIcons().size());
+    }
 
 }
