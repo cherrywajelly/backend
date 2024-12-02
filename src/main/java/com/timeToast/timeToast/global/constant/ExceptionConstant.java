@@ -80,6 +80,7 @@ public enum ExceptionConstant {
 
     //creator
     INVALID_CREATOR("잘못된 제작자 요청입니다."),
+    ACCOUNT_ALREADY_EXIST("이미 존재하는 계좌 정보입니다."),
 
     //JSON
     JSON_PROCESSING_ERROR("json processing error"),
