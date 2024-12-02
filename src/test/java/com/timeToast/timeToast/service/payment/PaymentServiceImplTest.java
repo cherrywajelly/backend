@@ -13,8 +13,11 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
+import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
+import com.timeToast.timeToast.global.config.TossConfig;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -53,6 +56,9 @@ public class PaymentServiceImplTest {
 
     @Mock
     IconMemberRepository iconMemberRepository;
+
+    @Mock
+    TossConfig tossConfig;
 
     @InjectMocks
     PaymentServiceImpl paymentService;
@@ -261,6 +267,36 @@ public class PaymentServiceImplTest {
         assertThrows(BadRequestException.class, () -> paymentService.savePayment(1L, paymentSaveRequest) );
 
     }
+
+    @Test
+    @DisplayName("사용자는 성공한 결제를 승인 요청 할 수 있다.:실패 금액 불일치")
+    public void successPaymentFail() throws Exception {
+        //given
+        Payment payment = setPremiumPayment();
+        ReflectionTestUtils.setField(payment, "id", 1L);
+        ReflectionTestUtils.setField(payment, "orderId", "jdhaeudjkioeudjc");
+        when(paymentRepository.findByOrderId("jdhaeudjkioeudjc")).thenReturn(Optional.of(payment));
+
+        PaymentSuccessRequest paymentSuccessRequest = new PaymentSuccessRequest("paymentKey", "jdhaeudjkioeudjc", 55 );
+        //when then
+        assertThrows(BadRequestException.class,()->paymentService.successPayment(1L, paymentSuccessRequest));
+
+    }
+
+    @Test
+    @DisplayName("사용자는 성공한 결제를 승인 요청 할 수 있다.: 주문 번호 불일치")
+    public void successPaymentOrderIdFail() throws Exception {
+        //given
+        Payment payment = setPremiumPayment();
+        ReflectionTestUtils.setField(payment, "id", 1L);
+        ReflectionTestUtils.setField(payment, "orderId", "jdhaeudjkioeudjc");
+
+        PaymentSuccessRequest paymentSuccessRequest = new PaymentSuccessRequest("paymentKey", "jdhaeudsxioeudjc", 55 );
+        //when then
+        assertThrows(NotFoundException.class,()->paymentService.successPayment(1L, paymentSuccessRequest));
+
+    }
+
 
     @Test
     @DisplayName("사용자는 실패 결제를 저장할 수 있다.")
