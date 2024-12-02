@@ -16,6 +16,7 @@ import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -36,7 +37,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 public class PaymentServiceImplTest {
 
     @Mock
@@ -149,6 +149,7 @@ public class PaymentServiceImplTest {
         verify(paymentRepository, times(1)).save(any(Payment.class));
 
     }
+
 
     @Test
     @DisplayName("사용자는 결제 정보를 저장할 수 있다. - 실패: 아이콘 이미 결제한 아이콘 그룹")
@@ -275,5 +276,12 @@ public class PaymentServiceImplTest {
 
         //then
         assertEquals(payment.getId(), paymentFailResponse.paymentId());
+    }
+
+    @Test
+    @DisplayName("사용자는 실패 결제를 저장할 수 있다.: 실패 정보 찾을 수 없음")
+    public void failPaymentTestFail() throws Exception {
+        //given when then
+        assertThrows(NotFoundException.class, () -> paymentService.failPayment(1L, "jdhaeudjkioeudjc"));
     }
 }
