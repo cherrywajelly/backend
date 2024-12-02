@@ -18,6 +18,7 @@ import com.timeToast.timeToast.dto.fcm.requset.FcmSendRequest;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.config.FirebaseConfig;
 import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
@@ -36,6 +37,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_CREATE_MESSAGE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PUT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,15 +77,6 @@ public class FcmServiceImplTest {
     @Mock
     private IconRepository iconRepository;
 
-    @Mock
-    private FirebaseMessaging firebaseMessaging;
-
-    @Mock
-    private Message message;
-
-//    @Mock
-//    private FirebaseApp firebaseApp;
-
     @InjectMocks
     private FcmServiceImpl fcmService;
 
@@ -91,8 +84,6 @@ public class FcmServiceImplTest {
     private Fcm fcm;
     private Member member;
 
-    private FirebaseApp firebaseApp;
-    private GoogleCredentials googleCredentials;
     private EventToast eventToast;
     private Icon icon;
 
@@ -106,50 +97,15 @@ public class FcmServiceImplTest {
         member = Member.builder().memberProfileUrl("profileUrl").build();
         eventToast = EventToast.builder().iconId(iconId).build();
         icon = Icon.builder().iconImageUrl("imageUrl").build();
-
-//        try {
-//            Message message = mock(Message.class);
-//            when(FirebaseMessaging.getInstance().send(message)).thenReturn(null);
-//        } catch (FirebaseMessagingException e) {
-//            throw new RuntimeException(e);
-//        }
-
-//        firebaseApp = mock(FirebaseApp.class);
-//        googleCredentials = mock(GoogleCredentials.class);
-
-        // createScoped() 메서드를 mock하여 GoogleCredentials을 반환하도록 설정
-//        when(googleCredentials.createScoped(anyList())).thenReturn(googleCredentials);
-//
-//        // FirebaseOptions을 mock 설정
-//        FirebaseOptions options = mock(FirebaseOptions.class);
-////        when(options.getCredential()).thenReturn(googleCredentials);
-//
-//        // FirebaseApp이 제대로 초기화되는지 확인
-//        when(firebaseApp.getOptions()).thenReturn(options);
-//
-//        // FirebaseMessaging 객체의 동작을 mock
-//        FirebaseMessaging firebaseMessaging = mock(FirebaseMessaging.class);
-//        try {
-//            when(firebaseMessaging.send(any())).thenReturn("message-id");
-//        } catch (FirebaseMessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        // FirebaseApp.initializeApp() 메서드를 mock하여 위에서 설정한 FirebaseApp을 반환
-//        FirebaseApp.initializeApp(options);
-
     }
 
     @BeforeEach
-    void resetFirebaseApp() throws IOException {
+    void initializeFirebaseApp() throws IOException {
 
         for (FirebaseApp app : FirebaseApp.getApps()) {
             app.delete();
         }
 
-        FileInputStream json = mock(FileInputStream.class);
-        String mockUrl = "mockUrl";
         GoogleCredentials googleCredentials = mock(GoogleCredentials.class);
 
         FirebaseOptions options = FirebaseOptions.builder()
@@ -232,7 +188,7 @@ public class FcmServiceImplTest {
     }
 
     @Test
-    @DisplayName("fcm 조회 여부 변경 - 성공")
+    @DisplayName("fcm 조회 여부 변경 성공 - 조회된 fcm 열람")
     void putIsOpened() {
         // Given
         long memberId = 1L;
@@ -251,56 +207,52 @@ public class FcmServiceImplTest {
         assertThat(response.message()).isEqualTo(SUCCESS_PUT.getMessage());
     }
 
-//    @Test
-//    @DisplayName("fcm 메세지 전송 - 성공")
-//    void sendMessageTo() {
-//        // Given
-//        long memberId = 1L;
-//        long eventToastId = 1L;
-//        long iconId = 1L;
-//        String fcmToken = "fcmToken";
-//        ReflectionTestUtils.setField(memberToken, "fcmToken", fcmToken);
-//        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
-//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.EVENTTOASTOPENED).nickname("nickname").toastName("toastName").param(1L).build();
-//        FcmSendRequest fcmSendRequest = FcmSendRequest.builder().build();
-//        // When
-//
-//        FirebaseApp firebaseApp = mock(FirebaseApp.class);
-//
-//        try {
-//            when(eventToastRepository.getById(eventToastId)).thenReturn(eventToast);
-//            when(iconRepository.getById(iconId)).thenReturn(icon);
-////            when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
-//            when(fcmService.createMessage(memberId, fcmPostRequest)).thenReturn(null);
-////            when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
-////            when(fcmService.saveFcmInfo(memberId, fcmPostRequest)).thenReturn(mock(Response.class));
-////            when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
-//            when(fcmService.makeMessage(memberId, fcmPostRequest)).thenReturn(Optional.of(fcmSendRequest));
-//            when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
-////            try {
-////                when(FirebaseMessaging.getInstance().send(message)).thenReturn("result");
-////            } catch (FirebaseMessagingException e) {
-////                e.getMessage();
-////            }
-////            when(fcmService.saveFcmInfo(memberId, fcmPostRequest)).thenReturn(mock(Response.class));
-////            when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
-//
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
+    @Test
+    @DisplayName("fcm 조회 여부 변경 성공 - 미조회된 fcm 열람")
+    void putIsOpenedUnOpened() {
+        // Given
+        long memberId = 1L;
+        long fcmId = 1L;
 
-//        when(FirebaseApp.getApps()).thenReturn("[DEFAULT]");
+        ReflectionTestUtils.setField(fcm, "id", 1L);
+        ReflectionTestUtils.setField(fcm, "isOpened", false);
 
-//        Response response = fcmService.sendMessageTo(memberId, fcmPostRequest);
-//        RuntimeException exception = assertThrows(RuntimeException.class , () -> fcmService.sendMessageTo(memberId, fcmPostRequest));
-//        // Then
-////        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-////        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-//    }
+        when(fcmRepository.getById(fcmId)).thenReturn(fcm);
+        when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
+
+        // When
+        Response response = fcmService.putIsOpened(memberId, fcmId);
+
+        // Then
+        verify(fcmRepository, times(1)).save(fcm);
+        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+        assertThat(response.message()).isEqualTo(SUCCESS_PUT.getMessage());
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 전송 - 실패")
+    void sendMessageTo() {
+        // Given
+        long memberId = 1L;
+        long eventToastId = 1L;
+        long iconId = 1L;
+        String fcmToken = "fcmToken";
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.EVENTTOASTOPENED).nickname("nickname").toastName("toastName").param(1L).build();
+
+        ReflectionTestUtils.setField(memberToken, "fcmToken", fcmToken);
+        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+
+        when(eventToastRepository.getById(eventToastId)).thenReturn(eventToast);
+        when(iconRepository.getById(iconId)).thenReturn(icon);
+
+        Response response = fcmService.sendMessageTo(memberId, fcmPostRequest);
+
+        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+    }
 
     @Test
     @DisplayName("fcm 정보 저장 - 성공")
-    void saveFcmInfo() {
+    void saveFcmInfoSuccess() {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.FOLLOW).param(1L).build();
@@ -316,8 +268,23 @@ public class FcmServiceImplTest {
     }
 
     @Test
+    @DisplayName("fcm 정보 저장 실패")
+    void saveFcmInfoFail() {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.FOLLOW).param(1L).build();
+
+        when(memberRepository.getById(memberId)).thenReturn(null);
+        // When
+        NullPointerException exception = assertThrows(NullPointerException.class, ()-> fcmService.saveFcmInfo(memberId, fcmPostRequest));
+
+        // Then
+        assertThat(exception.getMessage()).isNotNull();
+    }
+
+    @Test
     @DisplayName("fcm 메세지 생성 - 성공")
-    void createMessage() throws JsonProcessingException {
+    void createMessageSuccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
@@ -333,15 +300,33 @@ public class FcmServiceImplTest {
         assertThat(message).isNotNull();
     }
 
+
     @Test
-    @DisplayName("fcm 메세지 글 생성 - 성공")
-    void makeMessage() throws JsonProcessingException {
+    @DisplayName("fcm 메세지 글 생성 성공")
+    void makeMessageSuccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 실패 - 토큰이 없을 경우")
+    void makeMessageFail() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
