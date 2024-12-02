@@ -282,7 +282,7 @@ public class FcmServiceImplTest {
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
 
         // When
-        String message = fcmService.createMessage(memberId, fcmPostRequest);
+        Message message = fcmService.createMessage(memberId, fcmPostRequest);
 
         // Then
         assertThat(message).isNotNull();
