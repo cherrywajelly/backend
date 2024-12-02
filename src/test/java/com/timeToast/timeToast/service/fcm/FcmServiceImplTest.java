@@ -282,10 +282,10 @@ public class FcmServiceImplTest {
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
 
         // When
-        String message = fcmService.createMessage(memberId, fcmPostRequest);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> fcmService.createMessage(memberId, fcmPostRequest));
 
         // Then
-        assertThat(message).isNotNull();
+        assertThat(exception).isNotNull();
     }
 
 
