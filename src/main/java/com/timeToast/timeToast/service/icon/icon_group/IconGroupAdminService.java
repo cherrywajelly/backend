@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IconGroupAdminService {
-    Response postIconGroup(MultipartFile mainIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId);
+    Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId);
     IconGroupCreatorResponses getIconGroupForCreator(final long memberId);
     IconGroupDetailResponse getIconGroupDetail(final long iconGroupId);
     IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest);

@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -81,9 +82,7 @@ public class CreatorServiceImpl implements CreatorService {
                     .mapToLong(Payment::getAmount)
                     .sum();
 
-            Icon thumbnailIcon = iconRepository.getById(iconGroup.getThumbnailId());
-
-            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup.getName(), thumbnailIcon.getIconImageUrl(), iconImageUrls, payments.size(), income, iconGroup.getIconState()));
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
         });
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }
@@ -99,13 +98,17 @@ public class CreatorServiceImpl implements CreatorService {
             member.updateNickname(creatorRequest.nickname());
             MemberInfoResponse memberInfoResponse = memberService.saveProfileImageByLogin(memberId, multipartFile);
 
-            creatorAccount.get().updateAccount(creatorRequest.creatorAccountResponse().bank(), creatorRequest.creatorAccountResponse().accountNumber());
+            for (Bank bank : Bank.values()) {
+                if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
+                    creatorAccount.get().updateAccount(bank, creatorRequest.creatorAccountResponse().accountNumber());
+                    creatorAccountRepository.save(creatorAccount.get());
+                    return CreatorInfoResponse.from(creatorRequest.nickname(), creatorRequest.creatorAccountResponse().bank(), creatorRequest.creatorAccountResponse().accountNumber(), memberInfoResponse.profileUrl());
+                }
+            }
 
-            creatorAccountRepository.save(creatorAccount.get());
-
-            return CreatorInfoResponse.from(creatorRequest.nickname(), creatorRequest.creatorAccountResponse().bank().value(), creatorRequest.creatorAccountResponse().accountNumber(), memberInfoResponse.profileUrl());
         } else {
             throw new BadRequestException(INVALID_CREATOR_INFO.getMessage());
         }
+        return null;
     }
 }

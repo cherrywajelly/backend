@@ -14,11 +14,11 @@ public record IconGroupInfoResponse(
         IconState iconState
 ) {
 
-    public static IconGroupInfoResponse from(final IconGroup iconGroup, final String thumbnailUrl) {
+    public static IconGroupInfoResponse from(final IconGroup iconGroup) {
         return IconGroupInfoResponse.builder()
                 .iconGroupId(iconGroup.getId())
                 .title(iconGroup.getName())
-                .thumbnailUrl(thumbnailUrl)
+                .thumbnailUrl(iconGroup.getThumbnailImageUrl())
                 .iconType(iconGroup.getIconType())
                 .iconState(iconGroup.getIconState())
                 .build();

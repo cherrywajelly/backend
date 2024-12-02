@@ -69,7 +69,7 @@ public class CreatorMemberControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 회원가입 시, 자신의 정보를 등록할 수 있다.")
     @Test
     void saveCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
+        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA.value(), "accountNumber");
         CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
         String json = objectMapper.writeValueAsString(creatorRequest);
 
@@ -145,7 +145,7 @@ public class CreatorMemberControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 자신의 정보를 수정할 수 있다.")
     @Test
     void putCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
+        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA.value(), "accountNumber");
         CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
         String json = objectMapper.writeValueAsString(creatorRequest);
 
