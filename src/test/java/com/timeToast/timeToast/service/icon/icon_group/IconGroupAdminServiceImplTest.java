@@ -7,7 +7,11 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -35,6 +39,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -113,23 +118,69 @@ public class IconGroupAdminServiceImplTest {
 //                .hasMessageContaining(INVALID_ICON_GROUP.getMessage());
 //    }
 
-//    @Test
-//    @DisplayName("아이콘 제작자 소유 아이콘 그룹 조회 성공")
-//    void getIconGroupDetailForCreator() {
-//        // Given
-//        long memberId = 1L;
-//        long iconGroupId = 1L;
-//        ReflectionTestUtils.setField(member, "id", memberId);
-//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
-//
-//        when(memberRepository.getById(1L)).thenReturn(member);
-//        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
-//        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
-//
-//        // When
-//        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
-//
-//        // Then
-//        assertThat(iconGroupCreatorResponses).isNotNull();
-//    }
+    @Test
+    @DisplayName("아이콘 그룹 조회 성공")
+    void getIconGroupForCreator() {
+        // Given
+        long memberId = 1L;
+        long iconGroupId = 1L;
+        ReflectionTestUtils.setField(member, "id", memberId);
+
+        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
+        when(iconRepository.getById(0L)).thenReturn(icon);
+
+        // When
+        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
+
+        // Then
+        assertThat(iconGroupCreatorResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("아이콘 그룹 조회 실패 - 아이콘 미조회")
+    void getIconGroupForCreatorFail() {
+        // Given
+        long memberId = 1L;
+        long iconId = 0L;
+        ReflectionTestUtils.setField(member, "id", memberId);
+
+        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
+        when(iconRepository.getById(iconId)).thenReturn(null);
+
+        // When
+        NullPointerException nullPointerException = assertThrows(NullPointerException.class, () -> iconGroupAdminService.getIconGroupForCreator(memberId));
+
+        // Then
+        assertThat(nullPointerException).isNotNull();
+    }
+
+
+    @Test
+    @DisplayName("아이콘 그룹 상세 조회 성공")
+    void getIconGroupDetailForCreator() {
+        // Given
+        long memberId = 1L;
+        long iconGroupId = 1L;
+
+        // When
+        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
+
+        // Then
+        assertThat(iconGroupCreatorResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("아이콘 그룹 상세 조회 실패 - 아이콘 그룹 미조회")
+    void getIconGroupDetailForCreatorFail() {
+        // Given
+        long memberId = 1L;
+        long iconGroupId = 1L;
+
+        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId)).thenReturn(Optional.empty());
+
+        // When
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupAdminService.getIconGroupDetailForCreator(memberId, iconGroupId));
+        // Then
+        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
+    }
 }
