@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.domain.icon.icon;
 
 import com.timeToast.timeToast.domain.BaseTime;
+import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,10 +23,11 @@ public class Icon extends BaseTime {
     private String iconImageUrl;
 
     @Builder
-    public Icon(final String iconImageUrl, final Long iconGroupId){
+    public Icon(final String iconImageUrl, final Long iconGroupId) {
         this.iconImageUrl = iconImageUrl;
         this.iconGroupId = iconGroupId;
     }
+
 
     public void updateUrl(final String iconImageUrl) {
         this.iconImageUrl = iconImageUrl;

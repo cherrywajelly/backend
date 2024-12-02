@@ -35,7 +35,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
     @DisplayName("showcase를 등록할 수 있다.")
     @WithMockCustomUser
     @Test
-    void saveGiftToastGroup() throws Exception {
+    void saveShowcase() throws Exception {
 
         ShowcaseSaveRequest showcaseSaveRequest = new ShowcaseSaveRequest(List.of(1L));
         String json = objectMapper.writeValueAsString(showcaseSaveRequest);
@@ -60,6 +60,40 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("showcaseSaveResponses").type(ARRAY).description("등록한 event toast title list")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("showcase를 등록할 수 있다. - 실패: 3개 초과")
+    @WithMockCustomUser
+    @Test
+    void saveShowcaseFail() throws Exception {
+
+        ShowcaseSaveRequest showcaseSaveRequest = new ShowcaseSaveRequest(List.of(1L,2L, 3L, 4L));
+        String json = objectMapper.writeValueAsString(showcaseSaveRequest);
+
+        mockMvc.perform(
+                        post("/api/v1/showcases")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("진열장 등록 실패: 3개 초과",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("진열장")
+                                .summary("진열장 등록")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("showcases").type(ARRAY).description("등록 eventToast Id list")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("showcase는 최대 3개까지 등록이 가능합니다.")
                                 )
                                 .build()
                         )));
@@ -178,6 +212,36 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("showcase 삭제 - 실패: 자신의 진열장 아님")
+    @WithMockCustomUser
+    @Test
+    void deleteShowcaseFail() throws Exception {
+
+
+        mockMvc.perform(
+                        delete("/api/v1/showcases/{showcaseId}", 2L)
+                                .header(AUTHORIZATION,USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("진열장 삭제 실패: 자신의 진열장 아님",
+                        pathParameters(
+                                parameterWithName("showcaseId").description("showcase id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("진열장")
+                                .summary("진열장 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("자신의 showcase 토스트가 아닙니다.")
                                 )
                                 .build()
                         )));

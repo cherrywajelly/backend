@@ -8,7 +8,7 @@ import java.util.List;
 public record CreatorIconInfo(
         String title,
         int revenue,
-        int salesIconCount,
+        int salesCount,
         List<String> iconImageUrl
 ) {
 }

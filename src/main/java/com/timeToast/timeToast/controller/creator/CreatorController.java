@@ -1,40 +1,37 @@
 package com.timeToast.timeToast.controller.creator;
 
-import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
-import com.timeToast.timeToast.global.annotation.Login;
-import com.timeToast.timeToast.global.exception.UnauthorizedException;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import org.springframework.web.bind.annotation.*;
-
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.UNAUTHORIZED_MEMBER;
 
 @RequestMapping("/api/v3/creators")
 @RestController
 public class CreatorController {
 
     private final MemberService memberService;
+    private final IconGroupAdminService iconGroupAdminService;
 
-    public CreatorController(final MemberService memberService) {
+    public CreatorController(final MemberService memberService, final IconGroupAdminService iconGroupAdminService) {
         this.memberService = memberService;
+        this.iconGroupAdminService = iconGroupAdminService;
     }
 
     @GetMapping("")
-    public CreatorResponses getCreators(@Login LoginMember loginMember) {
-        if(!loginMember.role().equals(MemberRole.MANAGER)){
-            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-        }
+    public CreatorResponses getCreators() {
         return memberService.getCreators();
     }
 
     @GetMapping("/{creatorId}")
-    public CreatorDetailResponse getCreatorByCreatorId(@Login LoginMember loginMember, @PathVariable long creatorId) {
-        if(!loginMember.role().equals(MemberRole.MANAGER)){
-            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-        }
+    public CreatorDetailResponse getCreatorByCreatorId(@PathVariable long creatorId) {
         return memberService.getCreatorByCreatorId(creatorId);
+    }
+
+    @GetMapping("/{creatorId}/iconGroups")
+    public CreatorIconInfos getIconGroupsByCreator(@PathVariable long creatorId) {
+        return iconGroupAdminService.getIconGroupsByCreator(creatorId);
     }
 
 //    @GetMapping("/monthSettlement")

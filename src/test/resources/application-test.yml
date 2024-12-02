@@ -20,9 +20,18 @@ oauth2:
     kakao:
       client-id: ${KAKAO_CLIENT_ID}
       client-secret: ${KAKAO_CLIENT_SECRET}
-      redirect-uri: ${KAKAO_REDIRECT_URI}
+      member-redirect-uri: ${KAKAO_MEMBER_REDIRECT_URI}
+      creator-redirect-uri: ${KAKAO_CREATOR_REDIRECT_URI}
+      admin-redirect-uri: ${KAKAO_ADMIN_REDIRECT_URI}
 
     google:
       client-id: ${GOOGLE_CLIENT_ID}
       client-secret: ${GOOGLE_CLIENT_SECRET}
-      redirect-uri: ${GOOGLE_REDIRECT_URI}
+      member-redirect-uri: ${GOOGLE_MEMBER_REDIRECT_URI}
+      creator-redirect-uri: ${GOOGLE_CREATOR_REDIRECT_URI}
+      admin-redirect-uri: ${GOOGLE_ADMIN_REDIRECT_URI}
+
+payment:
+  toss:
+    confirm-url: ${TOSS_CONFIRM_URL}
+    secret-key: ${TOSS_TEST_SECRET_KEY}

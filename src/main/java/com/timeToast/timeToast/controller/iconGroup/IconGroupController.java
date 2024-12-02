@@ -1,10 +1,7 @@
 package com.timeToast.timeToast.controller.iconGroup;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
@@ -20,11 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IconGroupController {
     private final IconGroupService iconGroupService;
-
-    @PostMapping("/members/{iconGroupId}")
-    public Response buyIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        return iconGroupService.buyIconGroup(loginMember.id(), iconGroupId);
-    }
 
     @GetMapping("/members/toasts")
     public IconGroupResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
@@ -47,8 +39,8 @@ public class IconGroupController {
     }
 
     @GetMapping("/{iconGroupId}")
-    public IconGroupDetailResponse getIconGroupDetail(final @PathVariable long iconGroupId) {
-        return iconGroupService.getIconGroupDetail(iconGroupId);
+    public IconGroupMarketDetailResponse getIconGroupDetail(final @Login LoginMember loginMember, final @PathVariable long iconGroupId) {
+        return iconGroupService.getIconGroupDetail(loginMember.id(), iconGroupId);
     }
 
     @DeleteMapping("/{iconGroupId}")

@@ -3,6 +3,8 @@ package com.timeToast.timeToast.service.fcm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.*;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
@@ -39,9 +41,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.*;
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_FCM_TOKEN;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 @Service
 @Slf4j
@@ -92,10 +93,8 @@ public class FcmServiceImpl implements FcmService {
 
         if (memberToken.isPresent()) {
             if (memberToken.get().getMemberId() != memberId) {
-
-                MemberToken changedMemberToken = memberToken.get();
-                changedMemberToken.updateFcmToken(null);
-                memberTokenRepository.save(changedMemberToken);
+                memberToken.get().updateFcmToken(null);
+                memberTokenRepository.save(memberToken.get());
                 log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
             }
         }
@@ -141,42 +140,42 @@ public class FcmServiceImpl implements FcmService {
             fcm.updateIsOpened(true);
             fcmRepository.save(fcm);
         }
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_PUT.getMessage());
     }
 
     @Transactional
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
         try{
-            String message = createMessage(memberId, fcmPostRequest);
 
+            Message message = createMessage(memberId, fcmPostRequest);
             if (message != null) {
-                RestTemplate restTemplate = new RestTemplate();
-
-                restTemplate.getMessageConverters()
-                        .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.set("Authorization", "Bearer " + getAccessToken());
-
-                HttpEntity entity = new HttpEntity<>(message, headers);
-
-                String API_URL = fcmUrl;
-                restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-                saveFcmInfo(memberId, fcmPostRequest);
+                try {
+                    FirebaseMessaging.getInstance().send(message);
+                    log.info("send message to {}", memberId);
+                    saveFcmInfo(memberId, fcmPostRequest);
+                } catch (FirebaseMessagingException e){
+                    if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
+                        log.error("fcm token is expired");
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
+                    } else if (e.getMessagingErrorCode().equals(MessagingErrorCode.UNREGISTERED)) {
+                        log.error("please login again");
+                        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
+                    }
+                    log.error(e.getMessage());
+                }
             }
-
+            else {
+                log.error("Failed to get fcm message");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
-
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional
-    public void saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
+    public Response saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
         String imageUrl = "";
 
@@ -203,62 +202,80 @@ public class FcmServiceImpl implements FcmService {
                 imageUrl = null;
         }
 
-        Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
-        fcmRepository.save(fcm);
-        log.info("save fcm");
+        if (imageUrl != null) {
+            Fcm fcm = fcmDataResponse.toEntity(fcmDataResponse, imageUrl);
+            fcmRepository.save(fcm);
+            log.info("save fcm");
+            return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        } else {
+            throw new BadRequestException(INVALID_FCM_CREATE_MESSAGE.getMessage());
+        }
     }
 
     @Transactional
-    public String createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
+    public Message createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
 
         if(fcmSendRequest.isPresent()){
-            ObjectMapper om = new ObjectMapper();
+            if (fcmSendRequest.get().token().isEmpty()) {
+                log.error("Failed to get fcm token");
+                saveFcmInfo(memberId, fcmPostRequest);
+                return null;
+            } else {
+                ObjectMapper om = new ObjectMapper();
 
-            FcmNotificationRequest fcmNotificationRequest = new FcmNotificationRequest(fcmSendRequest.get().notification().title(), fcmSendRequest.get().notification().body());
-            FcmMessageRequest fcmMessageRequest = new FcmMessageRequest(fcmSendRequest.get().data(), fcmNotificationRequest, fcmSendRequest.get().token());
+                Message message = Message.builder()
+                        .setNotification(Notification.builder()
+                                .setTitle(fcmSendRequest.get().notification().title())
+                                .setBody(fcmSendRequest.get().notification().body())
+                                .build())
+                        .putData("fcmConstant", fcmSendRequest.get().data().fcmConstant())
+                        .putData("param", fcmSendRequest.get().data().param())
+                        .setToken(fcmSendRequest.get().token())
+                        .build();
 
-            FcmRequest fcmRequest = FcmRequest.toRequest(fcmMessageRequest, false);
-
-            if (fcmSendRequest.get().token() != null) {
-                return om.writeValueAsString(fcmRequest);
+                log.info("success to create fcm message");
+                return message;
             }
+        } else {
+            log.error("Failed to create fcm send request");
+            return null;
         }
-        return null;
     }
 
     @Transactional
     public Optional<FcmSendRequest> makeMessage(final long memberId, FcmPostRequest fcmPostRequest) {
         Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
+        String token = "";
 
-        if(memberToken.isPresent()){
-            String token = memberToken.get().getFcmToken();
-            switch (fcmPostRequest.fcmConstant()){
-                case EVENTTOASTSPREAD:
-                    FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmPostRequest.toastName());
-                    return Optional.of(new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                case EVENTTOASTOPENED:
-                    FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmPostRequest.toastName());
-                    return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                case GIFTTOASTCREATED:
-                    FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmPostRequest.toastName());
-                    return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                case GIFTTOASTOPENED:
-                    FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmPostRequest.toastName());
-                    return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                case GIFTTOASTBAKED:
-                    FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmPostRequest.toastName());
-                    return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                case FOLLOW:
-                    FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), null);
-                    return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
-                default:
-                    return Optional.empty();
-                }
-
+        if (memberToken.isPresent()) {
+            token = memberToken.get().getFcmToken();
+        } else {
+            token = null;
         }
-        return Optional.empty();
 
+        switch (fcmPostRequest.fcmConstant()){
+            case EVENTTOASTSPREAD:
+                FcmNotificationRequest eventToastSpreadNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+EVENTTOASTSPREAD.value(), fcmPostRequest.toastName());
+                return Optional.of(new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            case EVENTTOASTOPENED:
+                FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmPostRequest.toastName());
+                return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            case GIFTTOASTCREATED:
+                FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmPostRequest.toastName());
+                return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            case GIFTTOASTOPENED:
+                FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmPostRequest.toastName());
+                return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            case GIFTTOASTBAKED:
+                FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmPostRequest.toastName());
+                return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            case FOLLOW:
+                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), null);
+                return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+            default:
+                return Optional.empty();
+        }
     }
 
     @Transactional
@@ -271,10 +288,17 @@ public class FcmServiceImpl implements FcmService {
                     .createScoped(List.of(fcmCredential));
 
             googleCredentials.refreshIfExpired();
-            return googleCredentials.getAccessToken().getTokenValue();
-        } catch (Exception e) {}
-        return null;
 
+            if (googleCredentials.getAccessToken() != null) {
+                return googleCredentials.getAccessToken().getTokenValue();
+            } else {
+                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
+            }
+
+        } catch (Exception e) {
+            log.error("Failed to get google access token");
+            throw new RuntimeException(e);
+        }
     }
 }
 

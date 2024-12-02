@@ -29,14 +29,14 @@ public class OAuthCreatorControllerTest extends BaseControllerTests {
 
     @DisplayName("제작자는 인가 코드를 사용하여 카카오 로그인에 성공한다.")
     @Test()
-    void kakaoLogin() throws Exception {
+    void creatorKakaoLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v2/login/kakao")
                                 .param("code", TEST_AUTH_CODE.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentationWrapper.document("카카오 로그인 성공",
+                .andDo(MockMvcRestDocumentationWrapper.document("제작자 카카오 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("제작자 카카오 로그인")
@@ -55,14 +55,14 @@ public class OAuthCreatorControllerTest extends BaseControllerTests {
 
     @DisplayName("제작자는 인가 코드를 사용하여 구글 로그인에 성공한다.")
     @Test()
-    void googleLogin() throws Exception {
+    void creatorGoogleLogin() throws Exception {
 
         mockMvc.perform(
                         get("/api/v2/login/google")
                                 .param("code", TEST_AUTH_CODE.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentationWrapper.document("구글 로그인 성공",
+                .andDo(MockMvcRestDocumentationWrapper.document("제작자 구글 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
                                 .summary("제작자 구글 로그인")

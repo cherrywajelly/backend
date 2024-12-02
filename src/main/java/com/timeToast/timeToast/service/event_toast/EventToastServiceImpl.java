@@ -13,6 +13,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -52,11 +53,10 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public Response postEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
-        memberRepository.getById(memberId);
-        eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
+    public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+        EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
         log.info("save event toast");
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        return new ResponseWithId(eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -74,6 +74,7 @@ public class EventToastServiceImpl implements EventToastService{
         return new EventToastOwnResponses(eventToastOwnResponses);
     }
 
+    //TODO 로직 테스트 (isWritten)
     @Transactional(readOnly = true)
     @Override
     public EventToastFriendResponses getEventToasts(final long memberId){
@@ -86,15 +87,13 @@ public class EventToastServiceImpl implements EventToastService{
                             eventToast -> {
                                 Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
-                                if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isEmpty()) {
-                                    EventToastFriendResponse eventToastResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
-                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), false);
-                                    eventToastFriendResponses.add(eventToastResponse);
-                                } else {
-                                    EventToastFriendResponse eventToastResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
-                                            new IconResponse(icon.getId(), icon.getIconImageUrl()), true);
-                                    eventToastFriendResponses.add(eventToastResponse);
-                                }
+                                boolean isWritten = false;
+
+                                if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent()){ isWritten = true; }
+
+                                EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                        new IconResponse(icon.getId(), icon.getIconImageUrl()), isWritten);
+                                eventToastFriendResponses.add(eventToastFriendResponse);
                             }
                     );
                 }
@@ -147,26 +146,26 @@ public class EventToastServiceImpl implements EventToastService{
                     }
             );
 
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
-                    jams.size(), dDay, jamResponses);
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+                    member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, jamResponses);
 
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(), member.getId(), member.getMemberProfileUrl(), member.getNickname(),
-                    jams.size(), dDay, null);
+            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+                    member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, null);
             return updateWritten(memberId, eventToastId, eventToastResponse);
         }
 
     }
 
-    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastRes){
+    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastResponse){
 
         if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).isEmpty()) {
-            return EventToastResponse.of(eventToastRes, false);
+            return EventToastResponse.of(eventToastResponse, false);
         } else {
-            return EventToastResponse.of(eventToastRes, true);
+            return EventToastResponse.of(eventToastResponse, true);
         }
     }
 
@@ -195,10 +194,11 @@ public class EventToastServiceImpl implements EventToastService{
         }
 
         showcaseRepository.deleteAllByEventToastId(eventToastId);
+        jamRepository.deleteAllByEventToastId(eventToastId);
         eventToastRepository.deleteById(eventToastId);
         log.info("delete event toast");
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 

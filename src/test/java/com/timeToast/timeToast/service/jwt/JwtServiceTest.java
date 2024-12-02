@@ -15,11 +15,6 @@ public class JwtServiceTest implements JwtService{
     }
 
     @Override
-    public String createToken(LoginMember loginMember, long expired) {
-        return TEST_ACCESS_TOKEN.value();
-    }
-
-    @Override
     public LoginResponse tokenRenewal(String refreshToken) {
         return new LoginResponse(TEST_ACCESS_TOKEN.value(), TEST_REFRESH_TOKEN.value(), false);
     }

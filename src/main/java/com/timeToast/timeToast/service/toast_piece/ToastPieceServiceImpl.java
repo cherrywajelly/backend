@@ -83,8 +83,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
     }
 
-    @Transactional
-    public void sendMessage(long memberId, ToastPiece toastPiece) {
+    private void sendMessage(long memberId, ToastPiece toastPiece) {
         List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());

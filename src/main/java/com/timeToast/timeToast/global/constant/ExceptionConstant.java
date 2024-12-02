@@ -30,7 +30,7 @@ public enum ExceptionConstant {
     INVALID_JAM("잘못된 잼 형식입니다."),
 
     //icon
-    ICON_NOT_FOUND("해당 아이콘을 찾을 수 없습니다."),
+    ICON_NOT_FOUND("관련 아이콘을 찾을 수 없습니다."),
     ICON_GROUP_NOT_FOUND("해당 아이콘 그룹을 찾을 수 없습니다."),
     ICON_MEMBER_NOT_FOUND("해당 조회를 할 수 없습니다."),
     INVALID_ICON("잘목된 아이콘 형식입니다."),
@@ -49,7 +49,7 @@ public enum ExceptionConstant {
     INVALID_TOAST_PIECE("자신의 토스트 조각이 아닙니다."),
 
     //showcase
-    INVALID_SHOWCASE_COUNT("showcase 갯수가 3개 이상입니다."),
+    INVALID_SHOWCASE_COUNT("showcase는 최대 3개까지 등록이 가능합니다."),
     SHOWCASE_NOT_FOUND("showcase 토스트를 찾을 수 없습니다."),
     INVALID_SHOWCASE("자신의 showcase 토스트가 아닙니다."),
 
@@ -57,9 +57,37 @@ public enum ExceptionConstant {
     INVALID_FCM_TOKEN("잘못된 토큰 등록 형식입니다."),
     FCM_NOT_FOUND("해당 알림을 찾을 수 없습니다."),
     FCM_TOKEN_ALREADY_EXIST("이미 업데이트 된 토큰입니다."),
+    INVALID_FCM_CREATE_MESSAGE("잘못된 메세지 생성 형식입니다."),
+    INVALID_FCM_GOOGLE_TOKEN("잘못된 fcm 구글 토큰 발급 형식입니다."),
+    FCM_TOKEN_EXPIRED("fcm 토큰이 만료되었습니다. 다시 로그인 해주세요"),
 
     //premium
-    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다"),
+    PREMIUM_NOT_FOUND("프리미엄 정보를 찾을 수 없습니다."),
+
+    // inquiry
+    INQUIRY_NOT_FOUND("문의 정보를 찾을 수 없습니다."),
+    INVALID_INQUIRY("잘못된 문의 형식입니다."),
+
+    // template
+    INVALID_TEMPLATE("잘못된 공유 템플릿 텍스트 등록 형식입니다."),
+
+    //payment
+    PAYMENT_NOT_FOUND("결제 정보를 찾을 수 없습니다."),
+    INVALID_PAYMENT("잘못된 결제 요청입니다."),
+    ICON_PAYMENT_EXISTS("이미 결제 완료한 아이콘입니다."),
+    PREMIUM_PAYMENT_EXISTS("이미 프리미엄 멤버십입니다."),
+
+    //creator
+    INVALID_CREATOR("잘못된 제작자 요청입니다."),
+
+    //JSON
+    JSON_PROCESSING_ERROR("json processing error"),
+
+    // creator settlement
+    SETTLEMENT_NOT_FOUND("관련 수익 정보를 찾을 수 없습니다"),
+    INVALID_CREATOR_INFO("잘못된 아이콘 제작자 정보 접근 형식입니다."),
+
+    INVALID_YEAR_MONTH("잘못된 날짜 조회입니다."),
 
     //login
     INVALID_USER("권한이 없는 유저입니다."),
