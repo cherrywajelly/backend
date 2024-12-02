@@ -7,7 +7,10 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -127,12 +130,24 @@ public class IconGroupAdminServiceImplTest {
         long memberId = 1L;
         long iconGroupId = 1L;
 
-//        when(iconGroupRepository.findBy)
-
         // When
         IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
 
         // Then
         assertThat(iconGroupCreatorResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("")
+    void saveIconState() {
+        long iconGroupId = 1L;
+        IconGroupStateRequest iconGroupStateRequest = mock(IconGroupStateRequest.class);
+
+        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
+        when(iconRepository.findAllByIconGroupId(iconGroupId)).thenReturn(List.of(icon));
+
+        IconGroupInfoResponse iconGroupResponse = iconGroupAdminService.saveIconState(iconGroupStateRequest);
+
+        assertThat(iconGroupResponse).isNotNull();
     }
 }
