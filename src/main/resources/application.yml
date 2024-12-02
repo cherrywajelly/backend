@@ -59,7 +59,7 @@ spring:
 
 fcm:
   url: ${FCM_URL}
-  path: ${FCM_LOCAL_CONFIG_PATH}
+  path: ${FCM_CONFIG_PATH}
   credential: ${FCM_CREDENTIAL}
   projectId: ${FCM_PROJECT_ID}
 

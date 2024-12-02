@@ -89,12 +89,8 @@ public class IconGroupServiceImpl implements IconGroupService{
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
         List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
-        String thumbnailImageUrl = null;
-        if(iconResponses.stream().findFirst().isPresent()){
-            thumbnailImageUrl = iconResponses.stream().findFirst().get().iconImageUrl();
-        }
         return IconGroupMarketDetailResponse.builder()
-                .thumbnailImageUrl(thumbnailImageUrl)
+                .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
                 .price(iconGroup.getPrice())
@@ -122,18 +118,15 @@ public class IconGroupServiceImpl implements IconGroupService{
         List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
         iconGroupRepository.findAllByIconTypeAndIconBuiltin(iconType, IconBuiltin.NONBUILTIN, IconState.REGISTERED).forEach(
                 iconGroup ->{
-                    Optional<Icon> icon =  iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().findFirst();
-                    if(icon.isPresent()){
-                        iconGroupMarketResponses.add(
+                    iconGroupMarketResponses.add(
                                         IconGroupMarketResponse.builder()
                                                 .iconGroupId(iconGroup.getId())
                                                 .title(iconGroup.getName())
-                                                .thumbnailImageUrl(icon.get().getIconImageUrl())
-                                .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
-                                .iconType(iconGroup.getIconType())
-                                .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
-                                .build());
-                    }
+                                                .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
+                                                .creatorNickname(memberRepository.getById(iconGroup.getMemberId()).getNickname())
+                                                .iconType(iconGroup.getIconType())
+                                                .isBuy(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroup.getId()).isPresent())
+                                                .build());
 
                 }
 
