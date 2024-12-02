@@ -14,6 +14,8 @@ import static org.mockito.Mockito.*;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.timeToast.timeToast.service.fcm.FcmService;
+import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamServiceImplTest  {
@@ -42,6 +47,9 @@ public class TeamServiceImplTest  {
 
     @Mock
     TeamMemberRepository teamMemberRepository;
+
+    @Mock
+    FileUploadService fileUploadService;
 
     @InjectMocks
     TeamServiceImpl teamService;
@@ -63,6 +71,21 @@ public class TeamServiceImplTest  {
                 .loginType(LoginType.GOOGLE)
                 .memberRole(MemberRole.USER)
                 .build();
+    }
+
+    private TeamMember setUpTeamMember(long memberId, long teamId){
+        return TeamMember.builder()
+                .memberId(memberId)
+                .teamId(teamId)
+                .build();
+    }
+
+    private List<TeamMember> setUpTeamMembers(){
+        List<TeamMember> teamMembers = new ArrayList<>();
+        for (int i = 1; i < 10; i++) {
+            teamMembers.add(setUpTeamMember(1L, i));
+        }
+        return teamMembers;
     }
 
     @Test
@@ -101,19 +124,29 @@ public class TeamServiceImplTest  {
         verify(teamMemberRepository, times(teamMembers.size()+1)).save(any(TeamMember.class));
     }
 
-    private TeamMember setUpTeamMember(long memberId, long teamId){
-        return TeamMember.builder()
-                .memberId(memberId)
-                .teamId(teamId)
-                .build();
-    }
 
-    private List<TeamMember> setUpTeamMembers(){
-        List<TeamMember> teamMembers = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
-            teamMembers.add(setUpTeamMember(1L, i));
-        }
-        return teamMembers;
+
+    @Test
+    @DisplayName("팀 대표 이미지 업로드 로직")
+    public void saveTeamImage(){
+
+        //given
+        Team team = setUpTeam();
+        ReflectionTestUtils.setField(team, "id", 1L);
+        when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
+
+        MultipartFile teamImage = mock(MultipartFile.class);
+
+        when(fileUploadService.uploadfile(any(), any())).thenReturn("file url");
+
+        //when
+        TeamResponse teamResponse = teamService.saveTeamImage(1L,teamImage );
+
+        //then
+        assertEquals(team.getId(), teamResponse.teamId());
+        assertEquals(team.getName(), teamResponse.teamName());
+        verify(fileUploadService, times(1)).uploadfile(any(), any());
+
     }
 
     @Test
@@ -133,6 +166,40 @@ public class TeamServiceImplTest  {
 
         //then
         assertEquals(teamMembers.size(), teamResponses.teamResponses().size());
+
+    }
+
+    @Test
+    @DisplayName("로그인한 사용자의 팀 삭제")
+    public void deleteTeam(){
+        //given
+        TeamMember teamMember = setUpTeamMember(11L, 1L);
+        when(teamMemberRepository.findByMemberIdAndTeamId(anyLong(), anyLong())).thenReturn(Optional.of(teamMember));
+
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(setUpTeamMembers());
+
+        //when
+        Response response = teamService.deleteTeam(11L, 1L);
+
+        //then
+        assertEquals(StatusCode.OK.getStatusCode(), response.statusCode());
+    }
+
+    @Test
+    @DisplayName("로그인한 사용자의 팀 삭제")
+    public void deleteAllTeam(){
+        //given
+        List<TeamMember> teamMembers = setUpTeamMembers();
+        when(teamMemberRepository.findAllByMemberId(1L)).thenReturn(teamMembers);
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(List.of());
+
+        //when
+        teamService.deleteAllTeam(1L);
+
+        //then
+        verify(teamMemberRepository, times(teamMembers.size())).delete(any(TeamMember.class));
+        verify(teamMemberRepository, times(teamMembers.size())).findAllByTeamId(anyLong());
+        verify(teamRepository, times(teamMembers.size())).deleteByTeamId(anyLong());
 
     }
 

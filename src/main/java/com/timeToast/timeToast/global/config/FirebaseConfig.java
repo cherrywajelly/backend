@@ -9,16 +9,12 @@
 //
 //import javax.annotation.PostConstruct;
 //import java.io.IOException;
-//import java.util.List;
 //
 //@Configuration
 //public class FirebaseConfig {
 //
 //    @Value("${fcm.path}")
 //    private String fcmPath;
-//
-//    @Value("${fcm.credential}")
-//    private String fcmCredential;
 //
 //    @PostConstruct
 //    public void initializeFirebase() throws IOException {
@@ -27,7 +23,6 @@
 //            if (FirebaseApp.getApps().isEmpty()) {
 //                FirebaseOptions options = FirebaseOptions.builder()
 //                        .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(fcmPath).getInputStream()))
-//                        .setDatabaseUrl(fcmPath)
 //                        .build();
 //
 //                FirebaseApp.initializeApp(options);

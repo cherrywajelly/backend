@@ -7,10 +7,7 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
@@ -161,7 +158,7 @@ public class MemberServiceImpl implements MemberService{
         return CreatorDetailResponse.builder()
                 .profileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
-                .bank(bank)
+                .bank(bank.value())
                 .accountNumber(creatorAccount)
                 .build();
     }
@@ -176,14 +173,26 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
-        Member member = memberRepository.getById(creatorId);
-        member.updateNickname(creatorRequest.nickname());
-        saveProfileImageByLogin(creatorId, profile);
-        memberRepository.save(member);
 
-        CreatorAccount creatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, creatorId);
-        creatorAccountRepository.save(creatorAccount);
+        for (Bank bank : Bank.values()) {
+            if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
+                Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByBankAndAccountNumber(bank, creatorRequest.creatorAccountResponse().accountNumber());
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+                if (creatorAccount.isEmpty()) {
+                    Member member = memberRepository.getById(creatorId);
+                    member.updateNickname(creatorRequest.nickname());
+                    saveProfileImageByLogin(creatorId, profile);
+                    memberRepository.save(member);
+
+                    CreatorAccount newCreatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
+                    creatorAccountRepository.save(newCreatorAccount);
+                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+                } else {
+                    return new Response(StatusCode.BAD_REQUEST.getStatusCode(), ACCOUNT_ALREADY_EXIST.getMessage());
+                }
+            }
+        }
+
+        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
     }
 }

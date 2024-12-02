@@ -3,7 +3,7 @@ package com.timeToast.timeToast.controller.withdrawal;
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.service.withdrawal.WithdrawalService;
-import com.timeToast.timeToast.service.withdrawal.WithdrawalServiceImplTest;
+import com.timeToast.timeToast.service.withdrawal.WithdrawalServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class WithdrawalControllerTest extends BaseControllerTests {
 
-    private final WithdrawalService withdrawalService = new WithdrawalServiceImplTest();
+    private final WithdrawalService withdrawalService = new WithdrawalServiceTest();
     @Override
     protected Object initController() {
         return new WithdrawalController(withdrawalService);

@@ -56,7 +56,11 @@ public class LoginServiceImpl implements LoginService {
 
         if(findMember.isPresent()){
 
-            if(!findMember.get().getMemberRole().equals(memberRole)){
+            if(findMember.get().getMemberRole().equals(MemberRole.USER) && !memberRole.equals(MemberRole.USER)){
+                throw new BadRequestException(INVALID_USER.getMessage());
+            }
+
+            if(findMember.get().getMemberRole().equals(MemberRole.CREATOR) && memberRole.equals(MemberRole.MANAGER)){
                 throw new BadRequestException(INVALID_USER.getMessage());
             }
 
