@@ -23,13 +23,12 @@ public class FirebaseConfig {
     @PostConstruct
     public void initializeFirebase() throws IOException {
         try {
-            System.out.println("fcm====="+fcmPath);
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseOptions options = FirebaseOptions.builder()
-                        .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(fcmPath).getInputStream()))
-                        .setDatabaseUrl(fcmPath)
-                        .setProjectId(projectId)
+                        .setCredentials(GoogleCredentials.fromStream(new ClassPathResource("firebase/firebase-adminsdk.json").getInputStream()))
+                        .setDatabaseUrl("firebase/firebase-adminsdk.json")
+                        .setProjectId("timetoast-1abe6")
                         .build();
 
                 FirebaseApp.initializeApp(options);
