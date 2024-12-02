@@ -127,7 +127,6 @@ public class IconGroupAdminServiceImplTest {
         ReflectionTestUtils.setField(member, "id", memberId);
 
         when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
-        when(iconRepository.getById(0L)).thenReturn(icon);
 
         // When
         IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
@@ -144,8 +143,7 @@ public class IconGroupAdminServiceImplTest {
         long iconId = 0L;
         ReflectionTestUtils.setField(member, "id", memberId);
 
-        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
-        when(iconRepository.getById(iconId)).thenReturn(null);
+        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(null);
 
         // When
         NullPointerException nullPointerException = assertThrows(NullPointerException.class, () -> iconGroupAdminService.getIconGroupForCreator(memberId));
