@@ -113,7 +113,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Transactional
     @Override
     public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
-        System.out.println(iconGroupStateRequest.toString());
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
         iconGroup.updateIconState(iconGroupStateRequest.iconState());
         return IconGroupInfoResponse.from(iconGroup);

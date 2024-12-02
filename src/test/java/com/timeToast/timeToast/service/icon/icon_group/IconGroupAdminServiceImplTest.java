@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -39,6 +40,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -68,6 +70,21 @@ public class IconGroupAdminServiceImplTest {
     private Member member;
     private IconGroup iconGroup;
     private Icon icon;
+
+    private IconGroup iconGroupSetUp(){
+        return IconGroup.builder()
+                .memberId(1L)
+                .iconType(IconType.TOAST)
+                .iconBuiltin(IconBuiltin.NONBUILTIN)
+                .name("name")
+                .price(100)
+                .iconState(IconState.REGISTERED)
+                .description("description")
+                .build();
+    }
+
+
+
 
     @BeforeEach
     void setUp() {
@@ -180,5 +197,27 @@ public class IconGroupAdminServiceImplTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupAdminService.getIconGroupDetailForCreator(memberId, iconGroupId));
         // Then
         assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("아이콘 그룹 상태 저장 :성공")
+    void saveIconState() {
+        // Given
+        IconGroup iconGroup = iconGroupSetUp();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+        when(iconGroupRepository.getById(1L)).thenReturn(iconGroup);
+
+        IconGroupStateRequest iconGroupStateRequest = new IconGroupStateRequest(1L, IconState.REGISTERED);
+
+        // When
+        IconGroupInfoResponse iconGroupInfoResponse = iconGroupAdminService.saveIconState(iconGroupStateRequest);
+
+        // Then
+        assertEquals(iconGroup.getId(), iconGroupInfoResponse.iconGroupId());
+        assertEquals(iconGroup.getName(), iconGroupInfoResponse.title());
+        assertEquals(iconGroup.getThumbnailImageUrl(), iconGroupInfoResponse.thumbnailUrl());
+        assertEquals(iconGroup.getIconType(), iconGroupInfoResponse.iconType());
+        assertEquals(iconGroup.getIconState(), iconGroupInfoResponse.iconState());
     }
 }
