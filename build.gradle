@@ -84,14 +84,16 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'METHOD'
 				value = 'COVEREDRATIO'
-				minimum = 0.0
+				minimum = 0.6
 			}
 
 			excludes =  [
 					'**/dto/**',
+					'**/domain/**',
 					'**/global/**',
-					'**/global/**',
-					'**/repository/**'
+					'**/repository/**',
+					'**/service/member/oauth/**',
+					'com/timeToast/timeToast/TimeToastApplication.class'
 			] + QDomainList
 		}
 	}
