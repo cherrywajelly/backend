@@ -149,7 +149,6 @@ public class FcmServiceImpl implements FcmService {
         try{
             saveFcmInfo(memberId, fcmPostRequest);
             Message message = createMessage(memberId, fcmPostRequest);
-            log.info("create message");
             if (message != null) {
                 try {
                     FirebaseMessaging.getInstance().send(message);
@@ -217,12 +216,9 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public Message createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
-        log.info("create message start");
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
 
-        log.info("fcmSendRequest {}", fcmSendRequest);
         if(fcmSendRequest.isPresent()){
-            log.info("fcmSendRequest token {}", fcmSendRequest.get().token());
             if (fcmSendRequest.get().token() == null || fcmSendRequest.get().token().isEmpty()) {
                 log.error("Failed to get fcm token");
                 return null;
@@ -264,19 +260,19 @@ public class FcmServiceImpl implements FcmService {
                 return Optional.of(new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
             case EVENTTOASTOPENED:
                 FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmPostRequest.toastName());
-                return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTOPENED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTCREATED:
                 FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(GIFTTOASTCREATED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTOPENED:
                 FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(GIFTTOASTOPENED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTBAKED:
                 FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(GIFTTOASTBAKED.toString(), Long.toString(fcmPostRequest.param()))));
             case FOLLOW:
-                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), null);
-                return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), "");
+                return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(FOLLOW.toString(), Long.toString(fcmPostRequest.param()))));
             default:
                 return Optional.empty();
         }
