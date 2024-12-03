@@ -156,6 +156,7 @@ public class FcmServiceImpl implements FcmService {
                     saveFcmInfo(memberId, fcmPostRequest);
                     return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
                 } catch (FirebaseMessagingException e){
+                    saveFcmInfo(memberId, fcmPostRequest);
                     if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
                         log.error("fcm token is expired");
                         return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
@@ -169,9 +170,11 @@ public class FcmServiceImpl implements FcmService {
             }
             else {
                 log.error("Failed to get fcm message");
+                saveFcmInfo(memberId, fcmPostRequest);
                 return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_FCM_MESSAGE.getMessage());
             }
         } catch (Exception e) {
+            saveFcmInfo(memberId, fcmPostRequest);
             return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessage());
         }
     }
@@ -180,25 +183,26 @@ public class FcmServiceImpl implements FcmService {
     public Response saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
         String imageUrl = "";
+        long fcmParam =  fcmDataResponse.param();
 
         switch (fcmPostRequest.fcmConstant()) {
             case EVENTTOASTSPREAD:
-                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case EVENTTOASTOPENED:
-                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTCREATED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTOPENED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTBAKED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case FOLLOW:
-                imageUrl = memberRepository.getById(fcmDataResponse.param()).getMemberProfileUrl();
+                imageUrl = memberRepository.getById(fcmParam).getMemberProfileUrl();
                 break;
             default:
                 imageUrl = null;
@@ -221,12 +225,12 @@ public class FcmServiceImpl implements FcmService {
         if(fcmSendRequest.isPresent()){
             if (fcmSendRequest.get().token() == null || fcmSendRequest.get().token().isEmpty()) {
                 log.error("Failed to get fcm token");
-                saveFcmInfo(memberId, fcmPostRequest);
                 return null;
             } else {
                 ObjectMapper om = new ObjectMapper();
                 Message message = Message.builder()
                         .setWebpushConfig(WebpushConfig.builder()
+                                .putHeader("Urgency", "high")
                                 .build())
                         .putData("title", fcmSendRequest.get().notification().title())
                         .putData("body", fcmSendRequest.get().notification().body())
