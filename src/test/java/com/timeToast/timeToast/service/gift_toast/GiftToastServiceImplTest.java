@@ -18,6 +18,7 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
+import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
@@ -586,6 +587,23 @@ public class GiftToastServiceImplTest {
         assertEquals(LocalDateTime.now().toLocalDate(), toastPieceDetailResponse.giftToastInfo().createdDate());
         assertEquals(giftToast.getIsOpened(), toastPieceDetailResponse.giftToastInfo().isOpened());
 
+
+    }
+
+
+
+    @Test
+    @DisplayName("캡슐 토스트 삭제")
+    public void deleteGiftToast(){
+        //given
+        GiftToastOwner giftToastOwner = giftToastOwnerSetUp();
+        when(giftToastOwnerRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(giftToastOwner));
+
+        //when
+        Response response = giftToastService.deleteGiftToast(1L, 1L);
+
+        //then
+        verify(giftToastOwnerRepository, times(1)).findAllByGiftToastId(anyLong());
 
     }
 
