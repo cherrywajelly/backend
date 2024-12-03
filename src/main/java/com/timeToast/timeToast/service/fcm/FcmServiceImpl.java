@@ -147,13 +147,13 @@ public class FcmServiceImpl implements FcmService {
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
         try{
-
+            saveFcmInfo(memberId, fcmPostRequest);
             Message message = createMessage(memberId, fcmPostRequest);
             if (message != null) {
                 try {
                     FirebaseMessaging.getInstance().send(message);
                     log.info("send message to {}", memberId);
-                    saveFcmInfo(memberId, fcmPostRequest);
+                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
                 } catch (FirebaseMessagingException e){
                     if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
                         log.error("fcm token is expired");
@@ -173,32 +173,32 @@ public class FcmServiceImpl implements FcmService {
         } catch (Exception e) {
             return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessage());
         }
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional
     public Response saveFcmInfo(final long memberId, final FcmPostRequest fcmPostRequest) {
         FcmDataResponse fcmDataResponse = FcmDataResponse.fromFcmResponse(fcmPostRequest, memberId);
         String imageUrl = "";
+        long fcmParam =  fcmDataResponse.param();
 
         switch (fcmPostRequest.fcmConstant()) {
             case EVENTTOASTSPREAD:
-                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case EVENTTOASTOPENED:
-                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(eventToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTCREATED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTOPENED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case GIFTTOASTBAKED:
-                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmDataResponse.param()).getIconId()).getIconImageUrl();
+                imageUrl = iconRepository.getById(giftToastRepository.getById(fcmParam).getIconId()).getIconImageUrl();
                 break;
             case FOLLOW:
-                imageUrl = memberRepository.getById(fcmDataResponse.param()).getMemberProfileUrl();
+                imageUrl = memberRepository.getById(fcmParam).getMemberProfileUrl();
                 break;
             default:
                 imageUrl = null;
@@ -221,12 +221,12 @@ public class FcmServiceImpl implements FcmService {
         if(fcmSendRequest.isPresent()){
             if (fcmSendRequest.get().token() == null || fcmSendRequest.get().token().isEmpty()) {
                 log.error("Failed to get fcm token");
-                saveFcmInfo(memberId, fcmPostRequest);
                 return null;
             } else {
                 ObjectMapper om = new ObjectMapper();
                 Message message = Message.builder()
-                        .setNotification(Notification.builder()
+                        .setWebpushConfig(WebpushConfig.builder()
+                                .putHeader("Urgency", "high")
                                 .build())
                         .putData("title", fcmSendRequest.get().notification().title())
                         .putData("body", fcmSendRequest.get().notification().body())
@@ -260,46 +260,46 @@ public class FcmServiceImpl implements FcmService {
                 return Optional.of(new FcmSendRequest(token, eventToastSpreadNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
             case EVENTTOASTOPENED:
                 FcmNotificationRequest eventToastOpenedNotification = new FcmNotificationRequest(EVENTTOASTOPENED.value(), fcmPostRequest.toastName());
-                return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of( new FcmSendRequest(token, eventToastOpenedNotification, new FcmLinkResponse(EVENTTOASTOPENED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTCREATED:
                 FcmNotificationRequest giftToastCreatedNotification = new FcmNotificationRequest(GIFTTOASTCREATED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastCreatedNotification, new FcmLinkResponse(GIFTTOASTCREATED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTOPENED:
                 FcmNotificationRequest giftToastOpenedNotification = new FcmNotificationRequest(GIFTTOASTOPENED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastOpenedNotification, new FcmLinkResponse(GIFTTOASTOPENED.toString(), Long.toString(fcmPostRequest.param()))));
             case GIFTTOASTBAKED:
                 FcmNotificationRequest giftToastBakedNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+GIFTTOASTBAKED.value(), fcmPostRequest.toastName());
-                return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                return Optional.of(new FcmSendRequest(token, giftToastBakedNotification, new FcmLinkResponse(GIFTTOASTBAKED.toString(), Long.toString(fcmPostRequest.param()))));
             case FOLLOW:
-                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), null);
-                return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(EVENTTOASTSPREAD.toString(), Long.toString(fcmPostRequest.param()))));
+                FcmNotificationRequest followNotification = new FcmNotificationRequest(fcmPostRequest.nickname()+" 님이"+FOLLOW.value(), "");
+                return Optional.of(new FcmSendRequest(token, followNotification, new FcmLinkResponse(FOLLOW.toString(), Long.toString(fcmPostRequest.param()))));
             default:
                 return Optional.empty();
         }
     }
 
-    @Transactional
-    public String getAccessToken()  {
-        try {
-            String firebaseConfigPath = fcmPath;
-
-            GoogleCredentials googleCredentials = GoogleCredentials
-                    .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                    .createScoped(List.of(fcmCredential));
-
-            googleCredentials.refreshIfExpired();
-
-            if (googleCredentials.getAccessToken() != null) {
-                return googleCredentials.getAccessToken().getTokenValue();
-            } else {
-                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
-            }
-
-        } catch (Exception e) {
-            log.error("Failed to get google access token");
-            throw new RuntimeException(e);
-        }
-    }
+//    @Transactional
+//    public String getAccessToken()  {
+//        try {
+//            String firebaseConfigPath = fcmPath;
+//
+//            GoogleCredentials googleCredentials = GoogleCredentials
+//                    .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
+//                    .createScoped(List.of(fcmCredential));
+//
+//            googleCredentials.refreshIfExpired();
+//
+//            if (googleCredentials.getAccessToken() != null) {
+//                return googleCredentials.getAccessToken().getTokenValue();
+//            } else {
+//                throw new BadRequestException(INVALID_FCM_GOOGLE_TOKEN.getMessage());
+//            }
+//
+//        } catch (Exception e) {
+//            log.error("Failed to get google access token");
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
 
 
