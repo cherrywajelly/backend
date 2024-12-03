@@ -154,6 +154,7 @@ public class FcmServiceImpl implements FcmService {
                     FirebaseMessaging.getInstance().send(message);
                     log.info("send message to {}", memberId);
                     saveFcmInfo(memberId, fcmPostRequest);
+                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
                 } catch (FirebaseMessagingException e){
                     if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
                         log.error("fcm token is expired");
@@ -173,7 +174,6 @@ public class FcmServiceImpl implements FcmService {
         } catch (Exception e) {
             return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessage());
         }
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional
@@ -226,10 +226,10 @@ public class FcmServiceImpl implements FcmService {
             } else {
                 ObjectMapper om = new ObjectMapper();
                 Message message = Message.builder()
-                        .setWebpushConfig(WebpushConfig.builder()
+                        .setNotification(Notification.builder()
+                                .setTitle(fcmSendRequest.get().notification().title())
+                                .setBody(fcmSendRequest.get().notification().body())
                                 .build())
-                        .putData("title", fcmSendRequest.get().notification().title())
-                        .putData("body", fcmSendRequest.get().notification().body())
                         .putData("fcmConstant", fcmSendRequest.get().data().fcmConstant())
                         .putData("param", fcmSendRequest.get().data().param())
                         .setToken(fcmSendRequest.get().token())
