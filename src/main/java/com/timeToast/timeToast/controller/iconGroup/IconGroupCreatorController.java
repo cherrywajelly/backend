@@ -8,6 +8,9 @@ import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceImpl;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,11 @@ public class IconGroupCreatorController {
     @PostMapping("")
     public Response postIconGroup(@Login LoginMember loginMember, @RequestPart("thumbnailIcon") MultipartFile thumbnailIcon, @RequestPart("files") List<MultipartFile> files, @RequestPart final IconGroupPostRequest iconGroupPostRequest) {
         return iconGroupAdminService.postIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
+    }
+
+    @PostMapping("/post")
+    public Response posttestIconGroup(@Login LoginMember loginMember, @RequestPart("thumbnailIcon") MultipartFile thumbnailIcon, @RequestPart("files") List<MultipartFile> files, @RequestPart final IconGroupPostRequest iconGroupPostRequest) {
+        return iconGroupAdminService.posttestIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
     }
 
     @GetMapping("")

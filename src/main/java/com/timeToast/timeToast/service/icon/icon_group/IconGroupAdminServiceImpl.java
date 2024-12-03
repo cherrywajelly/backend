@@ -71,6 +71,20 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
+    @Transactional
+    public Response posttestIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
+
+        IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId,IconState.WAITING));
+        iconService.postIconSet(files, iconGroup.getId());
+
+        String iconGroupUrl = ICON.value() + SLASH.value() + IMAGE.value() + SLASH.value() + iconGroup.getId();
+        String thumbnailImageUrl = fileUploadService.uploadfile(thumbnailIcon, iconGroupUrl);
+        iconGroup.updateThumbnailImageUrl(thumbnailImageUrl);
+
+        log.info("save icon group");
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    }
+
 
     @Transactional(readOnly = true)
     @Override
