@@ -147,16 +147,15 @@ public class FcmServiceImpl implements FcmService {
     @Override
     public Response sendMessageTo(final long memberId, final FcmPostRequest fcmPostRequest)  {
         try{
-
+            saveFcmInfo(memberId, fcmPostRequest);
             Message message = createMessage(memberId, fcmPostRequest);
+            log.info("create message");
             if (message != null) {
                 try {
                     FirebaseMessaging.getInstance().send(message);
                     log.info("send message to {}", memberId);
-                    saveFcmInfo(memberId, fcmPostRequest);
                     return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
                 } catch (FirebaseMessagingException e){
-                    saveFcmInfo(memberId, fcmPostRequest);
                     if (e.getMessagingErrorCode().equals(MessagingErrorCode.INVALID_ARGUMENT)) {
                         log.error("fcm token is expired");
                         return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessagingErrorCode().toString());
@@ -170,11 +169,9 @@ public class FcmServiceImpl implements FcmService {
             }
             else {
                 log.error("Failed to get fcm message");
-                saveFcmInfo(memberId, fcmPostRequest);
                 return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_FCM_MESSAGE.getMessage());
             }
         } catch (Exception e) {
-            saveFcmInfo(memberId, fcmPostRequest);
             return new Response(StatusCode.BAD_REQUEST.getStatusCode(), e.getMessage());
         }
     }
@@ -220,9 +217,12 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public Message createMessage(final long memberId, FcmPostRequest fcmPostRequest) throws JsonProcessingException {
+        log.info("create message start");
         Optional<FcmSendRequest> fcmSendRequest = makeMessage(memberId, fcmPostRequest);
 
+        log.info("fcmSendRequest {}", fcmSendRequest);
         if(fcmSendRequest.isPresent()){
+            log.info("fcmSendRequest token {}", fcmSendRequest.get().token());
             if (fcmSendRequest.get().token() == null || fcmSendRequest.get().token().isEmpty()) {
                 log.error("Failed to get fcm token");
                 return null;
