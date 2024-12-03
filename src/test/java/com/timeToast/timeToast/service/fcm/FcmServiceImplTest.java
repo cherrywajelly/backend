@@ -270,23 +270,23 @@ public class FcmServiceImplTest {
         assertThat(exception.getMessage()).isNotNull();
     }
 
-//    @Test
-//    @DisplayName("fcm 메세지 생성 - 성공")
-//    void createMessageSuccess() throws JsonProcessingException {
-//        // Given
-//        long memberId = 1L;
-//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
-//
-//        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
-//
-//        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
-//
-//        // When
-//        NullPointerException exception = assertThrows(NullPointerException.class, () -> fcmService.createMessage(memberId, fcmPostRequest));
-//
-//        // Then
-//        assertThat(exception).isNotNull();
-//    }
+    @Test
+    @DisplayName("fcm 메세지 생성 - 성공")
+    void createMessageSuccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+
+        // When
+        Message message = fcmService.createMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(message).isNotNull();
+    }
 
 
     @Test
