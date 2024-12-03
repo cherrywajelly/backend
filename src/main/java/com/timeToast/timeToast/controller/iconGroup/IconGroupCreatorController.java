@@ -32,11 +32,6 @@ public class IconGroupCreatorController {
         return iconGroupAdminService.postIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
     }
 
-    @PostMapping("/post")
-    public Response posttestIconGroup(@Login LoginMember loginMember, @RequestPart("thumbnailIcon") MultipartFile thumbnailIcon, @RequestPart("files") List<MultipartFile> files, @RequestPart final IconGroupPostRequest iconGroupPostRequest) {
-        return iconGroupAdminService.posttestIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
-    }
-
     @GetMapping("")
     public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
         return iconGroupAdminService.getIconGroupForCreator(loginMember.id());

@@ -22,5 +22,4 @@ public interface IconGroupAdminService {
     CreatorIconInfos getIconGroupsByCreator(final long creatorId);
     IconGroupInfoResponses getAllIconGroups();
     IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId);
-    Response posttestIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId);
 }

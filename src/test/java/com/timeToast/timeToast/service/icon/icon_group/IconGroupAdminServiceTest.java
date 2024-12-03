@@ -28,12 +28,6 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     }
 
     @Override
-    public Response posttestIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId){
-
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-    }
-
-    @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
         iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED));
