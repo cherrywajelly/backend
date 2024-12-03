@@ -113,7 +113,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Transactional
     @Override
     public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
-        System.out.println(iconGroupStateRequest.toString());
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
         iconGroup.updateIconState(iconGroupStateRequest.iconState());
         return IconGroupInfoResponse.from(iconGroup);
@@ -161,7 +160,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public CreatorIconInfos getIconGroupsByCreator(long creatorId) {
+    public CreatorIconInfos getIconGroupsByCreator(final long creatorId) {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(creatorId);
         List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
         iconGroups.forEach(

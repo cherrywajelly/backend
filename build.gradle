@@ -84,16 +84,19 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'METHOD'
 				value = 'COVEREDRATIO'
-				minimum = 0.0
+				minimum = 0.6
 			}
 
 			excludes =  [
-					'**/dto/**',
-					'**/global/**',
-					'**/global/**',
-					'**/repository/**'
+					'*.dto.*',
+					'*.domain.*',
+					'*.global.*',
+					'*.repository.*',
+					'*.service.member.oauth.*',
+					'*.TimeToastApplication'
 			] + QDomainList
 		}
+
 	}
 }
 
@@ -192,6 +195,15 @@ tasks.named('test') {
 	useJUnitPlatform()
 	dependsOn 'createOutputDirectory'
 	finalizedBy jacocoTestReport, 'openapi3'
+
+	jacoco {
+		excludes += ['*.dto.*',
+					 '*.domain.*',
+					 '*.global.*',
+					 '*.repository.*',
+					 '*.service.member.oauth.*',
+					 '*.TimeToastApplication']
+	}
 
 }
 
