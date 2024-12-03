@@ -226,7 +226,7 @@ public class FcmServiceImpl implements FcmService {
             } else {
                 ObjectMapper om = new ObjectMapper();
                 Message message = Message.builder()
-                        .setNotification(Notification.builder()
+                        .setWebpushConfig(WebpushConfig.builder()
                                 .build())
                         .putData("title", fcmSendRequest.get().notification().title())
                         .putData("body", fcmSendRequest.get().notification().body())
