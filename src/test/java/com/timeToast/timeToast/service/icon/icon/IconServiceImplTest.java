@@ -45,26 +45,26 @@ public class IconServiceImplTest {
     @Value("${spring.cloud.oci.url.static}")
     private String urlPrefix;
 
-    private IconGroup iconGroup;
-    private Icon icon;
-
-    @BeforeEach
-    void setUp() {
-        iconGroup = IconGroup.builder().build();
-        icon = Icon.builder().build();
-    }
 
     @Test
     @DisplayName("아이콘 이미지 저장 - 성공")
     void saveToken() {
         // Given
         long iconGroupId = 1L;
-        List<MultipartFile> files = Arrays.asList();
+
+        Icon icon = Icon.builder()
+                .iconGroupId(iconGroupId)
+                .iconImageUrl("iconImageUrl")
+                .build();
+        when(iconRepository.save(any(Icon.class))).thenReturn(icon);
+        when(fileUploadService.uploadfile(any(), any())).thenReturn("iconImageUrl");
+        List<MultipartFile> files = List.of(mock(MultipartFile.class),mock(MultipartFile.class));
 
         // When
         iconService.postIconSet(files, iconGroupId);
 
         // Then
-//        assertThat(response).isNotNull();
+        verify(fileUploadService, times(files.size())).uploadfile(any(), any());
+
     }
 }
