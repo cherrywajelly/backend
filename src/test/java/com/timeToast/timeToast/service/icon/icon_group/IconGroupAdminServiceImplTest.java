@@ -1,23 +1,25 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
-import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.domain.payment.Payment;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupResponse;
-import com.timeToast.timeToast.global.constant.StatusCode;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,20 +29,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,12 +62,111 @@ public class IconGroupAdminServiceImplTest {
     @Mock
     private IconService iconService;
 
+    @Mock
+    private PaymentRepository paymentRepository;
+
     @InjectMocks
     private IconGroupAdminServiceImpl iconGroupAdminService;
 
     private Member member;
     private IconGroup iconGroup;
     private Icon icon;
+
+    private Member setUpCreator() {
+        return Member.builder()
+                .premiumId(1L)
+                .email("test@gmail.com")
+                .nickname("testNickname")
+                .memberProfileUrl("testProfileUrl")
+                .loginType(LoginType.GOOGLE)
+                .memberRole(MemberRole.CREATOR)
+                .build();
+    }
+
+    private IconGroup iconGroupSetUp(){
+        return IconGroup.builder()
+                .memberId(1L)
+                .iconType(IconType.TOAST)
+                .iconBuiltin(IconBuiltin.NONBUILTIN)
+                .name("name")
+                .price(100)
+                .iconState(IconState.REGISTERED)
+                .description("description")
+                .build();
+    }
+
+    private List<IconGroup> iconGroupList(){
+        List<IconGroup> iconGroups = new ArrayList<>();
+
+        for(long i=0; i<5; i++){
+            IconGroup iconGroup1 = IconGroup.builder()
+                    .memberId(1L)
+                    .iconType(IconType.TOAST)
+                    .iconBuiltin(IconBuiltin.NONBUILTIN)
+                    .name("name")
+                    .price(100)
+                    .iconState(IconState.REGISTERED)
+                    .description("description")
+                    .build();
+
+            ReflectionTestUtils.setField(iconGroup1, "id", i);
+            iconGroups.add(iconGroup1);
+        }
+
+        return iconGroups;
+    }
+
+    private List<IconGroup> iconGroupWaitingList(){
+        List<IconGroup> iconGroups = new ArrayList<>();
+
+        for(long i=0; i<5; i++){
+            IconGroup iconGroup = IconGroup.builder()
+                    .memberId(1L)
+                    .iconType(IconType.TOAST)
+                    .iconBuiltin(IconBuiltin.NONBUILTIN)
+                    .name("name")
+                    .price(100)
+                    .iconState(IconState.WAITING)
+                    .description("description")
+                    .build();
+
+            ReflectionTestUtils.setField(iconGroup, "id", i);
+            iconGroups.add(iconGroup);
+        }
+
+        return iconGroups;
+    }
+
+    private List<Icon> iconsSetUp(){
+        List<Icon> icons = new ArrayList<>();
+
+        for(long i=0; i<5; i++){
+            Icon icon = Icon.builder()
+                    .iconGroupId(1L)
+                    .iconImageUrl("iconImageUrl")
+                    .build();
+            ReflectionTestUtils.setField(icon, "id", i);
+            icons.add(icon);
+        }
+
+        return icons;
+    }
+
+    private List<Payment> paymentsSetUp(){
+        List<Payment> payments = new ArrayList<>();
+        for(long i=0; i<5; i++){
+            payments.add(Payment.builder()
+                    .paymentState(PaymentState.WAITING)
+                    .memberId(1L)
+                    .amount(100)
+                    .itemId(i)
+                    .itemType(ItemType.ICON)
+                    .build());
+        }
+        return payments;
+    }
+
+
 
     @BeforeEach
     void setUp() {
@@ -181,4 +280,118 @@ public class IconGroupAdminServiceImplTest {
         // Then
         assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
     }
+
+
+    @Test
+    @DisplayName("아이콘 그룹 상태 저장 :성공")
+    void saveIconState() {
+        // Given
+        IconGroup iconGroup = iconGroupSetUp();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+        when(iconGroupRepository.getById(1L)).thenReturn(iconGroup);
+
+        IconGroupStateRequest iconGroupStateRequest = new IconGroupStateRequest(1L, IconState.REGISTERED);
+
+        // When
+        IconGroupInfoResponse iconGroupInfoResponse = iconGroupAdminService.saveIconState(iconGroupStateRequest);
+
+        // Then
+        assertEquals(iconGroup.getId(), iconGroupInfoResponse.iconGroupId());
+        assertEquals(iconGroup.getName(), iconGroupInfoResponse.title());
+        assertEquals(iconGroup.getThumbnailImageUrl(), iconGroupInfoResponse.thumbnailUrl());
+        assertEquals(iconGroup.getIconType(), iconGroupInfoResponse.iconType());
+        assertEquals(iconGroup.getIconState(), iconGroupInfoResponse.iconState());
+    }
+
+
+    @Test
+    @DisplayName("승인 iconGroup 조회: 성공")
+    void getIconGroupForNonApproval() {
+        // Given
+        List<IconGroup> iconGroups = iconGroupWaitingList();
+        when(iconGroupRepository.findAllByIconState(IconState.WAITING)).thenReturn(iconGroups);
+
+
+        // When
+        IconGroupInfoResponses iconGroupInfoResponses = iconGroupAdminService.getIconGroupForNonApproval();
+
+        // Then
+        assertEquals(iconGroups.size(), iconGroupInfoResponses.iconGroupNonApprovalResponses().size());
+    }
+
+    @Test
+    @DisplayName("아이콘 그룹 상세 조회: 성공")
+    void getIconGroupDetail() {
+        // Given
+        IconGroup iconGroup = iconGroupSetUp();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+        when(iconGroupRepository.getById(1L)).thenReturn(iconGroup);
+
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(creator);
+
+        List<Icon> icons = iconsSetUp();
+        when(iconRepository.findAllByIconGroupId(1L)).thenReturn(icons);
+
+        // When
+        IconGroupDetailResponse iconGroupDetailResponse = iconGroupAdminService.getIconGroupDetail(1L);
+
+        // Then
+        assertEquals(iconGroup.getThumbnailImageUrl(), iconGroupDetailResponse.thumbnailImageUrl());
+        assertEquals(iconGroup.getName(), iconGroupDetailResponse.title());
+        assertEquals(creator.getNickname(), iconGroupDetailResponse.creatorNickname());
+        assertEquals(iconGroup.getPrice(), iconGroupDetailResponse.price());
+        assertEquals(iconGroup.getIconState(), iconGroupDetailResponse.iconState());
+        assertEquals(iconGroup.getDescription(), iconGroupDetailResponse.description());
+        assertEquals(icons.size(), iconGroupDetailResponse.iconResponses().size());
+
+
+
+    }
+
+
+    @Test
+    @DisplayName("모든 아이콘 그룹 조회: 성공")
+    void getAllIconGroups() {
+        // Given
+        List<IconGroup> iconGroups = iconGroupList();
+        when(iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN)).thenReturn(iconGroups);
+
+        // When
+        IconGroupInfoResponses iconGroupInfoResponses = iconGroupAdminService.getAllIconGroups();
+
+        // Then
+        assertEquals(iconGroups.size(), iconGroupInfoResponses.iconGroupNonApprovalResponses().size());
+
+    }
+
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
+    void getIconGroupsByCreator() {
+        // Given
+        List<IconGroup> iconGroups = iconGroupList();
+        when(iconGroupRepository.findAllByMemberId(anyLong())).thenReturn(iconGroups);
+
+        List<Payment> payments = paymentsSetUp();
+        when(paymentRepository.findAllByItemIdAndItemType(anyLong(), any(ItemType.class))).thenReturn(payments);
+
+        List<Icon> icons = iconsSetUp();
+        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(icons);
+
+        // When
+        CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(1L);
+
+        // Then
+        assertEquals(iconGroups.get(0).getName(), creatorIconInfos.creatorIconInfos().get(0).title());
+        assertEquals(payments.size()*iconGroups.get(0).getPrice(), creatorIconInfos.creatorIconInfos().get(0).revenue());
+        assertEquals(payments.size(), creatorIconInfos.creatorIconInfos().get(0).salesCount());
+        assertEquals(icons.size(), creatorIconInfos.creatorIconInfos().get(0).iconImageUrl().size());
+
+
+    }
+
+
+
 }
