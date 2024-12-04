@@ -7,9 +7,7 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
+import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -182,5 +180,13 @@ public class GiftToastServiceTest implements GiftToastService{
         List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
         giftToastManagerResponses.add(GiftToastManagerResponse.from(1L, "iconImageUrl", "title", "name"));
         return new GiftToastManagerResponses(giftToastManagerResponses);
+    }
+
+    @Override
+    public GiftToastInfoManagerResponse getGiftToastInfoforManager(final long giftToastId) {
+        List<ToastPieceManagerResponse> toastPieceManagerResponses = new ArrayList<>();
+        toastPieceManagerResponses.add(new ToastPieceManagerResponse(1L,"iconImageUrl", "title", LocalDate.of(2024, 1, 1), "nickname"));
+        return new GiftToastInfoManagerResponse(1L, "imageUrl", "title", "name", LocalDate.of(2024, 1, 1),
+                LocalDate.of(2024, 1, 1), false, GiftToastType.FRIEND, LocalDate.of(2024, 1, 1), new ToastPieceManagerResponses(toastPieceManagerResponses));
     }
 }

@@ -21,4 +21,5 @@ public interface GiftToastService {
     Response deleteGiftToast(final long memberId, final long giftToastId);
     void deleteAllGiftToast(long memberId);
     GiftToastManagerResponses getGiftToastsForManager();
+    GiftToastInfoManagerResponse getGiftToastInfoforManager(final long giftToastId);
 }
