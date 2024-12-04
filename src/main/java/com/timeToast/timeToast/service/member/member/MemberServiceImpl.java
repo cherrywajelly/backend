@@ -3,9 +3,6 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.enums.payment.ItemType;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
-import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
@@ -16,12 +13,10 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
@@ -45,27 +40,19 @@ public class MemberServiceImpl implements MemberService{
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final FileUploadService fileUploadService;
-    private final IconGroupRepository iconGroupRepository;
-    private final IconRepository iconRepository;
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
-    private final PaymentRepository paymentRepository;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                             final IconRepository iconRepository, final PremiumRepository premiumRepository,
-                             final IconGroupRepository iconGroupRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository) {
+                            final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.fileUploadService = fileUploadService;
-        this.iconRepository = iconRepository;
         this.premiumRepository = premiumRepository;
-        this.iconGroupRepository = iconGroupRepository;
         this.creatorAccountRepository = creatorAccountRepository;
-        this.paymentRepository = paymentRepository;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -87,9 +74,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public MemberInfoResponse postNickname(final String nickname, final long memberId){
-        if (memberRepository.existsByNickname(nickname)) {
-            throw new ConflictException(NICKNAME_CONFLICT.getMessage());
-        }
+        nicknameCheck(nickname);
         Member member = memberRepository.getById(memberId);
         member.updateNickname(nickname);
         return MemberInfoResponse.from(member);
@@ -98,10 +83,18 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public Response nicknameValidation(final String nickname) {
+        nicknameCheck(nickname);
+        return new Response(StatusCode.OK.getStatusCode(), VALID_NICKNAME.getMessage());
+    }
+
+    private void nicknameCheck(final String nickname) {
         if(memberRepository.existsByNickname(nickname)){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
-        return new Response(StatusCode.OK.getStatusCode(), VALID_NICKNAME.getMessage());
+
+        if(!StringValidator.stringValidation(nickname)||nickname.length()>11){
+            throw new BadRequestException(INVALID_NICKNAME.getMessage());
+        }
     }
 
     @Transactional(readOnly = true)

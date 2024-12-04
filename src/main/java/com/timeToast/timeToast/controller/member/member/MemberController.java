@@ -9,7 +9,6 @@ import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
