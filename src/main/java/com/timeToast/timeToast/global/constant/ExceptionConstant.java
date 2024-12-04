@@ -5,11 +5,10 @@ public enum ExceptionConstant {
     //member
     MEMBER_NOT_FOUND("해당 멤버를 찾을 수 없습니다."),
     NICKNAME_CONFLICT("이미 존재하는 닉네임입니다."),
-    ROLE_FORBIDDEN("역할이 검증되지 않았습니다."),
-    UNAUTHORIZED_MEMBER("권한이 없는 사용자입니다,"),
     ACCESS_TOKEN_EXPIRED("사용자의 access token이 만료되었습니다."),
     REFRESH_TOKEN_EXPIRED("사용자의 refresh token이 만료되었습니다."),
     INVALID_TOKEN_FORMAT("잘못된 토큰 양식 입니다."),
+    INVALID_NICKNAME("잘못된 닉네임 형식입니다."),
 
     //follow
     FOLLOW_NOT_FOUND("해당 팔로우 정보를 찾을 수 없습니다."),

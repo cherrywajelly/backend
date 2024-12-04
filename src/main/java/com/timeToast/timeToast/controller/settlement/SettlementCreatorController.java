@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.controller.settlement;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.SettlementCreatorInfoResponses;
 import com.timeToast.timeToast.dto.settlement.response.SettlementDetailResponse;
 import com.timeToast.timeToast.global.annotation.Login;
