@@ -187,6 +187,6 @@ public class GiftToastServiceTest implements GiftToastService{
         List<ToastPieceManagerResponse> toastPieceManagerResponses = new ArrayList<>();
         toastPieceManagerResponses.add(new ToastPieceManagerResponse(1L,"iconImageUrl", "title", LocalDate.of(2024, 1, 1), "nickname"));
         return new GiftToastInfoManagerResponse(1L, "imageUrl", "title", "name", LocalDate.of(2024, 1, 1),
-                LocalDate.of(2024, 1, 1), false, GiftToastType.FRIEND, LocalDate.of(2024, 1, 1), new ToastPieceManagerResponses(toastPieceManagerResponses));
+                LocalDate.of(2024, 1, 1), false, GiftToastType.FRIEND, LocalDate.of(2024, 1, 1), toastPieceManagerResponses);
     }
 }

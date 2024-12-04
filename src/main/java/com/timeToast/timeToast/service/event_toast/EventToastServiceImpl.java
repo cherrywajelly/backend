@@ -278,6 +278,6 @@ public class EventToastServiceImpl implements EventToastService{
                 }
         );
 
-        return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), new JamManagerResponses(jamManagerResponses));
+        return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
     }
 }

@@ -85,11 +85,11 @@ public class GiftToastManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("isOpened").type(BOOLEAN).description("캡슐 토스트 오픈 여부"),
                                         fieldWithPath("giftToastType").type(STRING).description("캡슐 토스트 타압 (GROUP | FRIEND | MINE)"),
                                         fieldWithPath("createdAt").type(STRING).description("캡슐 토스트 생성 날짜"),
-                                        fieldWithPath("toastPieceManagerResponses.toastPieceManagerResponses[0].toastPieceId").type(NUMBER).description("캡슐 토스트 조각 id"),
-                                        fieldWithPath("toastPieceManagerResponses.toastPieceManagerResponses[0].iconImageUrl").type(STRING).description("캡슐 토스트 조각 아이콘 이미지 ㅕrl"),
-                                        fieldWithPath("toastPieceManagerResponses.toastPieceManagerResponses[0].title").type(STRING).description("캡슐 토스트 조각 제목"),
-                                        fieldWithPath("toastPieceManagerResponses.toastPieceManagerResponses[0].createdAt").type(STRING).description("캡슐 토스트 조각 생성 날짜"),
-                                        fieldWithPath("toastPieceManagerResponses.toastPieceManagerResponses[0].nickname").type(STRING).description("캡슐 토스트 조각 작성자 닉네임")
+                                        fieldWithPath("toastPieceManagerResponses[0].toastPieceId").type(NUMBER).description("캡슐 토스트 조각 id"),
+                                        fieldWithPath("toastPieceManagerResponses[0].iconImageUrl").type(STRING).description("캡슐 토스트 조각 아이콘 이미지 ㅕrl"),
+                                        fieldWithPath("toastPieceManagerResponses[0].title").type(STRING).description("캡슐 토스트 조각 제목"),
+                                        fieldWithPath("toastPieceManagerResponses[0].createdAt").type(STRING).description("캡슐 토스트 조각 생성 날짜"),
+                                        fieldWithPath("toastPieceManagerResponses[0].nickname").type(STRING).description("캡슐 토스트 조각 작성자 닉네임")
                                 )
                                 .build()
                         )));
