@@ -9,7 +9,7 @@ public class StringValidator {
             return false;
         }
 
-        return Pattern.matches("^[a-zA-Z0-9가-힣]$", input);
+        return Pattern.matches("^[a-zA-Z0-9가-힣]+$", input);
     }
 
 }

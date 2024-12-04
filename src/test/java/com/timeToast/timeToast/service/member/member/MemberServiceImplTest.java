@@ -181,7 +181,7 @@ public class MemberServiceImplTest {
         when(memberRepository.getById(any(Long.class))).thenReturn(member);
         ReflectionTestUtils.setField(member, "id", 1L);
 
-        String newNickname = "testNewNickname";
+        String newNickname = "testNick";
         //when
         MemberInfoResponse memberInfoResponse = memberService.postNickname(newNickname, member.getId());
 

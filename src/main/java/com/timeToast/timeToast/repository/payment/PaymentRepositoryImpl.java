@@ -67,7 +67,6 @@ public class PaymentRepositoryImpl implements PaymentRepository {
 
     @Override
     public Page<Payment> findAll(final Pageable pageable) {
-
         return paymentJpaRepository.findAll(pageable);
     }
 

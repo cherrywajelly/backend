@@ -129,6 +129,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentsAdminResponses getPayments(final int page, final int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
+
         paymentRepository.findAll(pageRequest).forEach(
                 payment -> {
                     String nickname = null;

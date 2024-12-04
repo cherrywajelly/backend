@@ -1,8 +1,14 @@
 package com.timeToast.timeToast.service.payment;
 
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentServiceTest implements PaymentService {
 
@@ -34,11 +40,33 @@ public class PaymentServiceTest implements PaymentService {
 
     @Override
     public PaymentsAdminResponses getPayments(int page, int size) {
-        return null;
+        List<PaymentsAdminResponse> paymentsAdminResponses = new ArrayList<>();
+
+        paymentsAdminResponses.add(
+                PaymentsAdminResponse.builder()
+                        .paymentId(1L)
+                        .itemType(ItemType.ICON)
+                        .nickname("nickname")
+                        .itemName("item name")
+                        .createdAt(LocalDate.now())
+                        .build()
+        );
+
+        return new PaymentsAdminResponses(paymentsAdminResponses);
     }
 
     @Override
     public PaymentDetailResponse getPaymentDetails(long paymentId) {
-        return null;
+        return PaymentDetailResponse.builder()
+                .orderId("order id")
+                .nickname("nickname")
+                .itemType(ItemType.ICON)
+                .itemName("item name")
+                .amount(1000)
+                .paymentState(PaymentState.WAITING)
+                .createdAt(LocalDate.now())
+                .expiredDate(LocalDate.now())
+                .iconThumbnailImageUrl("icon thumbnail url")
+                .build();
     }
 }

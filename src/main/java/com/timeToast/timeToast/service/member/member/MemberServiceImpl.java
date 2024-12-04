@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService{
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
 
-        if(!StringValidator.stringValidation(nickname)||nickname.length()>11){
+        if((!StringValidator.stringValidation(nickname))||nickname.length()>10){
             throw new BadRequestException(INVALID_NICKNAME.getMessage());
         }
     }
