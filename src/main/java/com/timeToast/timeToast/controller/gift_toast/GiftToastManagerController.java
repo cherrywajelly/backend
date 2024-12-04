@@ -22,6 +22,6 @@ public class GiftToastManagerController {
 
     @GetMapping("/{giftToastId}")
     public GiftToastInfoManagerResponse getGiftToastInfo(@PathVariable final long giftToastId) {
-        return giftToastService.getGiftToastInfoforManager(giftToastId);
+        return giftToastService.getGiftToastInfoForManager(giftToastId);
     }
 }

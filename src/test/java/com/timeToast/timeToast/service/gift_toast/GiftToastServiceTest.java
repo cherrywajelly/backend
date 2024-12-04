@@ -183,7 +183,7 @@ public class GiftToastServiceTest implements GiftToastService{
     }
 
     @Override
-    public GiftToastInfoManagerResponse getGiftToastInfoforManager(final long giftToastId) {
+    public GiftToastInfoManagerResponse getGiftToastInfoForManager(final long giftToastId) {
         List<ToastPieceManagerResponse> toastPieceManagerResponses = new ArrayList<>();
         toastPieceManagerResponses.add(new ToastPieceManagerResponse(1L,"iconImageUrl", "title", LocalDate.of(2024, 1, 1), "nickname"));
         return new GiftToastInfoManagerResponse(1L, "imageUrl", "title", "name", LocalDate.of(2024, 1, 1),

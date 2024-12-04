@@ -411,7 +411,9 @@ public class GiftToastServiceImpl implements GiftToastService{
                 giftToast -> {
                     Icon icon = iconRepository.getById(giftToast.getIconId());
                     Team team = teamRepository.getById(giftToast.getTeamId());
-                    giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                    if (team != null) {
+                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                    }
                 }
         );
         return new GiftToastManagerResponses(giftToastManagerResponses);
@@ -419,7 +421,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
     @Transactional(readOnly = true)
     @Override
-    public GiftToastInfoManagerResponse getGiftToastInfoforManager(final long giftToastId) {
+    public GiftToastInfoManagerResponse getGiftToastInfoForManager(final long giftToastId) {
         GiftToast giftToast = giftToastRepository.getById(giftToastId);
         Icon icon = iconRepository.getById(giftToast.getIconId());
         Team team = teamRepository.getById(giftToast.getTeamId());
@@ -433,6 +435,11 @@ public class GiftToastServiceImpl implements GiftToastService{
                     toastPieceManagerResponses.add(ToastPieceManagerResponse.from(toastPiece, toastPieceIcon.getIconImageUrl(), toastPieceMember.getNickname()));
                 }
         );
-        return GiftToastInfoManagerResponse.from(giftToast, icon.getIconImageUrl(), team.getName(), new ToastPieceManagerResponses(toastPieceManagerResponses));
+
+        if (team != null) {
+            return GiftToastInfoManagerResponse.from(giftToast, icon.getIconImageUrl(), team.getName(), new ToastPieceManagerResponses(toastPieceManagerResponses));
+        } else {
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
     }
 }
