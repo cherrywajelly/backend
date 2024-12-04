@@ -448,7 +448,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         );
 
         if (team != null) {
-            return GiftToastInfoManagerResponse.from(giftToast, icon.getIconImageUrl(), team.getName(), new ToastPieceManagerResponses(toastPieceManagerResponses));
+            return GiftToastInfoManagerResponse.from(giftToast, icon.getIconImageUrl(), team.getName(), toastPieceManagerResponses);
         } else {
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }

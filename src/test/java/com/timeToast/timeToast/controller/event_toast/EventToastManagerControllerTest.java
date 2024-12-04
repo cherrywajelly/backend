@@ -84,11 +84,11 @@ public class EventToastManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("openedDate").type(ARRAY).description("이벤트 토스트 오픈 날짜"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부"),
                                         fieldWithPath("createdAt").type(STRING).description("이벤트 토스트 생성 날짜"),
-                                        fieldWithPath("jamManagerResponses.jamManagerResponses[0].jamId").type(NUMBER).description("이벤트 토스트의 잼 id"),
-                                        fieldWithPath("jamManagerResponses.jamManagerResponses[0].iconImageUrl").type(STRING).description("이벤트 토스트의 잼 이미지 url"),
-                                        fieldWithPath("jamManagerResponses.jamManagerResponses[0].title").type(STRING).description("이벤트 토스트의 잼 제목"),
-                                        fieldWithPath("jamManagerResponses.jamManagerResponses[0].createdAt").type(STRING).description("이벤트 토스트의 잼 작성날짜"),
-                                        fieldWithPath("jamManagerResponses.jamManagerResponses[0].nickname").type(STRING).description("이벤트 토스트의 잼 작성자 닉네임")
+                                        fieldWithPath("jamManagerResponses[0].jamId").type(NUMBER).description("이벤트 토스트의 잼 id"),
+                                        fieldWithPath("jamManagerResponses[0].iconImageUrl").type(STRING).description("이벤트 토스트의 잼 이미지 url"),
+                                        fieldWithPath("jamManagerResponses[0].title").type(STRING).description("이벤트 토스트의 잼 제목"),
+                                        fieldWithPath("jamManagerResponses[0].createdAt").type(STRING).description("이벤트 토스트의 잼 작성날짜"),
+                                        fieldWithPath("jamManagerResponses[0].nickname").type(STRING).description("이벤트 토스트의 잼 작성자 닉네임")
                                 )
                                 .build()
                         )));

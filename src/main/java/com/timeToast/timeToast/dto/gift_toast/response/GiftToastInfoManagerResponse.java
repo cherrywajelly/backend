@@ -3,10 +3,11 @@ package com.timeToast.timeToast.dto.gift_toast.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponses;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponse;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 public record GiftToastInfoManagerResponse(
@@ -22,9 +23,9 @@ public record GiftToastInfoManagerResponse(
         GiftToastType giftToastType,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate createdAt,
-        ToastPieceManagerResponses toastPieceManagerResponses
+        List<ToastPieceManagerResponse> toastPieceManagerResponses
 ) {
-    public static GiftToastInfoManagerResponse from(final GiftToast giftToast, final String iconImageUrl, final String name, final ToastPieceManagerResponses toastPieceManagerResponses) {
+    public static GiftToastInfoManagerResponse from(final GiftToast giftToast, final String iconImageUrl, final String name, final List<ToastPieceManagerResponse> toastPieceManagerResponses) {
         return GiftToastInfoManagerResponse.builder()
                 .giftToastId(giftToast.getId())
                 .iconImageUrl(iconImageUrl)

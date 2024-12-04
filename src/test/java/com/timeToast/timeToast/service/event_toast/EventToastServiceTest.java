@@ -82,6 +82,6 @@ public class EventToastServiceTest implements EventToastService {
     public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
         List<JamManagerResponse> jamManagerResponses = new ArrayList<>();
         jamManagerResponses.add(new JamManagerResponse(1L, "iconImageUrl", "title", LocalDate.of(2024, 11, 11), "nickname"));
-        return new EventToastInfoManagerResponse(1L, "imageUrl", "title", "nickname", LocalDate.of(2024, 11, 11), true, LocalDate.of(2024, 11, 10), new JamManagerResponses(jamManagerResponses));
+        return new EventToastInfoManagerResponse(1L, "imageUrl", "title", "nickname", LocalDate.of(2024, 11, 11), true, LocalDate.of(2024, 11, 10), jamManagerResponses);
     }
 }
