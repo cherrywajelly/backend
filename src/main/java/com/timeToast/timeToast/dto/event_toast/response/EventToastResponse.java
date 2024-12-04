@@ -58,6 +58,7 @@ public record EventToastResponse(
                 .openedDate(eventToastResponse.openedDate())
                 .isOpened(eventToastResponse.isOpened())
                 .iconImageUrl(eventToastResponse.iconImageUrl())
+                .memberId(eventToastResponse.memberId())
                 .memberProfileUrl(eventToastResponse.memberProfileUrl())
                 .nickname(eventToastResponse.nickname())
                 .jamCount(eventToastResponse.jamCount())

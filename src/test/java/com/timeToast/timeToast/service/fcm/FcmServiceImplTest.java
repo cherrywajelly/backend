@@ -270,27 +270,27 @@ public class FcmServiceImplTest {
         assertThat(exception.getMessage()).isNotNull();
     }
 
-//    @Test
-//    @DisplayName("fcm 메세지 생성 - 성공")
-//    void createMessageSuccess() throws JsonProcessingException {
-//        // Given
-//        long memberId = 1L;
-//        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
-//
-//        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
-//
-//        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
-//
-//        // When
-//        NullPointerException exception = assertThrows(NullPointerException.class, () -> fcmService.createMessage(memberId, fcmPostRequest));
-//
-//        // Then
-//        assertThat(exception).isNotNull();
-//    }
+    @Test
+    @DisplayName("fcm 메세지 생성 - 성공")
+    void createMessageSuccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+
+        // When
+        Message message = fcmService.createMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(message).isNotNull();
+    }
 
 
     @Test
-    @DisplayName("fcm 메세지 글 생성 성공")
+    @DisplayName("fcm 메세지 글 생성 성공 - 팔로우를 한 경우")
     void makeMessageSuccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
@@ -298,6 +298,91 @@ public class FcmServiceImplTest {
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 성공 - 잼이 발린 경우")
+    void makeMessageAboutJamSpreadSueccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.EVENTTOASTSPREAD).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 성공 - 이벤트 토스트가 열린 경우")
+    void makeMessageAboutEventToastOpenedSueccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.EVENTTOASTOPENED).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 성공 - 캡슐토스트가 생성된 경우")
+    void makeMessageAboutGiftToastCreatedSueccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTCREATED).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 성공 - 캡슐토스트가 열린 경우")
+    void makeMessageAboutGiftToastOpenedSueccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTOPENED).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
+
+        // Then
+        assertThat(fcmSendRequest).isNotNull();
+    }
+
+    @Test
+    @DisplayName("fcm 메세지 글 생성 성공 - 캡슐토스트 조각이 작성된 경우")
+    void makeMessageAboutGiftToastBakedSueccess() throws JsonProcessingException {
+        // Given
+        long memberId = 1L;
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTBAKED).build();
+        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+
+        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
