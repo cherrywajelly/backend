@@ -21,13 +21,12 @@ public record GiftToastInfo(
         LocalDate openedDate,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate createdDate,
-        Boolean isOpened,
-        GiftToastTeamMember giftToastTeamMember
+        Boolean isOpened
 
 ) {
 
     public static GiftToastInfo from(final GiftToast giftToast, final String iconImageUrl,
-                                     final String profileImageUrl, final String giftToastOwner, GiftToastTeamMember giftToastTeamMember){
+                                     final String profileImageUrl, final String giftToastOwner){
 
         return GiftToastInfo.builder()
                 .giftToastId(giftToast.getId())
@@ -40,7 +39,6 @@ public record GiftToastInfo(
                 .openedDate(giftToast.getOpenedDate())
                 .createdDate(giftToast.getCreatedAt().toLocalDate())
                 .isOpened(giftToast.getIsOpened())
-                .giftToastTeamMember(giftToastTeamMember)
                 .build();
     }
 }

@@ -165,8 +165,28 @@ public class GiftToastServiceImpl implements GiftToastService{
         GiftToast giftToast = giftToastRepository.findByGiftToastId(giftToastId)
                 .orElseThrow(()-> new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage()));
 
+        GiftToastInfo giftToastInfo = getGiftToastInfo(memberId, giftToast);
+        GiftToastTeamMember giftToastTeamMember = null;
+        if(giftToastInfo.giftToastOwner()!=null){
+            List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
+            List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
+            List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
+
+            giftToastOwners.forEach(
+                    member -> {
+                        if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(member.getMemberId()))){
+                            memberInfoResponses.add(
+                                    MemberInfoResponse.from(memberRepository.getById(member.getMemberId())));
+                        }
+                    }
+            );
+            giftToastTeamMember = new GiftToastTeamMember(giftToastOwners.size(),memberInfoResponses.size(), memberInfoResponses);
+        }
+
+
         return GiftToastDetailResponse.from(
                 getGiftToastInfo(memberId, giftToast),
+                giftToastTeamMember,
                 DDayCount.count(LocalDate.now(), giftToast.getOpenedDate()),
                 getToastPieceResponses(giftToast));
 
@@ -182,27 +202,13 @@ public class GiftToastServiceImpl implements GiftToastService{
         if(giftToast.getGiftToastType().equals(GiftToastType.GROUP)){
 
             Optional<Team> team =  teamRepository.findById(giftToast.getTeamId());
-            GiftToastTeamMember giftToastTeamMember = null;
             if(team.isPresent()){
                 giftToastOwner = team.get().getName();
                 profileImageUrl = team.get().getTeamProfileUrl();
 
-                List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
-                List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToast.getId());
-                List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
-
-                giftToastOwners.forEach(
-                        member -> {
-                            if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(member.getMemberId()))){
-                                memberInfoResponses.add(
-                                        MemberInfoResponse.from(memberRepository.getById(member.getMemberId())));
-                            }
-                        }
-                );
-                giftToastTeamMember = new GiftToastTeamMember(giftToastOwners.size(),memberInfoResponses.size(), memberInfoResponses);
             }
 
-            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), profileImageUrl, giftToastOwner, giftToastTeamMember);
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), profileImageUrl, giftToastOwner);
 
         }else if(giftToast.getGiftToastType().equals(GiftToastType.FRIEND)){
 
@@ -214,11 +220,11 @@ public class GiftToastServiceImpl implements GiftToastService{
                 giftToastOwner = member.getNickname();
                 profileImageUrl =  member.getMemberProfileUrl();
             }
-            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast),profileImageUrl, giftToastOwner, null);
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast),profileImageUrl, giftToastOwner);
 
         }else{
             Member member = memberRepository.getById(memberId);
-            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), member.getMemberProfileUrl(), member.getNickname(), null);
+            return GiftToastInfo.from(giftToast, getIconImageUrl(giftToast), member.getMemberProfileUrl(), member.getNickname());
         }
     }
 

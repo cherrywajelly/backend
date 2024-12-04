@@ -157,7 +157,9 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("eventToastFriendResponses[0].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
                                         fieldWithPath("eventToastFriendResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
                                         fieldWithPath("eventToastFriendResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지"),
-                                        fieldWithPath("eventToastFriendResponses[0].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부")
+                                        fieldWithPath("eventToastFriendResponses[0].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부"),
+                                        fieldWithPath("eventToastFriendResponses[0].dDay").type(NUMBER).description("d-day")
+
                                 )
                                 .build()
                         )));

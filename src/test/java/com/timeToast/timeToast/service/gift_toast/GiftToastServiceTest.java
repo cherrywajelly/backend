@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
@@ -60,6 +61,15 @@ public class GiftToastServiceTest implements GiftToastService{
             throw  new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage());
         }
 
+        List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
+        memberInfoResponses.add(MemberInfoResponse.builder()
+                        .memberId(1L)
+                        .email("email")
+                        .nickname("nickname")
+                        .profileUrl("profileUrl")
+                        .build());
+
+        GiftToastTeamMember giftToastTeamMember = new GiftToastTeamMember(3, 1, memberInfoResponses);
         GiftToastInfo giftToastInfo =  GiftToastInfo.builder()
                 .giftToastId(1L)
                 .title("title")
@@ -87,7 +97,7 @@ public class GiftToastServiceTest implements GiftToastService{
                         .toastPieceImages(List.of("images"))
                         .build());
 
-        return new GiftToastDetailResponse(giftToastInfo,1L, new ToastPieceResponses(1L,toastPieceResponses) );
+        return new GiftToastDetailResponse(giftToastInfo,giftToastTeamMember,1L, new ToastPieceResponses(1L,toastPieceResponses) );
     }
 
     @Override
