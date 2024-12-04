@@ -16,6 +16,7 @@ public enum ExceptionConstant {
     INVALID_FOLLOW("자기 자신은 팔로우 할 수 없습니다."),
 
     //team
+    INVALID_TEAM("잘못된 팀 형식 입니다."),
     TEAM_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
     TEAM_MEMBER_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
 
@@ -91,6 +92,8 @@ public enum ExceptionConstant {
 
     INVALID_YEAR_MONTH("잘못된 날짜 조회입니다."),
 
+
+    INVALID_STRING_FORMAT("잘못된 형식의 문자열입니다."),
     //login
     INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");

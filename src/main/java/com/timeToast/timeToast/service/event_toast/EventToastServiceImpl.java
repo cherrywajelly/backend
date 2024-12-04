@@ -59,8 +59,8 @@ public class EventToastServiceImpl implements EventToastService{
     @Override
     public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
 
-        if(!StringValidator.stringValidation(eventToastPostRequest.title()) || eventToastPostRequest.title().length() > 20) {
-            throw new BadRequestException(INVALID_EVENT_TOAST.getMessage());
+        if(eventToastPostRequest.title().length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
         }
 
         if(eventToastRepository.findByMemberIdAndOpenedDateAndTitle(memberId, eventToastPostRequest.openedDate(), eventToastPostRequest.title()).isPresent()){

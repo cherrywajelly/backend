@@ -163,8 +163,8 @@ public class GiftToastServiceImpl implements GiftToastService{
     }
 
     private void titleCheck(final String title) {
-        if(!StringValidator.stringValidation(title) || title.length() > 20) {
-            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        if(title.length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
         }
     }
 
