@@ -176,4 +176,11 @@ public class GiftToastServiceTest implements GiftToastService{
     public void deleteAllGiftToast(long memberId) {
 
     }
+
+    @Override
+    public GiftToastManagerResponses getGiftToastsForManager() {
+        List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        giftToastManagerResponses.add(GiftToastManagerResponse.from(1L, "iconImageUrl", "title", "name"));
+        return new GiftToastManagerResponses(giftToastManagerResponses);
+    }
 }

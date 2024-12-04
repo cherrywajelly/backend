@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.gift_toast;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
@@ -396,4 +397,20 @@ public class GiftToastServiceImpl implements GiftToastService{
         log.info("update gift toast's is open");
     }
 
+    //giftToast, icon, member
+    @Transactional(readOnly = true)
+    @Override
+    public GiftToastManagerResponses getGiftToastsForManager() {
+       List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        List<GiftToast> giftToasts = giftToastRepository.findAll();
+
+        giftToasts.forEach(
+                giftToast -> {
+                    Icon icon = iconRepository.getById(giftToast.getIconId());
+                    Team team = teamRepository.getById(giftToast.getTeamId());
+                    giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                }
+        );
+        return new GiftToastManagerResponses(giftToastManagerResponses);
+    }
 }
