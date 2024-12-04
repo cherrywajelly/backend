@@ -7,11 +7,13 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -201,6 +203,22 @@ public class TeamServiceImplTest  {
         verify(teamMemberRepository, times(teamMembers.size())).findAllByTeamId(anyLong());
         verify(teamRepository, times(teamMembers.size())).deleteByTeamId(anyLong());
 
+    }
+
+    @Test
+    @DisplayName("관리자 그룹 목록 조회")
+    public void getTeamForManager(){
+        //given
+        Team team = setUpTeam();
+        ReflectionTestUtils.setField(team, "id", 1L);
+        when(teamRepository.findAll()).thenReturn(List.of(team));
+
+        //when
+        TeamManagerResponses teamManagerResponses = teamService.getTeamForManager();
+
+        //then
+
+        assertThat(teamManagerResponses).isNotNull();
     }
 
 
