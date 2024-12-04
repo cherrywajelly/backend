@@ -4,6 +4,8 @@ import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponse;
+import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -151,6 +153,18 @@ public class TeamServiceImpl implements TeamService {
                 }
         );
 
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public TeamManagerResponses getTeamForManager() {
+        List<TeamManagerResponse> teamManagerResponses = new ArrayList<>();
+        List<Team> teams = teamRepository.findAll();
+
+        teams.forEach(
+                team -> teamManagerResponses.add(TeamManagerResponse.from(team))
+        );
+        return new TeamManagerResponses(teamManagerResponses);
     }
 
 }

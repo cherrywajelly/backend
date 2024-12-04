@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.team;
 
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
 import com.timeToast.timeToast.global.response.Response;
@@ -16,5 +17,5 @@ public interface TeamService {
 
     Response deleteTeam(final long memberId, final long teamId);
     void deleteAllTeam(final long memberId);
-
+    TeamManagerResponses getTeamForManager();
 }
