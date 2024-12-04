@@ -2,9 +2,7 @@ package com.timeToast.timeToast.service.payment;
 
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
-import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
-import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
-import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
+import com.timeToast.timeToast.dto.payment.response.*;
 
 public class PaymentServiceTest implements PaymentService {
 
@@ -32,5 +30,15 @@ public class PaymentServiceTest implements PaymentService {
     @Override
     public PaymentFailResponse failPayment(final long memberId, final String orderId) {
         return new PaymentFailResponse(1L, "diosfhjuih","실패했습니다");
+    }
+
+    @Override
+    public PaymentsAdminResponses getPayments(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public PaymentDetailResponse getPaymentDetails(long paymentId) {
+        return null;
     }
 }

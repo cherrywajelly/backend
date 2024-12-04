@@ -6,6 +6,8 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.payment.PaymentDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -61,6 +63,12 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     @Override
     public List<Payment> findAllByItemId(final long itemId) {
         return paymentJpaRepository.findAllByItemId(itemId);
+    }
+
+    @Override
+    public Page<Payment> findAll(final Pageable pageable) {
+
+        return paymentJpaRepository.findAll(pageable);
     }
 
     @Override

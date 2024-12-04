@@ -12,9 +12,7 @@ import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
-import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
-import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
-import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
+import com.timeToast.timeToast.dto.payment.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -23,6 +21,8 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +30,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.config.TossConfig.TOSS_CONFIRM_URL;
@@ -119,6 +123,85 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.updatePaymentState(PaymentState.FAILURE);
         return new PaymentFailResponse(payment.getId(),payment.getOrderId(),"실패 했습니다.");
+    }
+
+    @Override
+    public PaymentsAdminResponses getPayments(final int page, final int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
+        paymentRepository.findAll(pageRequest).forEach(
+                payment -> {
+                    String nickname = null;
+                    Optional<Member> member = memberRepository.findById(payment.getMemberId());
+                    if(member.isPresent()){
+                        nickname = member.get().getNickname();
+                    }
+
+                    if(payment.getItemType().equals(ItemType.ICON)){
+                        paymentsResponse.add(
+                                PaymentsAdminResponse.builder()
+                                        .createdAt(payment.getCreatedAt().toLocalDate())
+                                        .paymentId(payment.getId())
+                                        .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
+                                        .itemType(ItemType.ICON)
+                                        .nickname(nickname)
+                                        .build());
+                    }else{
+                        paymentsResponse.add(
+                                PaymentsAdminResponse.builder()
+                                        .createdAt(payment.getCreatedAt().toLocalDate())
+                                        .paymentId(payment.getId())
+                                        .itemName(premiumRepository.getById(payment.getItemId()).getPremiumType().toString())
+                                        .itemType(ItemType.PREMIUM)
+                                        .nickname(nickname)
+                                        .build());
+                    }
+                }
+        );
+
+        return new PaymentsAdminResponses(paymentsResponse);
+    }
+
+    @Override
+    public PaymentDetailResponse getPaymentDetails(final long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(()-> new NotFoundException(PAYMENT_NOT_FOUND.getMessage()));
+
+        if(payment.getItemType().equals(ItemType.ICON)){
+            IconGroup iconGroup = iconGroupRepository.getById(payment.getItemId());
+            Optional<Member> member = memberRepository.findById(payment.getMemberId());
+            String nickname = null;
+            if(member.isPresent()){
+                nickname = member.get().getNickname();
+            }
+            return PaymentDetailResponse.builder()
+                    .orderId(payment.getOrderId())
+                    .nickname(nickname)
+                    .itemType(payment.getItemType())
+                    .itemName(iconGroup.getName())
+                    .amount(payment.getAmount())
+                    .paymentState(payment.getPaymentState())
+                    .createdAt(payment.getCreatedAt().toLocalDate())
+                    .iconThumbnailImageUrl(iconGroup.getThumbnailImageUrl())
+                    .build();
+        }else{
+            Premium premium = premiumRepository.getById(payment.getItemId());
+            Optional<Member> member = memberRepository.findById(payment.getMemberId());
+            String nickname = null;
+            if(member.isPresent()){
+                nickname = member.get().getNickname();
+            }
+            return PaymentDetailResponse.builder()
+                    .orderId(payment.getOrderId())
+                    .nickname(nickname)
+                    .itemType(payment.getItemType())
+                    .itemName(premium.getPremiumType().toString())
+                    .amount(payment.getAmount())
+                    .paymentState(payment.getPaymentState())
+                    .createdAt(payment.getCreatedAt().toLocalDate())
+                    .expiredDate(payment.getExpiredDate())
+                    .build();
+        }
+
     }
 
     private String verifyPaymentSaveRequest(final long memberId, final PaymentSaveRequest paymentSaveRequest) {
