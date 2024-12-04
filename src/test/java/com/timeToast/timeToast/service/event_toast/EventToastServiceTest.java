@@ -52,7 +52,7 @@ public class EventToastServiceTest implements EventToastService {
         List<JamResponse> jamResponses = new ArrayList<>();
         jamResponses.add(new JamResponse(1, "title", "iconUrl"));
         EventToastResponse eventToastResponse = new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11),
-                false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, jamResponses);
+                false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, "description",jamResponses);
         return eventToastResponse;
     }
 

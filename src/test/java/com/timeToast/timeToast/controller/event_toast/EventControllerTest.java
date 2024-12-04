@@ -38,7 +38,7 @@ public class EventControllerTest extends BaseControllerTests {
     @WithMockCustomUser
     @Test
     void postEventToast() throws Exception {
-        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1), "title", 1L);
+        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1), "title", 1L,"description");
         String json = objectMapper.writeValueAsString(eventToastPostRequest);
 
         mockMvc.perform(
@@ -58,7 +58,9 @@ public class EventControllerTest extends BaseControllerTests {
                                 .requestFields(
                                         fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
                                         fieldWithPath("title").type(STRING).description("이벤트 토스트 제목"),
-                                        fieldWithPath("openedDate").type(STRING).description("토스트 개봉 날짜")
+                                        fieldWithPath("openedDate").type(STRING).description("토스트 개봉 날짜"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("id").type(NUMBER).description("저장한 이벤트 토스트의 id 값"),
@@ -160,7 +162,8 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("eventToastFriendResponses[0].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부"),
                                         fieldWithPath("eventToastFriendResponses[0].dDay").type(NUMBER).description("d-day")
 
-                                )
+
+                                        )
                                 .build()
                         )));
     }
@@ -194,6 +197,7 @@ public class EventControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
                                         fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
                                         fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지"),
+                                        fieldWithPath("description").type(STRING).description("설명"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("jamCount").type(NUMBER).description("이벤트 토스트에 발른 잼 개수"),
                                         fieldWithPath("dDay").type(NUMBER).description("이벤트 토스트 개봉까지 남은 날짜"),

@@ -8,10 +8,10 @@ import java.time.LocalDate;
 public record GiftToastGroupRequest(
         Long iconId,
         Long teamId,
-
         LocalDate memorizedDate,
         LocalDate openedDate,
-        String title
+        String title,
+        String description
 ) {
 
     public static GiftToast to(GiftToastGroupRequest giftToastRequest){
@@ -23,6 +23,7 @@ public record GiftToastGroupRequest(
                 .openedDate(giftToastRequest.openedDate())
                 .isOpened(false)
                 .giftToastType(GiftToastType.GROUP)
+                .description(giftToastRequest.description())
                 .build();
     }
 }

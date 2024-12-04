@@ -10,7 +10,8 @@ public record GiftToastMineRequest(
         Long iconId,
         LocalDate memorizedDate,
         LocalDate openedDate,
-        String title
+        String title,
+        String description
 ) {
     public static GiftToast to(GiftToastMineRequest giftToastMineRequest){
         return GiftToast.builder()
@@ -20,6 +21,7 @@ public record GiftToastMineRequest(
                 .isOpened(false)
                 .title(giftToastMineRequest.title())
                 .giftToastType(GiftToastType.MINE)
+                .description(giftToastMineRequest.description())
                 .build();
     }
 }

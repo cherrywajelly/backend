@@ -92,7 +92,7 @@ public class EventToastServiceImplTest {
     @DisplayName("이벤트 토스트 저장 성공")
     void saveEventToastSuccess() {
         long memberId = 1L;
-        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1),"title", 1L);
+        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1),"title", 1L,"description");
 
         when(eventToastRepository.save(any(EventToast.class))).thenReturn(eventToast);
 
@@ -211,7 +211,7 @@ public class EventToastServiceImplTest {
         long eventToastId = 1L;
         List<JamResponse> jams = List.of(new JamResponse(1L, icon.getIconImageUrl(), member.getNickname()));
         EventToastResponse eventToastResponse = new EventToastResponse(eventToastId, eventToast.getTitle(), eventToast.getOpenedDate(), eventToast.isOpened(),
-                icon.getIconImageUrl(), eventToast.getMemberId(), member.getMemberProfileUrl(), member.getNickname(), 0, 0, false, jams);
+                icon.getIconImageUrl(), eventToast.getMemberId(), member.getMemberProfileUrl(), member.getNickname(), 0, 0, false, "description", jams);
 
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId)).thenReturn(Optional.empty());
 

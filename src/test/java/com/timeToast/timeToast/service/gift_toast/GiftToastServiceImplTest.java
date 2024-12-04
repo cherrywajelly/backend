@@ -205,27 +205,27 @@ public class GiftToastServiceImplTest {
     }
 
     private GiftToastGroupRequest giftToastGroupSuccessSetUp(){
-        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastGroupRequest giftToastGroupFailSetUp(){
-        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastFriendRequest giftToastFriendSuccessSetUp(){
-        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastFriendRequest giftToastFriendFailSetUp(){
-        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastMineRequest giftToastMineSuccessSetUp(){
-        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastMineRequest giftToastMineFailSetUp(){
-        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastOwner giftToastOwnerSetUp(){
