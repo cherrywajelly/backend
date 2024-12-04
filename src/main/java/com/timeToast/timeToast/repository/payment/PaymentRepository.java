@@ -15,6 +15,7 @@ public interface PaymentRepository {
     List<Payment> findAllByItemIdAndItemType(final long itemId, final ItemType itemType);
     List<PaymentDto> findAllByMonthlyPayments(final LocalDate start, final LocalDate end);
     Optional<Payment> findByOrderId(final String orderId);
+    Optional<Payment> findRecentPremiumByMemberId(final long memberId);
     List<Payment> findAllByItemId(final long itemId);
 //    List<Payment> findAllByItemIdAndCreatedAtMonth(@Param("itemId") final long itemId, @Param("yearMonth") String yearMonth);
 }

@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.checkerframework.common.aliasing.qual.Unique;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "payment")
 @Getter
@@ -36,15 +38,17 @@ public class Payment extends BaseTime {
 
     private long itemId;
 
+    private LocalDate expiredDate;
 
     @Builder
     public Payment(final long memberId, final ItemType itemType, final PaymentState paymentState,
-                   final int amount, final long itemId) {
+                   final int amount, final long itemId, final LocalDate expiredDate) {
         this.memberId = memberId;
         this.itemType = itemType;
         this.paymentState = paymentState;
         this.itemId = itemId;
         this.amount = amount;
+        this.expiredDate = expiredDate;
     }
 
     public void updateOrderId(final String orderId) {
@@ -53,6 +57,10 @@ public class Payment extends BaseTime {
 
     public void updatePaymentState(final PaymentState paymentState) {
         this.paymentState = paymentState;
+    }
+
+    public void updateExpiredDate(final LocalDate expiredDate) {
+        this.expiredDate = expiredDate;
     }
 }
 

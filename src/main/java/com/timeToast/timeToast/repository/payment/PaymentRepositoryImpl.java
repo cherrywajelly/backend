@@ -63,18 +63,13 @@ public class PaymentRepositoryImpl implements PaymentRepository {
         return paymentJpaRepository.findAllByItemId(itemId);
     }
 
-//
-//    @Override
-//    @Query(
-//            value = "SELECT * FROM Payment p WHERE p.item_id = :itemId AND DATE_FORMAT(p.created_at, '%Y-%m') = :yearMonth",
-//            nativeQuery = true
-//    )
-//    public List<Payment> findAllByItemIdAndCreatedAtMonth(@Param("itemId") final long itemId, @Param("yearMonth") String yearMonth) {
-//        return paymentJpaRepository.findAllByItemIdAndCreatedAtMonth(itemId, yearMonth);
-//    }
-
     @Override
     public Optional<Payment> findByOrderId(final String orderId){
         return paymentJpaRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    public Optional<Payment> findRecentPremiumByMemberId(final long memberId) {
+        return paymentJpaRepository.findAllByMemberIdAndItemTypeAndPaymentStateOrderByExpiredDateDesc(memberId,ItemType.PREMIUM, PaymentState.SUCCESS).stream().findFirst();
     }
 }

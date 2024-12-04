@@ -31,6 +31,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Base64;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -100,6 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
             Member member = memberRepository.getById(memberId);
             member.updatePremiumId(payment.getItemId());
             orderName = premiumRepository.getById(payment.getItemId()).getPremiumType().toString();
+            payment.updateExpiredDate(LocalDate.now().plusMonths(1));
         }
 
         return PaymentSuccessResponse.builder()

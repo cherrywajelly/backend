@@ -13,6 +13,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
@@ -303,14 +304,11 @@ public class MemberServiceImplTest {
         when(premiumRepository.getById(any(Long.class))).thenReturn(premium);
 
         //when
-        PremiumResponse premiumResponse = memberService.getMemberPremium(1L);
+        MemberPremium memberPremium = memberService.getMemberPremium(1L);
 
         //then
-        assertEquals(premium.getId(), premiumResponse.premiumId());
-        assertEquals(premium.getPremiumType(), premiumResponse.premiumType());
-        assertEquals(premium.getPrice(), premiumResponse.price());
-        assertEquals(premium.getCount(), premiumResponse.count());
-        assertEquals(premium.getDescription(), premiumResponse.description());
+        assertEquals(premium.getId(), memberPremium.premiumId());
+        assertEquals(premium.getPremiumType(), memberPremium.premiumType());
     }
 
     @Test

@@ -3,11 +3,15 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.payment.Payment;
+import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -17,6 +21,7 @@ import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
@@ -26,6 +31,8 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import com.timeToast.timeToast.service.image.FileUploadService;
+
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -42,10 +49,12 @@ public class MemberServiceImpl implements MemberService{
     private final FileUploadService fileUploadService;
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
+    private final PaymentRepository paymentRepository;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                            final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository) {
+                            final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
+                             final PaymentRepository paymentRepository) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -53,6 +62,7 @@ public class MemberServiceImpl implements MemberService{
         this.fileUploadService = fileUploadService;
         this.premiumRepository = premiumRepository;
         this.creatorAccountRepository = creatorAccountRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -158,9 +168,19 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     @Override
-    public PremiumResponse getMemberPremium(final long memberId) {
+    public MemberPremium getMemberPremium(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return PremiumResponse.from(premiumRepository.getById(member.getPremiumId()));
+        Premium premium = premiumRepository.getById(member.getPremiumId());
+
+        LocalDate expiredDate = null;
+        if(premium.getPremiumType().equals(PremiumType.PREMIUM)){
+            Optional<Payment> payment = paymentRepository.findRecentPremiumByMemberId(memberId);
+            if(payment.isPresent()){
+                expiredDate = payment.get().getExpiredDate();
+            }
+        }
+
+        return MemberPremium.from(premium,expiredDate);
     }
 
     @Transactional
