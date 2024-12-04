@@ -23,6 +23,7 @@ public enum ExceptionConstant {
     //event
     EVENT_TOAST_NOT_FOUND("해당 이벤트 토스트를 찾을 수 없습니다."),
     INVALID_EVENT_TOAST("잘못된 이벤트 토스트 형식입니다."),
+    DUPLICATED_EVENT_TOAST("중복된 이벤트 토스트 입니다."),
 
     //jam
     JAM_NOT_FOUNT("해당 잼을 찾을 수 없습니다."),

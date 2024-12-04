@@ -26,6 +26,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import org.junit.jupiter.api.DisplayName;
@@ -74,6 +75,9 @@ public class GiftToastServiceImplTest {
 
     @Mock
     FcmService fcmService;
+
+    @Mock
+    ToastPieceImageRepository toastPieceImageRepository;
 
     @InjectMocks
     GiftToastServiceImpl giftToastService;
@@ -598,6 +602,27 @@ public class GiftToastServiceImplTest {
         //given
         GiftToastOwner giftToastOwner = giftToastOwnerSetUp();
         when(giftToastOwnerRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(giftToastOwner));
+
+        //when
+        Response response = giftToastService.deleteGiftToast(1L, 1L);
+
+        //then
+        verify(giftToastOwnerRepository, times(1)).findAllByGiftToastId(anyLong());
+
+    }
+
+
+    @Test
+    @DisplayName("캡슐 토스트 삭제 및 토스트 조각 삭제")
+    public void deleteGiftToastAndToastPiece(){
+        //given
+        GiftToastOwner giftToastOwner = giftToastOwnerSetUp();
+        when(giftToastOwnerRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of());
+
+        ToastPiece toastPiece = toastPieceSetUp(1L);
+        ReflectionTestUtils.setField(toastPiece, "id", 1L);
+        when(toastPieceRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(toastPiece));
+
 
         //when
         Response response = giftToastService.deleteGiftToast(1L, 1L);
