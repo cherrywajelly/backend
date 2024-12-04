@@ -59,4 +59,7 @@ public class EventToastRepositoryImpl implements EventToastRepository{
     public void deleteById(final long eventToastId) {
         eventToastJpaRepository.deleteById(eventToastId);
     }
+
+    @Override
+    public List<EventToast> findAll() { return eventToastJpaRepository.findAll(); }
 }
