@@ -9,7 +9,9 @@ public record EventToastPostRequest(
 
         String title,
 
-        Long iconId
+        Long iconId,
+
+        String description
 ){
     public EventToast toEntity(EventToastPostRequest eventToastPostRequest, final long memberId){
         return EventToast.builder()
@@ -17,6 +19,7 @@ public record EventToastPostRequest(
                 .title(eventToastPostRequest.title)
                 .iconId(eventToastPostRequest.iconId)
                 .memberId(memberId)
+                .description(eventToastPostRequest.description)
                 .build();
     }
 }

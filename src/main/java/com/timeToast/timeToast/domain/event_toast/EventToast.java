@@ -38,12 +38,15 @@ public class EventToast extends BaseTime {
 
     private boolean isOpened;
 
+    private String description;
+
     @Builder
-    public EventToast(final String title, final LocalDate openedDate, final long memberId, final long iconId){
+    public EventToast(final String title, final LocalDate openedDate, final long memberId, final long iconId, final String description) {
         this.title = title;
         this.openedDate = openedDate;
         this.memberId = memberId;
         this.iconId = iconId;
+        this.description = description;
     }
 
     public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }
