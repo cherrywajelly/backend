@@ -1,9 +1,11 @@
 package com.timeToast.timeToast.controller.eventToast;
 
+import com.timeToast.timeToast.dto.event_toast.response.EventToastInfoManagerResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastManagerResponses;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,5 +20,8 @@ public class EventToastManagerController {
         return eventToastService.getEventToastsForManager();
     }
 
-
+    @GetMapping("/{eventToastId}")
+    public EventToastInfoManagerResponse getEventToastInfoManager(@PathVariable final long eventToastId) {
+        return eventToastService.getEventToastInfoForManager(eventToastId);
+    }
 }

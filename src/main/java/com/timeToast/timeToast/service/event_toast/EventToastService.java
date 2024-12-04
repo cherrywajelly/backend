@@ -14,4 +14,5 @@ public interface EventToastService {
     void deleteAllEventToastByMemberId(final long memberId);
     Response deleteEventToast(final long memberId, final long eventToastId);
     EventToastManagerResponses getEventToastsForManager();
+    EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId);
 }

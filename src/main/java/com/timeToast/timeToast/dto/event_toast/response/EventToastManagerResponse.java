@@ -9,7 +9,7 @@ public record EventToastManagerResponse (
         String title,
         String nickname
 ) {
-    public static EventToastManagerResponse from(long eventToastId, String title, String iconImageUrl, String nickname) {
+    public static EventToastManagerResponse from(final long eventToastId, final String title, final String iconImageUrl, final String nickname) {
         return EventToastManagerResponse.builder()
                 .eventToastId(eventToastId)
                 .title(title)
