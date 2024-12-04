@@ -41,9 +41,11 @@ public class GiftToast extends BaseTime {
     @Enumerated(EnumType.STRING)
     private GiftToastType giftToastType;
 
+    private String description;
+
     @Builder
     public GiftToast(final long iconId, final long teamId, final LocalDate memorizedDate, final LocalDate openedDate,
-                     final boolean isOpened, final String title, final GiftToastType giftToastType){
+                     final boolean isOpened, final String title, final GiftToastType giftToastType, final String description){
         this.iconId = iconId;
         this.teamId = teamId;
         this.memorizedDate = memorizedDate;
@@ -51,6 +53,7 @@ public class GiftToast extends BaseTime {
         this.isOpened = isOpened;
         this.title = title;
         this.giftToastType = giftToastType;
+        this.description = description;
     }
 
     public void updateIsOpened(final boolean isOpened){

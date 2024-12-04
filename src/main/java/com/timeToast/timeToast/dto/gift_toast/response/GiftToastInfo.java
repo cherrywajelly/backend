@@ -15,6 +15,7 @@ public record GiftToastInfo(
         GiftToastType giftToastType,
         String giftToastOwner,
         String profileImageUrl,
+        String description,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate memorizedDate,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -35,6 +36,7 @@ public record GiftToastInfo(
                 .giftToastType(giftToast.getGiftToastType())
                 .giftToastOwner(giftToastOwner)
                 .profileImageUrl(profileImageUrl)
+                .description(giftToast.getDescription())
                 .memorizedDate(giftToast.getMemorizedDate())
                 .openedDate(giftToast.getOpenedDate())
                 .createdDate(giftToast.getCreatedAt().toLocalDate())

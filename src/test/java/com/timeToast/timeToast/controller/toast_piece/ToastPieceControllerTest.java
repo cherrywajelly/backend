@@ -111,6 +111,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastInfo.title").type(STRING).description("제목"),
                                         fieldWithPath("giftToastInfo.iconImageUrl").type(STRING).description("아이콘 image url"),
                                         fieldWithPath("giftToastInfo.giftToastType").type(STRING).description("선물 토스트 타입"),
+                                        fieldWithPath("giftToastInfo.description").type(STRING).description("설명"),
                                         fieldWithPath("giftToastInfo.giftToastOwner").type(STRING).description("선물 토스트 소유주 이름"),
                                         fieldWithPath("giftToastInfo.profileImageUrl").type(STRING).description("선물 토스트 프로필 사진 url"),
                                         fieldWithPath("giftToastInfo.memorizedDate").type(STRING).description("memorized date"),

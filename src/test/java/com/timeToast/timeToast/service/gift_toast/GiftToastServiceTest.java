@@ -35,7 +35,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastGroupRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.GROUP, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.GROUP,"description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastFriendRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.FRIEND, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.FRIEND, "description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastMineRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.MINE, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.MINE, "description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -80,6 +80,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
 
@@ -112,6 +113,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
     }
@@ -146,6 +148,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
 
