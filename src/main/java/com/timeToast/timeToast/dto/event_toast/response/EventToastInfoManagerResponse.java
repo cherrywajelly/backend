@@ -19,7 +19,7 @@ public record EventToastInfoManagerResponse (
     LocalDate createdAt,
     JamManagerResponses jamManagerResponses
 ){
-    static public EventToastInfoManagerResponse from(final EventToast eventToast, final String iconImageUrl, final String nickname, final JamManagerResponses jamManagerResponses){
+    public static EventToastInfoManagerResponse from(final EventToast eventToast, final String iconImageUrl, final String nickname, final JamManagerResponses jamManagerResponses){
         return EventToastInfoManagerResponse.builder()
                 .eventToastId(eventToast.getId())
                 .iconImageUrl(iconImageUrl)
