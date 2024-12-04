@@ -3,7 +3,6 @@ package com.timeToast.timeToast.controller.toast_piece;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;

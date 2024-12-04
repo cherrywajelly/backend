@@ -24,6 +24,7 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.DDayCount;
+import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -88,6 +89,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Override
     public GiftToastSaveResponse saveGiftToastGroup(final long memberId, final GiftToastGroupRequest giftToastGroupRequest) {
 
+        titleCheck(giftToastGroupRequest.title());
         iconRepository.getById(giftToastGroupRequest.iconId());
         _checkDateValidation(giftToastGroupRequest.openedDate());
 
@@ -121,6 +123,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Override
     public GiftToastSaveResponse saveGiftToastFriend(final long memberId, final GiftToastFriendRequest giftToastFriendRequest) {
 
+        titleCheck(giftToastFriendRequest.title());
         iconRepository.getById(giftToastFriendRequest.iconId());
         _checkDateValidation(giftToastFriendRequest.openedDate());
 
@@ -147,7 +150,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     @Transactional
     @Override
     public GiftToastSaveResponse saveGiftToastMine(final long memberId, final GiftToastMineRequest giftToastMineRequest) {
-
+        titleCheck(giftToastMineRequest.title());
         iconRepository.getById(giftToastMineRequest.iconId());
         _checkDateValidation(giftToastMineRequest.openedDate());
 
@@ -162,6 +165,14 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         return GiftToastSaveResponse.from(giftToast);
     }
+
+    private void titleCheck(final String title) {
+        if(title.length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
+        }
+    }
+
+
 
     @Transactional(readOnly = true)
     @Override

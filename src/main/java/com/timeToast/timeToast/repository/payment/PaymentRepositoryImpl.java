@@ -6,6 +6,8 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.payment.PaymentDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -63,18 +65,18 @@ public class PaymentRepositoryImpl implements PaymentRepository {
         return paymentJpaRepository.findAllByItemId(itemId);
     }
 
-//
-//    @Override
-//    @Query(
-//            value = "SELECT * FROM Payment p WHERE p.item_id = :itemId AND DATE_FORMAT(p.created_at, '%Y-%m') = :yearMonth",
-//            nativeQuery = true
-//    )
-//    public List<Payment> findAllByItemIdAndCreatedAtMonth(@Param("itemId") final long itemId, @Param("yearMonth") String yearMonth) {
-//        return paymentJpaRepository.findAllByItemIdAndCreatedAtMonth(itemId, yearMonth);
-//    }
+    @Override
+    public Page<Payment> findAll(final Pageable pageable) {
+        return paymentJpaRepository.findAll(pageable);
+    }
 
     @Override
     public Optional<Payment> findByOrderId(final String orderId){
         return paymentJpaRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    public Optional<Payment> findRecentPremiumByMemberId(final long memberId) {
+        return paymentJpaRepository.findAllByMemberIdAndItemTypeAndPaymentStateOrderByExpiredDateDesc(memberId,ItemType.PREMIUM, PaymentState.SUCCESS).stream().findFirst();
     }
 }

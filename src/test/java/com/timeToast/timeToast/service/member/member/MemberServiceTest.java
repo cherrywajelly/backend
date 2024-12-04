@@ -8,6 +8,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
@@ -15,6 +16,7 @@ import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +82,8 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public PremiumResponse getMemberPremium(final long memberId) {
-        return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
+    public MemberPremium getMemberPremium(final long memberId) {
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
     }
 
     @Override

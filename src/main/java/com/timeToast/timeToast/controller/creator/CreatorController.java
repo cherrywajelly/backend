@@ -33,21 +33,4 @@ public class CreatorController {
     public CreatorIconInfos getIconGroupsByCreator(@PathVariable long creatorId) {
         return iconGroupAdminService.getIconGroupsByCreator(creatorId);
     }
-
-//    @GetMapping("/monthSettlement")
-//    public void getCreatorMonthSettlement(@Login LoginMember loginMember, @RequestParam("year") int year, @RequestParam("month") int month) {
-//        if(!loginMember.role().equals(MemberRole.MANAGER)){
-//            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-//        }
-//        return memberService.getCreatorMonthSettlement(year, month);
-//    }
-//
-//    @GetMapping("/{creatorId}/monthSettlement")
-//    public void getCreatorMonthSettlementByCreatorId(@Login LoginMember loginMember, @RequestParam("creatorId") int creatorId,  @RequestParam("year") int year, @RequestParam("month") int month) {
-//        if(!loginMember.role().equals(MemberRole.MANAGER)){
-//            throw new UnauthorizedException(UNAUTHORIZED_MEMBER.getMessage());
-//        }
-//        return memberService.getCreatorByCreatorId(creatorId);
-//    }
-
 }

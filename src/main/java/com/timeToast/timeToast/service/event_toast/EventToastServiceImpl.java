@@ -19,6 +19,7 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.global.util.DDayCount;
+import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -60,6 +61,10 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional
     @Override
     public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+
+        if(eventToastPostRequest.title().length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
+        }
 
         if(eventToastRepository.findByMemberIdAndOpenedDateAndTitle(memberId, eventToastPostRequest.openedDate(), eventToastPostRequest.title()).isPresent()){
             throw new BadRequestException(DUPLICATED_EVENT_TOAST.getMessage());
