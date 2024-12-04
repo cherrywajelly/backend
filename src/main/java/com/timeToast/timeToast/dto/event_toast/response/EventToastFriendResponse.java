@@ -22,9 +22,11 @@ public record EventToastFriendResponse(
 
         IconResponse icon,
 
-        boolean isWritten
+        boolean isWritten,
+
+        long dDay
 ){
-    public static EventToastFriendResponse fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten) {
+    public static EventToastFriendResponse fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten, long dDay) {
         return EventToastFriendResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
@@ -33,6 +35,7 @@ public record EventToastFriendResponse(
                 .memberProfileUrl(memberProfileUrl)
                 .icon(icon)
                 .isWritten(isWritten)
+                .dDay(dDay)
                 .build();
     }
 }

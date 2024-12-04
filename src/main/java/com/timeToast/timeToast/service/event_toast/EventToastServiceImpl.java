@@ -14,6 +14,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
+import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -87,17 +89,17 @@ public class EventToastServiceImpl implements EventToastService{
                             eventToast -> {
                                 Member member = memberRepository.getById(eventToast.getMemberId());
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
-                                boolean isWritten = false;
-
-                                if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent()){ isWritten = true; }
+                                boolean isWritten = jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent();
 
                                 EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
-                                        new IconResponse(icon.getId(), icon.getIconImageUrl()), isWritten);
+                                        new IconResponse(icon.getId(), icon.getIconImageUrl()), isWritten, DDayCount.count(LocalDate.now(), eventToast.getOpenedDate()));
                                 eventToastFriendResponses.add(eventToastFriendResponse);
                             }
                     );
                 }
         );
+
+        eventToastFriendResponses.sort(Comparator.comparingLong(EventToastFriendResponse::dDay));
 
         return new EventToastFriendResponses(eventToastFriendResponses);
     }
