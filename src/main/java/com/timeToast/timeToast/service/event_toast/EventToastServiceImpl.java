@@ -82,7 +82,6 @@ public class EventToastServiceImpl implements EventToastService{
         return new EventToastOwnResponses(eventToastOwnResponses);
     }
 
-    //TODO 로직 테스트 (isWritten)
     @Transactional(readOnly = true)
     @Override
     public EventToastFriendResponses getEventToasts(final long memberId){
@@ -235,6 +234,23 @@ public class EventToastServiceImpl implements EventToastService{
                 });
 
         log.info("update event toast's is open");
+    }
+
+    @Transactional
+    @Override
+    public EventToastManagerResponses getEventToastsForManager() {
+        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
+        List<EventToast> eventToasts = eventToastRepository.findAll();
+
+        eventToasts.forEach(
+                eventToast -> {
+                    Icon icon = iconRepository.getById(eventToast.getIconId());
+                    Member member = memberRepository.getById(eventToast.getMemberId());
+                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast.getId(), eventToast.getTitle(), icon.getIconImageUrl(), member.getNickname()));
+                }
+        );
+
+        return new EventToastManagerResponses(eventToastManagerResponses);
     }
 }
 

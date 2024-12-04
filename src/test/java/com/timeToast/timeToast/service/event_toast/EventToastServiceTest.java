@@ -68,4 +68,10 @@ public class EventToastServiceTest implements EventToastService {
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
+
+    @Override
+    public EventToastManagerResponses getEventToastsForManager() {
+        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
+        return new EventToastManagerResponses(eventToastManagerResponses);
+    }
 }

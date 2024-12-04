@@ -20,4 +20,6 @@ public interface EventToastRepository {
     List<EventToast> findAllEventToastToOpen();
 
     void deleteById(final long eventToastId);
+
+    List<EventToast> findAll();
 }
