@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.controller.inquiry;
 
-
 import com.timeToast.timeToast.dto.inquiry.request.InquiryRequest;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.inquiry.InquiryService;

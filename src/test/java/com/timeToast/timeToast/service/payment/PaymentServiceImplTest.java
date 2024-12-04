@@ -17,6 +17,7 @@ import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentsAdminResponses;
 import com.timeToast.timeToast.global.config.TossConfig;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -31,8 +32,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -118,6 +127,25 @@ public class PaymentServiceImplTest {
                 .itemId(1L)
                 .itemType(ItemType.PREMIUM)
                 .build();
+    }
+
+    private Page<Payment> paymentSetUp() {
+        List<Payment> paymentList = new ArrayList<>();
+
+        for (long i = 1; i <= 10; i++) {
+            Payment payment = Payment.builder()
+                    .paymentState(PaymentState.WAITING)
+                    .memberId(1L)
+                    .amount(100)
+                    .itemId(1L)
+                    .itemType(ItemType.PREMIUM)
+                    .build();
+            ReflectionTestUtils.setField(payment, "id", i);
+            ReflectionTestUtils.setField(payment, "createdAt", LocalDateTime.now());
+            paymentList.add(payment);
+        }
+
+        return new PageImpl<>(paymentList, PageRequest.of(0, 5), paymentList.size());
     }
 
     @Test
@@ -320,4 +348,32 @@ public class PaymentServiceImplTest {
         //given when then
         assertThrows(NotFoundException.class, () -> paymentService.failPayment(1L, "jdhaeudjkioeudjc"));
     }
+
+
+    @Test
+    @DisplayName("관리자는 모든 결제를 조회할 수 있다.")
+    public void getPayments() throws Exception {
+        //given
+
+        Page<Payment> payments = paymentSetUp();
+        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+
+        Member member = setUpMember();
+        ReflectionTestUtils.setField(member,"id", 1L);
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+
+        Premium premium = setPremium();
+        ReflectionTestUtils.setField(premium,"id", 2L);
+        when(premiumRepository.getById(anyLong())).thenReturn(premium);
+
+        IconGroup iconGroup = setUpIconGroup();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+
+        //when
+        PaymentsAdminResponses paymentsAdminResponses = paymentService.getPayments(0,5);
+        //then
+        assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
+    }
+
+
 }

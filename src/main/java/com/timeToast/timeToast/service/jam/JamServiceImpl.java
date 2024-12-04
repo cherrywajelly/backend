@@ -15,6 +15,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
@@ -55,6 +56,11 @@ public class JamServiceImpl implements JamService {
     @Transactional
     @Override
     public Response postJam(final JamRequest jamRequest, final MultipartFile contents, final MultipartFile image, final long eventToastId, final long memberId) {
+
+        if(jamRequest.title().length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
+        }
+
         EventToast eventToast = eventToastRepository.getById(eventToastId);
 
         if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent()) {

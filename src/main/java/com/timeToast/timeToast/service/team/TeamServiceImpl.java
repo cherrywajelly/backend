@@ -10,6 +10,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -52,6 +53,10 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     @Override
     public TeamResponse saveTeam(final long memberId, final TeamSaveRequest teamSaveRequest) {
+
+        if(teamSaveRequest.teamName().length() > 20) {
+            throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
+        }
 
         Team team = Team.builder()
                 .name(teamSaveRequest.teamName())

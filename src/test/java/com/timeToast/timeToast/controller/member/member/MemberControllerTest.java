@@ -341,9 +341,7 @@ class MemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("premiumId").type(NUMBER).description("premium id"),
                                         fieldWithPath("premiumType").type(STRING).description("premium type"),
-                                        fieldWithPath("price").type(NUMBER).description("가격"),
-                                        fieldWithPath("count").type(NUMBER).description("이미지 갯수"),
-                                        fieldWithPath("description").type(STRING).description("설명")
+                                        fieldWithPath("expiredDate").type(STRING).description("만료일")
                                 )
                                 .build()
                         )));
