@@ -3,6 +3,8 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
@@ -16,6 +18,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResp
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowCaseManagerResponse;
@@ -130,7 +133,10 @@ public class MemberServiceTest implements MemberService{
         List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
         iconGroupManagerResponses.add(new IconGroupManagerResponse("iconname", List.of("iconimages")));
 
+        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
+        paymentManagerResponses.add(new PaymentManagerResponse(10, PaymentState.SUCCESS, "orderId", ItemType.ICON, "itemData", LocalDate.of(2024, 1, 1), "nickname", List.of("images"), LocalDate.of(2024,1,1)));
+
         return new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", LoginType.GOOGLE, PremiumType.PREMIUM,
-                followManagerResponses, followingManagerResponses, teamManagerResponses, showCaseManagerResponses, eventToastManagerResponses, giftToastManagerResponses, iconGroupManagerResponses);
+                followManagerResponses, followingManagerResponses, teamManagerResponses, showCaseManagerResponses, eventToastManagerResponses, giftToastManagerResponses, iconGroupManagerResponses, paymentManagerResponses);
     }
 }

@@ -20,4 +20,5 @@ public interface PaymentRepository {
     List<PaymentDto> findAllByMonthlyPayments(final LocalDate start, final LocalDate end);
     List<Payment> findAllByItemId(final long itemId);
     Page<Payment> findAll(final Pageable pageable);
+    List<Payment> findByMemberId(final long memberId);
 }

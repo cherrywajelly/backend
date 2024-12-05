@@ -2,6 +2,8 @@ package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
@@ -9,6 +11,9 @@ import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -95,7 +100,17 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastManagerResponses[0].giftToastIconImage").type(STRING).description("사용자의 캡슐 토스트 이미지 url"),
                                         fieldWithPath("giftToastManagerResponses[0].giftToastName").type(STRING).description("사용자의 캡슐 토스트 이름"),
                                         fieldWithPath("iconGroupManagerResponses[0].iconGroupName").type(STRING).description("사용자의 아이콘 그룹 이름"),
-                                        fieldWithPath("iconGroupManagerResponses[0].iconImages[]").type(ARRAY).description("사용자의 아이콘 그룹 이미지")
+                                        fieldWithPath("iconGroupManagerResponses[0].iconImages[]").type(ARRAY).description("사용자의 아이콘 그룹 이미지"),
+                                        fieldWithPath("paymentManagerResponse[0].amount").type(NUMBER).description("지불 금액"),
+                                        fieldWithPath("paymentManagerResponse[0].paymentState").type(STRING).description("결제 상태 (WAITING | SUCCESS | FAILURE)"),
+                                        fieldWithPath("paymentManagerResponse[0].orderId").type(STRING).description("주문 번호"),
+                                        fieldWithPath("paymentManagerResponse[0].itemType").type(STRING).description("구매 아이템 타입 (ICON | PREMIUM)"),
+                                        fieldWithPath("paymentManagerResponse[0].itemTypeData").type(STRING).description("구매 아이템 정보"),
+                                        fieldWithPath("paymentManagerResponse[0].createdAt").type(ARRAY).description("결제 날짜"),
+                                        fieldWithPath("paymentManagerResponse[0].nickname").type(STRING).description("결제자 닉네임"),
+                                        fieldWithPath("paymentManagerResponse[0].images[]").type(ARRAY).description("관련 이미지"),
+                                        fieldWithPath("paymentManagerResponse[0].expiredDate").type(ARRAY).description("만료 날짜")
+
                                 )
                                 .build()
                         )));

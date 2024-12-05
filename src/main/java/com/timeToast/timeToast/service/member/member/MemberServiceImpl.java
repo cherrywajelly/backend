@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
@@ -22,6 +23,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResp
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowCaseManagerResponse;
@@ -296,21 +298,46 @@ public class MemberServiceImpl implements MemberService{
                 ))
                 .toList();
 
-        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
+
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-        iconGroups.forEach(
-                iconGroup -> {
-                    List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
-                    List<String> iconImages = new ArrayList<>();
-                    icons.forEach(
-                            icon -> {
-                                iconImages.add(icon.getIconImageUrl());
-                            });
-                    iconGroupManagerResponses.add(IconGroupManagerResponse.from(iconGroup.getName(), iconImages));
-                });
+        List<IconGroupManagerResponse> iconGroupManagerResponses = iconGroups.stream()
+                .map(iconGroup -> {
+                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream()
+                            .map(Icon::getIconImageUrl)
+                            .toList();
+                    return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
+                })
+                .toList();
 
+        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
+        List<Payment> payments = paymentRepository.findByMemberId(memberId);
+        payments.forEach(
+                payment -> {
+                    MemberItemDataResponse memberItemDataResponse = createItemData(payment.getItemType(), payment.getItemId());
+                    paymentManagerResponses.add(PaymentManagerResponse.from(payment, memberItemDataResponse.itemTypeData(), member.getNickname(), memberItemDataResponse.images()));
+                }
+        );
 
+        return MemberInfoManagerResponse.from(member, premium.getPremiumType(), followManagerResponses, followingManagerResponses, teamManagerResponses, showCaseManagerResponses, eventToastManagerResponses, giftToastManagerResponses, iconGroupManagerResponses, paymentManagerResponses);
+    }
 
-        return MemberInfoManagerResponse.from(member, premium.getPremiumType(), followManagerResponses, followingManagerResponses, teamManagerResponses, showCaseManagerResponses, eventToastManagerResponses, giftToastManagerResponses, iconGroupManagerResponses);
+    private MemberItemDataResponse createItemData(ItemType itemType, long itemId) {
+        String itemTypeData = "";
+        List<String> images = new ArrayList<>();
+        IconGroup iconGroup = iconGroupRepository.getById(itemId);
+
+        if (itemType.equals(ItemType.PREMIUM)) {
+            itemTypeData = "PREMIUM";
+        }
+        else {
+            itemTypeData = iconGroup.getName();
+            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
+            icons.forEach(
+                    icon -> {
+                        images.add(icon.getIconImageUrl());
+                    }
+            );
+        }
+        return new MemberItemDataResponse(itemTypeData, images);
     }
 }

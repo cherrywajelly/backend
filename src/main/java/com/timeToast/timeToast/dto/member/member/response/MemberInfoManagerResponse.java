@@ -9,6 +9,7 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
+import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowCaseManagerResponse;
 import lombok.Builder;
 
@@ -28,12 +29,14 @@ public record MemberInfoManagerResponse (
         List<ShowCaseManagerResponse> showCaseManagerResponses,
         List<EventToastDataManagerResponse> eventToastManagerResponses,
         List<GiftToastDataManagerResponse> giftToastManagerResponses,
-        List<IconGroupManagerResponse> iconGroupManagerResponses
+        List<IconGroupManagerResponse> iconGroupManagerResponses,
+        List<PaymentManagerResponse> paymentManagerResponse
 ) {
     public static MemberInfoManagerResponse from(final Member member, final PremiumType premiumType, final List<FollowManagerResponse> followManagerResponses,
                                                  List<FollowingManagerResponse> followingManagerResponses, List<TeamDataManagerResponse> teamManagerResponses,
                                                  List<ShowCaseManagerResponse> showCaseManagerResponses, List<EventToastDataManagerResponse> eventToastManagerResponses,
-                                                 List<GiftToastDataManagerResponse> giftToastManagerResponses, List<IconGroupManagerResponse> iconGroupManagerResponses) {
+                                                 List<GiftToastDataManagerResponse> giftToastManagerResponses, List<IconGroupManagerResponse> iconGroupManagerResponses,
+                                                 List<PaymentManagerResponse> paymentManagerResponse) {
         return MemberInfoManagerResponse.builder()
                 .memberId(member.getId())
                 .memberProfileUrl(member.getMemberProfileUrl())
@@ -48,6 +51,7 @@ public record MemberInfoManagerResponse (
                 .eventToastManagerResponses(eventToastManagerResponses)
                 .giftToastManagerResponses(giftToastManagerResponses)
                 .iconGroupManagerResponses(iconGroupManagerResponses)
+                .paymentManagerResponse(paymentManagerResponse)
                 .build();
     }
 }

@@ -672,12 +672,13 @@ public class GiftToastServiceImplTest {
         ToastPiece toastPiece = toastPieceSetUp(1L);
         ReflectionTestUtils.setField(toastPiece, "id", 1L);
         ReflectionTestUtils.setField(toastPiece, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        ReflectionTestUtils.setField(giftToast, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+
         when(toastPieceRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(toastPiece));
         when(iconRepository.getById(anyLong())).thenReturn(giftToastIconSetUp());
         when(memberRepository.getById(anyLong())).thenReturn(setUpMember());
 
         GiftToastInfoManagerResponse giftToastInfoManagerResponse = giftToastService.getGiftToastInfoForManager(1L);
         verify(iconRepository, times(2)).getById(anyLong());
-
     }
 }
