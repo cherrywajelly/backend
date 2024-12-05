@@ -9,8 +9,7 @@ import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -207,5 +206,18 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public MemberManagerResponses getMembersForManagers() {
+        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+        List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
+        members.forEach(
+                member -> {
+                    memberManagerResponses.add(MemberManagerResponse.from(member));
+                }
+        );
+        return new MemberManagerResponses(memberManagerResponses);
     }
 }

@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.dto.member_group.response;
 
 import com.timeToast.timeToast.domain.team.team.Team;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -13,15 +13,15 @@ public record TeamInfoManagerResponse (
         String teamProfileUrl,
         String name,
         LocalDate createdAt,
-        List<MemberManagerResponse> memberManagerResponses
+        List<ManagerProfileResponse> managerProfileResponses
 ) {
-    public static TeamInfoManagerResponse from(final Team team, List<MemberManagerResponse> memberManagerResponses) {
+    public static TeamInfoManagerResponse from(final Team team, List<ManagerProfileResponse> managerProfileResponses) {
         return TeamInfoManagerResponse.builder()
                 .teamId(team.getId())
                 .teamProfileUrl(team.getTeamProfileUrl())
                 .name(team.getName())
                 .createdAt(team.getCreatedAt().toLocalDate())
-                .memberManagerResponses(memberManagerResponses)
+                .managerProfileResponses(managerProfileResponses)
                 .build();
     }
 }
