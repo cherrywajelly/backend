@@ -13,6 +13,7 @@ public record GiftToastSaveResponse(
         long giftToastId,
         String title,
         GiftToastType giftToastType,
+        String description,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate memorizedDate,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -25,6 +26,7 @@ public record GiftToastSaveResponse(
                 .giftToastId(giftToast.getId())
                 .title(giftToast.getTitle())
                 .giftToastType(giftToast.getGiftToastType())
+                .description(giftToast.getDescription())
                 .memorizedDate(giftToast.getMemorizedDate())
                 .openedDate(giftToast.getOpenedDate())
                 .isOpened(giftToast.getIsOpened())

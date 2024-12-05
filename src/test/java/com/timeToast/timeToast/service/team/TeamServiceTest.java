@@ -1,15 +1,15 @@
 package com.timeToast.timeToast.service.team;
 
-import com.timeToast.timeToast.domain.team.team.Team;
+import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.dto.member_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +48,19 @@ public class TeamServiceTest implements TeamService {
     @Override
     public void deleteAllTeam(final long memberId) {
 
+    }
+
+    @Override
+    public TeamManagerResponses getTeamForManager() {
+        List<TeamManagerResponse> teamManagerResponses = new ArrayList<>();
+        teamManagerResponses.add(new TeamManagerResponse(1,"team1","profile1"));
+        return new TeamManagerResponses(teamManagerResponses);
+    }
+
+    @Override
+    public TeamInfoManagerResponse getTeamInfoForManager(final long teamId){
+        List<ManagerProfileResponse> managerProfileRespons = new ArrayList<>();
+        managerProfileRespons.add(new ManagerProfileResponse("nickname","memberProfile"));
+        return new TeamInfoManagerResponse(1L, "profileUrl", "name", LocalDate.of(2024, 11, 11), managerProfileRespons);
     }
 }

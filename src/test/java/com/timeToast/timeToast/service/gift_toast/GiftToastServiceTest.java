@@ -6,9 +6,8 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -34,7 +33,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastGroupRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.GROUP, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.GROUP,"description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastFriendRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.FRIEND, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.FRIEND, "description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class GiftToastServiceTest implements GiftToastService{
         if((giftToastMineRequest.openedDate().isBefore(LocalDate.now()))){
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
-        return new GiftToastSaveResponse(1, "title", GiftToastType.MINE, LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
+        return new GiftToastSaveResponse(1, "title", GiftToastType.MINE, "description", LocalDate.of(2024, 1, 1),LocalDate.of(2024, 1, 1), false);
     }
 
     @Override
@@ -60,6 +59,15 @@ public class GiftToastServiceTest implements GiftToastService{
             throw  new NotFoundException(GIFT_TOAST_NOT_FOUND.getMessage());
         }
 
+        List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
+        memberInfoResponses.add(MemberInfoResponse.builder()
+                        .memberId(1L)
+                        .email("email")
+                        .nickname("nickname")
+                        .profileUrl("profileUrl")
+                        .build());
+
+        GiftToastTeamMember giftToastTeamMember = new GiftToastTeamMember(3, 1, memberInfoResponses);
         GiftToastInfo giftToastInfo =  GiftToastInfo.builder()
                 .giftToastId(1L)
                 .title("title")
@@ -70,6 +78,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
 
@@ -87,7 +96,7 @@ public class GiftToastServiceTest implements GiftToastService{
                         .toastPieceImages(List.of("images"))
                         .build());
 
-        return new GiftToastDetailResponse(giftToastInfo,1L, new ToastPieceResponses(1L,toastPieceResponses) );
+        return new GiftToastDetailResponse(giftToastInfo,giftToastTeamMember,1L, new ToastPieceResponses(1L,toastPieceResponses) );
     }
 
     @Override
@@ -102,6 +111,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
     }
@@ -136,6 +146,7 @@ public class GiftToastServiceTest implements GiftToastService{
                 .memorizedDate(LocalDate.of(2024, 1, 1))
                 .openedDate(LocalDate.of(2024, 1, 1))
                 .createdDate(LocalDate.of(2024, 1, 1))
+                .description("description")
                 .isOpened(false)
                 .build();
 
@@ -162,5 +173,20 @@ public class GiftToastServiceTest implements GiftToastService{
     @Override
     public void deleteAllGiftToast(long memberId) {
 
+    }
+
+    @Override
+    public GiftToastManagerResponses getGiftToastsForManager() {
+        List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        giftToastManagerResponses.add(GiftToastManagerResponse.from(1L, "iconImageUrl", "title", "name"));
+        return new GiftToastManagerResponses(giftToastManagerResponses);
+    }
+
+    @Override
+    public GiftToastInfoManagerResponse getGiftToastInfoForManager(final long giftToastId) {
+        List<ToastPieceManagerResponse> toastPieceManagerResponses = new ArrayList<>();
+        toastPieceManagerResponses.add(new ToastPieceManagerResponse(1L,"iconImageUrl", "title", LocalDate.of(2024, 1, 1), "nickname"));
+        return new GiftToastInfoManagerResponse(1L, "imageUrl", "title", "name", LocalDate.of(2024, 1, 1),
+                LocalDate.of(2024, 1, 1), false, GiftToastType.FRIEND, LocalDate.of(2024, 1, 1), toastPieceManagerResponses);
     }
 }

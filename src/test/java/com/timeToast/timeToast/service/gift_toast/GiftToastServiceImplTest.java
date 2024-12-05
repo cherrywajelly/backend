@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
@@ -24,8 +25,10 @@ import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastReposit
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import org.junit.jupiter.api.DisplayName;
@@ -75,6 +78,12 @@ public class GiftToastServiceImplTest {
     @Mock
     FcmService fcmService;
 
+    @Mock
+    ToastPieceImageRepository toastPieceImageRepository;
+
+    @Mock
+    TeamRepository teamRepository;
+
     @InjectMocks
     GiftToastServiceImpl giftToastService;
 
@@ -100,6 +109,12 @@ public class GiftToastServiceImplTest {
         return TeamMember.builder()
                 .teamId(1L)
                 .memberId(1L)
+                .build();
+    }
+
+    private Team teamSetUp(){
+        return Team.builder()
+                .name("name")
                 .build();
     }
 
@@ -201,27 +216,27 @@ public class GiftToastServiceImplTest {
     }
 
     private GiftToastGroupRequest giftToastGroupSuccessSetUp(){
-        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastGroupRequest giftToastGroupFailSetUp(){
-        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastGroupRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastFriendRequest giftToastFriendSuccessSetUp(){
-        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastFriendRequest giftToastFriendFailSetUp(){
-        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastMineRequest giftToastMineSuccessSetUp(){
-        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now(), "title");
+        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now(), "title","description");
     }
 
     private GiftToastMineRequest giftToastMineFailSetUp(){
-        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now().minusDays(2), "title");
+        return new GiftToastMineRequest(1L, LocalDate.now(), LocalDate.now().minusDays(2), "title","description");
     }
 
     private GiftToastOwner giftToastOwnerSetUp(){
@@ -608,4 +623,63 @@ public class GiftToastServiceImplTest {
     }
 
 
+    @Test
+    @DisplayName("캡슐 토스트 삭제 및 토스트 조각 삭제")
+    public void deleteGiftToastAndToastPiece(){
+        //given
+        GiftToastOwner giftToastOwner = giftToastOwnerSetUp();
+        when(giftToastOwnerRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of());
+
+        ToastPiece toastPiece = toastPieceSetUp(1L);
+        ReflectionTestUtils.setField(toastPiece, "id", 1L);
+        when(toastPieceRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(toastPiece));
+
+
+        //when
+        Response response = giftToastService.deleteGiftToast(1L, 1L);
+
+        //then
+        verify(giftToastOwnerRepository, times(1)).findAllByGiftToastId(anyLong());
+
+    }
+
+    @Test
+    @DisplayName("관리자 캡슐 토스트 목록 조회")
+    public void getGiftToastsForManager() {
+        GiftToast giftToast = giftToastSetUp();
+        ReflectionTestUtils.setField(giftToast, "id", 1L);
+
+        when(giftToastRepository.findAll()).thenReturn(List.of(giftToast));
+        when(iconRepository.getById(anyLong())).thenReturn(giftToastIconSetUp());
+        when(teamRepository.getById(anyLong())).thenReturn(teamSetUp());
+
+        GiftToastManagerResponses giftToastManagerResponses = giftToastService.getGiftToastsForManager();
+
+        verify(giftToastRepository, times(1)).findAll();
+
+    }
+
+    @Test
+    @DisplayName("관리자 캡슐 토스트 상세 조회")
+    public void getGiftToastInfoForManager() {
+
+        GiftToast giftToast = giftToastSetUp();
+        when(giftToastRepository.getById(anyLong())).thenReturn(giftToast);
+        when(iconRepository.getById(anyLong())).thenReturn(giftToastIconSetUp());
+        when(teamRepository.getById(anyLong())).thenReturn(teamSetUp());
+
+        ReflectionTestUtils.setField(giftToast, "id", 1L);
+        ToastPiece toastPiece = toastPieceSetUp(1L);
+        ReflectionTestUtils.setField(toastPiece, "id", 1L);
+        ReflectionTestUtils.setField(toastPiece, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        ReflectionTestUtils.setField(giftToast, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+
+        when(toastPieceRepository.findAllByGiftToastId(anyLong())).thenReturn(List.of(toastPiece));
+        when(iconRepository.getById(anyLong())).thenReturn(giftToastIconSetUp());
+        when(memberRepository.getById(anyLong())).thenReturn(setUpMember());
+
+        GiftToastInfoManagerResponse giftToastInfoManagerResponse = giftToastService.getGiftToastInfoForManager(1L);
+        verify(iconRepository, times(2)).getById(anyLong());
+
+    }
 }

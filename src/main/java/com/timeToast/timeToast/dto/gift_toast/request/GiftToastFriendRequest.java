@@ -11,7 +11,8 @@ public record GiftToastFriendRequest(
         Long friendId,
         LocalDate memorizedDate,
         LocalDate openedDate,
-        String title
+        String title,
+        String description
 ) {
 
     public static GiftToast to(GiftToastFriendRequest giftToastFriendRequest){
@@ -22,6 +23,7 @@ public record GiftToastFriendRequest(
                 .isOpened(false)
                 .title(giftToastFriendRequest.title())
                 .giftToastType(GiftToastType.FRIEND)
+                .description(giftToastFriendRequest.description())
                 .build();
     }
 }

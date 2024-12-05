@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,18 +82,18 @@ public class EventToastServiceImplTest {
         String nickname = "nickname";
         LocalDate openedDate = LocalDate.of(2024, 1, 1);
 
-        eventToast = EventToast.builder().memberId(memberId).openedDate(openedDate).title(title).iconId(iconId).build();
+        eventToast = EventToast.builder().memberId(memberId).openedDate(openedDate).title(title).iconId(iconId).memberId(memberId).build();
         icon = Icon.builder().iconImageUrl(imageUrl).build();
         follow = Follow.builder().followerId(memberId).followingId(followingId).build();
         member = Member.builder().nickname(nickname).memberProfileUrl(imageUrl).build();
-        jam = Jam.builder().memberId(memberId).build();
+        jam = Jam.builder().iconId(iconId).memberId(memberId).build();
     }
 
     @Test
     @DisplayName("이벤트 토스트 저장 성공")
     void saveEventToastSuccess() {
         long memberId = 1L;
-        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1),"title", 1L);
+        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2024, 1, 1),"title", 1L,"description");
 
         when(eventToastRepository.save(any(EventToast.class))).thenReturn(eventToast);
 
@@ -211,7 +212,7 @@ public class EventToastServiceImplTest {
         long eventToastId = 1L;
         List<JamResponse> jams = List.of(new JamResponse(1L, icon.getIconImageUrl(), member.getNickname()));
         EventToastResponse eventToastResponse = new EventToastResponse(eventToastId, eventToast.getTitle(), eventToast.getOpenedDate(), eventToast.isOpened(),
-                icon.getIconImageUrl(), eventToast.getMemberId(), member.getMemberProfileUrl(), member.getNickname(), 0, 0, false, jams);
+                icon.getIconImageUrl(), eventToast.getMemberId(), member.getMemberProfileUrl(), member.getNickname(), 0, 0, false, "description", jams);
 
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId)).thenReturn(Optional.empty());
 
@@ -295,5 +296,44 @@ public class EventToastServiceImplTest {
 
         verify(jamRepository, times(1)).deleteAllByEventToastId(eventToast.getId());
         verify(eventToastRepository, times(1)).deleteById(eventToast.getId());
+    }
+
+    @Test
+    @DisplayName("관리자 이벤트 토스트 목록 조회 성공 ")
+    void getEventToastsManager() {
+        long iconId = 1L;
+        long memberId = 1L;
+        long eventToastId = 1L;
+        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+
+        when(eventToastRepository.findAll()).thenReturn(List.of(eventToast));
+        when(iconRepository.getById(iconId)).thenReturn(icon);
+        when(memberRepository.getById(memberId)).thenReturn(member);
+
+        EventToastManagerResponses eventToastManagerResponses = eventToastService.getEventToastsForManager();
+
+        assertThat(eventToastManagerResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("관리자 이벤트 토스트 상세 조회 성공 ")
+    void getEventToastInfoForManager() {
+        long eventToastId = 1L;
+        long memberId = 1L;
+        long iconId = 1L;
+        ReflectionTestUtils.setField(jam, "createdAt", LocalDateTime.of(2024,1,1,0,0));
+        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+        ReflectionTestUtils.setField(eventToast, "createdAt", LocalDateTime.of(2024,1,1,0,0));
+
+        when(eventToastRepository.getById(eventToastId)).thenReturn(eventToast);
+        when(memberRepository.getById(memberId)).thenReturn(member);
+        when(iconRepository.getById(iconId)).thenReturn(icon);
+        when(jamRepository.findAllByEventToastId(eventToastId)).thenReturn(List.of(jam));
+        when(iconRepository.getById(iconId)).thenReturn(icon);
+        when(memberRepository.getById(memberId)).thenReturn(member);
+
+        EventToastInfoManagerResponse eventToastInfoManagerResponse = eventToastService.getEventToastInfoForManager(memberId);
+
+        assertThat(eventToastInfoManagerResponse).isNotNull();
     }
 }

@@ -1,13 +1,19 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
@@ -15,6 +21,7 @@ import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,12 +87,19 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public PremiumResponse getMemberPremium(final long memberId) {
-        return new PremiumResponse(1L, PremiumType.BASIC, 0, 3, "description");
+    public MemberPremium getMemberPremium(final long memberId) {
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
     }
 
     @Override
     public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    }
+
+    @Override
+    public MemberManagerResponses getMembersForManagers() {
+        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+        memberManagerResponses.add(new MemberManagerResponse(1L, "memberProfileUrl", "nickname"));
+        return new MemberManagerResponses(memberManagerResponses);
     }
 }

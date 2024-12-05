@@ -33,9 +33,11 @@ public record EventToastResponse(
 
         boolean isWritten,
 
+        String description,
+
         List<JamResponse> jams
 ){
-    public static EventToastResponse fromEntity(EventToast eventToast, final String iconImageUrl, final long memberId, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
+    public static EventToastResponse fromEntity(final EventToast eventToast, final String iconImageUrl, final long memberId, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
         return EventToastResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
@@ -47,6 +49,7 @@ public record EventToastResponse(
                 .nickname(nickname)
                 .jamCount(jamCount)
                 .dDay(dDay)
+                .description(eventToast.getDescription())
                 .jams(jams)
                 .build();
     }
@@ -63,6 +66,7 @@ public record EventToastResponse(
                 .nickname(eventToastResponse.nickname())
                 .jamCount(eventToastResponse.jamCount())
                 .dDay(eventToastResponse.dDay())
+                .description(eventToastResponse.description())
                 .isWritten(isWritten)
                 .jams(eventToastResponse.jams())
                 .build();

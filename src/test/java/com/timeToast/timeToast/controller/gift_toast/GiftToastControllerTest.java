@@ -37,7 +37,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastGroup() throws Exception {
 
-        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.now(), LocalDate.now(), "title");
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.now(), LocalDate.now(), "title","description");
         String json = objectMapper.writeValueAsString(giftToastGroupRequest);
 
         mockMvc.perform(
@@ -60,12 +60,14 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamId").type(NUMBER).description("팀 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
-                                )
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+                                        )
                                 .responseFields(
                                         fieldWithPath("giftToastId").type(NUMBER).description("선물 토스트 Id"),
                                         fieldWithPath("title").type(STRING).description("제목"),
                                         fieldWithPath("giftToastType").type(STRING).description("선물 토스트 타입"),
+                                        fieldWithPath("description").type(STRING).description("설명"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("open 여부")
@@ -79,7 +81,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastGroupFail() throws Exception {
 
-        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now(), "title");
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now(), "title","description");
         String json = objectMapper.writeValueAsString(giftToastGroupRequest);
 
         mockMvc.perform(
@@ -102,7 +104,9 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamId").type(NUMBER).description("팀 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("400"),
@@ -117,7 +121,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastGroupDateFail() throws Exception {
 
-        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now().minusDays(1), "title");
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 2L,LocalDate.now(), LocalDate.now().minusDays(1), "title","description");
         String json = objectMapper.writeValueAsString(giftToastGroupRequest);
 
         mockMvc.perform(
@@ -140,7 +144,9 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamId").type(NUMBER).description("팀 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("400"),
@@ -155,7 +161,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastFriendDateFail() throws Exception {
 
-        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(1),  "title");
+        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now().minusDays(1),  "title","description");
         String json = objectMapper.writeValueAsString(giftToastFriendRequest);
 
         mockMvc.perform(
@@ -177,7 +183,9 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("friendId").type(NUMBER).description("팔로잉 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("400"),
@@ -192,7 +200,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastFriend() throws Exception {
 
-        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title");
+        GiftToastFriendRequest giftToastFriendRequest = new GiftToastFriendRequest(1L, 1L, LocalDate.now(), LocalDate.now(), "title","description");
         String json = objectMapper.writeValueAsString(giftToastFriendRequest);
 
         mockMvc.perform(
@@ -214,12 +222,15 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("friendId").type(NUMBER).description("팔로잉 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("giftToastId").type(NUMBER).description("선물 토스트 Id"),
                                         fieldWithPath("title").type(STRING).description("제목"),
                                         fieldWithPath("giftToastType").type(STRING).description("선물 토스트 타입"),
+                                        fieldWithPath("description").type(STRING).description("설명"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("open 여부")
@@ -234,7 +245,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastMineDateFail() throws Exception {
 
-        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now().minusDays(1),"title");
+        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now().minusDays(1),"title","description");
         String json = objectMapper.writeValueAsString(giftToastMineRequest);
 
         mockMvc.perform(
@@ -255,7 +266,9 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("400"),
@@ -270,7 +283,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastMine() throws Exception {
 
-        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now(), "title");
+        GiftToastMineRequest giftToastMineRequest = new GiftToastMineRequest(1L,  LocalDate.now(), LocalDate.now(), "title","description");
         String json = objectMapper.writeValueAsString(giftToastMineRequest);
 
         mockMvc.perform(
@@ -291,12 +304,15 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconId").type(NUMBER).description("아이콘 Id"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
-                                        fieldWithPath("title").type(STRING).description("제목")
+                                        fieldWithPath("title").type(STRING).description("제목"),
+                                        fieldWithPath("description").type(STRING).description("설명")
+
                                 )
                                 .responseFields(
                                         fieldWithPath("giftToastId").type(NUMBER).description("선물 토스트 Id"),
                                         fieldWithPath("title").type(STRING).description("제목"),
                                         fieldWithPath("giftToastType").type(STRING).description("선물 토스트 타입"),
+                                        fieldWithPath("description").type(STRING).description("설명"),
                                         fieldWithPath("memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("openedDate").type(STRING).description("opened date"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("open 여부")
@@ -334,10 +350,17 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastInfo.giftToastType").type(STRING).description("선물 토스트 타입"),
                                         fieldWithPath("giftToastInfo.giftToastOwner").type(STRING).description("선물 토스트 소유주 이름"),
                                         fieldWithPath("giftToastInfo.profileImageUrl").type(STRING).description("선물 토스트 프로필 사진 url"),
+                                        fieldWithPath("giftToastInfo.description").type(STRING).description("설명"),
                                         fieldWithPath("giftToastInfo.memorizedDate").type(STRING).description("memorized date"),
                                         fieldWithPath("giftToastInfo.openedDate").type(STRING).description("opened date"),
                                         fieldWithPath("giftToastInfo.createdDate").type(STRING).description("created date"),
                                         fieldWithPath("giftToastInfo.isOpened").type(BOOLEAN).description("open 여부"),
+                                        fieldWithPath("giftToastTeamMember.teamMembersCount").type(NUMBER).description("전체 팀 멤버 수"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenCount").type(NUMBER).description("팀 멤버 중 작성한 사람 수"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].memberId").type(NUMBER).description("memberId"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].nickname").type(STRING).description("nickname"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].profileUrl").type(STRING).description("profile url"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].email").type(STRING).description("email"),
                                         fieldWithPath("dDay").type(NUMBER).description("D-day"),
                                         fieldWithPath("toastPieceResponses.giftToastId").type(NUMBER).description("giftToastId"),
                                         fieldWithPath("toastPieceResponses.toastPieceResponses[0].memberId").type(NUMBER).description("member id"),

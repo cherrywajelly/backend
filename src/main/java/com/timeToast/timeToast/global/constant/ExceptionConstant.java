@@ -5,11 +5,10 @@ public enum ExceptionConstant {
     //member
     MEMBER_NOT_FOUND("해당 멤버를 찾을 수 없습니다."),
     NICKNAME_CONFLICT("이미 존재하는 닉네임입니다."),
-    ROLE_FORBIDDEN("역할이 검증되지 않았습니다."),
-    UNAUTHORIZED_MEMBER("권한이 없는 사용자입니다,"),
     ACCESS_TOKEN_EXPIRED("사용자의 access token이 만료되었습니다."),
     REFRESH_TOKEN_EXPIRED("사용자의 refresh token이 만료되었습니다."),
     INVALID_TOKEN_FORMAT("잘못된 토큰 양식 입니다."),
+    INVALID_NICKNAME("잘못된 닉네임 형식입니다."),
 
     //follow
     FOLLOW_NOT_FOUND("해당 팔로우 정보를 찾을 수 없습니다."),
@@ -17,12 +16,14 @@ public enum ExceptionConstant {
     INVALID_FOLLOW("자기 자신은 팔로우 할 수 없습니다."),
 
     //team
+    INVALID_TEAM("잘못된 팀 형식 입니다."),
     TEAM_NOT_FOUND("해당 그룹 정보를 찾을 수 없습니다."),
     TEAM_MEMBER_NOT_FOUND("사용자의 그룹에서 해당 그룹 정보를 찾을 수 없습니다."),
 
     //event
     EVENT_TOAST_NOT_FOUND("해당 이벤트 토스트를 찾을 수 없습니다."),
     INVALID_EVENT_TOAST("잘못된 이벤트 토스트 형식입니다."),
+    DUPLICATED_EVENT_TOAST("이미 존재하는 이벤트 토스트 입니다."),
 
     //jam
     JAM_NOT_FOUNT("해당 잼을 찾을 수 없습니다."),
@@ -91,6 +92,8 @@ public enum ExceptionConstant {
 
     INVALID_YEAR_MONTH("잘못된 날짜 조회입니다."),
 
+
+    INVALID_STRING_FORMAT("잘못된 형식의 문자열입니다."),
     //login
     INVALID_USER("권한이 없는 유저입니다."),
     LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
