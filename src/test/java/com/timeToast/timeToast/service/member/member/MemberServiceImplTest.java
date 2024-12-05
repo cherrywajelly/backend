@@ -11,12 +11,15 @@ import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
@@ -37,10 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -347,8 +352,38 @@ public class MemberServiceImplTest {
         assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
-    
-    
-    
+
+    @Test
+    @DisplayName("관리자 사용자 목록 조회")
+    public void getMembersManager(){
+        //given
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(List.of(creator));
+
+
+
+        //when
+        MemberManagerResponses memberManagerResponses = memberService.getMembersForManagers();
+
+        //then
+        assertThat(memberManagerResponses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("관리자 사용자 정보 조회")
+    public void getMemberInfoForManager(){
+        //given
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(memberRepository.getById(anyLong())).thenReturn(creator);
+        when(premiumRepository.getById(anyLong())).thenReturn(null);
+
+
+
+        //when
+        NullPointerException exception = assertThrows(NullPointerException.class, ()-> memberService.getMemberInfoForManager(1L));
+
+    }
     
 }
