@@ -8,13 +8,17 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
+import com.timeToast.timeToast.dto.follow.response.FollowManagerResponse;
+import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
+import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.member.member.response.*;
+import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
+import com.timeToast.timeToast.dto.showcase.response.ShowCaseManagerResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.ConflictException;
@@ -101,5 +105,32 @@ public class MemberServiceTest implements MemberService{
         List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
         memberManagerResponses.add(new MemberManagerResponse(1L, "memberProfileUrl", "nickname"));
         return new MemberManagerResponses(memberManagerResponses);
+    }
+
+    @Override
+    public MemberInfoManagerResponse getMemberInfoForManager(final long memberId){
+        List<FollowManagerResponse> followManagerResponses = new ArrayList<>();
+        followManagerResponses.add(new FollowManagerResponse("followImage", "followNickname"));
+
+        List<FollowingManagerResponse> followingManagerResponses = new ArrayList<>();
+        followingManagerResponses.add(new FollowingManagerResponse("followingImage", "followNickname"));
+
+        List<TeamDataManagerResponse> teamManagerResponses = new ArrayList<>();
+        teamManagerResponses.add(new TeamDataManagerResponse("teamImage", "teamNickname"));
+
+        List<ShowCaseManagerResponse> showCaseManagerResponses = new ArrayList<>();
+        showCaseManagerResponses.add(new ShowCaseManagerResponse("showImage", "showNickname"));
+
+        List<EventToastDataManagerResponse> eventToastManagerResponses = new ArrayList<>();
+        eventToastManagerResponses.add(new EventToastDataManagerResponse("eventImage", "eventNickname"));
+
+        List<GiftToastDataManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        giftToastManagerResponses.add(new GiftToastDataManagerResponse("giftImage", "giftNickname"));
+
+        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
+        iconGroupManagerResponses.add(new IconGroupManagerResponse("iconname", List.of("iconimages")));
+
+        return new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", LoginType.GOOGLE, PremiumType.PREMIUM,
+                followManagerResponses, followingManagerResponses, teamManagerResponses, showCaseManagerResponses, eventToastManagerResponses, giftToastManagerResponses, iconGroupManagerResponses);
     }
 }
