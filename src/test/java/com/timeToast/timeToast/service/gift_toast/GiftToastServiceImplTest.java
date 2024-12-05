@@ -680,6 +680,5 @@ public class GiftToastServiceImplTest {
 
         GiftToastInfoManagerResponse giftToastInfoManagerResponse = giftToastService.getGiftToastInfoForManager(1L);
         verify(iconRepository, times(2)).getById(anyLong());
-
     }
 }

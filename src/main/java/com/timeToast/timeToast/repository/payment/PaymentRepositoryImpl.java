@@ -79,4 +79,9 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     public Optional<Payment> findRecentPremiumByMemberId(final long memberId) {
         return paymentJpaRepository.findAllByMemberIdAndItemTypeAndPaymentStateOrderByExpiredDateDesc(memberId,ItemType.PREMIUM, PaymentState.SUCCESS).stream().findFirst();
     }
+
+    @Override
+    public List<Payment> findByMemberId(final long memberId) {
+        return paymentJpaRepository.findByMemberId(memberId);
+    }
 }

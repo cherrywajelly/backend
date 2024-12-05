@@ -3,6 +3,7 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
@@ -24,6 +25,7 @@ public interface MemberService {
     MemberPremium getMemberPremium(final long memberId);
     Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest);
     MemberManagerResponses getMembersForManagers();
+    MemberInfoManagerResponse getMemberInfoForManager(final long memberId);
 //    void getCreatorMonthSettlement(final int year, final int month);
 //    getCreatorMonthSettlementByCreatorId();
 }
