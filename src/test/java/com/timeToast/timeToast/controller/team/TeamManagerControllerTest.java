@@ -75,8 +75,8 @@ public class TeamManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamProfileUrl").type(STRING).description("그룹 프로필 이미지"),
                                         fieldWithPath("name").type(STRING).description("그룹 이름"),
                                         fieldWithPath("createdAt").type(ARRAY).description("그룹 셍성 날짜"),
-                                        fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("그룹 소속자 닉네임"),
-                                        fieldWithPath("memberManagerResponses[0].memberProfileUrl").type(STRING).description("그룹 소속자 프로필 이미지 url")
+                                        fieldWithPath("managerProfileResponses[0].nickname").type(STRING).description("그룹 소속자 닉네임"),
+                                        fieldWithPath("managerProfileResponses[0].memberProfileUrl").type(STRING).description("그룹 소속자 프로필 이미지 url")
                                 )
                                 .build()
                         )));

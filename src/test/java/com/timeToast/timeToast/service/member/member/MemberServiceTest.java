@@ -1,12 +1,17 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
+import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
@@ -89,5 +94,12 @@ public class MemberServiceTest implements MemberService{
     @Override
     public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    }
+
+    @Override
+    public MemberManagerResponses getMembersForManagers() {
+        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+        memberManagerResponses.add(new MemberManagerResponse(1L, "memberProfileUrl", "nickname"));
+        return new MemberManagerResponses(memberManagerResponses);
     }
 }

@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.service.team;
 
-import com.timeToast.timeToast.domain.team.team.Team;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
 import com.timeToast.timeToast.dto.member_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -60,8 +59,8 @@ public class TeamServiceTest implements TeamService {
 
     @Override
     public TeamInfoManagerResponse getTeamInfoForManager(final long teamId){
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
-        memberManagerResponses.add(new MemberManagerResponse("nickname","memberProfile"));
-        return new TeamInfoManagerResponse(1L, "profileUrl", "name", LocalDate.of(2024, 11, 11), memberManagerResponses);
+        List<ManagerProfileResponse> managerProfileRespons = new ArrayList<>();
+        managerProfileRespons.add(new ManagerProfileResponse("nickname","memberProfile"));
+        return new TeamInfoManagerResponse(1L, "profileUrl", "name", LocalDate.of(2024, 11, 11), managerProfileRespons);
     }
 }
