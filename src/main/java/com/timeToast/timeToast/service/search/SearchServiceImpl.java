@@ -3,7 +3,6 @@ package com.timeToast.timeToast.service.search;
 import com.timeToast.timeToast.dto.search.request.SearchRequest;
 import com.timeToast.timeToast.dto.search.response.SearchResponse;
 import com.timeToast.timeToast.dto.search.response.SearchResponses;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
