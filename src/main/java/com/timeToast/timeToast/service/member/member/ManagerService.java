@@ -18,8 +18,8 @@ public interface ManagerService {
     MemberManagerResponses getMembersForManagers();
     MemberInfoManagerResponse getMemberInfoForManager(final long memberId);
     FollowManagerResponses getMemberFollowInfo(final long memberId);
-//    FollowingManagerResponses getMemberFollowingInfo(final long memberId);
-//    TeamDataManagerResponses getMemberTeamInfo(final long memberId);
+    FollowingManagerResponses getMemberFollowingInfo(final long memberId);
+    TeamDataManagerResponses getMemberTeamInfo(final long memberId);
 //    ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId);
 //    EventToastDataManagerResponses getMemberEventToastInfo(final long memberId);
 //    GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId);

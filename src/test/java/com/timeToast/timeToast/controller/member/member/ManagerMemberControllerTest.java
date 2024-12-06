@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class ManagerMemberControllerTest extends BaseControllerTests {
     private final ManagerService managerService = new ManagerServiceTest();
+
     @Override
     protected Object initController() {
         return new ManagerMemberController(managerService);
@@ -79,12 +80,6 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
                                         fieldWithPath("premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)")
-//                                        fieldWithPath("followManagerResponses[0].followMemberProfileUrl").type(STRING).description("사용자가 팔로우하는 타사용자 프로필 이미지 url"),
-//                                        fieldWithPath("followManagerResponses[0].followMemberNickname").type(STRING).description("사용자가 팔로우하는 타사용자 닉네임"),
-//                                        fieldWithPath("followingManagerResponses[0].followingMemberProfileUrl").type(STRING).description("사용자를 팔로우하는 타사용자 프로필 이미지 Url"),
-//                                        fieldWithPath("followingManagerResponses[0].followingMemberNickname").type(STRING).description("사용자를 팔로우하는 타사용자 닉네임"),
-//                                        fieldWithPath("teamManagerResponses[0].teamProfileUrl").type(STRING).description("사용자가 소속된 그룹 프로필 이미지 url"),
-//                                        fieldWithPath("teamManagerResponses[0].teamName").type(STRING).description("사용자가 소속된 그룹 이름"),
 //                                        fieldWithPath("showCaseManagerResponses[0].showcaseIconImage").type(STRING).description("사용자의 진열장 토스트 이미지 url"),
 //                                        fieldWithPath("showCaseManagerResponses[0].showcaseName").type(STRING).description("사용자의 진열장 토스트 이름"),
 //                                        fieldWithPath("eventToastManagerResponses[0].eventToastIconImage").type(STRING).description("사용자의 이벤트 토스트 이미지 url"),
@@ -113,7 +108,7 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
     void getFollow() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v3/members/{memberId}/follow", 1L)
+                        get("/api/v3/members/{memberId}/follows", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
@@ -132,6 +127,62 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("followManagerResponses[0].followMemberNickname").type(STRING).description("사용자가 팔로우하는 타사용자 닉네임")
                                         )
                                         .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자를 팔로잉하는 유저의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getFollowing() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/followings", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 팔로잉 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 팔로잉 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followingManagerResponses[0].followingMemberProfileUrl").type(STRING).description("사용자를 팔로우하는 타사용자 프로필 이미지 Url"),
+                                        fieldWithPath("followingManagerResponses[0].followingMemberNickname").type(STRING).description("사용자를 팔로우하는 타사용자 닉네임")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getTeam() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/teams", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("teamManagerResponses[0].teamProfileUrl").type(STRING).description("사용자가 소속된 그룹 프로필 이미지 url"),
+                                        fieldWithPath("teamManagerResponses[0].teamName").type(STRING).description("사용자가 소속된 그룹 이름")
+                                )
+                                .build()
                         )));
     }
 }
