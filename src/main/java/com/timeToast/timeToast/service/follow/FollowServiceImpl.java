@@ -62,7 +62,7 @@ public class FollowServiceImpl implements FollowService{
                 followingId,
                 FcmPostRequest.builder()
                         .fcmConstant(FcmConstant.FOLLOW)
-                        .nickname(memberRepository.getById(memberId).getNickname())
+                        .senderId(memberId)
                         .param(memberId)
                         .build());
 

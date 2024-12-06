@@ -22,6 +22,7 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +86,10 @@ public class TeamServiceImplTest  {
     private List<TeamMember> setUpTeamMembers(){
         List<TeamMember> teamMembers = new ArrayList<>();
         for (int i = 1; i < 10; i++) {
-            teamMembers.add(setUpTeamMember(1L, i));
+
+            TeamMember teamMember = setUpTeamMember(1L, i);
+            ReflectionTestUtils.setField(teamMember, "createdAt", LocalDateTime.now());
+            teamMembers.add(teamMember);
         }
         return teamMembers;
     }

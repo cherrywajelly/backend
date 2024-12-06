@@ -243,10 +243,12 @@ public class FcmServiceImplTest {
     void saveFcmInfoSuccess() {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.FOLLOW).param(1L).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.FOLLOW).param(1L).senderId(1L).build();
 
         when(fcmRepository.save(any(Fcm.class))).thenReturn(fcm);
         when(memberRepository.getById(memberId)).thenReturn(member);
+
+
         // When
         Response response = fcmService.saveFcmInfo(memberId, fcmPostRequest);
 
@@ -262,7 +264,6 @@ public class FcmServiceImplTest {
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.FOLLOW).param(1L).build();
 
-        when(memberRepository.getById(memberId)).thenReturn(null);
         // When
         NullPointerException exception = assertThrows(NullPointerException.class, ()-> fcmService.saveFcmInfo(memberId, fcmPostRequest));
 
@@ -275,11 +276,13 @@ public class FcmServiceImplTest {
     void createMessageSuccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
 
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+        when(memberRepository.getById(memberId)).thenReturn(member);
+
 
         // When
         Message message = fcmService.createMessage(memberId, fcmPostRequest);
@@ -294,10 +297,11 @@ public class FcmServiceImplTest {
     void makeMessageSuccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+        when(memberRepository.getById(memberId)).thenReturn(member);
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -311,10 +315,11 @@ public class FcmServiceImplTest {
     void makeMessageAboutJamSpreadSueccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.EVENTTOASTSPREAD).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.EVENTTOASTSPREAD).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.getById(memberId)).thenReturn(member);
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -328,7 +333,7 @@ public class FcmServiceImplTest {
     void makeMessageAboutEventToastOpenedSueccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.EVENTTOASTOPENED).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.EVENTTOASTOPENED).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
@@ -345,7 +350,7 @@ public class FcmServiceImplTest {
     void makeMessageAboutGiftToastCreatedSueccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTCREATED).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTCREATED).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
@@ -362,7 +367,7 @@ public class FcmServiceImplTest {
     void makeMessageAboutGiftToastOpenedSueccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTOPENED).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTOPENED).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
@@ -379,10 +384,12 @@ public class FcmServiceImplTest {
     void makeMessageAboutGiftToastBakedSueccess() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.GIFTTOASTBAKED).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTBAKED).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.getById(memberId)).thenReturn(member);
+
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -396,10 +403,12 @@ public class FcmServiceImplTest {
     void makeMessageFail() throws JsonProcessingException {
         // Given
         long memberId = 1L;
-        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().nickname("nickname").param(1L).fcmConstant(FcmConstant.FOLLOW).build();
+        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
         ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
 
         when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.getById(memberId)).thenReturn(member);
+
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);

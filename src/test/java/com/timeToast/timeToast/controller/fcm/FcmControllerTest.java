@@ -119,7 +119,7 @@ public class FcmControllerTest extends BaseControllerTests {
     @Test
     void test() throws Exception {
 
-        FcmPostRequest fcmResponse = new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, "nickname", "toastName", 1);
+        FcmPostRequest fcmResponse = new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, 1L, "toastName", 1);
         String json = objectMapper.writeValueAsString(fcmResponse);
 
         mockMvc.perform(
@@ -138,7 +138,7 @@ public class FcmControllerTest extends BaseControllerTests {
                                 )
                                 .requestFields(
                                         fieldWithPath("fcmConstant").type(STRING).description("알림 타입"),
-                                        fieldWithPath("nickname").type(STRING).description("알림 관련 사용자 닉네임"),
+                                        fieldWithPath("senderId").type(NUMBER).description("보낸 사람 id"),
                                         fieldWithPath("toastName").type(STRING).description("알림 관련 토스트 제목"),
                                         fieldWithPath("param").type(NUMBER).description("알림 관련 id")
                                 )

@@ -76,8 +76,7 @@ public class JamServiceImpl implements JamService {
         }
         log.info("save jam");
 
-        Member jamMember = memberRepository.getById(memberId);
-        fcmService.sendMessageTo(eventToast.getMemberId(), new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD, jamMember.getNickname(), eventToast.getTitle(), eventToastId));
+        fcmService.sendMessageTo(eventToast.getMemberId(), new FcmPostRequest(FcmConstant.EVENTTOASTSPREAD,memberId, eventToast.getTitle(), eventToastId));
 
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }

@@ -24,11 +24,11 @@ public record FcmResponse(
 
         long param
 ) {
-    public static FcmResponse fromEntity(Fcm fcm, String text, String time, long param){
+    public static FcmResponse fromEntity(Fcm fcm, String text, String time, String nickname, long param){
         return FcmResponse.builder()
                 .fcmId(fcm.getId())
                 .fcmConstant(fcm.getFcmConstant())
-                .nickname(fcm.getNickname())
+                .nickname(nickname)
                 .text(text)
                 .imageUrl(fcm.getImageUrl())
                 .time(time)

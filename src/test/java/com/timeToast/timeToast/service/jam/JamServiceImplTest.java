@@ -96,7 +96,6 @@ public class JamServiceImplTest {
         when(eventToastRepository.getById(eventToast.getId())).thenReturn(eventToast);
         when(jamRepository.findByMemberIdAndEventToastId(member.getId(), eventToast.getId())).thenReturn(Optional.empty());
         when(jamRepository.save(any(Jam.class))).thenReturn(jam);
-        when(memberRepository.getById(member.getId())).thenReturn(member);
         when(fileUploadService.uploadfile(any(), any())).thenReturn("file url");
         when(fcmService.sendMessageTo(anyLong(), any(FcmPostRequest.class))).thenReturn(new Response(StatusCode.OK.getStatusCode(), "success"));
 

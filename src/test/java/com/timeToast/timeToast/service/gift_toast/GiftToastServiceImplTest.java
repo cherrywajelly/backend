@@ -153,6 +153,8 @@ public class GiftToastServiceImplTest {
                     .giftToastType(GiftToastType.MINE)
                     .build();
             ReflectionTestUtils.setField(giftToast, "id", i);
+            ReflectionTestUtils.setField(giftToast, "createdAt", LocalDateTime.now());
+
             giftToasts.add(giftToast);
         }
 
@@ -166,6 +168,7 @@ public class GiftToastServiceImplTest {
                     .giftToastType(GiftToastType.MINE)
                     .build();
             ReflectionTestUtils.setField(giftToast, "id", i);
+            ReflectionTestUtils.setField(giftToast, "createdAt", LocalDateTime.now());
             giftToasts.add(giftToast);
         }
 

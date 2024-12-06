@@ -102,7 +102,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                 fcmService.sendMessageTo(giftToastOwner.getMemberId(),
                         FcmPostRequest.builder()
                                 .fcmConstant(GIFTTOASTBAKED)
-                                .nickname(memberRepository.getById(memberId).getNickname())
+                                .senderId(memberId)
                                 .toastName(giftToast.getTitle())
                                 .param(giftToast.getId())
                                 .build());
