@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,8 +93,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
 
-        if(giftToastOwners.stream().allMatch(giftToastOwner ->
-                        toastPieces.stream().anyMatch(toast-> toast.getMemberId().equals(giftToastOwner.getMemberId())))){
+        if(isGiftToastOpen(giftToastOwners, toastPieces, giftToast)){
             giftToast.updateIsOpened(true);
         }
         giftToastOwners.forEach(giftToastOwner -> {
@@ -108,6 +108,11 @@ public class ToastPieceServiceImpl implements ToastPieceService{
                                 .build());
             }
         });
+    }
+
+    private static boolean isGiftToastOpen(List<GiftToastOwner> giftToastOwners, List<ToastPiece> toastPieces, GiftToast giftToast) {
+        return giftToastOwners.stream().allMatch(giftToastOwner ->
+                toastPieces.stream().anyMatch(toast -> toast.getMemberId().equals(giftToastOwner.getMemberId()))) && (giftToast.getOpenedDate().isEqual(LocalDate.now()) || giftToast.getOpenedDate().isAfter(LocalDate.now()));
     }
 
 
