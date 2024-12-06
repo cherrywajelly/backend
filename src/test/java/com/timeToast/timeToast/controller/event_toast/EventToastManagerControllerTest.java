@@ -2,6 +2,8 @@ package com.timeToast.timeToast.controller.event_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.controller.eventToast.EventToastManagerController;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.event_toast.EventToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -9,12 +11,16 @@ import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -89,6 +95,39 @@ public class EventToastManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("jamManagerResponses[0].title").type(STRING).description("이벤트 토스트의 잼 제목"),
                                         fieldWithPath("jamManagerResponses[0].createdAt").type(STRING).description("이벤트 토스트의 잼 작성날짜"),
                                         fieldWithPath("jamManagerResponses[0].nickname").type(STRING).description("이벤트 토스트의 잼 작성자 닉네임")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 이벤트 토스트 정보를 수정할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void editEventToast() throws Exception {
+        EventToastRequest eventToastRequest = new EventToastRequest(LocalDate.of(2024, 1, 1), true);
+        String json = objectMapper.writeValueAsString(eventToastRequest);
+
+        mockMvc.perform(
+                        put("/api/v3/eventToasts/{eventToastId}",1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("이벤트 토스트 정보 수정",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("이벤트 토스트")
+                                .summary("이벤트 토스트 수정")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("openedDate").type(STRING).description("이벤트 토스트 오픈 날짜"),
+                                        fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부")
+                                )
+                                .responseFields(
+                                        fieldWithPath("openedDate").type(ARRAY).description("이벤트 토스트 오픈 날짜"),
+                                        fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부")
                                 )
                                 .build()
                         )));

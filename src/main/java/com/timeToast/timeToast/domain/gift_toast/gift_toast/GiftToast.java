@@ -56,6 +56,12 @@ public class GiftToast extends BaseTime {
         this.description = description;
     }
 
+    public void updateDatesAndStatus (final LocalDate memorizedDate, final LocalDate openedDate, final boolean isOpened){
+        this.memorizedDate = memorizedDate;
+        this.openedDate = openedDate;
+        this.isOpened = isOpened;
+    }
+
     public void updateIsOpened(final boolean isOpened){
         this.isOpened = isOpened;
     }

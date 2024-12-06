@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.global.response.Response;
@@ -21,4 +22,5 @@ public interface GiftToastService {
     void deleteAllGiftToast(long memberId);
     GiftToastManagerResponses getGiftToastsForManager();
     GiftToastInfoManagerResponse getGiftToastInfoForManager(final long giftToastId);
+    GiftToastRequest editGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest);
 }
