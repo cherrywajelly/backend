@@ -96,24 +96,24 @@ public class ManagerServiceImpl implements ManagerService {
         return new FollowManagerResponses(followManagerResponses);
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
-//        List<FollowingManagerResponse> followingManagerResponses = followRepository.findAllByFollowerId(memberId).stream()
-//                .map(follow -> memberRepository.getById(follow.getFollowingId()))
-//                .map(FollowingManagerResponse::from)
-//                .toList();
-//        return new FollowingManagerResponses(followingManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public TeamDataManagerResponses getMemberTeamInfo(final long memberId) {
-//        List<TeamDataManagerResponse> teamManagerResponses = teamMemberRepository.findAllByMemberId(memberId).stream()
-//                .map(teamMember -> TeamDataManagerResponse.from(teamRepository.getById(teamMember.getTeamId())))
-//                .toList();
-//        return new TeamDataManagerResponses(teamManagerResponses);
-//    }
+    @Transactional(readOnly = true)
+    @Override
+    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
+        List<FollowingManagerResponse> followingManagerResponses = followRepository.findAllByFollowerId(memberId).stream()
+                .map(follow -> memberRepository.getById(follow.getFollowingId()))
+                .map(FollowingManagerResponse::from)
+                .toList();
+        return new FollowingManagerResponses(followingManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public TeamDataManagerResponses getMemberTeamInfo(final long memberId) {
+        List<TeamDataManagerResponse> teamManagerResponses = teamMemberRepository.findAllByMemberId(memberId).stream()
+                .map(teamMember -> TeamDataManagerResponse.from(teamRepository.getById(teamMember.getTeamId())))
+                .toList();
+        return new TeamDataManagerResponses(teamManagerResponses);
+    }
 //
 //    @Transactional(readOnly = true)
 //    @Override

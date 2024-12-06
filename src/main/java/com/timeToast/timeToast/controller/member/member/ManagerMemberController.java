@@ -1,8 +1,11 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
+import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
+import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
 import com.timeToast.timeToast.service.member.member.ManagerService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +31,18 @@ public class ManagerMemberController {
         return managerService.getMemberInfoForManager(memberId);
     }
 
-    @GetMapping("/{memberId}/follow")
+    @GetMapping("/{memberId}/follows")
     public FollowManagerResponses getFollow(@PathVariable final long memberId) {
         return managerService.getMemberFollowInfo(memberId);
     }
 
+    @GetMapping("/{memberId}/followings")
+    public FollowingManagerResponses getFollowing(@PathVariable final long memberId) {
+        return managerService.getMemberFollowingInfo(memberId);
+    }
+
+    @GetMapping("/{memberId}/teams")
+    public TeamDataManagerResponses getTeam(@PathVariable final long memberId) {
+        return managerService.getMemberTeamInfo(memberId);
+    }
 }

@@ -3,11 +3,16 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
+import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.team.team.TeamRepository;
+import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,11 +41,18 @@ public class ManagerServiceImplTest {
     @Mock
     private FollowRepository followRepository;
 
+    @Mock
+    private TeamRepository teamRepository;
+
+    @Mock
+    private TeamMemberRepository teamMemberRepository;
+
     @InjectMocks
     private ManagerServiceImpl managerService;
 
     private Member member;
     private Premium premium;
+    private Team team;
 
     @BeforeEach
     void setUp() {
@@ -48,6 +60,8 @@ public class ManagerServiceImplTest {
 
         member = Member.builder().memberRole(MemberRole.USER).build();
         premium = Premium.builder().build();
+        team = Team.builder().build();
+
     }
 
     @Test
@@ -85,6 +99,26 @@ public class ManagerServiceImplTest {
         ReflectionTestUtils.setField(member, "id", 1L);
 
         FollowManagerResponses responses = managerService.getMemberFollowInfo(1L);
+
+        assertThat(responses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("관리자 사용자 팔로잉 정보 조회 성공")
+    public void getFollowingSuccess(){
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        FollowingManagerResponses responses = managerService.getMemberFollowingInfo(1L);
+
+        assertThat(responses).isNotNull();
+    }
+
+    @Test
+    @DisplayName("관리자 사용자 그룹 정보 조회 성공")
+    public void getTeamSuccess(){
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        TeamDataManagerResponses responses = managerService.getMemberTeamInfo(1L);
 
         assertThat(responses).isNotNull();
     }

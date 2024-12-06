@@ -51,23 +51,20 @@ public class ManagerServiceTest implements ManagerService{
         return new FollowManagerResponses(followManagerResponses);
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
-//        List<FollowingManagerResponse> followingManagerResponses = new ArrayList<>();
-//        followingManagerResponses.add(new FollowingManagerResponse("followingImage", "followNickname"));
-//        return new FollowingManagerResponses(followingManagerResponses);
-//    }
+    @Override
+    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
+        List<FollowingManagerResponse> followingManagerResponses = new ArrayList<>();
+        followingManagerResponses.add(new FollowingManagerResponse("followingImage", "followNickname"));
+        return new FollowingManagerResponses(followingManagerResponses);
+    }
+
+    @Override
+    public TeamDataManagerResponses getMemberTeamInfo(final long memberId) {
+        List<TeamDataManagerResponse> teamManagerResponses = new ArrayList<>();
+        teamManagerResponses.add(new TeamDataManagerResponse("teamImage", "teamNickname"));
+        return new TeamDataManagerResponses(teamManagerResponses);
+    }
 //
-//    @Transactional(readOnly = true)
-//    @Override
-//    public TeamDataManagerResponses getMemberTeamInfo(final long memberId) {
-//        List<TeamDataManagerResponse> teamManagerResponses = new ArrayList<>();
-//        teamManagerResponses.add(new TeamDataManagerResponse("teamImage", "teamNickname"));
-//        return new TeamDataManagerResponses(teamManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
 //    @Override
 //    public ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId) {
 //        List<ShowcaseManagerResponse> showCaseManagerResponses = new ArrayList<>();
@@ -75,7 +72,6 @@ public class ManagerServiceTest implements ManagerService{
 //        return new ShowcaseManagerResponses(showCaseManagerResponses);
 //    }
 //
-//    @Transactional(readOnly = true)
 //    @Override
 //    public EventToastDataManagerResponses getMemberEventToastInfo(final long memberId) {
 //        List<EventToastDataManagerResponse> eventToastManagerResponses = new ArrayList<>();
@@ -83,7 +79,6 @@ public class ManagerServiceTest implements ManagerService{
 //        return new EventToastDataManagerResponses(eventToastManagerResponses);
 //    }
 //
-//    @Transactional(readOnly = true)
 //    @Override
 //    public GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId) {
 //        List<GiftToastDataManagerResponse> giftToastManagerResponses = new ArrayList<>();
@@ -91,7 +86,6 @@ public class ManagerServiceTest implements ManagerService{
 //        return new GiftToastDataManagerResponses(giftToastManagerResponses);
 //    }
 //
-//    @Transactional(readOnly = true)
 //    @Override
 //    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
 //        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
@@ -99,7 +93,6 @@ public class ManagerServiceTest implements ManagerService{
 //        return new IconGroupManagerResponses(iconGroupManagerResponses);
 //    }
 //
-//    @Transactional(readOnly = true)
 //    @Override
 //    public PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId) {
 //        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
