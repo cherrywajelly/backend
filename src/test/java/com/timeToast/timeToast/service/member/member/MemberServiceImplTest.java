@@ -11,12 +11,16 @@ import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
@@ -37,12 +41,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceImplTest {
@@ -312,6 +317,17 @@ public class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("아이콘 제작자 정보 저장 실패")
+    public void saveCreatorInfoFail(){
+        Member member = setUpMember();
+
+        MultipartFile profileImage = mock(MultipartFile.class);
+        CreatorRequest creatorRequest = mock(CreatorRequest.class);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> memberService.saveCreatorInfo(1L, profileImage, creatorRequest));
+
+    }
+
+    @Test
     @DisplayName("제작자 리스트 조회")
     public void getCreators(){
         //given
@@ -347,8 +363,4 @@ public class MemberServiceImplTest {
         assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
-    
-    
-    
-    
 }

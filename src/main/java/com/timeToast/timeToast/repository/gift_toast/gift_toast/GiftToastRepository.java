@@ -13,4 +13,5 @@ public interface GiftToastRepository {
     List<GiftToast> findAllGiftToastToOpen();
     void deleteById(final long giftToastId);
     GiftToast getById(final long giftToastId);
+    List<GiftToast> findAll();
 }

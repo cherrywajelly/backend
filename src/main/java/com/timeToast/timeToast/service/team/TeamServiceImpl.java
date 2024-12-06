@@ -3,14 +3,13 @@ package com.timeToast.timeToast.service.team;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
 import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.dto.member_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -153,4 +152,31 @@ public class TeamServiceImpl implements TeamService {
 
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public TeamManagerResponses getTeamForManager() {
+        List<TeamManagerResponse> teamManagerResponses = new ArrayList<>();
+        List<Team> teams = teamRepository.findAll();
+
+        teams.forEach(
+                team -> teamManagerResponses.add(TeamManagerResponse.from(team))
+        );
+        return new TeamManagerResponses(teamManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public TeamInfoManagerResponse getTeamInfoForManager(final long teamId) {
+
+        List<ManagerProfileResponse> managerProfileResponses = new ArrayList<>();
+        Team team = teamRepository.getById(teamId);
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(teamId);
+        teamMembers.forEach(
+                teamMember -> {
+                    Member member = memberRepository.getById(teamMember.getMemberId());
+                    managerProfileResponses.add(new ManagerProfileResponse(member.getNickname(), member.getMemberProfileUrl()));
+                }
+        );
+        return TeamInfoManagerResponse.from(team, managerProfileResponses);
+    }
 }

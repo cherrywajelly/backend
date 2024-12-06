@@ -3,6 +3,7 @@ package com.timeToast.timeToast.repository.team.team;
 import com.timeToast.timeToast.domain.team.team.Team;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,5 +34,8 @@ public class TeamRepositoryImpl implements TeamRepository {
     public void deleteByTeamId(final long teamId) {
         teamJpaRepository.deleteById(teamId);
     }
+
+    @Override
+    public List<Team> findAll(){ return teamJpaRepository.findAll(); }
 
 }

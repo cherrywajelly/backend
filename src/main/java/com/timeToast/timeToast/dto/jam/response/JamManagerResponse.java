@@ -15,7 +15,7 @@ public record JamManagerResponse (
         LocalDate createdAt,
         String nickname
 ) {
-    static public JamManagerResponse from(final Jam jam, final String iconImageUrl, final String nickname) {
+    public static JamManagerResponse from(final Jam jam, final String iconImageUrl, final String nickname) {
         return JamManagerResponse.builder()
                 .jamId(jam.getId())
                 .iconImageUrl(iconImageUrl)

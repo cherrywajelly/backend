@@ -1,8 +1,10 @@
 package com.timeToast.timeToast.service.gift_toast;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
@@ -14,6 +16,8 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -407,4 +411,46 @@ public class GiftToastServiceImpl implements GiftToastService{
         log.info("update gift toast's is open");
     }
 
+
+    @Transactional(readOnly = true)
+    @Override
+    public GiftToastManagerResponses getGiftToastsForManager() {
+        List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        List<GiftToast> giftToasts = giftToastRepository.findAll();
+
+        giftToasts.forEach(
+                giftToast -> {
+                    Icon icon = iconRepository.getById(giftToast.getIconId());
+                    Team team = teamRepository.getById(giftToast.getTeamId());
+                    if (team != null) {
+                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                    }
+                }
+        );
+        return new GiftToastManagerResponses(giftToastManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public GiftToastInfoManagerResponse getGiftToastInfoForManager(final long giftToastId) {
+        GiftToast giftToast = giftToastRepository.getById(giftToastId);
+        Icon icon = iconRepository.getById(giftToast.getIconId());
+        Team team = teamRepository.getById(giftToast.getTeamId());
+
+        List<ToastPieceManagerResponse> toastPieceManagerResponses = new ArrayList<>();
+        List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToastId);
+        toastPieces.forEach(
+                toastPiece -> {
+                    Icon toastPieceIcon = iconRepository.getById(toastPiece.getIconId());
+                    Member toastPieceMember = memberRepository.getById(toastPiece.getMemberId());
+                    toastPieceManagerResponses.add(ToastPieceManagerResponse.from(toastPiece, toastPieceIcon.getIconImageUrl(), toastPieceMember.getNickname()));
+                }
+        );
+
+        if (team != null) {
+            return GiftToastInfoManagerResponse.from(giftToast, icon.getIconImageUrl(), team.getName(), toastPieceManagerResponses);
+        } else {
+            throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
+        }
+    }
 }

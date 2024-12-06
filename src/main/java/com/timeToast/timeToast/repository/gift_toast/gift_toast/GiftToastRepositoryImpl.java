@@ -1,7 +1,5 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast;
 
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -13,7 +11,6 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast.QGiftToast.giftToast;
 import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
-import static com.timeToast.timeToast.domain.toast_piece.toast_piece.QToastPiece.toastPiece;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.GIFT_TOAST_NOT_FOUND;
 
 @Repository
@@ -80,5 +77,8 @@ public class GiftToastRepositoryImpl implements GiftToastRepository{
     public void deleteById(final long giftToastId) {
         giftToastJpaRepository.deleteById(giftToastId);
     }
+
+    @Override
+    public List<GiftToast> findAll() { return giftToastJpaRepository.findAll(); }
 
 }
