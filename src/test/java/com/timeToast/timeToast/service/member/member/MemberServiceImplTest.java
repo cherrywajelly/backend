@@ -363,43 +363,4 @@ public class MemberServiceImplTest {
         assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
-
-    @Test
-    @DisplayName("관리자 사용자 목록 조회")
-    public void getMembersForManager(){
-        Member creator = setUpCreator();
-        ReflectionTestUtils.setField(creator, "id", 1L);
-        when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(List.of(creator));
-
-        MemberManagerResponses memberManagerResponses = memberService.getMembersForManagers();
-
-        assertThat(memberManagerResponses).isNotNull();
-    }
-
-    @Test
-    @DisplayName("관리자 사용자 정보 조회 실패")
-    public void getMemberInfoForManagerFail(){
-        Member creator = setUpCreator();
-        ReflectionTestUtils.setField(creator, "id", 1L);
-        when(memberRepository.getById(anyLong())).thenReturn(null);
-
-        NullPointerException exception = assertThrows(NullPointerException.class, ()-> memberService.getMemberInfoForManager(1L));
-    }
-
-    @Test
-    @DisplayName("관리자 사용자 정보 조회 실패")
-    public void getMemberInfoForManagerSuccess(){
-        Member member = setUpMember();
-        ReflectionTestUtils.setField(member, "id", 1L);
-        when(memberRepository.getById(anyLong())).thenReturn(member);
-
-        Premium premium = setUpPremium();
-        when(premiumRepository.getById(anyLong())).thenReturn(premium);
-
-        when(followRepository.findAllByFollowingId(anyLong())).thenReturn(getFollowers());
-        when(followRepository.findAllByFollowerId(anyLong())).thenReturn(getFollowing());
-        when(teamMemberRepository.findAllByMemberId(anyLong())).thenReturn(getTeams());
-
-        NullPointerException exception = assertThrows(NullPointerException.class, ()-> memberService.getMemberInfoForManager(1L));
-    }
 }
