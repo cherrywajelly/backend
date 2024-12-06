@@ -79,25 +79,7 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
-                                        fieldWithPath("premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)")
-//                                        fieldWithPath("showCaseManagerResponses[0].showcaseIconImage").type(STRING).description("사용자의 진열장 토스트 이미지 url"),
-//                                        fieldWithPath("showCaseManagerResponses[0].showcaseName").type(STRING).description("사용자의 진열장 토스트 이름"),
-//                                        fieldWithPath("eventToastManagerResponses[0].eventToastIconImage").type(STRING).description("사용자의 이벤트 토스트 이미지 url"),
-//                                        fieldWithPath("eventToastManagerResponses[0].eventToastName").type(STRING).description("사용자의 이벤트 토스트 이름"),
-//                                        fieldWithPath("giftToastManagerResponses[0].giftToastIconImage").type(STRING).description("사용자의 캡슐 토스트 이미지 url"),
-//                                        fieldWithPath("giftToastManagerResponses[0].giftToastName").type(STRING).description("사용자의 캡슐 토스트 이름"),
-//                                        fieldWithPath("iconGroupManagerResponses[0].iconGroupName").type(STRING).description("사용자의 아이콘 그룹 이름"),
-//                                        fieldWithPath("iconGroupManagerResponses[0].iconImages[]").type(ARRAY).description("사용자의 아이콘 그룹 이미지"),
-//                                        fieldWithPath("paymentManagerResponse[0].amount").type(NUMBER).description("지불 금액"),
-//                                        fieldWithPath("paymentManagerResponse[0].paymentState").type(STRING).description("결제 상태 (WAITING | SUCCESS | FAILURE)"),
-//                                        fieldWithPath("paymentManagerResponse[0].orderId").type(STRING).description("주문 번호"),
-//                                        fieldWithPath("paymentManagerResponse[0].itemType").type(STRING).description("구매 아이템 타입 (ICON | PREMIUM)"),
-//                                        fieldWithPath("paymentManagerResponse[0].itemTypeData").type(STRING).description("구매 아이템 정보"),
-//                                        fieldWithPath("paymentManagerResponse[0].createdAt").type(ARRAY).description("결제 날짜"),
-//                                        fieldWithPath("paymentManagerResponse[0].nickname").type(STRING).description("결제자 닉네임"),
-//                                        fieldWithPath("paymentManagerResponse[0].images[]").type(ARRAY).description("관련 이미지"),
-//                                        fieldWithPath("paymentManagerResponse[0].expiredDate").type(ARRAY).description("만료 날짜")
-                                )
+                                        fieldWithPath("premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"))
                                 .build()
                         )));
     }
@@ -181,6 +163,154 @@ public class ManagerMemberControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("teamManagerResponses[0].teamProfileUrl").type(STRING).description("사용자가 소속된 그룹 프로필 이미지 url"),
                                         fieldWithPath("teamManagerResponses[0].teamName").type(STRING).description("사용자가 소속된 그룹 이름")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getShowcases() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/showcases", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("showcaseManagerResponses[0].showcaseIconImage").type(STRING).description("사용자의 진열장 토스트 이미지 url"),
+                                        fieldWithPath("showcaseManagerResponses[0].showcaseName").type(STRING).description("사용자의 진열장 토스트 이름")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getEventToasts() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/eventToasts", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("eventToastManagerResponses[0].eventToastIconImage").type(STRING).description("사용자의 이벤트 토스트 이미지 url"),
+                                        fieldWithPath("eventToastManagerResponses[0].eventToastName").type(STRING).description("사용자의 이벤트 토스트 이름")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void memberGiftToasts() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/giftToasts", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("giftToastManagerResponses[0].giftToastIconImage").type(STRING).description("사용자의 캡슐 토스트 이미지 url"),
+                                        fieldWithPath("giftToastManagerResponses[0].giftToastName").type(STRING).description("사용자의 캡슐 토스트 이름")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getIconGroups() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/iconGroups", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupManagerResponses[0].iconGroupName").type(STRING).description("사용자의 아이콘 그룹 이름"),
+                                        fieldWithPath("iconGroupManagerResponses[0].iconImages[]").type(ARRAY).description("사용자의 아이콘 그룹 이미지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getPayment() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/{memberId}/payments", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 그룹 정보 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("사용자 Id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 그룹 정보 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("paymentManagerResponses[0].amount").type(NUMBER).description("지불 금액"),
+                                        fieldWithPath("paymentManagerResponses[0].paymentState").type(STRING).description("결제 상태 (WAITING | SUCCESS | FAILURE)"),
+                                        fieldWithPath("paymentManagerResponses[0].orderId").type(STRING).description("주문 번호"),
+                                        fieldWithPath("paymentManagerResponses[0].itemType").type(STRING).description("구매 아이템 타입 (ICON | PREMIUM)"),
+                                        fieldWithPath("paymentManagerResponses[0].itemTypeData").type(STRING).description("구매 아이템 정보"),
+                                        fieldWithPath("paymentManagerResponses[0].createdAt").type(ARRAY).description("결제 날짜"),
+                                        fieldWithPath("paymentManagerResponses[0].nickname").type(STRING).description("결제자 닉네임"),
+                                        fieldWithPath("paymentManagerResponses[0].images[]").type(ARRAY).description("관련 이미지"),
+                                        fieldWithPath("paymentManagerResponses[0].expiredDate").type(ARRAY).description("만료 날짜")
+
                                 )
                                 .build()
                         )));
