@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
@@ -85,6 +86,7 @@ public class ManagerServiceImplTest {
     private Team team;
     private Icon icon;
     private IconGroup iconGroup;
+    private Follow follow;
 
     @BeforeEach
     void setUp() {
@@ -96,6 +98,7 @@ public class ManagerServiceImplTest {
         team = Team.builder().build();
         icon = Icon.builder().build();
         iconGroup = IconGroup.builder().name(name).build();
+        follow = Follow.builder().followerId(1L).build();
     }
 
     @Test
@@ -142,6 +145,9 @@ public class ManagerServiceImplTest {
     public void getFollowSuccess(){
         ReflectionTestUtils.setField(member, "id", 1L);
 
+        when(followRepository.findAllByFollowingId(1L)).thenReturn(List.of(follow));
+        when(memberRepository.getById(anyLong())).thenReturn(member);
+
         FollowManagerResponses responses = managerService.getMemberFollowInfo(1L);
 
         assertThat(responses).isNotNull();
@@ -152,6 +158,8 @@ public class ManagerServiceImplTest {
     public void getFollowingSuccess(){
         ReflectionTestUtils.setField(member, "id", 1L);
 
+        when(followRepository.findAllByFollowerId(1L)).thenReturn(List.of(follow));
+        when(memberRepository.getById(anyLong())).thenReturn(member);
         FollowingManagerResponses responses = managerService.getMemberFollowingInfo(1L);
 
         assertThat(responses).isNotNull();
