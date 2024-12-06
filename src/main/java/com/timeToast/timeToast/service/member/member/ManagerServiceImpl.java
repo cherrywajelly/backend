@@ -114,92 +114,92 @@ public class ManagerServiceImpl implements ManagerService {
                 .toList();
         return new TeamDataManagerResponses(teamManagerResponses);
     }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId) {
-//        List<ShowcaseManagerResponse> showcaseManagerResponses = showcaseRepository.findAllByMemberId(memberId).stream()
-//                .map(showcase -> ShowcaseManagerResponse.from(
-//                        iconRepository.getById(eventToastRepository.getById(showcase.getEventToastId()).getIconId()).getIconImageUrl(),
-//                        eventToastRepository.getById(showcase.getEventToastId()).getTitle()
-//                ))
-//                .toList();
-//        return new ShowcaseManagerResponses(showcaseManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public EventToastDataManagerResponses getMemberEventToastInfo(final long memberId) {
-//        List<EventToastDataManagerResponse> eventToastManagerResponses = eventToastRepository.findAllByMemberId(memberId).stream()
-//                .map(eventToast -> EventToastDataManagerResponse.from(
-//                        iconRepository.getById(eventToast.getIconId()).getIconImageUrl(),
-//                        eventToast.getTitle()
-//                ))
-//                .toList();
-//        return new EventToastDataManagerResponses(eventToastManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId) {
-//        List<GiftToastDataManagerResponse> giftToastManagerResponses = giftToastRepository.findAllGiftToastsByMemberId(memberId).stream()
-//                .map(giftToast -> GiftToastDataManagerResponse.from(
-//                        iconRepository.getById(giftToast.getIconId()).getIconImageUrl(),
-//                        giftToast.getTitle()
-//                ))
-//                .toList();
-//        return new GiftToastDataManagerResponses(giftToastManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
-//        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-//        List<IconGroupManagerResponse> iconGroupManagerResponses = iconGroups.stream()
-//                .map(iconGroup -> {
-//                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream()
-//                            .map(Icon::getIconImageUrl)
-//                            .toList();
-//                    return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
-//                })
-//                .toList();
-//        return new IconGroupManagerResponses(iconGroupManagerResponses);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId) {
-//        Member member = memberRepository.getById(memberId);
-//
-//        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
-//        List<Payment> payments = paymentRepository.findByMemberId(memberId);
-//        payments.forEach(
-//                payment -> {
-//                    MemberItemDataResponse memberItemDataResponse = createItemData(payment.getItemType(), payment.getItemId());
-//                    paymentManagerResponses.add(PaymentManagerResponse.from(payment, memberItemDataResponse.itemTypeData(), member.getNickname(), memberItemDataResponse.images()));
-//                }
-//        );
-//        return new PaymentManagerResponses(paymentManagerResponses);
-//    }
-//
-//
-//    public MemberItemDataResponse createItemData(ItemType itemType, long itemId) {
-//        String itemTypeData = "";
-//        List<String> images = new ArrayList<>();
-//        IconGroup iconGroup = iconGroupRepository.getById(itemId);
-//
-//        if (itemType.equals(ItemType.PREMIUM)) {
-//            itemTypeData = "PREMIUM";
-//        }
-//        else {
-//            itemTypeData = iconGroup.getName();
-//            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
-//            icons.forEach(
-//                    icon -> {
-//                        images.add(icon.getIconImageUrl());
-//                    }
-//            );
-//        }
-//        return new MemberItemDataResponse(itemTypeData, images);
-//    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId) {
+        List<ShowcaseManagerResponse> showcaseManagerResponses = showcaseRepository.findAllByMemberId(memberId).stream()
+                .map(showcase -> ShowcaseManagerResponse.from(
+                        iconRepository.getById(eventToastRepository.getById(showcase.getEventToastId()).getIconId()).getIconImageUrl(),
+                        eventToastRepository.getById(showcase.getEventToastId()).getTitle()
+                ))
+                .toList();
+        return new ShowcaseManagerResponses(showcaseManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public EventToastDataManagerResponses getMemberEventToastInfo(final long memberId) {
+        List<EventToastDataManagerResponse> eventToastManagerResponses = eventToastRepository.findAllByMemberId(memberId).stream()
+                .map(eventToast -> EventToastDataManagerResponse.from(
+                        iconRepository.getById(eventToast.getIconId()).getIconImageUrl(),
+                        eventToast.getTitle()
+                ))
+                .toList();
+        return new EventToastDataManagerResponses(eventToastManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId) {
+        List<GiftToastDataManagerResponse> giftToastManagerResponses = giftToastRepository.findAllGiftToastsByMemberId(memberId).stream()
+                .map(giftToast -> GiftToastDataManagerResponse.from(
+                        iconRepository.getById(giftToast.getIconId()).getIconImageUrl(),
+                        giftToast.getTitle()
+                ))
+                .toList();
+        return new GiftToastDataManagerResponses(giftToastManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+        List<IconGroupManagerResponse> iconGroupManagerResponses = iconGroups.stream()
+                .map(iconGroup -> {
+                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream()
+                            .map(Icon::getIconImageUrl)
+                            .toList();
+                    return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
+                })
+                .toList();
+        return new IconGroupManagerResponses(iconGroupManagerResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+
+        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
+        List<Payment> payments = paymentRepository.findByMemberId(memberId);
+        payments.forEach(
+                payment -> {
+                    MemberItemDataResponse memberItemDataResponse = createItemData(payment.getItemType(), payment.getItemId());
+                    paymentManagerResponses.add(PaymentManagerResponse.from(payment, memberItemDataResponse.itemTypeData(), member.getNickname(), memberItemDataResponse.images()));
+                }
+        );
+        return new PaymentManagerResponses(paymentManagerResponses);
+    }
+
+
+    public MemberItemDataResponse createItemData(ItemType itemType, long itemId) {
+        String itemTypeData = "";
+        List<String> images = new ArrayList<>();
+        IconGroup iconGroup = iconGroupRepository.getById(itemId);
+
+        if (itemType.equals(ItemType.PREMIUM)) {
+            itemTypeData = "PREMIUM";
+        }
+        else {
+            itemTypeData = iconGroup.getName();
+            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
+            icons.forEach(
+                    icon -> {
+                        images.add(icon.getIconImageUrl());
+                    }
+            );
+        }
+        return new MemberItemDataResponse(itemTypeData, images);
+    }
 }

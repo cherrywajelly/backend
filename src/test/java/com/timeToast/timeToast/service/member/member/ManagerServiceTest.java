@@ -64,46 +64,40 @@ public class ManagerServiceTest implements ManagerService{
         teamManagerResponses.add(new TeamDataManagerResponse("teamImage", "teamNickname"));
         return new TeamDataManagerResponses(teamManagerResponses);
     }
-//
-//    @Override
-//    public ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId) {
-//        List<ShowcaseManagerResponse> showCaseManagerResponses = new ArrayList<>();
-//        showCaseManagerResponses.add(new ShowcaseManagerResponse("showImage", "showNickname"));
-//        return new ShowcaseManagerResponses(showCaseManagerResponses);
-//    }
-//
-//    @Override
-//    public EventToastDataManagerResponses getMemberEventToastInfo(final long memberId) {
-//        List<EventToastDataManagerResponse> eventToastManagerResponses = new ArrayList<>();
-//        eventToastManagerResponses.add(new EventToastDataManagerResponse("eventImage", "eventNickname"));
-//        return new EventToastDataManagerResponses(eventToastManagerResponses);
-//    }
-//
-//    @Override
-//    public GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId) {
-//        List<GiftToastDataManagerResponse> giftToastManagerResponses = new ArrayList<>();
-//        giftToastManagerResponses.add(new GiftToastDataManagerResponse("giftImage", "giftNickname"));
-//        return new GiftToastDataManagerResponses(giftToastManagerResponses);
-//    }
-//
-//    @Override
-//    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
-//        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
-//        iconGroupManagerResponses.add(new IconGroupManagerResponse("iconname", List.of("iconimages")));
-//        return new IconGroupManagerResponses(iconGroupManagerResponses);
-//    }
-//
-//    @Override
-//    public PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId) {
-//        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
-//        paymentManagerResponses.add(new PaymentManagerResponse(10, PaymentState.SUCCESS, "orderId", ItemType.ICON, "itemData", LocalDate.of(2024, 1, 1), "nickname", List.of("images"), LocalDate.of(2024,1,1)));
-//
-//        return new PaymentManagerResponses(paymentManagerResponses);
-//    }
-//
-//    public MemberItemDataResponse createItemData(ItemType itemType, long itemId) {
-//        String itemTypeData = "";
-//        List<String> images = new ArrayList<>();
-//        return new MemberItemDataResponse(itemTypeData, images);
-//    }
+
+    @Override
+    public ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId) {
+        List<ShowcaseManagerResponse> showCaseManagerResponses = new ArrayList<>();
+        showCaseManagerResponses.add(new ShowcaseManagerResponse("showImage", "showNickname"));
+        return new ShowcaseManagerResponses(showCaseManagerResponses);
+    }
+
+    @Override
+    public EventToastDataManagerResponses getMemberEventToastInfo(final long memberId) {
+        List<EventToastDataManagerResponse> eventToastManagerResponses = new ArrayList<>();
+        eventToastManagerResponses.add(new EventToastDataManagerResponse("eventImage", "eventNickname"));
+        return new EventToastDataManagerResponses(eventToastManagerResponses);
+    }
+
+    @Override
+    public GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId) {
+        List<GiftToastDataManagerResponse> giftToastManagerResponses = new ArrayList<>();
+        giftToastManagerResponses.add(new GiftToastDataManagerResponse("giftImage", "giftNickname"));
+        return new GiftToastDataManagerResponses(giftToastManagerResponses);
+    }
+
+    @Override
+    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
+        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
+        iconGroupManagerResponses.add(new IconGroupManagerResponse("iconname", List.of("iconimages")));
+        return new IconGroupManagerResponses(iconGroupManagerResponses);
+    }
+
+    @Override
+    public PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId) {
+        List<PaymentManagerResponse> paymentManagerResponses = new ArrayList<>();
+        paymentManagerResponses.add(new PaymentManagerResponse(10, PaymentState.SUCCESS, "orderId", ItemType.ICON, "itemData", LocalDate.of(2024, 1, 1), "nickname", List.of("images"), LocalDate.of(2024,1,1)));
+
+        return new PaymentManagerResponses(paymentManagerResponses);
+    }
 }
