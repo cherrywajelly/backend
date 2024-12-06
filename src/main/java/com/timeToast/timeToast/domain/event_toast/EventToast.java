@@ -49,6 +49,11 @@ public class EventToast extends BaseTime {
         this.description = description;
     }
 
+    public void updateOpenedDateAndIsOpened(final LocalDate openedDate, final boolean isOpened) {
+        this.openedDate = openedDate;
+        this.isOpened = isOpened;
+    }
+
     public void updateIsOpened(final boolean isOpened) { this.isOpened = isOpened; }
 
 }
