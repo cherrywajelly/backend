@@ -1,7 +1,9 @@
 package com.timeToast.timeToast.controller.member.member;
 
+import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.service.member.member.ManagerService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ManagerMemberController {
-    private final MemberService memberService;
+    private final ManagerService managerService;
+
 
     @GetMapping("")
     public MemberManagerResponses getMembersManager() {
-        return memberService.getMembersForManagers();
+        return managerService.getMembersForManagers();
     }
 
-    @GetMapping("/{memberId}")
-    public MemberInfoManagerResponse getMemberInfoManager(@PathVariable final long memberId) {
-        return memberService.getMemberInfoForManager(memberId);
+    @GetMapping("/{memberId}/info")
+    public MemberInfoManagerResponse getMemberInfo(@PathVariable final long memberId) {
+        return managerService.getMemberInfoForManager(memberId);
     }
+
+    @GetMapping("/{memberId}/follow")
+    public FollowManagerResponses getFollow(@PathVariable final long memberId) {
+        return managerService.getMemberFollowInfo(memberId);
+    }
+
 }
