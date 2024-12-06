@@ -20,10 +20,9 @@ public interface ManagerService {
     FollowManagerResponses getMemberFollowInfo(final long memberId);
     FollowingManagerResponses getMemberFollowingInfo(final long memberId);
     TeamDataManagerResponses getMemberTeamInfo(final long memberId);
-//    ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId);
-//    EventToastDataManagerResponses getMemberEventToastInfo(final long memberId);
-//    GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId);
-//    IconGroupManagerResponses getMemberIconGroupInfo(final long memberId);
-//    PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId);
-//    MemberItemDataResponse createItemData(ItemType itemType, long itemId);
+    ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId);
+    EventToastDataManagerResponses getMemberEventToastInfo(final long memberId);
+    GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId);
+    IconGroupManagerResponses getMemberIconGroupInfo(final long memberId);
+    PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId);
 }

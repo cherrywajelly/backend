@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
@@ -40,8 +41,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 
 @Service
@@ -279,5 +279,17 @@ public class EventToastServiceImpl implements EventToastService{
         );
 
         return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
+    }
+
+    @Transactional
+    @Override
+    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
+        EventToast eventToast = eventToastRepository.getById(eventToastId);
+
+        eventToast.updateOpenedDateAndIsOpened(eventToastRequest.openedDate(), eventToastRequest.isOpened());
+        eventToastRepository.save(eventToast);
+
+        log.info("edit event toast");
+        return eventToastRequest;
     }
 }
