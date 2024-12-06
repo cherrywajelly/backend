@@ -1,6 +1,8 @@
 package com.timeToast.timeToast.controller.gift_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.gift_toast.GiftToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -8,12 +10,16 @@ import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -96,4 +102,38 @@ public class GiftToastManagerControllerTest extends BaseControllerTests {
     }
 
 
+    @DisplayName("관리자는 캡슐 토스트 정보를 수정할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void editGiftToast() throws Exception {
+        GiftToastRequest giftToastRequest = new GiftToastRequest(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), true);
+        String json = objectMapper.writeValueAsString(giftToastRequest);
+
+        mockMvc.perform(
+                        put("/api/v3/giftToasts/{giftToastId}",1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("캡슐 토스트 정보 수정",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("캡슐 토스트")
+                                .summary("캡슐 토스트 수정")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .requestFields(
+                                        fieldWithPath("memorizedDate").type(STRING).description("캡슐 토스트 이벤트 날짜"),
+                                        fieldWithPath("openedDate").type(STRING).description("캡슐 토스트 오픈 날짜"),
+                                        fieldWithPath("isOpened").type(BOOLEAN).description("캡슐 토스트 열림 여부")
+                                )
+                                .responseFields(
+                                        fieldWithPath("memorizedDate").type(ARRAY).description("캡슐 토스트 이벤트 날짜"),
+                                        fieldWithPath("openedDate").type(ARRAY).description("캡슐 토스트 오픈 날짜"),
+                                        fieldWithPath("isOpened").type(BOOLEAN).description("캡슐 토스트 열림 여부")
+                                )
+                                .build()
+                        )));
+    }
 }

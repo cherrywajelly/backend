@@ -126,7 +126,7 @@ public class EventToastManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부")
                                 )
                                 .responseFields(
-                                        fieldWithPath("openedDate").type(STRING).description("이벤트 토스트 오픈 날짜"),
+                                        fieldWithPath("openedDate").type(ARRAY).description("이벤트 토스트 오픈 날짜"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부")
                                 )
                                 .build()
