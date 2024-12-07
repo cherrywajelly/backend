@@ -351,8 +351,30 @@ public class PaymentServiceImplTest {
 
 
     @Test
-    @DisplayName("관리자는 모든 결제를 조회할 수 있다.")
-    public void getPayments() throws Exception {
+    @DisplayName("관리자는 모든 아이콘 관련 결제를 조회할 수 있다.")
+    public void getIconPayments() throws Exception {
+        //given
+
+        Page<Payment> payments = paymentSetUp();
+        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+
+        Member member = setUpMember();
+        ReflectionTestUtils.setField(member,"id", 1L);
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+
+        IconGroup iconGroup = setUpIconGroup();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+        when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
+
+        //when
+        PaymentsAdminResponses paymentsAdminResponses = paymentService.getIconPayments(0,5);
+        //then
+        assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
+    }
+
+    @Test
+    @DisplayName("관리자는 모든 프리미엄 결제를 조회할 수 있다.")
+    public void getPremiumPayments() throws Exception {
         //given
 
         Page<Payment> payments = paymentSetUp();
@@ -364,13 +386,9 @@ public class PaymentServiceImplTest {
 
         Premium premium = setPremium();
         ReflectionTestUtils.setField(premium,"id", 2L);
-        when(premiumRepository.getById(anyLong())).thenReturn(premium);
-
-        IconGroup iconGroup = setUpIconGroup();
-        ReflectionTestUtils.setField(iconGroup, "id", 1L);
 
         //when
-        PaymentsAdminResponses paymentsAdminResponses = paymentService.getPayments(0,5);
+        PaymentsAdminResponses paymentsAdminResponses = paymentService.getPremiumPayments(0,5);
         //then
         assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
     }

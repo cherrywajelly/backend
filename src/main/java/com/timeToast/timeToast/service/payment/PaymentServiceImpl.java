@@ -126,7 +126,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentsAdminResponses getPayments(final int page, final int size) {
+    public PaymentsAdminResponses getIconPayments(final int page, final int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
 
@@ -138,30 +138,45 @@ public class PaymentServiceImpl implements PaymentService {
                         nickname = member.get().getNickname();
                     }
 
-                    if(payment.getItemType().equals(ItemType.ICON)){
-                        paymentsResponse.add(
-                                PaymentsAdminResponse.builder()
-                                        .createdAt(payment.getCreatedAt().toLocalDate())
-                                        .paymentId(payment.getId())
-                                        .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
-                                        .itemType(ItemType.ICON)
-                                        .nickname(nickname)
-                                        .amount(payment.getAmount())
-                                        .paymentState(payment.getPaymentState())
-                                        .build());
-                    }else{
-                        paymentsResponse.add(
-                                PaymentsAdminResponse.builder()
-                                        .createdAt(payment.getCreatedAt().toLocalDate())
-                                        .paymentId(payment.getId())
-                                        .itemName(premiumRepository.getById(payment.getItemId()).getPremiumType().toString())
-                                        .itemType(ItemType.PREMIUM)
-                                        .nickname(nickname)
-                                        .amount(payment.getAmount())
-                                        .paymentState(payment.getPaymentState())
-                                        .expiredDate(payment.getExpiredDate())
-                                        .build());
+                    paymentsResponse.add(
+                            PaymentsAdminResponse.builder()
+                                    .createdAt(payment.getCreatedAt().toLocalDate())
+                                    .paymentId(payment.getId())
+                                    .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
+                                    .itemType(ItemType.ICON)
+                                    .nickname(nickname)
+                                    .amount(payment.getAmount())
+                                    .paymentState(payment.getPaymentState())
+                                    .build());
+                }
+        );
+
+        return new PaymentsAdminResponses(paymentsResponse);
+    }
+
+    @Override
+    public PaymentsAdminResponses getPremiumPayments(final int page, final int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
+
+        paymentRepository.findAll(pageRequest).forEach(
+                payment -> {
+                    String nickname = null;
+                    Optional<Member> member = memberRepository.findById(payment.getMemberId());
+                    if(member.isPresent()){
+                        nickname = member.get().getNickname();
                     }
+
+                    paymentsResponse.add(
+                            PaymentsAdminResponse.builder()
+                                    .createdAt(payment.getCreatedAt().toLocalDate())
+                                    .paymentId(payment.getId())
+                                    .itemType(ItemType.PREMIUM)
+                                    .nickname(nickname)
+                                    .amount(payment.getAmount())
+                                    .paymentState(payment.getPaymentState())
+                                    .expiredDate(payment.getExpiredDate())
+                                    .build());
                 }
         );
 
