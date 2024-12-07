@@ -423,7 +423,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                     Icon icon = iconRepository.getById(giftToast.getIconId());
                     Team team = teamRepository.getById(giftToast.getTeamId());
                     if (team != null) {
-                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast, icon.getIconImageUrl(),  team.getName()));
                     }
                 }
         );

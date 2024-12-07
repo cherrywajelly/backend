@@ -179,7 +179,8 @@ public class GiftToastServiceTest implements GiftToastService {
     @Override
     public GiftToastManagerResponses getGiftToastsForManager() {
         List<GiftToastManagerResponse> giftToastManagerResponses = new ArrayList<>();
-        giftToastManagerResponses.add(GiftToastManagerResponse.from(1L, "iconImageUrl", "title", "name"));
+        GiftToast giftToast = GiftToast.builder().build();
+        giftToastManagerResponses.add(new GiftToastManagerResponse(1L, "iconImageUrl", "title", "name", LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), true, GiftToastType.GROUP, LocalDate.of(2024, 1, 1)));
         return new GiftToastManagerResponses(giftToastManagerResponses);
     }
 

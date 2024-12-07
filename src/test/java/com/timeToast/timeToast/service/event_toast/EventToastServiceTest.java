@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.event_toast;
 
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
@@ -75,7 +76,7 @@ public class EventToastServiceTest implements EventToastService {
     @Override
     public EventToastManagerResponses getEventToastsForManager() {
         List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
-        eventToastManagerResponses.add(new EventToastManagerResponse(1L, "iconImageUrl", "title", "nickname"));
+        eventToastManagerResponses.add(new EventToastManagerResponse(1L, "iconImageUrl", "title", "nickname", LocalDate.of(20204, 1, 1), true, LocalDate.of(2023, 1, 1)));
         return new EventToastManagerResponses(eventToastManagerResponses);
     }
 
