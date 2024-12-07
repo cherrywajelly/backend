@@ -305,6 +305,8 @@ public class EventToastServiceImplTest {
         long memberId = 1L;
         long eventToastId = 1L;
         ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+        ReflectionTestUtils.setField(eventToast, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        ReflectionTestUtils.setField(eventToast, "isOpened", true);
 
         when(eventToastRepository.findAll()).thenReturn(List.of(eventToast));
         when(iconRepository.getById(iconId)).thenReturn(icon);

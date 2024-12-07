@@ -145,8 +145,11 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("memberManagerResponses[0].memberId").type(NUMBER).description("사용자 id"),
                                         fieldWithPath("memberManagerResponses[0].memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("사용자 닉네임"),
-                                        fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role")
-
+                                        fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
+                                        fieldWithPath("memberManagerResponses[0].email").type(STRING).description("사용자 이메일"),
+                                        fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
+                                        fieldWithPath("memberManagerResponses[0].loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
+                                        fieldWithPath("memberManagerResponses[0].premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)")
                                 )
                                 .build()
                         )));
@@ -177,6 +180,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("사용자 이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
                                         fieldWithPath("premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"))
                                 .build()

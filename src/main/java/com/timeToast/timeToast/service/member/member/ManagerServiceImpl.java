@@ -96,14 +96,15 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional(readOnly = true)
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberAdminResponse> memberAdminRespons = new ArrayList<>();
+        List<MemberInfoManagerResponse> memberManagerResponses = new ArrayList<>();
         List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
         members.forEach(
                 member -> {
-                    memberAdminRespons.add(MemberAdminResponse.from(member));
+                    Premium premium = premiumRepository.getById(member.getPremiumId());
+                    memberManagerResponses.add(MemberInfoManagerResponse.from(member, premium.getPremiumType()));
                 }
         );
-        return new MemberManagerResponses(memberAdminRespons);
+        return new MemberManagerResponses(memberManagerResponses);
     }
 
     @Transactional(readOnly = true)

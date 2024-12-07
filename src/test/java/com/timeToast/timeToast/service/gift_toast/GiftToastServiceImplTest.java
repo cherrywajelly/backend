@@ -651,6 +651,7 @@ public class GiftToastServiceImplTest {
     public void getGiftToastsForManager() {
         GiftToast giftToast = giftToastSetUp();
         ReflectionTestUtils.setField(giftToast, "id", 1L);
+        ReflectionTestUtils.setField(giftToast, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
 
         when(giftToastRepository.findAll()).thenReturn(List.of(giftToast));
         when(iconRepository.getById(anyLong())).thenReturn(giftToastIconSetUp());

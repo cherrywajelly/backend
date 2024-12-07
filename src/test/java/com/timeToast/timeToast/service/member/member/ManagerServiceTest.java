@@ -48,14 +48,14 @@ public class ManagerServiceTest implements ManagerService{
 
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberAdminResponse> memberAdminRespons = new ArrayList<>();
-        memberAdminRespons.add(new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.USER));
-        return new MemberManagerResponses(memberAdminRespons);
+        List<MemberInfoManagerResponse> memberInfoManagerResponses = new ArrayList<>();
+        memberInfoManagerResponses.add(new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname","email",  MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM));
+        return new MemberManagerResponses(memberInfoManagerResponses);
     }
 
     @Override
     public MemberInfoManagerResponse getMemberInfoForManager(final long memberId){
-        return new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", LoginType.GOOGLE, PremiumType.PREMIUM);
+        return new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
     }
 
     @Override

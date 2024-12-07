@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
+import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -95,8 +96,8 @@ public class ManagerServiceImplTest {
         long memberId = 1L;
         String name = "name";
 
-        member = Member.builder().memberRole(MemberRole.USER).build();
-        premium = Premium.builder().build();
+        member = Member.builder().memberRole(MemberRole.USER).premiumId(1L).build();
+        premium = Premium.builder().premiumType(PremiumType.PREMIUM).build();
         team = Team.builder().build();
         icon = Icon.builder().build();
         iconGroup = IconGroup.builder().name(name).build();
@@ -183,6 +184,8 @@ public class ManagerServiceImplTest {
     public void getMembersForManager(){
         ReflectionTestUtils.setField(member, "id", 1L);
         when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(List.of(member));
+        ReflectionTestUtils.setField(premium, "id", 1L);
+        when(premiumRepository.getById(anyLong())).thenReturn(premium);
 
         MemberManagerResponses memberManagerResponses = managerService.getMembersForManagers();
 
