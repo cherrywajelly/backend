@@ -160,7 +160,10 @@ public class TeamServiceImpl implements TeamService {
         List<Team> teams = teamRepository.findAll();
 
         teams.forEach(
-                team -> teamManagerResponses.add(TeamManagerResponse.from(team))
+                team -> {
+                    List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
+                    teamManagerResponses.add(TeamManagerResponse.from(team, teamMembers.size()));
+                }
         );
         return new TeamManagerResponses(teamManagerResponses);
     }
