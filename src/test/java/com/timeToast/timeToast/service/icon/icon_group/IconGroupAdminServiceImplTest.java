@@ -12,11 +12,10 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupInfoResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.payment.PaymentSummaryDto;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -33,6 +32,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +41,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -392,6 +391,48 @@ public class IconGroupAdminServiceImplTest {
         assertEquals(icons.size(), creatorIconInfos.creatorIconInfos().get(0).iconImageUrl().size());
 
 
+    }
+
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
+    void iconGroupSummary() {
+        // Given
+        List<PaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new PaymentSummaryDto(1L,"title1", IconType.TOAST, 150));
+        iconGroupSummaries.add(new PaymentSummaryDto(2L,"title2", IconType.TOAST, 100));
+        iconGroupSummaries.add(new PaymentSummaryDto(3L,"title3", IconType.TOAST, 50));
+
+        when(paymentRepository.findPaymentSummaryDto()).thenReturn(iconGroupSummaries);
+        // When
+        IconGroupSummaries summaries = iconGroupAdminService.iconGroupSummary();
+
+        // Then
+        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
+    }
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
+    void iconGroupSummaryByYearMonth() {
+        // Given
+        List<PaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new PaymentSummaryDto(1L,"title1", IconType.TOAST, 150));
+        iconGroupSummaries.add(new PaymentSummaryDto(2L,"title2", IconType.TOAST, 100));
+        iconGroupSummaries.add(new PaymentSummaryDto(3L,"title3", IconType.TOAST, 50));
+
+        when(paymentRepository.findPaymentSummaryDtoByYearMonth(anyInt(), anyInt())).thenReturn(iconGroupSummaries);
+        // When
+        IconGroupSummaries summaries = iconGroupAdminService.iconGroupSummaryByYearMonth(2024,1);
+
+        // Then
+        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
+    }
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 실패 날짜 타입 오류")
+    void iconGroupSummaryByYearMonthFail() {
+        // Given When Then
+        assertThrows(BadRequestException.class, () -> iconGroupAdminService.iconGroupSummaryByYearMonth(LocalDate.now().getYear()+1, 1));
     }
 
 

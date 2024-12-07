@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -16,6 +17,7 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
@@ -29,6 +31,7 @@ import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -100,6 +104,35 @@ public class ManagerServiceImplTest {
         icon = Icon.builder().build();
         iconGroup = IconGroup.builder().name(name).build();
         follow = Follow.builder().followerId(1L).build();
+    }
+
+    private Member setUpMember() {
+        return Member.builder()
+                .premiumId(1L)
+                .email("test@gmail.com")
+                .nickname("testNickname")
+                .memberProfileUrl("testProfileUrl")
+                .loginType(LoginType.GOOGLE)
+                .memberRole(MemberRole.USER)
+                .build();
+    }
+
+
+    private List<Member> setUpCreators(){
+        List<Member> members = new ArrayList<>();
+        for(long i=1; i<5; i++){
+            Member tempMember = Member.builder()
+                    .premiumId(1L)
+                    .email("test@gmail.com")
+                    .nickname("testNickname"+i)
+                    .memberProfileUrl("testProfileUrl")
+                    .loginType(LoginType.GOOGLE)
+                    .memberRole(MemberRole.CREATOR)
+                    .build();
+            ReflectionTestUtils.setField(tempMember, "id", i);
+            members.add(tempMember);
+        }
+        return members;
     }
 
 
@@ -325,6 +358,25 @@ public class ManagerServiceImplTest {
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> managerService.createItemData(itemType, itemId));
         assertThat(exception).isNotNull();
+    }
+
+    @Test
+    @DisplayName("관리자 전체 유저와 제작자 수 조회")
+    public void getMembersCountForManagers(){
+        //given
+        List<Member> users = List.of(setUpMember());
+        List<Member> creators = setUpCreators();
+
+        when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(users);
+        when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
+
+        //when
+        MemberSummaryResponse memberSummaryResponse = managerService.getMembersCountForManagers();
+
+        //then
+        Assertions.assertEquals(users.size(), memberSummaryResponse.totalUserCount());
+        Assertions.assertEquals(creators.size(), memberSummaryResponse.totalCreatorCount());
+
     }
 
 }

@@ -13,10 +13,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -386,4 +383,7 @@ public class MemberServiceImplTest {
         assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
+
+
+
 }
