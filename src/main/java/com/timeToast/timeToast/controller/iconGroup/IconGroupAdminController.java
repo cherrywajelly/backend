@@ -45,4 +45,9 @@ public class IconGroupAdminController {
         return iconGroupAdminService.iconGroupSummaryByYearMonth(year, month);
     }
 
+    @GetMapping("/monthly-revenue")
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(@RequestParam(value = "year") int year) {
+        return iconGroupAdminService.iconGroupMonthlyRevenue(year);
+    }
+
 }

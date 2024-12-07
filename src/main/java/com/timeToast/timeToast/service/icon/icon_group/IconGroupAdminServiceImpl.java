@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -36,10 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
@@ -148,6 +147,26 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .toList();
 
         return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Transactional
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+
+        for(int i=1; i<LocalDate.now().getMonthValue(); i++){
+            Map<IconType, Long> revenueByIconType = paymentRepository.findPaymentSummaryDtoByYearMonth(year, i).stream().collect(Collectors.groupingBy(
+                    PaymentSummaryDto::iconType,
+                    Collectors.summingLong(PaymentSummaryDto::totalCount)
+            ));
+            iconGroupMonthlyRevenues.add(IconGroupMonthlyRevenue.builder()
+                    .year(year)
+                    .month(i)
+                    .toastsRevenue(revenueByIconType.getOrDefault(IconType.TOAST, 0L))
+                    .jamsRevenue(revenueByIconType.getOrDefault(IconType.JAM, 0L))
+                    .build());
+        }
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 
     @Transactional
