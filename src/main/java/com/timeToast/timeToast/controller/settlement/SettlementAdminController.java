@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/settlements")
 @RestController
-public class SettlementManagerController {
+public class SettlementAdminController {
 
     private final SettlementService settlementService;
 
-    public SettlementManagerController(SettlementService settlementService) {
+    public SettlementAdminController(SettlementService settlementService) {
         this.settlementService = settlementService;
     }
 

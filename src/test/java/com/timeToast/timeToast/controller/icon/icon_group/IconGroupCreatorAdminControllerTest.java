@@ -32,7 +32,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IconGroupCreatorControllerTest extends BaseControllerTests {
+public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
     private final IconService iconService = new IconServiceTest();
 

@@ -24,14 +24,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CreatorControllerTest extends BaseControllerTests {
+public class CreatorAdminControllerTest extends BaseControllerTests {
 
     private final MemberService memberService = new MemberServiceTest();
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
 
     @Override
     protected Object initController() {
-        return new CreatorController(memberService, iconGroupAdminService);
+        return new CreatorAdminController(memberService, iconGroupAdminService);
     }
 
     @DisplayName("관리자의 제작자 목록 조회 성공")

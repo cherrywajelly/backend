@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/creators")
 @RestController
-public class CreatorController {
+public class CreatorAdminController {
 
     private final MemberService memberService;
     private final IconGroupAdminService iconGroupAdminService;
 
-    public CreatorController(final MemberService memberService, final IconGroupAdminService iconGroupAdminService) {
+    public CreatorAdminController(final MemberService memberService, final IconGroupAdminService iconGroupAdminService) {
         this.memberService = memberService;
         this.iconGroupAdminService = iconGroupAdminService;
     }

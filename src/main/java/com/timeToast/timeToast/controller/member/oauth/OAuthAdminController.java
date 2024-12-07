@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/login")
 @RestController
-public class OAuthManagerController {
+public class OAuthAdminController {
     private final OAuthService oAuthService;
-    public OAuthManagerController(final OAuthService oAuthService) {
+    public OAuthAdminController(final OAuthService oAuthService) {
         this.oAuthService = oAuthService;
     }
 

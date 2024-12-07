@@ -6,70 +6,81 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
-import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.service.member.member.ManagerService;
-import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v3/members")
 @RestController
 @RequiredArgsConstructor
-public class ManagerMemberController {
+public class MemberAdminController {
     private final ManagerService managerService;
 
+    @PostMapping("/api/v4/members/{memberId}/staffs")
+    public MemberAdminResponse saveToStaff(@PathVariable final long memberId){
+        return managerService.saveToStaff(memberId);
+    }
 
-    @GetMapping("")
+    @PostMapping("/api/v4/members/{memberId}/creators")
+    public MemberAdminResponse saveToCreators(@PathVariable final long memberId){
+        return managerService.saveToCreators(memberId);
+    }
+
+
+    @PostMapping("/api/v4/members/{memberId}/users")
+    public MemberAdminResponse saveToUser(@PathVariable final long memberId){
+        return managerService.saveToUser(memberId);
+    }
+
+    @GetMapping("/api/v3/members")
     public MemberManagerResponses getMembersManager() {
         return managerService.getMembersForManagers();
     }
 
-    @GetMapping("/{memberId}/info")
+    @GetMapping("/api/v3/members/{memberId}/info")
     public MemberInfoManagerResponse getMemberInfo(@PathVariable final long memberId) {
         return managerService.getMemberInfoForManager(memberId);
     }
 
-    @GetMapping("/{memberId}/follows")
+    @GetMapping("/api/v3/members/{memberId}/follows")
     public FollowManagerResponses getFollow(@PathVariable final long memberId) {
         return managerService.getMemberFollowInfo(memberId);
     }
 
-    @GetMapping("/{memberId}/followings")
+    @GetMapping("/api/v3/members/{memberId}/followings")
     public FollowingManagerResponses getFollowing(@PathVariable final long memberId) {
         return managerService.getMemberFollowingInfo(memberId);
     }
 
-    @GetMapping("/{memberId}/teams")
+    @GetMapping("/api/v3/members/{memberId}/teams")
     public TeamDataManagerResponses getTeam(@PathVariable final long memberId) {
         return managerService.getMemberTeamInfo(memberId);
     }
 
-    @GetMapping("/{memberId}/showcases")
+    @GetMapping("/api/v3/members/{memberId}/showcases")
     public ShowcaseManagerResponses getShowcases(@PathVariable final long memberId) {
         return managerService.getMemberShowcaseInfo(memberId);
     }
 
-    @GetMapping("/{memberId}/eventToasts")
+    @GetMapping("/api/v3/members/{memberId}/eventToasts")
     public EventToastDataManagerResponses getEventToasts(@PathVariable final long memberId) {
         return managerService.getMemberEventToastInfo(memberId);
     }
-    @GetMapping("/{memberId}/giftToasts")
+    @GetMapping("/api/v3/members/{memberId}/giftToasts")
     public GiftToastDataManagerResponses getGiftToasts(@PathVariable final long memberId) {
         return managerService.getMemberGiftToastInfo(memberId);
     }
-    @GetMapping("/{memberId}/iconGroups")
+    @GetMapping("/api/v3/members/{memberId}/iconGroups")
     public IconGroupManagerResponses getIconGroups(@PathVariable final long memberId) {
         return managerService.getMemberIconGroupInfo(memberId);
     }
-    @GetMapping("/{memberId}/payments")
+    @GetMapping("/api/v3/members/{memberId}/payments")
     public PaymentManagerResponses getPayment(@PathVariable final long memberId) {
         return managerService.getMemberPaymentManagerInfo(memberId);
     }
+
 }

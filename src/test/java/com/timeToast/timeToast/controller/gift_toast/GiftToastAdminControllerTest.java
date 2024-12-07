@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.controller.gift_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.gift_toast.GiftToastServiceTest;
@@ -26,12 +25,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GiftToastManagerControllerTest extends BaseControllerTests {
+public class GiftToastAdminControllerTest extends BaseControllerTests {
 
     private final GiftToastService giftToastService = new GiftToastServiceTest();
     @Override
     protected Object initController() {
-        return new GiftToastManagerController(giftToastService);
+        return new GiftToastAdminController(giftToastService);
     }
 
     @DisplayName("관리자는 캡슐 토스트의 목록을 조회할 수 있다.")

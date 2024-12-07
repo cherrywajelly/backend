@@ -19,12 +19,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ManagerMemberControllerTest extends BaseControllerTests {
+public class MemberAdminControllerTest extends BaseControllerTests {
     private final ManagerService managerService = new ManagerServiceTest();
 
     @Override
     protected Object initController() {
-        return new ManagerMemberController(managerService);
+        return new MemberAdminController(managerService);
     }
 
     @DisplayName("관리자는 사용자의 목록을 조회할 수 있다.")
