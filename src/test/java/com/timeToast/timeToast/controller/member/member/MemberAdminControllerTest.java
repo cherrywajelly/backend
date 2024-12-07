@@ -13,6 +13,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -26,6 +27,102 @@ public class MemberAdminControllerTest extends BaseControllerTests {
     protected Object initController() {
         return new MemberAdminController(managerService);
     }
+
+    @DisplayName("최고 관리자는 staff로 지정할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void saveToStaff() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v4/members/{memberId}/staffs", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("최고 관리자는 staff로 role 변경",
+                        pathParameters(
+                                parameterWithName("memberId").description("조회 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자가 staff로 role 변경")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
+                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("최고 관리자는 creator로 지정할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void saveCreatorInfo() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v4/members/{memberId}/creators", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("최고 관리자는 creator로 role 변경",
+                        pathParameters(
+                                parameterWithName("memberId").description("조회 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자가 creator로 role 변경")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
+                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("최고 관리자는 user로 지정할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void saveToUser() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v4/members/{memberId}/creators", 1L)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("최고 관리자는 user로 role 변경",
+                        pathParameters(
+                                parameterWithName("memberId").description("조회 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자가 user로 role 변경")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
+                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+
+                                )
+                                .build()
+                        )));
+    }
+
+
+
 
     @DisplayName("관리자는 사용자의 목록을 조회할 수 있다.")
     @WithMockCustomUser
@@ -47,7 +144,9 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("memberManagerResponses[0].memberId").type(NUMBER).description("사용자 id"),
                                         fieldWithPath("memberManagerResponses[0].memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
-                                        fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("사용자 닉네임")
+                                        fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("사용자 닉네임"),
+                                        fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role")
+
                                 )
                                 .build()
                         )));

@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -31,9 +32,24 @@ import java.util.List;
 public class ManagerServiceTest implements ManagerService{
 
     @Override
+    public MemberAdminResponse saveToStaff(long memberId) {
+        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.STAFF);
+    }
+
+    @Override
+    public MemberAdminResponse saveToCreators(long memberId) {
+        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.CREATOR);
+    }
+
+    @Override
+    public MemberAdminResponse saveToUser(long memberId) {
+        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.USER);
+    }
+
+    @Override
     public MemberManagerResponses getMembersForManagers() {
         List<MemberAdminResponse> memberAdminRespons = new ArrayList<>();
-        memberAdminRespons.add(new MemberAdminResponse(1L, "memberProfileUrl", "nickname"));
+        memberAdminRespons.add(new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.USER));
         return new MemberManagerResponses(memberAdminRespons);
     }
 
