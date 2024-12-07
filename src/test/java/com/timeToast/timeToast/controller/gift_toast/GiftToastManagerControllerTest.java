@@ -55,7 +55,12 @@ public class GiftToastManagerControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastManagerResponses[0].giftToastId").type(NUMBER).description("캡슐 토스트 id"),
                                         fieldWithPath("giftToastManagerResponses[0].iconImageUrl").type(STRING).description("캡슐 토스트 아이콘 이미지"),
                                         fieldWithPath("giftToastManagerResponses[0].title").type(STRING).description("캡슐 토스트 이름"),
-                                        fieldWithPath("giftToastManagerResponses[0].name").type(STRING).description("캡슐 토스트 작성 그룹")
+                                        fieldWithPath("giftToastManagerResponses[0].name").type(STRING).description("캡슐 토스트 작성 그룹"),
+                                        fieldWithPath("giftToastManagerResponses[0].memorizedDate").type(STRING).description("기억하고 싶은 날짜"),
+                                        fieldWithPath("giftToastManagerResponses[0].openedDate").type(STRING).description("캡슐 토스트가 오픈 될 날짜"),
+                                        fieldWithPath("giftToastManagerResponses[0].isOpened").type(BOOLEAN).description("캡슐 토스트 오픈 여부"),
+                                        fieldWithPath("giftToastManagerResponses[0].giftToastType").type(STRING).description("캡슐 토스트 타압 (GROUP | FRIEND | MINE)"),
+                                        fieldWithPath("giftToastManagerResponses[0].createdAt").type(STRING).description("캡슐 토스트 생성 날짜")
                                 )
                                 .build()
                         )));
