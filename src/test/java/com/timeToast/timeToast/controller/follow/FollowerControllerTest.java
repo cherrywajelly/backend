@@ -40,13 +40,13 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팔로우 정보 저장",
+                .andDo(document("로그인한 사용자의 팔로우 정보 저장",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
-                                .summary("사용자를 팔로우 하기")
+                                .tag("유저 - 팔로우")
+                                .summary("로그인한 사용자의 팔로우 정보 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -58,7 +58,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. - 실패: 본인 팔로우")
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. : 실패 - 본인 팔로우")
     @WithMockCustomUser
     @Test
     void saveFollowFail() throws Exception {
@@ -73,7 +73,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("사용자를 팔로우 하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -86,7 +86,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. - 실패: 재요청")
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. : 실패 - 재요청")
     @WithMockCustomUser
     @Test
     void saveFollowAlreadyExists() throws Exception {
@@ -101,7 +101,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("팔로워 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("사용자를 팔로우 하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -124,9 +124,9 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팔로잉 리스트 조회",
+                .andDo(document("로그인한 유저의 팔로잉 리스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("로그인한 사용자의 팔로잉 리스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -151,9 +151,9 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팔로워 리스트 조회",
+                .andDo(document("로그인한 유저의 팔로워 리스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("로그인한 사용자의 팔로워 리스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -178,12 +178,12 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팔로잉 삭제",
+                .andDo(document("로그인한 유저의 팔로잉 삭제",
                         pathParameters(
                                 parameterWithName("memberId").description("팔로잉의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("로그인한 사용자의 팔로잉 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -212,7 +212,7 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("팔로잉의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
+                                .tag("유저 - 팔로우")
                                 .summary("로그인한 사용자의 팔로잉 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -241,8 +241,8 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("팔로워의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
-                                .summary("로그인한 사용자가 팔로워 삭제")
+                                .tag("유저 - 팔로우")
+                                .summary("로그인한 사용자의 팔로워 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -270,8 +270,8 @@ public class FollowerControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("팔로워의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팔로우")
-                                .summary("로그인한 사용자가 팔로워 삭제")
+                                .tag("유저 - 팔로우")
+                                .summary("로그인한 사용자의 팔로워 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
