@@ -60,7 +60,7 @@ public class InquiryControllerTest extends BaseControllerTests {
                                 fieldWithPath("email").type(STRING).description("문의자 이메일")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("문의사항")
+                                .tag("유저 - 문의")
                                 .summary("새로운 문의사항 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(USER_ACCESS_TOKEN)
