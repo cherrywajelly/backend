@@ -296,7 +296,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @DisplayName("관리자는 사용자의 진열장 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getShowcases() throws Exception {
@@ -306,13 +306,13 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 그룹 정보 조회",
+                .andDo(document("관리자 진열장 정보 조회",
                         pathParameters(
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
-                                .summary("관리자 사용자 그룹 정보 조회")
+                                .tag("관리자 진열장")
+                                .summary("관리자 진열장 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -324,7 +324,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @DisplayName("관리자는 사용자의 이벤트 토스트 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getEventToasts() throws Exception {
@@ -334,13 +334,13 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 그룹 정보 조회",
+                .andDo(document("관리자 이벤트 토스트 정보 조회",
                         pathParameters(
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
-                                .summary("관리자 사용자 그룹 정보 조회")
+                                .tag("관리자 이벤트 토스트")
+                                .summary("관리자 이벤트 토스트 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -352,7 +352,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @DisplayName("관리자는 사용자의 캡슐 토스트 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void memberGiftToasts() throws Exception {
@@ -362,13 +362,13 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 그룹 정보 조회",
+                .andDo(document("관리자 캡슐 토스트 정보 조회",
                         pathParameters(
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
-                                .summary("관리자 사용자 그룹 정보 조회")
+                                .tag("관리자 캡슐 토스트")
+                                .summary("관리자 캡슐 토스트 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -380,7 +380,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @DisplayName("관리자는 사용자가 소유한 아이콘의 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getIconGroups() throws Exception {
@@ -390,13 +390,13 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 그룹 정보 조회",
+                .andDo(document("관리자 사용자 소유 아이콘 조회",
                         pathParameters(
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
-                                .summary("관리자 사용자 그룹 정보 조회")
+                                .tag("관리자 아이콘")
+                                .summary("관리자 아이콘 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -408,7 +408,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소속된 그룹의 정보를 조회할 수 있다.")
+    @DisplayName("관리자는 사용자의 결제 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getPayment() throws Exception {
@@ -418,13 +418,13 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 그룹 정보 조회",
+                .andDo(document("관리자 결제 정보 조회",
                         pathParameters(
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
-                                .summary("관리자 사용자 그룹 정보 조회")
+                                .tag("관리자 결제")
+                                .summary("관리자 결제 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
