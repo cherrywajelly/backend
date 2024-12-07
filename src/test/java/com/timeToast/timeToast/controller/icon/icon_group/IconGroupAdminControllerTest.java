@@ -154,4 +154,60 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
+
+    @DisplayName("관리자 아이콘 그룹 top 3 조회")
+    @Test
+    void iconGroupSummary() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/iconGroups/summary")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 아이콘 그룹 top 3 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("관리자 아이콘 그룹 top 3 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("아이콘 그룹 수")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자 월 별 아이콘 top 3 조회")
+    @Test
+    void iconGroupSummaryByYearMonth() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/iconGroups/summary")
+                                .param("year", "2024")
+                                .param("month", "1")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 월 별 아이콘 top 3 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("관리자 월 별 아이콘 top 3 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year"),
+                                        parameterWithName("month").description("month")
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("아이콘 그룹 수")
+                                )
+                                .build()
+                        )));
+    }
 }

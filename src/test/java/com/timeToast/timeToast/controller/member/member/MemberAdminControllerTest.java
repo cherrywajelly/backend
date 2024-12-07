@@ -155,6 +155,31 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("관리자는 사용자 수를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void getMembersCountManager() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/members/count")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 사용자 수 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 사용자")
+                                .summary("관리자 사용자 수 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("totalUserCount").type(NUMBER).description(100),
+                                        fieldWithPath("totalCreatorCount").type(NUMBER).description(50)
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("관리자는 사용자의 상세 정보를 조회할 수 있다.")
     @WithMockCustomUser
     @Test

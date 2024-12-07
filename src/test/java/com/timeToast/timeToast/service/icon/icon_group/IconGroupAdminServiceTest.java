@@ -5,9 +5,7 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupInfoResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
@@ -110,6 +108,20 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", "thumbnailUrl", List.of("iconImageUrl"), 1, 1, IconState.REGISTERED);
         IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
         return iconGroupCreatorDetail;
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 
 }
