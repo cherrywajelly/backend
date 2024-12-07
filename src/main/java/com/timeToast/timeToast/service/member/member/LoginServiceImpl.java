@@ -60,14 +60,14 @@ public class LoginServiceImpl implements LoginService {
                 throw new BadRequestException(INVALID_USER.getMessage());
             }
 
-            if(findMember.get().getMemberRole().equals(MemberRole.CREATOR) && memberRole.equals(MemberRole.MANAGER)){
+            if(findMember.get().getMemberRole().equals(MemberRole.CREATOR) && !memberRole.equals(MemberRole.CREATOR)){
                 throw new BadRequestException(INVALID_USER.getMessage());
             }
 
             return jwtService.createJwts(LoginMember.from(findMember.get()), false);
         }
 
-        if(memberRole.equals(MemberRole.MANAGER)){
+        if(memberRole.equals(MemberRole.MANAGER) || memberRole.equals(MemberRole.STAFF)){
             throw new NotFoundException(MEMBER_NOT_FOUND.getMessage());
         }
 

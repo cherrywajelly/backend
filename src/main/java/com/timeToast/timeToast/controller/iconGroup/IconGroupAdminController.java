@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/iconGroups")
 @RestController
-public class IconGroupManagerController {
+public class IconGroupAdminController {
 
     private final IconGroupAdminService iconGroupAdminService;
 
-    public IconGroupManagerController(IconGroupAdminService iconGroupAdminService) {
+    public IconGroupAdminController(IconGroupAdminService iconGroupAdminService) {
         this.iconGroupAdminService = iconGroupAdminService;
     }
 

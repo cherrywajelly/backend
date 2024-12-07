@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.iconGroup.IconGroupManagerController;
+import com.timeToast.timeToast.controller.iconGroup.IconGroupAdminController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
@@ -25,13 +25,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IconGroupManagerControllerTest extends BaseControllerTests {
+public class IconGroupAdminControllerTest extends BaseControllerTests {
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
 
 
     @Override
     protected Object initController() {
-        return new IconGroupManagerController(iconGroupAdminService);
+        return new IconGroupAdminController(iconGroupAdminService);
     }
 
 

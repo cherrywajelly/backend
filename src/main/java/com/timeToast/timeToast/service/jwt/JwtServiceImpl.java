@@ -84,6 +84,7 @@ public class JwtServiceImpl implements JwtService {
 
             try {
                 LoginMember loginMember = objectMapper.readValue(claims, LoginMember.class);
+
                 return createJwts(loginMember, false);
 
             } catch (JsonProcessingException e) {

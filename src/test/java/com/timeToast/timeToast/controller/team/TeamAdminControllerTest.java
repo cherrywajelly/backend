@@ -19,12 +19,12 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class TeamManagerControllerTest extends BaseControllerTests {
+public class TeamAdminControllerTest extends BaseControllerTests {
     private final TeamService teamService = new TeamServiceTest();
 
     @Override
     protected Object initController() {
-        return new TeamManagerController(teamService);
+        return new TeamAdminController(teamService);
     }
 
     @DisplayName("관리자는 그룹 목록을 조회할 수 있다.")

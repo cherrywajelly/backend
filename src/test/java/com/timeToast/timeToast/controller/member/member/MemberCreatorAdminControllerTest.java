@@ -1,17 +1,14 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.jam.JamController;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
-import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.service.member.member.CreatorService;
 import com.timeToast.timeToast.service.member.member.CreatorServiceTest;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
-import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -29,13 +26,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CreatorMemberControllerTest extends BaseControllerTests {
+public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     private final CreatorService creatorService = new CreatorServiceTest();
     private final MemberService memberService = new MemberServiceTest();
 
     @Override
     protected Object initController() {
-        return new CreatorMemberController(creatorService, memberService);
+        return new MemberCreatorController(creatorService, memberService);
     }
 
     @DisplayName("아이콘 제작자는 닉네임의 중복 여부를 조회할 수 있다.")

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v3/eventToasts")
 @RestController
 @RequiredArgsConstructor
-public class EventToastManagerController {
+public class EventToastAdminController {
     private final EventToastService eventToastService;
 
     @GetMapping("")

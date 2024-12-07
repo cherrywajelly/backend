@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v3/giftToasts")
 @RestController
 @RequiredArgsConstructor
-public class GiftToastManagerController {
+public class GiftToastAdminController {
     private final GiftToastService giftToastService;
 
     @GetMapping("")

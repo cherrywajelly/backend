@@ -14,6 +14,7 @@ import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
@@ -101,6 +103,81 @@ public class ManagerServiceImplTest {
         iconGroup = IconGroup.builder().name(name).build();
         follow = Follow.builder().followerId(1L).build();
     }
+
+
+    @Test
+    @DisplayName("관리자 role staff로 변환")
+    public void saveToStaff(){
+        //given
+
+        Member user = Member.builder()
+                .memberRole(MemberRole.USER)
+                .build();
+        ReflectionTestUtils.setField(user, "id", 1L);
+
+        when(memberRepository.getById(anyLong())).thenReturn(user);
+
+        assertEquals(MemberRole.USER, user.getMemberRole());
+
+        //when
+        MemberAdminResponse memberAdminResponse = managerService.saveToStaff(user.getId());
+
+
+        //then
+        assertEquals(MemberRole.STAFF, user.getMemberRole());
+        assertEquals(MemberRole.STAFF, memberAdminResponse.memberRole());
+    }
+
+    @Test
+    @DisplayName("관리자 role creators로 변환")
+    public void saveToCreators(){
+        //given
+
+        Member user = Member.builder()
+                .memberRole(MemberRole.USER)
+                .build();
+        ReflectionTestUtils.setField(user, "id", 1L);
+
+        when(memberRepository.getById(anyLong())).thenReturn(user);
+
+        assertEquals(MemberRole.USER, user.getMemberRole());
+
+        //when
+        MemberAdminResponse memberAdminResponse = managerService.saveToCreators(user.getId());
+
+
+        //then
+        assertEquals(MemberRole.CREATOR, user.getMemberRole());
+        assertEquals(MemberRole.CREATOR, memberAdminResponse.memberRole());
+    }
+
+    @Test
+    @DisplayName("관리자 role user로 변환")
+    public void saveToUser(){
+        //given
+
+        Member user = Member.builder()
+                .memberRole(MemberRole.CREATOR)
+                .build();
+        ReflectionTestUtils.setField(user, "id", 1L);
+
+        when(memberRepository.getById(anyLong())).thenReturn(user);
+
+        assertEquals(MemberRole.CREATOR, user.getMemberRole());
+
+        //when
+        MemberAdminResponse memberAdminResponse = managerService.saveToUser(user.getId());
+
+
+        //then
+        assertEquals(MemberRole.USER, user.getMemberRole());
+        assertEquals(MemberRole.USER, memberAdminResponse.memberRole());
+    }
+
+
+
+
+
 
     @Test
     @DisplayName("관리자 사용자 목록 조회")

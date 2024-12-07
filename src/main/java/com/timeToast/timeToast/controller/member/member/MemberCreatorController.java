@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v2/members")
 @RestController
 @RequiredArgsConstructor
-public class CreatorMemberController {
+public class MemberCreatorController {
 
     private final CreatorService creatorService;
     private final MemberService memberService;

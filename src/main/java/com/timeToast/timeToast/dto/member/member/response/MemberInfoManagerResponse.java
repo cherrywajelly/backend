@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.dto.member.member.response;
 
 import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
@@ -21,6 +22,7 @@ public record MemberInfoManagerResponse (
         String memberProfileUrl,
         String nickname,
         String email,
+        MemberRole memberRole,
         LoginType loginType,
         PremiumType premiumType
 ) {
@@ -30,6 +32,7 @@ public record MemberInfoManagerResponse (
                 .memberProfileUrl(member.getMemberProfileUrl())
                 .nickname(member.getNickname())
                 .email(member.getEmail())
+                .memberRole(member.getMemberRole())
                 .loginType(member.getLoginType())
                 .premiumType(premiumType)
                 .build();
