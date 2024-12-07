@@ -146,6 +146,8 @@ public class PaymentServiceImpl implements PaymentService {
                                         .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
                                         .itemType(ItemType.ICON)
                                         .nickname(nickname)
+                                        .amount(payment.getAmount())
+                                        .paymentState(payment.getPaymentState())
                                         .build());
                     }else{
                         paymentsResponse.add(
@@ -155,6 +157,9 @@ public class PaymentServiceImpl implements PaymentService {
                                         .itemName(premiumRepository.getById(payment.getItemId()).getPremiumType().toString())
                                         .itemType(ItemType.PREMIUM)
                                         .nickname(nickname)
+                                        .amount(payment.getAmount())
+                                        .paymentState(payment.getPaymentState())
+                                        .expiredDate(payment.getExpiredDate())
                                         .build());
                     }
                 }
