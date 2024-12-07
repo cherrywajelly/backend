@@ -29,24 +29,24 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
         return new PaymentAdminController(paymentService);
     }
 
-    @DisplayName("모든 결제 정보 조회")
+    @DisplayName("아이콘 결제 정보 조회")
     @WithMockCustomUser
     @Test
-    void getPayments() throws Exception {
+    void getIconPayments() throws Exception {
 
 
         mockMvc.perform(
-                        get("/api/v3/payments")
+                        get("/api/v3/payments/icons")
                                 .param("page", "1")
                                 .param("size", "20")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("결제 정보 목록 조회",
+                .andDo(document("아이콘 결제 정보 목록 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("관리자 - 결제")
-                                .summary("관리자 결제 정보 목록 조회")
+                                .summary("관리자 아이콘 결제 정보 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -58,13 +58,53 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 id"),
                                         fieldWithPath("paymentsAdminResponses[0].nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("paymentsAdminResponses[0].itemName").type(STRING).description("아이템 이름"),
+                                        fieldWithPath("paymentsAdminResponses[0].itemName").type(STRING).description("아이콘 이름"),
+                                        fieldWithPath("paymentsAdminResponses[0].itemType").type(STRING).description("아이콘 종류"),
+                                        fieldWithPath("paymentsAdminResponses[0].createdAt").type(STRING).description("결제 생성 일자"),
+                                        fieldWithPath("paymentsAdminResponses[0].amount").type(NUMBER).description("결제 금액"),
+                                        fieldWithPath("paymentsAdminResponses[0].paymentState").type(STRING).description("결제 상태"),
+                                        fieldWithPath("paymentsAdminResponses[0].expiredDate").type(null).description("만료일")
+                                        )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("프리미엄 결제 정보 조회")
+    @WithMockCustomUser
+    @Test
+    void getPremiumPayments() throws Exception {
+
+
+        mockMvc.perform(
+                        get("/api/v3/payments/premiums")
+                                .param("page", "1")
+                                .param("size", "20")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isOk())
+                .andDo(document("프리미엄 결제 정보 목록 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 - 결제")
+                                .summary("관리자 프리미엄 결제 정보 목록 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("page").description("page 번호"),
+                                        parameterWithName("size").description("page 크기")
+
+                                )
+                                .responseFields(
+                                        fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 id"),
+                                        fieldWithPath("paymentsAdminResponses[0].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("paymentsAdminResponses[0].itemName").type(null).description("아이콘 이름"),
                                         fieldWithPath("paymentsAdminResponses[0].itemType").type(STRING).description("아이템 종류"),
                                         fieldWithPath("paymentsAdminResponses[0].createdAt").type(STRING).description("결제 생성 일자"),
                                         fieldWithPath("paymentsAdminResponses[0].amount").type(NUMBER).description("결제 금액"),
                                         fieldWithPath("paymentsAdminResponses[0].paymentState").type(STRING).description("결제 상태"),
                                         fieldWithPath("paymentsAdminResponses[0].expiredDate").type(STRING).description("만료일")
-                                        )
+                                )
                                 .build()
                         )));
     }
