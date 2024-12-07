@@ -99,7 +99,7 @@ class PremiumControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 월 별 수익 조회",
+                .andDo(document("관리자 월별",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("아이콘")
                                 .summary("관리자 월 별 수익 조회")
