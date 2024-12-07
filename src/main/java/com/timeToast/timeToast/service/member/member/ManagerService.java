@@ -4,10 +4,11 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerRes
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
@@ -17,6 +18,7 @@ public interface ManagerService {
     MemberAdminResponse saveToCreators(final long memberId);
     MemberAdminResponse saveToUser(final long memberId);
     MemberManagerResponses getMembersForManagers();
+    MemberSummaryResponse getMembersCountForManagers();
     MemberInfoManagerResponse getMemberInfoForManager(final long memberId);
     FollowManagerResponses getMemberFollowInfo(final long memberId);
     FollowingManagerResponses getMemberFollowingInfo(final long memberId);

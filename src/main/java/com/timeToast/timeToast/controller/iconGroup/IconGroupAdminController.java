@@ -1,9 +1,7 @@
 package com.timeToast.timeToast.controller.iconGroup;
 
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +33,16 @@ public class IconGroupAdminController {
     @GetMapping("/non-approval")
     public IconGroupInfoResponses iconGroupNonApproval() {
         return iconGroupAdminService.getIconGroupForNonApproval();
+    }
+
+    @GetMapping("/summary")
+    public IconGroupSummaries iconGroupSummary() {
+        return iconGroupAdminService.iconGroupSummary();
+    }
+
+    @GetMapping(value = "/summary", params = {"year", "month"})
+    public IconGroupSummaries iconGroupSummary(@RequestParam(value = "year") int year, @RequestParam(value = "month") int month) {
+        return iconGroupAdminService.iconGroupSummaryByYearMonth(year, month);
     }
 
 }
