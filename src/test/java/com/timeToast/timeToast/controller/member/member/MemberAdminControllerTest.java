@@ -43,7 +43,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("조회 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("최고 관리자 - 멤버")
                                 .summary("관리자가 staff로 role 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -74,7 +74,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("조회 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("최고 관리자 - 멤버")
                                 .summary("관리자가 creator로 role 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -96,7 +96,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
     void saveToUser() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v4/members/{memberId}/creators", 1L)
+                        post("/api/v4/members/{memberId}/users", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("조회 대상의 memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("최고 관리자 - 멤버")
                                 .summary("관리자가 user로 role 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -136,7 +136,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 이벤트 사용자 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -167,7 +167,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 사용자 수 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 수 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -195,7 +195,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 상세 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -227,7 +227,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                        .tag("관리자 사용자")
+                                        .tag("관리자 - 멤버")
                                         .summary("관리자 사용자 팔로우 정보 조회")
                                         .requestHeaders(
                                                 headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -255,7 +255,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 팔로잉 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -283,7 +283,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -311,7 +311,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -339,7 +339,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -367,7 +367,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -395,7 +395,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -423,7 +423,7 @@ public class MemberAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 사용자")
+                                .tag("관리자 - 멤버")
                                 .summary("관리자 사용자 그룹 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
