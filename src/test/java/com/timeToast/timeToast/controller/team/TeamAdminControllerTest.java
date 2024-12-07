@@ -48,7 +48,7 @@ public class TeamAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamManagerResponses[0].teamId").type(NUMBER).description("그룹 id"),
                                         fieldWithPath("teamManagerResponses[0].teamProfileUrl").type(STRING).description("그룹 프로필 이미지"),
                                         fieldWithPath("teamManagerResponses[0].name").type(STRING).description("그룹 이름"),
-                                        fieldWithPath("teamManagerResponses[0].createdAt").type(ARRAY).description("그룹 생성 날짜"),
+                                        fieldWithPath("teamManagerResponses[0].createdAt").type(STRING).description("그룹 생성 날짜"),
                                         fieldWithPath("teamManagerResponses[0].memberCount").type(NUMBER).description("그룹 소속 인원수")
                                 )
                                 .build()
@@ -76,7 +76,7 @@ public class TeamAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamId").type(NUMBER).description("그룹 id"),
                                         fieldWithPath("teamProfileUrl").type(STRING).description("그룹 프로필 이미지"),
                                         fieldWithPath("name").type(STRING).description("그룹 이름"),
-                                        fieldWithPath("createdAt").type(ARRAY).description("그룹 생성 날짜"),
+                                        fieldWithPath("createdAt").type(STRING).description("그룹 생성 날짜"),
                                         fieldWithPath("managerProfileResponses[0].nickname").type(STRING).description("그룹 소속자 닉네임"),
                                         fieldWithPath("managerProfileResponses[0].memberProfileUrl").type(STRING).description("그룹 소속자 프로필 이미지 url")
                                 )
