@@ -2,8 +2,8 @@ package com.timeToast.timeToast.controller.iconGroup;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon.IconService;

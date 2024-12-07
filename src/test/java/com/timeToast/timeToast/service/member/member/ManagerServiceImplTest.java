@@ -13,9 +13,8 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerRes
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
@@ -39,7 +38,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

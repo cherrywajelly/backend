@@ -10,13 +10,14 @@ import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
+import com.timeToast.timeToast.dto.payment.PaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -33,11 +34,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.SLASH;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
@@ -108,6 +112,42 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         } else {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         }
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
+                .stream().sorted(Comparator.comparing(PaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDtoByYearMonth(year, month)
+                .stream().sorted(Comparator.comparing(PaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 
     @Transactional

@@ -93,6 +93,7 @@ public enum ExceptionConstant {
     INVALID_YEAR_MONTH("잘못된 날짜 조회입니다."),
 
 
+    INVALID_REQUEST("잘못된 요청입니다"),
     INVALID_STRING_FORMAT("잘못된 형식의 문자열입니다."),
     //login
     INVALID_USER("권한이 없는 유저입니다."),

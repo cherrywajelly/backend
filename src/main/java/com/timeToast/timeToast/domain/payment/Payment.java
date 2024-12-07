@@ -40,6 +40,7 @@ public class Payment extends BaseTime {
 
     private LocalDate expiredDate;
 
+
     @Builder
     public Payment(final long memberId, final ItemType itemType, final PaymentState paymentState,
                    final int amount, final long itemId, final LocalDate expiredDate) {

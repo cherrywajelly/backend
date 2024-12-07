@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.icon.icon_group.response;
+package com.timeToast.timeToast.dto.icon.icon_group.response.member;
 
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;

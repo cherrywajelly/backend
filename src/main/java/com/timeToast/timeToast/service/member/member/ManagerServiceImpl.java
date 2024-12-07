@@ -5,7 +5,6 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
@@ -16,12 +15,9 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
@@ -47,7 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -105,6 +100,14 @@ public class ManagerServiceImpl implements ManagerService {
                 }
         );
         return new MemberManagerResponses(memberManagerResponses);
+    }
+
+    @Override
+    public MemberSummaryResponse getMembersCountForManagers() {
+        return MemberSummaryResponse.builder()
+                .totalUserCount(memberRepository.findAllByMemberRole(MemberRole.USER).stream().count())
+                .totalCreatorCount(memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream().count())
+                .build();
     }
 
     @Transactional(readOnly = true)

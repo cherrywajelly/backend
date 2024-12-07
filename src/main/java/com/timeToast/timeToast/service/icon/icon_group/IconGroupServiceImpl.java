@@ -3,9 +3,8 @@ package com.timeToast.timeToast.service.icon.icon_group;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;

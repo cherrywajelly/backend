@@ -13,11 +13,12 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
+import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
@@ -51,6 +52,14 @@ public class ManagerServiceTest implements ManagerService{
         List<MemberInfoManagerResponse> memberInfoManagerResponses = new ArrayList<>();
         memberInfoManagerResponses.add(new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname","email",  MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM));
         return new MemberManagerResponses(memberInfoManagerResponses);
+    }
+
+    @Override
+    public MemberSummaryResponse getMembersCountForManagers() {
+        return MemberSummaryResponse.builder()
+                .totalUserCount(100)
+                .totalCreatorCount(50)
+                .build();
     }
 
     @Override
