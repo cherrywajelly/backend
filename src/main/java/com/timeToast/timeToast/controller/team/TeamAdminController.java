@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.team;
 
-import com.timeToast.timeToast.dto.member_group.response.TeamInfoManagerResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
+import com.timeToast.timeToast.dto.team.response.TeamInfoManagerResponse;
+import com.timeToast.timeToast.dto.team.response.TeamManagerResponses;
 import com.timeToast.timeToast.service.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

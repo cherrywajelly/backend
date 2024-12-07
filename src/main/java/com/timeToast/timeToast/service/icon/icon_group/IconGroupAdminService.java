@@ -22,5 +22,6 @@ public interface IconGroupAdminService {
     IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId);
     IconGroupSummaries iconGroupSummary();
     IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month);
+    IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year);
 
 }

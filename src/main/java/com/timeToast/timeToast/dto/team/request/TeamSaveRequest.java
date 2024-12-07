@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.member_group.request;
+package com.timeToast.timeToast.dto.team.request;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.payment.PaymentSummaryDto;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -398,10 +398,10 @@ public class IconGroupAdminServiceImplTest {
     @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
     void iconGroupSummary() {
         // Given
-        List<PaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new PaymentSummaryDto(1L,"title1", IconType.TOAST, 150));
-        iconGroupSummaries.add(new PaymentSummaryDto(2L,"title2", IconType.TOAST, 100));
-        iconGroupSummaries.add(new PaymentSummaryDto(3L,"title3", IconType.TOAST, 50));
+        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
 
         when(paymentRepository.findPaymentSummaryDto()).thenReturn(iconGroupSummaries);
         // When
@@ -415,12 +415,12 @@ public class IconGroupAdminServiceImplTest {
     @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
     void iconGroupSummaryByYearMonth() {
         // Given
-        List<PaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new PaymentSummaryDto(1L,"title1", IconType.TOAST, 150));
-        iconGroupSummaries.add(new PaymentSummaryDto(2L,"title2", IconType.TOAST, 100));
-        iconGroupSummaries.add(new PaymentSummaryDto(3L,"title3", IconType.TOAST, 50));
+        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
 
-        when(paymentRepository.findPaymentSummaryDtoByYearMonth(anyInt(), anyInt())).thenReturn(iconGroupSummaries);
+        when(paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(anyInt(), anyInt())).thenReturn(iconGroupSummaries);
         // When
         IconGroupSummaries summaries = iconGroupAdminService.iconGroupSummaryByYearMonth(2024,1);
 

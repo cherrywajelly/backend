@@ -18,8 +18,8 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
-import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
+import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponse;
+import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponse;

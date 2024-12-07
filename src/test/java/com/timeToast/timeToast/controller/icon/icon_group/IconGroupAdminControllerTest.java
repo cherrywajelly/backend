@@ -210,4 +210,35 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
+
+    @DisplayName("관리자 월 별 수익 조회")
+    @Test
+    void iconGroupMonthlyRevenue() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/iconGroups/monthly-revenue")
+                                .param("year", "2024")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 월 별 수익 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("관리자 월 별 수익 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year")
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].year").type(NUMBER).description("year"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].month").type(NUMBER).description("month"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].toastsRevenue").type(NUMBER).description("토스트 아이콘 수익"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].jamsRevenue").type(NUMBER).description("잼 아이콘 수익")
+
+                                )
+                                .build()
+                        )));
+    }
 }

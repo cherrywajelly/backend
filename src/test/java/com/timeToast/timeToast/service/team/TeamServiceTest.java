@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.team;
 
 import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.*;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.NotFoundException;
