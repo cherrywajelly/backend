@@ -45,7 +45,7 @@ public class FcmControllerTest extends BaseControllerTests {
                                 parameterWithName("token").description("fcm 토큰")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("알림")
+                                .tag("유저 - 알림")
                                 .summary("fcm 토큰 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -71,7 +71,7 @@ public class FcmControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("알림 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("알림")
+                                .tag("유저 - 알림")
                                 .summary("알림 목록 조회")
                                 .responseFields(
                                         fieldWithPath("fcmResponses[0].fcmId").type(NUMBER).description("fcm id"),
@@ -100,7 +100,7 @@ public class FcmControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("선택 알림 관련 페이지로 이동",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("알림")
+                                .tag("유저 - 알림")
                                 .summary("알림 관련 페이지로 이동")
                                 .pathParameters(
                                         parameterWithName("fcmId").description("알림 id")
@@ -131,7 +131,7 @@ public class FcmControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("알림 전송 테스트",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("알림")
+                                .tag("유저 - 알림")
                                 .summary("알림 테스트")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

@@ -49,7 +49,7 @@ public class PaymentControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("결제 정보 저장",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("결제")
+                                .tag("유저 - 결제")
                                 .summary("사용자 결제 정보 저장하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -92,7 +92,7 @@ public class PaymentControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("결제 성공 승인 요청",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("결제")
+                                .tag("유저 - 결제")
                                 .summary("결제 성공 승인 요청하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -128,7 +128,7 @@ public class PaymentControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("결제 실패 요청",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("결제")
+                                .tag("유저 - 결제")
                                 .summary("결제 실패 요청하기")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

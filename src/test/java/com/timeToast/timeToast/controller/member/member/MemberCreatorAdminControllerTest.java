@@ -47,7 +47,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 제작자 닉네임 중복 검증",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 제작자")
+                                .tag("제작자 - 멤버")
                                 .summary("닉네임 중복 검증")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -90,7 +90,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                                 fieldWithPath("creatorAccountResponse.accountNumber").type(STRING).description("아이콘 제작자 계좌번호")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 제작자")
+                                .tag("제작자 - 멤버")
                                 .summary("정보 등록")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -114,7 +114,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 제작자 프로필 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 제작자")
+                                .tag("제작자 - 멤버")
                                 .summary("프로필 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -170,7 +170,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                                 fieldWithPath("creatorAccountResponse.accountNumber").type(STRING).description("아이콘 제작자 계좌번호")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘 제작자")
+                                .tag("제작자 - 멤버")
                                 .summary("정보 수정")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

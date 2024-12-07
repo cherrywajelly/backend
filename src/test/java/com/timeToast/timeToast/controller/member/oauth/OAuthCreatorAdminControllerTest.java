@@ -38,7 +38,7 @@ public class OAuthCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("제작자 카카오 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("제작자 - 로그인")
                                 .summary("제작자 카카오 로그인")
                                 .queryParameters(
                                         parameterWithName("code").description("인증 코드")
@@ -64,7 +64,7 @@ public class OAuthCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("제작자 구글 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("제작자 - 로그인")
                                 .summary("제작자 구글 로그인")
                                 .queryParameters(
                                         parameterWithName("code").description("인증 코드")

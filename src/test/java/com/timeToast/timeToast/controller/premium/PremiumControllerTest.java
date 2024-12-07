@@ -45,7 +45,7 @@ class PremiumControllerTest extends BaseControllerTests {
                                 parameterWithName("premiumId").description("premium id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("프리미엄")
+                                .tag("유저 - 프리미엄")
                                 .summary("로그인한 사용자의 프리미엄 정보 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -73,7 +73,7 @@ class PremiumControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("프리미엄 정보 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("프리미엄")
+                                .tag("유저 - 프리미엄")
                                 .summary("프리미엄 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -99,10 +99,10 @@ class PremiumControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 월 별 수익 조회",
+                .andDo(document("관리자 월 별 프리미엄 가입자 수 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 월 별 수익 조회")
+                                .tag("관리자 - 프리미엄")
+                                .summary("관리자 월 별 프리미엄 가입자 수 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )

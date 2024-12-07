@@ -43,7 +43,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("문의사항 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("문의사항")
+                                .tag("관리자 - 문의")
                                 .summary("문의사항 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -68,7 +68,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("문의 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("문의사항")
+                                .tag("관리자 - 문의")
                                 .summary("문의사항 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_AUTH_CODE.value())
@@ -99,7 +99,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("문의사항 상태 수정",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("문의사항")
+                                .tag("관리자 - 문의")
                                 .summary("문의사항 상태 수정")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

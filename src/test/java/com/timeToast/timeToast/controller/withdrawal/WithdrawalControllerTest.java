@@ -37,7 +37,7 @@ public class WithdrawalControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("사용자 탈퇴 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("탈퇴")
+                                .tag("유저 - 탈퇴")
                                 .summary("사용자 탈퇴")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -61,8 +61,8 @@ public class WithdrawalControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("제작자 탈퇴 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("탈퇴")
-                                .summary("제작 탈퇴")
+                                .tag("제작자 - 탈퇴")
+                                .summary("제작자 탈퇴")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -86,7 +86,7 @@ public class WithdrawalControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("관리자 탈퇴 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("탈퇴")
+                                .tag("관리자 - 탈퇴")
                                 .summary("관리자 탈퇴")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

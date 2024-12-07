@@ -45,7 +45,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("결제 정보 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("결제")
+                                .tag("관리자 - 결제")
                                 .summary("관리자 결제 정보 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -86,7 +86,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("paymentId").description("결제 id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("결제")
+                                .tag("관리자 - 결제")
                                 .summary("관리자 결제 정보 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

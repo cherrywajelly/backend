@@ -34,7 +34,7 @@ public class CreatorAdminControllerTest extends BaseControllerTests {
         return new CreatorAdminController(memberService, iconGroupAdminService);
     }
 
-    @DisplayName("관리자의 제작자 목록 조회 성공")
+    @DisplayName("관리자의 제작자 전체 목록 조회 :성공")
     @WithMockCustomUser
     @Test
     void getCreators() throws Exception {
@@ -43,9 +43,9 @@ public class CreatorAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자의 제작자 목록 조회",
+                .andDo(document("관리자의 제작자 전체 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자")
+                                .tag("관리자 - 제작자")
                                 .summary("관리자는 제작자 목록을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -73,7 +73,7 @@ public class CreatorAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("creatorId").description("제작자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자")
+                                .tag("관리자 - 제작자")
                                 .summary("관리자는 제작자 상세 정보를 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -97,13 +97,13 @@ public class CreatorAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자의 제작자의 모든 아이콘 상세 조회",
+                .andDo(document("관리자의 제작자의 전체 아이콘 상세 조회",
                         pathParameters(
                                 parameterWithName("creatorId").description("제작자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자")
-                                .summary("관리자는 제작자의 모든 아이콘을 조회할 수 있다.")
+                                .tag("관리자 - 제작자")
+                                .summary("관리자는 제작자의 전체 아이콘을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )

@@ -72,7 +72,7 @@ public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
                                 fieldWithPath("description").type(STRING).description("아이콘 설명")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("제작자 - 아이콘")
                                 .summary("새로운 아이콘 등록")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -98,7 +98,7 @@ public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("제작자 - 아이콘")
                                 .summary("아이콘 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -125,7 +125,7 @@ public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 그룹 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("제작자 - 아이콘")
                                 .summary("아이콘 그룹 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

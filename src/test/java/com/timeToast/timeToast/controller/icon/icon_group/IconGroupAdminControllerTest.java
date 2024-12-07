@@ -49,10 +49,10 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 아이콘 승인",
+                .andDo(document("관리자는 아이콘을 승인할 수 있다.",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 아이콘 승인")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자의 아이콘 승인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -82,8 +82,8 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("iconGroupId").description("iconGroup Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 아이콘 그룹 단일 상세 조회")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자의 아이콘 그룹 단일 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -112,8 +112,8 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 전체 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 아이콘 그룹 전체 조회")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자의 아이콘 그룹 전체 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -139,7 +139,7 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 승인 리스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("관리자 - 아이콘")
                                 .summary("관리자 아이콘 그룹 승인 리스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -164,10 +164,10 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 아이콘 그룹 top 3 조회",
+                .andDo(document("관리자 누적 아이콘 그룹 top 3 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 아이콘 그룹 top 3 조회")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자 누적 아이콘 그룹 top 3 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -191,10 +191,10 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 월 별 아이콘 top 3 조회",
+                .andDo(document("관리자 월 별 누적 아이콘 top 3 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 월 별 아이콘 top 3 조회")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자 월 별 누적 아이콘 top 3 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -211,7 +211,7 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자 월 별 수익 조회")
+    @DisplayName("관리자의 월 별 서비스 아이콘 판매 수익 조회")
     @Test
     void iconGroupMonthlyRevenue() throws Exception {
 
@@ -221,10 +221,10 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 월 별 수익 조회",
+                .andDo(document("관리자의 월 별 서비스 아이콘 판매 수익 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
-                                .summary("관리자 월 별 수익 조회")
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자의 월 별 서비스 아이콘 판매 수익 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )

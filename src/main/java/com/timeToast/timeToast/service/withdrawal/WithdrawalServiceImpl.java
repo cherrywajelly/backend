@@ -67,6 +67,7 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     @Override
     public Response creatorWithdrawal(final long memberId) {
         //account 추가
+
         memberRepository.deleteById(memberId);
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }

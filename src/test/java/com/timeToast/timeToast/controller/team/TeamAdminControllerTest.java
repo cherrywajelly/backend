@@ -39,7 +39,7 @@ public class TeamAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 그룹 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 그룹")
+                                .tag("관리자 - 팀")
                                 .summary("관리자 그룹 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -67,7 +67,7 @@ public class TeamAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 그룹 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 그룹")
+                                .tag("관리자 - 팀")
                                 .summary("관리자 그룹 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
