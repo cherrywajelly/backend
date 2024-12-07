@@ -60,8 +60,10 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("paymentsAdminResponses[0].nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("paymentsAdminResponses[0].itemName").type(STRING).description("아이템 이름"),
                                         fieldWithPath("paymentsAdminResponses[0].itemType").type(STRING).description("아이템 종류"),
-                                        fieldWithPath("paymentsAdminResponses[0].createdAt").type(STRING).description("결제 생성 일자")
-
+                                        fieldWithPath("paymentsAdminResponses[0].createdAt").type(STRING).description("결제 생성 일자"),
+                                        fieldWithPath("paymentsAdminResponses[0].amount").type(NUMBER).description("결제 금액"),
+                                        fieldWithPath("paymentsAdminResponses[0].paymentState").type(STRING).description("결제 상태"),
+                                        fieldWithPath("paymentsAdminResponses[0].expiredDate").type(STRING).description("만료일")
                                         )
                                 .build()
                         )));

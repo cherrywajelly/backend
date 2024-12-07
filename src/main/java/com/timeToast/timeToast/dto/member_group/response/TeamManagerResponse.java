@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.dto.member_group.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.team.team.Team;
 import lombok.Builder;
 
@@ -10,6 +11,7 @@ public record TeamManagerResponse(
         long teamId,
         String teamProfileUrl,
         String name,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate createdAt,
         int memberCount
 ) {

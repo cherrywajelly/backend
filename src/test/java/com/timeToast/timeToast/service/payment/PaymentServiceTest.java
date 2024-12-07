@@ -49,6 +49,9 @@ public class PaymentServiceTest implements PaymentService {
                         .nickname("nickname")
                         .itemName("item name")
                         .createdAt(LocalDate.now())
+                        .amount(1100)
+                        .paymentState(PaymentState.SUCCESS)
+                        .expiredDate(LocalDate.now().plusDays(1))
                         .build()
         );
 
