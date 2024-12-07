@@ -22,6 +22,7 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -210,21 +211,42 @@ public class TeamServiceImplTest  {
     }
 
     @Test
-    @DisplayName("관리자 그룹 목록 조회")
+    @DisplayName("관리자 그룹 목록 조회 성공")
     public void getTeamForManager(){
         //given
         Team team = setUpTeam();
         ReflectionTestUtils.setField(team, "id", 1L);
+        ReflectionTestUtils.setField(team, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(setUpTeamMembers());
         when(teamRepository.findAll()).thenReturn(List.of(team));
+
 
         //when
         TeamManagerResponses teamManagerResponses = teamService.getTeamForManager();
 
         //then
-
         assertThat(teamManagerResponses).isNotNull();
     }
 
+    @Test
+    @DisplayName("관리자 그룹 상세 조회 성공")
+    public void getTeamInfoForManager(){
+        //given
+        Team team = setUpTeam();
+        Member member = setUpMember();
+        ReflectionTestUtils.setField(team, "id", 1L);
+        ReflectionTestUtils.setField(team, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(setUpTeamMembers());
 
+        ReflectionTestUtils.setField(member, "id", 1L);
+        when(teamRepository.findAll()).thenReturn(List.of(team));
+
+
+        //when
+        TeamManagerResponses teamManagerResponses = teamService.getTeamForManager();
+
+        //then
+        assertThat(teamManagerResponses).isNotNull();
+    }
 
 }
