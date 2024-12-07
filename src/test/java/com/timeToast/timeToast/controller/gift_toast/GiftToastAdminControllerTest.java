@@ -45,8 +45,8 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 캡슐 토스트 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 캡슐 토스트")
-                                .summary("관리자 캡슐 토스트 목록 조회")
+                                .tag("관리자 - 캡슐 토스트")
+                                .summary("관리자의 전체 사용자 캡슐 토스트 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -80,8 +80,8 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("giftToastId").description("켑슐 토스트 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 캡슐 토스트")
-                                .summary("관리자 캡슐 토스트 상세 조회")
+                                .tag("관리자 - 캡슐 토스트")
+                                .summary("관리자의 캡슐 토스트 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -122,8 +122,8 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("캡슐 토스트 정보 수정",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("캡슐 토스트")
-                                .summary("캡슐 토스트 수정")
+                                .tag("관리자 - 캡슐 토스트")
+                                .summary("관리자의 캡슐 토스트 수정")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )

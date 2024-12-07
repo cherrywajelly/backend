@@ -32,7 +32,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
         return new GiftToastController(giftToastService);
     }
 
-    @DisplayName("group 선물 토스트를 저장할 수 있다.")
+    @DisplayName("group 캡슐 토스트를 저장할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveGiftToastGroup() throws Exception {
@@ -48,10 +48,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 그룹 성공",
+                .andDo(document("캡슐 토스트 저장 - 그룹 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 그룹")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 그룹")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -76,7 +76,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("group 선물 토스트를 저장할 수 있다.-실패: 자신의 그룹이 아닌 경우")
+    @DisplayName("group 캡슐 토스트를 저장할 수 있다.-실패: 자신의 그룹이 아닌 경우")
     @WithMockCustomUser
     @Test
     void saveGiftToastGroupFail() throws Exception {
@@ -92,10 +92,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("선물 토스트 저장 - 그룹 실패: 자신의 그룹이 아닌 경우",
+                .andDo(document("캡슐 토스트 저장 - 그룹 실패: 자신의 그룹이 아닌 경우",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 그룹")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 그룹")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -116,7 +116,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("group 선물 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
+    @DisplayName("group 캡슐 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
     @WithMockCustomUser
     @Test
     void saveGiftToastGroupDateFail() throws Exception {
@@ -132,10 +132,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("선물 토스트 저장 - 그룹 실패: 잘못된 openedDate",
+                .andDo(document("캡슐 토스트 저장 - 그룹 실패: 잘못된 openedDate",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 그룹")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 그룹")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -156,7 +156,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("friend 선물 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
+    @DisplayName("friend 캡슐 토스트를 저장할 수 있다.- 실패: 잘못된 openedDate")
     @WithMockCustomUser
     @Test
     void saveGiftToastFriendDateFail() throws Exception {
@@ -171,10 +171,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("선물 토스트 저장 - 팔로잉 실패: 잘못된 openedDate",
+                .andDo(document("캡슐 토스트 저장 - 팔로잉 실패: 잘못된 openedDate",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 팔로잉")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 팔로잉")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -195,7 +195,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("friend 선물 토스트를 저장할 수 있다.")
+    @DisplayName("friend 캡슐 토스트를 저장할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveGiftToastFriend() throws Exception {
@@ -210,10 +210,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 팔로잉 성공",
+                .andDo(document("캡슐 토스트 저장 - 팔로잉 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 팔로잉 ")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 팔로잉 ")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -240,7 +240,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
     }
 
 
-    @DisplayName("mine 선물 토스트를 저장할 수 있다. - 실패: 잘못된 openedDate")
+    @DisplayName("mine 캡슐 토스트를 저장할 수 있다. - 실패: 잘못된 openedDate")
     @WithMockCustomUser
     @Test
     void saveGiftToastMineDateFail() throws Exception {
@@ -255,10 +255,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("선물 토스트 저장 - 나에게  실패: 잘못된 openedDate",
+                .andDo(document("캡슐 토스트 저장 - 나에게  실패: 잘못된 openedDate",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 나에게")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 나에게")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -278,7 +278,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("mine 선물 토스트를 저장할 수 있다.")
+    @DisplayName("mine 캡슐 토스트를 저장할 수 있다.")
     @WithMockCustomUser
     @Test
     void saveGiftToastMine() throws Exception {
@@ -293,10 +293,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 저장 - 나에게 성공",
+                .andDo(document("캡슐 토스트 저장 - 나에게 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 저장 - 나에게")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 저장 - 나에게")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -333,13 +333,13 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("선물 토스트 단일 상세 조회 성공",
+                .andDo(document("캡슐 토스트 단일 상세 조회 성공",
                         pathParameters(
                                 parameterWithName("giftToastId").description("giftToast Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 단일 상세 조회")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 단일 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -378,7 +378,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("선물 토스트 단일 상세 조회를 할 수 있다. - 실패: 찾을 수 없음. ")
+    @DisplayName("캡슐 토스트 단일 상세 조회를 할 수 있다. - 실패: 찾을 수 없음. ")
     @WithMockCustomUser
     @Test
     void getGiftToastFail() throws Exception {
@@ -390,25 +390,25 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("선물 토스트 단일 상세 조회 실패",
+                .andDo(document("캡슐 토스트 단일 상세 조회 실패",
                         pathParameters(
                                 parameterWithName("giftToastId").description("giftToast Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 단일 상세 조회")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 단일 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("404"),
-                                        fieldWithPath("message").type(STRING).description("선물 토스트를 찾을 수 없습니다.")
+                                        fieldWithPath("message").type(STRING).description("캡슐 토스트를 찾을 수 없습니다.")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("로그인한 사용자가 가진 선물 토스트 리스트를 조회할 수 있다.")
+    @DisplayName("로그인한 사용자가 가진 캡슐 토스트 리스트를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getGiftToastByLogin() throws Exception {
@@ -420,10 +420,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("로그인한 사용자의 선물 토스트 조회",
+                .andDo(document("로그인한 사용자의 캡슐 토스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("로그인한 사용자의 선물 토스트 조회")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("로그인한 사용자의 캡슐 토스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -440,7 +440,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("로그인한 사용자가 작성 할 선물 토스트 리스트를 조회할 수 있다.")
+    @DisplayName("로그인한 사용자가 작성 할 캡슐 토스트 리스트를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
     void getGiftToastIncomplete() throws Exception {
@@ -452,10 +452,10 @@ public class GiftToastControllerTest extends BaseControllerTests {
 
                 )
                 .andExpect(status().isOk())
-                .andDo(document("로그인한 사용자의 작성 할 선물 토스트 조회",
+                .andDo(document("로그인한 사용자의 작성 할 캡슐 토스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("로그인한 사용자의 작성 할 선물 토스트 조회")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("로그인한 사용자의 작성 할 캡슐 토스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -469,7 +469,7 @@ public class GiftToastControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("자신의 선물 토스트를 삭제할 수 있다.")
+    @DisplayName("자신의 캡슐 토스트를 삭제할 수 있다.")
     @WithMockCustomUser
     @Test
     void deleteGiftToast() throws Exception {
@@ -482,13 +482,13 @@ public class GiftToastControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
 
-                .andDo(document("로그인한 사용자가 자신의 선물 토스트를 삭제",
+                .andDo(document("로그인한 사용자가 자신의 캡슐 토스트를 삭제",
                         pathParameters(
                                 parameterWithName("giftToastId").description("giftToast Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("선물 토스트")
-                                .summary("선물 토스트 삭제")
+                                .tag("유저 - 캡슐 토스트")
+                                .summary("캡슐 토스트 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
