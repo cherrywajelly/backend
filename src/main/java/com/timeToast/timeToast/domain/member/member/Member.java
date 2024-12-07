@@ -54,4 +54,8 @@ public class Member extends BaseTime {
         this.premiumId = premiumId;
     }
 
+    public void updateMemberRole(final MemberRole memberRole){
+        this.memberRole = memberRole;
+    }
+
 }

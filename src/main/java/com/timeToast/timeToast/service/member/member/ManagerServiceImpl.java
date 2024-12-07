@@ -19,7 +19,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResp
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
@@ -27,7 +27,6 @@ import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
@@ -39,7 +38,6 @@ import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
-import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -64,17 +62,41 @@ public class ManagerServiceImpl implements ManagerService {
     private final IconRepository iconRepository;
     private final IconGroupRepository iconGroupRepository;
 
+    @Transactional
+    @Override
+    public MemberAdminResponse saveToStaff(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(MemberRole.STAFF);
+        return MemberAdminResponse.from(member);
+    }
+
+    @Transactional
+    @Override
+    public MemberAdminResponse saveToCreators(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(MemberRole.CREATOR);
+        return MemberAdminResponse.from(member);
+    }
+
+    @Transactional
+    @Override
+    public MemberAdminResponse saveToUser(final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(MemberRole.USER);
+        return MemberAdminResponse.from(member);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+        List<MemberAdminResponse> memberAdminRespons = new ArrayList<>();
         List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
         members.forEach(
                 member -> {
-                    memberManagerResponses.add(MemberManagerResponse.from(member));
+                    memberAdminRespons.add(MemberAdminResponse.from(member));
                 }
         );
-        return new MemberManagerResponses(memberManagerResponses);
+        return new MemberManagerResponses(memberAdminRespons);
     }
 
     @Transactional(readOnly = true)
