@@ -5,6 +5,7 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
@@ -33,6 +34,7 @@ import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastReposit
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
@@ -45,12 +47,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
     private final MemberRepository memberRepository;
+    private final MemberTokenRepository memberTokenRepository;
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PremiumRepository premiumRepository;
@@ -65,25 +69,28 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional
     @Override
     public MemberAdminResponse saveToStaff(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        member.updateMemberRole(MemberRole.STAFF);
+        Member member = updateRole(memberId, MemberRole.STAFF);
         return MemberAdminResponse.from(member);
     }
 
     @Transactional
     @Override
     public MemberAdminResponse saveToCreators(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        member.updateMemberRole(MemberRole.CREATOR);
+        Member member = updateRole(memberId, MemberRole.CREATOR);
         return MemberAdminResponse.from(member);
     }
 
     @Transactional
     @Override
     public MemberAdminResponse saveToUser(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        member.updateMemberRole(MemberRole.USER);
+        Member member = updateRole(memberId, MemberRole.USER);
         return MemberAdminResponse.from(member);
+    }
+
+    private Member updateRole(final long memberId, final MemberRole role) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(role);
+        return member;
     }
 
     @Transactional(readOnly = true)
