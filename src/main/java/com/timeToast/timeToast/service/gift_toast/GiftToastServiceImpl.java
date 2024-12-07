@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -40,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -247,7 +249,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         List<GiftToastResponse> giftToastResponses = new ArrayList<>();
 
-        giftToastRepository.findAllGiftToastsByMemberId(memberId).forEach(
+        giftToastRepository.findAllGiftToastsByMemberId(memberId).stream().sorted(Comparator.comparing(GiftToast::getCreatedAt).reversed()).forEach(
                 giftToast -> {
                     String giftToastOwner = null;
 
@@ -284,7 +286,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     public GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId) {
         List<GiftToastIncompleteResponse> giftToastIncompleteResponses = new ArrayList<>();
 
-        giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId).forEach(
+        giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId).stream().sorted(Comparator.comparing(GiftToast::getOpenedDate)).forEach(
                 giftToast -> {
                     Optional<ToastPiece> toastPiecesByGiftToast = toastPieceRepository.
                             findAllByMemberIdAndGiftToastId(memberId,giftToast.getId()).stream().findFirst();

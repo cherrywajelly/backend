@@ -40,7 +40,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public abstract class BaseControllerTests extends TestContainerSupport{
 
-    protected static final Long CAFE_ID = 1L;
     protected static String USER_ACCESS_TOKEN;
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper  = serializingObjectMapper();

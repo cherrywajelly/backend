@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -12,7 +11,6 @@ import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponses;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -20,7 +18,6 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.global.util.DDayCount;
-import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -80,7 +77,7 @@ public class EventToastServiceImpl implements EventToastService{
     public EventToastOwnResponses getOwnEventToastList(final long memberId) {
 
         List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
-        eventToastRepository.findAllByMemberId(memberId).forEach(
+        eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
@@ -120,7 +117,8 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional(readOnly = true)
     @Override
     public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
-        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId);
+        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).toList();
+
         List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
 
         filterEventToasts(eventToasts, false).forEach(

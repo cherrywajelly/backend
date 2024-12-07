@@ -3,29 +3,14 @@ package com.timeToast.timeToast.service.member.member;
 import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
-import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.creator.response.*;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
-import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
-import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
-import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponse;
-import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
@@ -69,19 +54,11 @@ public class MemberServiceImpl implements MemberService{
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
-    private final TeamRepository teamRepository;
-    private final ShowcaseRepository showcaseRepository;
-    private final EventToastRepository eventToastRepository;
-    private final GiftToastRepository giftToastRepository;
-    private final IconRepository iconRepository;
-    private final IconGroupRepository iconGroupRepository;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
                             final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository, final TeamRepository teamRepository, final ShowcaseRepository showcaseRepository,
-                             final EventToastRepository eventToastRepository, final IconRepository iconRepository, final GiftToastRepository giftToastRepository,
-                             final IconGroupRepository iconGroupRepository) {
+                             final PaymentRepository paymentRepository) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -90,12 +67,6 @@ public class MemberServiceImpl implements MemberService{
         this.premiumRepository = premiumRepository;
         this.creatorAccountRepository = creatorAccountRepository;
         this.paymentRepository = paymentRepository;
-        this.teamRepository = teamRepository;
-        this.showcaseRepository = showcaseRepository;
-        this.eventToastRepository = eventToastRepository;
-        this.giftToastRepository = giftToastRepository;
-        this.iconRepository = iconRepository;
-        this.iconGroupRepository = iconGroupRepository;
     }
 
     @Value("${spring.cloud.oci.base-url}")

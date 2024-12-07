@@ -12,7 +12,7 @@ public record FcmDataResponse(
 
     FcmConstant fcmConstant,
 
-    String nickname,
+    long senderId,
 
     String toastName,
 
@@ -25,7 +25,7 @@ public record FcmDataResponse(
         return FcmDataResponse.builder()
                 .memberId(memberId)
                 .fcmConstant(fcmPostRequest.fcmConstant())
-                .nickname(fcmPostRequest.nickname())
+                .senderId(fcmPostRequest.senderId())
                 .toastName(fcmPostRequest.toastName())
                 .param(fcmPostRequest.param())
                 .build();
@@ -35,7 +35,7 @@ public record FcmDataResponse(
         return Fcm.builder()
                 .memberId(fcmDataResponse.memberId())
                 .fcmConstant(fcmDataResponse.fcmConstant())
-                .nickname(fcmDataResponse.nickname())
+                .senderId(fcmDataResponse.senderId())
                 .toastName(fcmDataResponse.toastName())
                 .param(fcmDataResponse.param())
                 .imageUrl(imageUrl)

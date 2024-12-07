@@ -9,7 +9,7 @@ public record FcmPostRequest(
 
         FcmConstant fcmConstant,
 
-        String nickname,
+        Long senderId,
 
         String toastName,
 

@@ -81,9 +81,6 @@ public class FollowServiceImplTest{
         ReflectionTestUtils.setField(member1, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(member1);
 
-        Member member2 = setUpMember();
-        ReflectionTestUtils.setField(member2, "id", 2L);
-        when(memberRepository.getById(2L)).thenReturn(member2);
 
         Follow follow = setUpFollow();
         when(followRepository.findByFollowingIdAndFollowerId(1L, 2L)).thenReturn(Optional.empty());
