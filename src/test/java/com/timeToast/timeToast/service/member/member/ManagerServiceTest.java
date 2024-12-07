@@ -15,8 +15,6 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
@@ -24,7 +22,6 @@ import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,8 +31,8 @@ public class ManagerServiceTest implements ManagerService{
 
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
-        memberManagerResponses.add(new MemberManagerResponse(1L, "memberProfileUrl", "nickname"));
+        List<MemberInfoManagerResponse> memberManagerResponses = new ArrayList<>();
+        memberManagerResponses.add(new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", LoginType.GOOGLE, PremiumType.PREMIUM));
         return new MemberManagerResponses(memberManagerResponses);
     }
 
