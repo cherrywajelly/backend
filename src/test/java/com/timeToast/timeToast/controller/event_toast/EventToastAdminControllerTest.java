@@ -44,10 +44,10 @@ public class EventToastAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 이벤트 토스트 목록 조회",
+                .andDo(document("관리자의 전체 유저의 이벤트 토스트 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 이벤트 토스트")
-                                .summary("관리자 이벤트 토스트 목록 조회")
+                                .tag("관리자 - 이벤트 토스트")
+                                .summary("관리자 전체 유저의 이벤트 토스트 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -74,13 +74,13 @@ public class EventToastAdminControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("관리자 이벤트 토스트 상세 조회",
+                .andDo(document("관리자의 이벤트 토스트 상세 조회",
                         pathParameters(
                                 parameterWithName("eventToastId").description("이벤트 토스트 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 이벤트 토스트")
-                                .summary("관리자 이벤트 토스트 상세 조회")
+                                .tag("관리자 - 이벤트 토스트")
+                                .summary("관리자의 이벤트 토스트 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -116,10 +116,10 @@ public class EventToastAdminControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("이벤트 토스트 정보 수정",
+                .andDo(document("관리자의 이벤트 토스트 정보를 수정할 수 있다.",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
-                                .summary("이벤트 토스트 수정")
+                                .tag("관리자 - 이벤트 토스트")
+                                .summary("관리자의 이벤트 토스트 수정")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
