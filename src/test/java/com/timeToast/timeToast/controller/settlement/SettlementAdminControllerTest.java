@@ -52,7 +52,7 @@ public class SettlementAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("creatorId").description("조회 대상의 creatorId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("정산")
+                                .tag("관리자 - 정산")
                                 .summary("관리자는 제작자의 정산을 승인할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -88,7 +88,7 @@ public class SettlementAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자의 정산 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("정산")
+                                .tag("관리자 - 정산")
                                 .summary("관리자는 정산 목록을 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -124,7 +124,7 @@ public class SettlementAdminControllerTest extends BaseControllerTests {
                                 parameterWithName("creatorId").description("조회 대상의 creatorId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("정산")
+                                .tag("관리자 - 정산")
                                 .summary("관리자는 제작자 별 정산 상세 조회할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

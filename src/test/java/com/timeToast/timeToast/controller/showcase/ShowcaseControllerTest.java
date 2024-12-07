@@ -50,7 +50,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("진열장 등록",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 등록")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -83,7 +83,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isBadRequest())
                 .andDo(document("진열장 등록 실패: 3개 초과",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 등록")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -113,7 +113,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("진열장 등록 가능한 토스트 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 등록 가능한 토스트 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -144,7 +144,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 회원의 진열장 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("로그인한 회원의 진열장 조")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -174,7 +174,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("memberId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -204,7 +204,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 parameterWithName("showcaseId").description("showcase id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -234,7 +234,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                 parameterWithName("showcaseId").description("showcase id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("진열장")
+                                .tag("유저 - 진열장")
                                 .summary("진열장 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

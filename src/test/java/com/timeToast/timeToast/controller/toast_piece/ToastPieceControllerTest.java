@@ -65,7 +65,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                 fieldWithPath("title").type(STRING).description("제목")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("토스트 조각")
+                                .tag("유저 - 토스트 조각")
                                 .summary("토스트 조각 내용 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -101,7 +101,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("토스트 조각")
+                                .tag("유저 - 토스트 조각")
                                 .summary("토스트 조각 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -151,7 +151,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("토스트 조각")
+                                .tag("유저 - 토스트 조각")
                                 .summary("토스트 조각 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -181,7 +181,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("토스트 조각")
+                                .tag("유저 - 토스트 조각")
                                 .summary("토스트 조각 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -211,7 +211,7 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                 parameterWithName("toastPieceId").description("토스트 조각 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("토스트 조각")
+                                .tag("유저 - 토스트 조각")
                                 .summary("토스트 조각 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
