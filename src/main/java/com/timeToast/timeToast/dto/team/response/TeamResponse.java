@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.member_group.response;
+package com.timeToast.timeToast.dto.team.response;
 
 import com.timeToast.timeToast.domain.team.team.Team;
 import lombok.Builder;

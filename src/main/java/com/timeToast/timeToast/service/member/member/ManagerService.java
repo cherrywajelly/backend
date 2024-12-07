@@ -9,7 +9,7 @@ import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerRespo
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamDataManagerResponses;
+import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 

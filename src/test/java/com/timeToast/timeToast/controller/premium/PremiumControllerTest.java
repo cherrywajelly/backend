@@ -88,4 +88,33 @@ class PremiumControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
+
+    @DisplayName("관리자 월 별 구독 플랜 가입자 수 조회")
+    @Test
+    void iconGroupMonthlyRevenue() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/premiums/monthly-revenue")
+                                .param("year", "2024")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 월 별 수익 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("아이콘")
+                                .summary("관리자 월 별 수익 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year")
+                                )
+                                .responseFields(
+                                        fieldWithPath("premiumMonthlyRevenues[0].year").type(NUMBER).description("year"),
+                                        fieldWithPath("premiumMonthlyRevenues[0].month").type(NUMBER).description("month"),
+                                        fieldWithPath("premiumMonthlyRevenues[0].premiumCount").type(NUMBER).description("프리미엄 가입자 수")
+                                )
+                                .build()
+                        )));
+    }
 }

@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.team;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
 import com.timeToast.timeToast.service.team.TeamService;
 import com.timeToast.timeToast.service.team.TeamServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;

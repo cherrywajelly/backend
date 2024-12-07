@@ -118,10 +118,24 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     }
 
     @Override
-    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+    public IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month) {
         List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
         iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
         return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue( final int year) {
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+        iconGroupMonthlyRevenues.add(
+                IconGroupMonthlyRevenue.builder()
+                        .year(year)
+                        .month(1)
+                        .toastsRevenue(100L)
+                        .jamsRevenue(100L)
+                        .build()
+        );
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 
 }
