@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.controller.settlement;
 
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
+import com.timeToast.timeToast.dto.settlement.response.SettlementApprovalResponse;
 import com.timeToast.timeToast.dto.settlement.response.SettlementCreatorInfoResponse;
 import com.timeToast.timeToast.dto.settlement.response.SettlementDetailResponse;
 import com.timeToast.timeToast.dto.settlement.response.SettlementResponses;
@@ -18,7 +19,7 @@ public class SettlementAdminController {
     }
 
     @PostMapping("/creators/{creatorId}")
-    public SettlementCreatorInfoResponse approvalSettlement(@PathVariable long creatorId, @RequestBody SettlementRequest settlementRequest){
+    public SettlementApprovalResponse approvalSettlement(@PathVariable long creatorId, @RequestBody SettlementRequest settlementRequest){
         return settlementService.approvalSettlement(creatorId, settlementRequest);
     }
 

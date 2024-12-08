@@ -37,38 +37,65 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Transactional
     @Override
-    public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
+    public SettlementApprovalResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
         yearMonthValidation(settlementRequest.year(), settlementRequest.month());
         settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementRequest.year(), settlementRequest.month(),1), creatorId).forEach(
-                settlement -> {
-                    settlement.updateSettlementState(SettlementState.APPROVAL);
-                    settlement.updateSettlementDate(LocalDate.now());
+                        settlement -> {
+                            settlement.updateSettlementState(SettlementState.APPROVAL);
+                            settlement.updateSettlementDate(LocalDate.now());
 
-                }
+                        }
         );
-        return new SettlementCreatorInfoResponse(settlementRequest.year(), settlementRequest.month(), LocalDate.now());
+        return new SettlementApprovalResponse(settlementRequest.year(), settlementRequest.month(), LocalDate.now());
     }
 
     @Transactional(readOnly = true)
     @Override
     public SettlementCreatorInfoResponses getSettlementByYearMonthByCreator(final long memberId) {
         List<SettlementCreatorInfoResponse> settlementCreatorInfoResponses = new ArrayList<>();
-        settlementRepository.findAllByMemberId(memberId).stream().collect(Collectors.toMap(
+        settlementRepository.findAllByMemberId(memberId).stream().collect(Collectors.groupingBy(
                 Settlement::getYearsMonth,
-                response -> response,
-                (existing, replacement) -> existing)).values().stream().toList().forEach(
-                settlementResponse -> {
-                    if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
-                        settlementCreatorInfoResponses.add(
-                                SettlementCreatorInfoResponse.builder()
-                                        .year(settlementResponse.getYearsMonth().getYear())
-                                        .month(settlementResponse.getYearsMonth().getMonthValue())
-                                        .settlementDate(settlementResponse.getSettlementDate())
-                                        .build());
-                    }
-                }
+                Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        settlements -> {
 
-        );
+                            long totalRevenue = settlements.stream()
+                                    .mapToLong(Settlement::getRevenue)
+                                    .sum();
+
+                            settlementCreatorInfoResponses.add(
+                                        SettlementCreatorInfoResponse.builder()
+                                                .year(settlements.stream().findFirst()
+                                                        .orElse(null).getYearsMonth().getYear())
+                                                .month(settlements.stream().findFirst()
+                                                        .orElse(null).getYearsMonth().getMonthValue())
+                                                .settlementDate(settlements.stream().findFirst().orElse(null).getSettlementDate())
+                                                .saleCount(settlements.stream().mapToInt(Settlement::getSalesCount).sum())
+                                                .settlement((long) (totalRevenue*0.7))
+                                                .revenue(totalRevenue)
+                                                .build());
+                            return null;
+                        }
+                )
+        ));
+
+
+//                .collect(Collectors.toMap(
+//                Settlement::getYearsMonth,
+//                response -> response,
+//                (existing, replacement) -> existing)).values().stream().toList().forEach(
+//                        settlementResponse -> {
+//                            if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
+//                                settlementCreatorInfoResponses.add(
+//                                        SettlementCreatorInfoResponse.builder()
+//                                                .year(settlementResponse.getYearsMonth().getYear())
+//                                                .month(settlementResponse.getYearsMonth().getMonthValue())
+//                                                .settlementDate(settlementResponse.getSettlementDate())
+//                                                .build());
+//                            }
+//                        }
+//
+//        );
         return new SettlementCreatorInfoResponses(settlementCreatorInfoResponses);
     }
 

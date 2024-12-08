@@ -79,10 +79,11 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         List<IconGroupAdminResponse> iconGroupInfoResponses = new ArrayList<>();
         iconGroupInfoResponses.add(IconGroupAdminResponse.builder()
                 .iconGroupId(1L)
-                .iconType(IconType.TOAST)
-                .iconState(IconState.WAITING)
                 .title("title")
                 .thumbnailUrl("thumbnailUrl")
+                .iconType(IconType.TOAST)
+                .iconState(IconState.WAITING)
+                .nickname("nickname")
                 .build());
         return new IconGroupAdminResponses(iconGroupInfoResponses);
     }
