@@ -10,23 +10,23 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
-import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.image.FileUploadService;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,13 +43,10 @@ import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR;
 import static com.timeToast.timeToast.global.constant.StatusCode.BAD_REQUEST;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,6 +69,9 @@ public class MemberServiceImplTest {
 
     @Mock
     CreatorAccountRepository creatorAccountRepository;
+
+    @Mock
+    IconGroupAdminService iconGroupAdminService;
 
     @InjectMocks
     MemberServiceImpl memberService;
@@ -353,6 +353,17 @@ public class MemberServiceImplTest {
         //given
         List<Member> members = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(members);
+
+        List<CreatorIconInfo> creatorIconInfoList = List.of(
+                CreatorIconInfo.builder()
+                        .title("title")
+                        .revenue(1000)
+                        .salesCount(1)
+                        .iconImageUrl(List.of("iconImageUrl"))
+                        .build()
+        );
+        CreatorIconInfos creatorIconInfos =  new CreatorIconInfos(1, 1000, 10,creatorIconInfoList);
+        when(iconGroupAdminService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();

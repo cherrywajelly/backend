@@ -53,7 +53,10 @@ public class CreatorAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("creatorResponses[0].memberId").type(NUMBER).description("제작자 id 값"),
                                         fieldWithPath("creatorResponses[0].profileUrl").type(STRING).description("제작자 profile url"),
-                                        fieldWithPath("creatorResponses[0].nickname").type(STRING).description("제작자 닉네임")
+                                        fieldWithPath("creatorResponses[0].nickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[0].salesIconCount").type(NUMBER).description("판매 아이콘 갯수"),
+                                        fieldWithPath("creatorResponses[0].totalRevenue").type(NUMBER).description("전체 수익"),
+                                        fieldWithPath("creatorResponses[0].createdIconCount").type(NUMBER).description("제작한 아이콘 갯수")
                                 )
                                 .build()
                         )));
