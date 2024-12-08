@@ -7,7 +7,10 @@ import lombok.Builder;
 public record CreatorResponse(
         long memberId,
         String profileUrl,
-        String nickname
+        String nickname,
+        long salesIconCount,
+        long totalRevenue,
+        int createdIconCount
 ) {
 
     public static CreatorResponse from(final Member member) {
@@ -18,7 +21,4 @@ public record CreatorResponse(
                 .build();
     }
 
-    public String getNickname() {
-        return nickname;
-    }
 }

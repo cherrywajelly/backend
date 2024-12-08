@@ -73,6 +73,9 @@ public class MemberServiceTest implements MemberService{
                         .memberId(1L)
                         .profileUrl("profileUrl")
                         .nickname("nickname")
+                        .salesIconCount(10)
+                        .totalRevenue(100)
+                        .createdIconCount(10)
                         .build()
         );
         return new CreatorResponses(creatorResponses) ;

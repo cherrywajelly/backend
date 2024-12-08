@@ -14,4 +14,5 @@ public interface SettlementRepository {
     List<SettlementIcon> findAllByYearMonthAndMemberIdToIcon(final LocalDate yearMonth,final long memberId);
     List<Settlement> findAllByMemberId(final long memberId);
     Settlement getById(final long monthSettlementId);
+    List<Settlement> findAllByYearsMonthBetweenAndMemberId(LocalDate startDate, LocalDate endDate, long memberId);
 }
