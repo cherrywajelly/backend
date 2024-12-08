@@ -1,10 +1,8 @@
 package com.timeToast.timeToast.Integration;
 
 import com.timeToast.timeToast.TimeToastApplication;
-import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
 import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
 import com.timeToast.timeToast.dto.team.response.TeamResponse;
@@ -53,10 +51,11 @@ public class TeamIntegrationTest extends TestContainerSupport {
 
     @Test
     @DisplayName("사용자는 자신의 팔로잉 유저와 팀을 만들 수 있다.")
-    public void tryDeleteFollowings() {
+    public void trySaveTeam() {
         //login member
         Member member = memberRepository.getById(1L);
         FollowResponses memberFollowingList = followService.findFollowingList(member.getId());
+        List<TeamMember> beforeMembersTeam = teamMemberRepository.findAllByMemberId(member.getId());
 
         //save team
         List<Long> teamMembers = new ArrayList<>();
@@ -70,6 +69,47 @@ public class TeamIntegrationTest extends TestContainerSupport {
         //teamMember
         List<TeamMember> savedTeamMember = teamMemberRepository.findAllByTeamId(teamResponse.teamId());
         Assertions.assertEquals(teamMembers.size()+1, savedTeamMember.size());
+
+        List<TeamMember> afterMembersTeam = teamMemberRepository.findAllByMemberId(member.getId());
+        Assertions.assertEquals(beforeMembersTeam.size()+1, afterMembersTeam.size());
+
+
+    }
+
+
+    @Test
+    @DisplayName("사용자는 자신이 팀을 삭제할 수 있다.")
+    public void tryDeleteTeam() {
+        //login member
+        Member member = memberRepository.getById(1L);
+        List<TeamMember> teamList = teamMemberRepository.findAllByMemberId(member.getId());
+
+        if(teamList.isEmpty()){
+            //save team
+            FollowResponses memberFollowingList = followService.findFollowingList(member.getId());
+            List<TeamMember> beforeMembersTeam = teamMemberRepository.findAllByMemberId(member.getId());
+
+            List<Long> teamMembers = new ArrayList<>();
+            for(int i=0; i<2; i++){
+                teamMembers.add(memberFollowingList.followResponses().get(i).memberId());
+            }
+
+            TeamSaveRequest teamSaveRequest = new TeamSaveRequest("team", teamMembers);
+            teamService.saveTeam(member.getId(), teamSaveRequest);
+            teamList = teamMemberRepository.findAllByMemberId(member.getId());
+        }
+
+        TeamMember teamMember = teamList.get(0);
+        List<TeamMember> beforeTeamMembers = teamMemberRepository.findAllByTeamId(teamMember.getTeamId());
+
+        //delete team
+        Response response = teamService.deleteTeam(member.getId(),teamMember.getTeamId());
+
+        Assertions.assertEquals(StatusCode.OK.getStatusCode(), response.statusCode());
+
+        List<TeamMember> afterTeamMembers = teamMemberRepository.findAllByTeamId(teamMember.getTeamId());
+        Assertions.assertEquals(beforeTeamMembers.size()-1, afterTeamMembers.size());
+
 
     }
 
