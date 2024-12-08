@@ -364,12 +364,11 @@ public class PaymentServiceImplTest {
 
         IconGroup iconGroup = setUpIconGroup();
         ReflectionTestUtils.setField(iconGroup, "id", 1L);
-        when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
         //when
         PaymentsAdminResponses paymentsAdminResponses = paymentService.getIconPayments(0,5);
         //then
-        assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
+        assertEquals(0, paymentsAdminResponses.paymentsAdminResponses().size());
     }
 
     @Test

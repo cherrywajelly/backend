@@ -138,16 +138,18 @@ public class PaymentServiceImpl implements PaymentService {
                         nickname = member.get().getNickname();
                     }
 
-                    paymentsResponse.add(
-                            PaymentsAdminResponse.builder()
-                                    .createdAt(payment.getCreatedAt().toLocalDate())
-                                    .paymentId(payment.getId())
-                                    .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
-                                    .itemType(ItemType.ICON)
-                                    .nickname(nickname)
-                                    .amount(payment.getAmount())
-                                    .paymentState(payment.getPaymentState())
-                                    .build());
+                    if (payment.getItemType().equals(ItemType.ICON)) {
+                        paymentsResponse.add(
+                                PaymentsAdminResponse.builder()
+                                        .createdAt(payment.getCreatedAt().toLocalDate())
+                                        .paymentId(payment.getId())
+                                        .itemName(iconGroupRepository.getById(payment.getItemId()).getName())
+                                        .itemType(ItemType.ICON)
+                                        .nickname(nickname)
+                                        .amount(payment.getAmount())
+                                        .paymentState(payment.getPaymentState())
+                                        .build());
+                    }
                 }
         );
 
@@ -167,16 +169,18 @@ public class PaymentServiceImpl implements PaymentService {
                         nickname = member.get().getNickname();
                     }
 
-                    paymentsResponse.add(
-                            PaymentsAdminResponse.builder()
-                                    .createdAt(payment.getCreatedAt().toLocalDate())
-                                    .paymentId(payment.getId())
-                                    .itemType(ItemType.PREMIUM)
-                                    .nickname(nickname)
-                                    .amount(payment.getAmount())
-                                    .paymentState(payment.getPaymentState())
-                                    .expiredDate(payment.getExpiredDate())
-                                    .build());
+                    if (payment.getItemType().equals(ItemType.PREMIUM)) {
+                        paymentsResponse.add(
+                                PaymentsAdminResponse.builder()
+                                        .createdAt(payment.getCreatedAt().toLocalDate())
+                                        .paymentId(payment.getId())
+                                        .itemType(ItemType.PREMIUM)
+                                        .nickname(nickname)
+                                        .amount(payment.getAmount())
+                                        .paymentState(payment.getPaymentState())
+                                        .expiredDate(payment.getExpiredDate())
+                                        .build());
+                    }
                 }
         );
 
