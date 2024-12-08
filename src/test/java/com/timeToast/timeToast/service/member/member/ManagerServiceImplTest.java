@@ -7,6 +7,7 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team.Team;
@@ -16,6 +17,7 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
@@ -24,7 +26,9 @@ import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
@@ -83,6 +87,12 @@ public class ManagerServiceImplTest {
     @Mock
     private PaymentRepository paymentRepository;
 
+    @Mock
+    private IconMemberRepository iconMemberRepository;
+
+    @Mock
+    private IconRepository iconRepository;
+
     @InjectMocks
     private ManagerServiceImpl managerService;
 
@@ -92,6 +102,7 @@ public class ManagerServiceImplTest {
     private Icon icon;
     private IconGroup iconGroup;
     private Follow follow;
+    private IconMember iconMember;
 
     @BeforeEach
     void setUp() {
@@ -104,6 +115,7 @@ public class ManagerServiceImplTest {
         icon = Icon.builder().build();
         iconGroup = IconGroup.builder().name(name).build();
         follow = Follow.builder().followerId(1L).build();
+        iconMember = IconMember.builder().build();
     }
 
     private Member setUpMember() {
@@ -321,6 +333,9 @@ public class ManagerServiceImplTest {
     @DisplayName("관리자 사용자 그룹 정보 조회 성공")
     public void getIconGroupSuccess(){
         ReflectionTestUtils.setField(member, "id", 1L);
+        when(iconMemberRepository.findByMemberId(anyLong())).thenReturn(List.of(iconMember));
+        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(List.of(icon));
+        when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
         IconGroupManagerResponses responses = managerService.getMemberIconGroupInfo(1L);
 
@@ -356,8 +371,8 @@ public class ManagerServiceImplTest {
 
         when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> managerService.createItemData(itemType, itemId));
-        assertThat(exception).isNotNull();
+        MemberItemDataResponse memberItemDataResponse = managerService.createItemData(itemType, itemId);
+        assertThat(memberItemDataResponse).isNotNull();
     }
 
     @Test

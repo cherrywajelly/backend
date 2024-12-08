@@ -234,7 +234,9 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN);
         iconGroups.forEach(iconGroup -> {
             Member member = memberRepository.getById(iconGroup.getMemberId());
-            iconGroupAdminResponses.add(IconGroupAdminResponse.from(iconGroup,member.getNickname()));
+            if (member != null) {
+                iconGroupAdminResponses.add(IconGroupAdminResponse.from(iconGroup,member.getNickname()));
+            }
         });
         return new IconGroupAdminResponses(iconGroupAdminResponses);
     }
