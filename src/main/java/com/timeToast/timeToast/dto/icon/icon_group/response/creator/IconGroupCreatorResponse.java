@@ -7,17 +7,21 @@ import lombok.Builder;
 @Builder
 public record IconGroupCreatorResponse (
         long iconGroupId,
-        //thumnail
         String iconImageUrl,
         String iconTitle,
-        IconState iconState
+        IconState iconState,
+        long orderCount,
+        long totalRevenue
+
 ) {
-    public static IconGroupCreatorResponse fromEntity(final IconGroup iconGroup) {
+    public static IconGroupCreatorResponse fromEntity(final IconGroup iconGroup, final int orderCount, final long totalRevenue) {
         return IconGroupCreatorResponse.builder()
                 .iconGroupId(iconGroup.getId())
                 .iconImageUrl(iconGroup.getThumbnailImageUrl())
                 .iconTitle(iconGroup.getName())
                 .iconState(iconGroup.getIconState())
+                .orderCount(orderCount)
+                .totalRevenue(totalRevenue)
                 .build();
     }
 }

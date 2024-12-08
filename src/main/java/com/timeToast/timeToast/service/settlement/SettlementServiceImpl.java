@@ -43,6 +43,7 @@ public class SettlementServiceImpl implements SettlementService {
                         settlement -> {
                             settlement.updateSettlementState(SettlementState.APPROVAL);
                             settlement.updateSettlementDate(LocalDate.now());
+
                         }
         );
         return new SettlementCreatorInfoResponse(settlementRequest.year(), settlementRequest.month(), LocalDate.now());
