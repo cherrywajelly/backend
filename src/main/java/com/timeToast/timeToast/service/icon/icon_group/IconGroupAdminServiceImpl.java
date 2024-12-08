@@ -8,6 +8,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
+import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
@@ -83,8 +84,16 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
 
         iconGroups.forEach(
-                iconGroup ->
-                        iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup)));
+                iconGroup -> {
+                    List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+                    long totalRevenue = payments.stream()
+                            .mapToLong(Payment::getAmount)
+                            .sum();
+                    iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup, payments.size(), totalRevenue));
+                });
+
+
+
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }

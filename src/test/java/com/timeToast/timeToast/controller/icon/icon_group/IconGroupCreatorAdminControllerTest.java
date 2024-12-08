@@ -107,7 +107,9 @@ public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupCreatorResponses[0].iconGroupId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconImageUrl").type(STRING).description("아이콘 대표 이미지"),
                                         fieldWithPath("iconGroupCreatorResponses[0].iconTitle").type(STRING).description("아이콘 제목"),
-                                        fieldWithPath("iconGroupCreatorResponses[0].iconState").type(STRING).description("아이콘 등록 상태")
+                                        fieldWithPath("iconGroupCreatorResponses[0].iconState").type(STRING).description("아이콘 등록 상태"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].orderCount").type(NUMBER).description("판매한 아이콘 수"),
+                                        fieldWithPath("iconGroupCreatorResponses[0].totalRevenue").type(NUMBER).description("아이콘 총 수익")
                                 )
                                 .build()
                         )));
