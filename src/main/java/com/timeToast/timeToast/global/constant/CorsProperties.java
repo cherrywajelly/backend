@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 @Getter
 public class CorsProperties {
 
+    @Value("cors.local")
+    private String local;
+
+    @Value("cors.dev")
+    private String dev;
+
     @Value("${cors.front-localhost}")
     private String frontLocalHost;
 

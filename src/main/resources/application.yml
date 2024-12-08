@@ -59,6 +59,8 @@ spring:
 
 
 cors:
+  local: ${LOCAL}
+  dev: ${DEV}
   front-localhost: ${FRONT_LOCAL}
   back-localhost: ${BACK_LOCAL}
   service-dev: ${SERVICE_DEV}
