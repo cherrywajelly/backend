@@ -5,12 +5,9 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record SettlementCreatorInfoResponse(
+public record SettlementCreatorMonthInfoResponse (
         int year,
         int month,
-        LocalDate settlementDate,
-        long settlement,
-        long revenue,
-        long saleCount
+        LocalDate settlementDate
 ) {
 }

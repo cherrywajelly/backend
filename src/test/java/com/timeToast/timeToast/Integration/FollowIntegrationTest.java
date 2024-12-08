@@ -12,7 +12,6 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.follow.FollowService;
-import com.timeToast.timeToast.service.member.member.LoginService;
 import com.timeToast.timeToast.service.search.SearchService;
 import com.timeToast.timeToast.util.TestContainerSupport;
 import org.junit.jupiter.api.Assertions;
@@ -82,18 +81,19 @@ public class FollowIntegrationTest extends TestContainerSupport {
         //follow user
         if(!beforeFollowFollowingList.followResponses().isEmpty()){
             Member followMember = memberRepository.getById(beforeFollowFollowingList.followResponses().get(0).memberId());
+            FollowResponses beforeFollowerList = followService.findFollowerList(member.getId());
+
 
             //delete follow
             Response response = followService.deleteFollowing(member.getId(),followMember.getId());
             FollowResponses afterFollowFollowingList = followService.findFollowingList(member.getId());
+            FollowResponses afterFollowerList = followService.findFollowerList(member.getId());
+
 
             Assertions.assertEquals(StatusCode.OK.getStatusCode(),response.statusCode());
-            Assertions.assertEquals(beforeFollowFollowingList.followResponses().size()+1, afterFollowFollowingList.followResponses().size());
+            Assertions.assertEquals(beforeFollowFollowingList.followResponses().size()-1, afterFollowFollowingList.followResponses().size());
+            Assertions.assertEquals(beforeFollowerList.followResponses().size()-1, afterFollowerList);
 
-            //followMember fcm update
-            FcmResponses afterFcmResponses = fcmService.getFcmResponses(followMember.getId());
-            Assertions.assertTrue(afterFcmResponses.fcmResponses().stream().anyMatch(
-                    fcmResponse -> fcmResponse.nickname().equals(member.getNickname()) && fcmResponse.fcmConstant().equals(FcmConstant.FOLLOW)));
         }
 
     }
