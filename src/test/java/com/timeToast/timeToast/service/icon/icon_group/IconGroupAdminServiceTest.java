@@ -31,7 +31,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED));
+        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED, 0, 0));
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
