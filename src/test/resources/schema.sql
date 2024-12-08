@@ -43,6 +43,7 @@ INSERT INTO member VALUES (1,1,"test1@email.com", "memberProfileUrl1", "user1", 
 INSERT INTO member VALUES (2,1,"test2@email.com", "memberProfileUrl2", "testNickname2", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "TimeToast", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (5,1,"withDrawal@email.com", "memberProfileUrl5", "withDrawalUser", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 
@@ -70,6 +71,7 @@ CREATE TABLE team_member (
 INSERT INTO team_member VALUES (1,1, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO team_member VALUES (2,2, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO team_member VALUES (3,3, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO team_member VALUES (4,5, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 CREATE TABLE follow (
@@ -85,6 +87,8 @@ INSERT INTO follow VALUES (1,1, 2, "2024-11-03 22:34:32.431779", "2024-11-03 22:
 INSERT INTO follow VALUES (2,1, 3, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO follow VALUES (3,2, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO follow VALUES (4,3, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO follow VALUES (5,5, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO follow VALUES (6,2, 5, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 
@@ -137,6 +141,8 @@ INSERT INTO icon_member VALUES (3,2,1, "2024-11-03 22:34:32.431779", "2024-11-03
 INSERT INTO icon_member VALUES (4,2,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (5,3,1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (6,3,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon_member VALUES (7,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon_member VALUES (8,5,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE gift_toast (
                             gift_toast_id BIGINT AUTO_INCREMENT,
@@ -153,6 +159,8 @@ CREATE TABLE gift_toast (
                             PRIMARY KEY (gift_toast_id)
 );
 
+INSERT INTO gift_toast VALUES (1,1,1, "2024-12-03","2024-12-03", false, "title", "MINE","description","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
 CREATE TABLE gift_toast_owner (
                                   gift_toast_owner_id BIGINT AUTO_INCREMENT,
                                   member_id BIGINT,
@@ -161,6 +169,8 @@ CREATE TABLE gift_toast_owner (
                                   last_modified_at datetime,
                                   PRIMARY KEY (gift_toast_owner_id)
 );
+
+INSERT INTO gift_toast_owner VALUES (1,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE toast_piece (
                              toast_piece_id BIGINT AUTO_INCREMENT,
@@ -174,6 +184,10 @@ CREATE TABLE toast_piece (
                              PRIMARY KEY (toast_piece_id)
 );
 
+INSERT INTO toast_piece VALUES (1,5,1,1,"title","contents_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO toast_piece VALUES (2,5,1,1,"title","contents_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
+
 CREATE TABLE toast_piece_image (
                                    toast_piece_image_id BIGINT AUTO_INCREMENT,
                                    toast_piece_id BIGINT,
@@ -182,6 +196,10 @@ CREATE TABLE toast_piece_image (
                                    last_modified_at datetime,
                                    PRIMARY KEY (toast_piece_image_id)
 );
+
+INSERT INTO toast_piece_image VALUES (1,1,"image_url1","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO toast_piece_image VALUES (2,2,"image_url2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
 
 CREATE TABLE event_toast (
                              event_toast_id BIGINT AUTO_INCREMENT,
@@ -196,6 +214,9 @@ CREATE TABLE event_toast (
                              PRIMARY KEY (event_toast_id)
 );
 
+INSERT INTO event_toast VALUES (1,5,1,"title1","2024-12-04",false,"description1","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
+
 
 CREATE TABLE jam (
                      jam_id BIGINT AUTO_INCREMENT,
@@ -209,6 +230,9 @@ CREATE TABLE jam (
                      last_modified_at DATETIME,
                      PRIMARY KEY (jam_id)
 );
+INSERT INTO jam VALUES (1,5,1,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
+
 
 CREATE TABLE showcase (
                           showcase_id BIGINT AUTO_INCREMENT,
@@ -218,6 +242,9 @@ CREATE TABLE showcase (
                           last_modified_at DATETIME,
                           PRIMARY KEY (showcase_id)
 );
+
+INSERT INTO showcase VALUES (1,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
 
 CREATE TABLE fcm (
                      fcm_id BIGINT AUTO_INCREMENT,
@@ -232,6 +259,10 @@ CREATE TABLE fcm (
                      last_modified_at DATETIME,
                      PRIMARY KEY (fcm_id)
 );
+
+INSERT INTO fcm VALUES (1,5,"FOLLOW",4,"toast_name",false,2,"image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
+
 
 CREATE TABLE template (
                      template_id BIGINT AUTO_INCREMENT,
@@ -277,6 +308,9 @@ CREATE TABLE payment (
                          last_modified_at DATETIME
 
 );
+
+INSERT INTO payment VALUES (1,5,"orderId1","PREMIUM","SUCCESS",5500,2,"2025-03-02","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
 
 CREATE TABLE settlement (
                             settlement_id BIGINT AUTO_INCREMENT PRIMARY KEY,
