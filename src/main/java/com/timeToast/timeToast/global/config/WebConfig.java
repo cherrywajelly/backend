@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.global.config;
 
+import com.timeToast.timeToast.global.constant.CorsProperties;
 import com.timeToast.timeToast.global.resolver.LoginMemberResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,21 +16,25 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final LoginMemberResolver loginMemberResolver;
+    private final CorsProperties corsProperties;
 
-    public WebConfig(LoginMemberResolver loginMemberResolver) {
+    public WebConfig(final LoginMemberResolver loginMemberResolver, final CorsProperties corsProperties) {
         this.loginMemberResolver = loginMemberResolver;
+        this.corsProperties = corsProperties;
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
                 .allowedOriginPatterns(
-                  "https://dev-back.timetoast.app",
-                  "http://localhost",
-                  "https://dev-front.timetoast.app",
-                  "https://timetoast.app",
-                  "https://dev-admin.timetoast.app",
-                  "https://admin.timetoast.app"
+                        corsProperties.getDev(),
+                        corsProperties.getLocal(),
+                        corsProperties.getServiceDev(),
+                        corsProperties.getServiceProd(),
+                        corsProperties.getAdminDev(),
+                        corsProperties.getAdminProd(),
+                        corsProperties.getCreatorDev(),
+                        corsProperties.getCreatorProd()
                 )
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
