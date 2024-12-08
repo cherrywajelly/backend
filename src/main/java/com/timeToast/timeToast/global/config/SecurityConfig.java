@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@PropertySource("application.yml")
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
