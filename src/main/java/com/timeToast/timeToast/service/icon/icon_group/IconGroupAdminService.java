@@ -18,7 +18,7 @@ public interface IconGroupAdminService {
     IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest);
     IconGroupInfoResponses getIconGroupForNonApproval();
     CreatorIconInfos getIconGroupsByCreator(final long creatorId);
-    IconGroupInfoResponses getAllIconGroups();
+    IconGroupAdminResponses getAllIconGroups();
     IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId);
     IconGroupSummaries iconGroupSummary();
     IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month);

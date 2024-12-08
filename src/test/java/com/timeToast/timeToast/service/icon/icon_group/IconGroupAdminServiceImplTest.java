@@ -360,10 +360,11 @@ public class IconGroupAdminServiceImplTest {
         when(iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN)).thenReturn(iconGroups);
 
         // When
-        IconGroupInfoResponses iconGroupInfoResponses = iconGroupAdminService.getAllIconGroups();
+        when(memberRepository.getById(1L)).thenReturn(member);
+        IconGroupAdminResponses iconGroupInfoResponses = iconGroupAdminService.getAllIconGroups();
 
         // Then
-        assertEquals(iconGroups.size(), iconGroupInfoResponses.iconGroupNonApprovalResponses().size());
+        assertEquals(iconGroups.size(), iconGroupInfoResponses.iconGroupAdminResponses().size());
 
     }
 

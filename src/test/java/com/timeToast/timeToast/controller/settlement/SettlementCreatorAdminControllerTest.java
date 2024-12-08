@@ -101,7 +101,7 @@ public class SettlementCreatorAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("settlementIcons[0].revenue").type(NUMBER).description("아이콘 별 수익"),
                                         fieldWithPath("settlementIcons[0].salesCount").type(NUMBER).description("아이콘 별 판매 수량"),
                                         fieldWithPath("settlementIcons[0].settlementState").type(STRING).description("아이콘 별 정산 승인 상태")
-                                        )
+                                )
                                 .build()
                         )));
     }
