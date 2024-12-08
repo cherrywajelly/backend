@@ -122,6 +122,11 @@ public class PaymentRepositoryImpl implements PaymentRepository {
                 .fetchOne();
     }
 
+    @Override
+    public Page<Payment> findAllByItemType(final ItemType itemType, final Pageable pageable) {
+        return paymentJpaRepository.findAllByItemType(itemType, pageable);
+    }
+
 
     @Override
     public List<Payment> findByMemberId(final long memberId) {

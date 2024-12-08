@@ -188,7 +188,10 @@ dependencies {
 
 	//firbase
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
-//	implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
+
+
+	//integrate test
+
 }
 
 tasks.named('test') {

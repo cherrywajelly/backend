@@ -9,6 +9,8 @@ public record SettlementResponse(
         String nickname,
         String profileUrl,
         SettlementState settlementState
+//        long orderCount,
+//        long monthRevenue
 
 ) {
 
