@@ -60,7 +60,7 @@ public class JamControllerTest extends BaseControllerTests {
                                 fieldWithPath("iconId").type(NUMBER).description("잼 아이콘 id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("잼")
+                                .tag("유저 - 잼")
                                 .summary("잼 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -85,7 +85,7 @@ public class JamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("잼 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("잼")
+                                .tag("유저 - 잼")
                                 .summary("잼 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -115,7 +115,7 @@ public class JamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("잼 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("잼")
+                                .tag("유저 - 잼")
                                 .summary("잼 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -155,7 +155,7 @@ public class JamControllerTest extends BaseControllerTests {
                                 parameterWithName("jamId").description("삭제하는 jam id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("잼")
+                                .tag("유저 - 잼")
                                 .summary("잼 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

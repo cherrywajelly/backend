@@ -24,7 +24,7 @@ public class Fcm extends BaseTime {
     @Enumerated(EnumType.STRING)
     private FcmConstant fcmConstant;
 
-    private String nickname;
+    private Long senderId;
 
     private String toastName;
 
@@ -35,10 +35,10 @@ public class Fcm extends BaseTime {
     private String imageUrl;
 
     @Builder
-    public Fcm(final long memberId, final FcmConstant fcmConstant, final String nickname, final String toastName, final long param, final String imageUrl) {
+    public Fcm(final long memberId, final FcmConstant fcmConstant, final long senderId, final String toastName, final long param, final String imageUrl) {
         this.memberId = memberId;
         this.fcmConstant = fcmConstant;
-        this.nickname = nickname;
+        this.senderId = senderId;
         this.toastName = toastName;
         this.param = param;
         this.imageUrl = imageUrl;

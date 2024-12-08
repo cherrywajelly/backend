@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.team;
 
 import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.*;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -53,7 +53,7 @@ public class TeamServiceTest implements TeamService {
     @Override
     public TeamManagerResponses getTeamForManager() {
         List<TeamManagerResponse> teamManagerResponses = new ArrayList<>();
-        teamManagerResponses.add(new TeamManagerResponse(1,"team1","profile1"));
+        teamManagerResponses.add(new TeamManagerResponse(1,"team1","profile1", LocalDate.of(2024, 1, 1), 4));
         return new TeamManagerResponses(teamManagerResponses);
     }
 

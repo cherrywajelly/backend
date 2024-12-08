@@ -15,6 +15,7 @@ public record EventToastInfoManagerResponse (
     String iconImageUrl,
     String title,
     String nickname,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     LocalDate openedDate,
     boolean isOpened,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

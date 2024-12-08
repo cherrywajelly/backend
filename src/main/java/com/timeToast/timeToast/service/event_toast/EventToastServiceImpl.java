@@ -1,17 +1,16 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
 import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponses;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -19,7 +18,6 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.global.util.DDayCount;
-import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -40,8 +38,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.*;
 
 
 @Service
@@ -80,7 +77,7 @@ public class EventToastServiceImpl implements EventToastService{
     public EventToastOwnResponses getOwnEventToastList(final long memberId) {
 
         List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
-        eventToastRepository.findAllByMemberId(memberId).forEach(
+        eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
@@ -120,7 +117,8 @@ public class EventToastServiceImpl implements EventToastService{
     @Transactional(readOnly = true)
     @Override
     public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
-        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId);
+        List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).toList();
+
         List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
 
         filterEventToasts(eventToasts, false).forEach(
@@ -254,7 +252,7 @@ public class EventToastServiceImpl implements EventToastService{
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     Member member = memberRepository.getById(eventToast.getMemberId());
-                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast.getId(), eventToast.getTitle(), icon.getIconImageUrl(), member.getNickname()));
+                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname()));
                 }
         );
 
@@ -279,5 +277,17 @@ public class EventToastServiceImpl implements EventToastService{
         );
 
         return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
+    }
+
+    @Transactional
+    @Override
+    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
+        EventToast eventToast = eventToastRepository.getById(eventToastId);
+
+        eventToast.updateOpenedDateAndIsOpened(eventToastRequest.openedDate(), eventToastRequest.isOpened());
+        eventToastRepository.save(eventToast);
+
+        log.info("edit event toast");
+        return eventToastRequest;
     }
 }

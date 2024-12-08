@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.team;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
 import com.timeToast.timeToast.service.team.TeamService;
 import com.timeToast.timeToast.service.team.TeamServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -49,7 +49,7 @@ public class TeamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("팀 생성하기",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("팀 생성")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -84,7 +84,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                 partWithName("teamProfileImage").description("팀 프로필 이미지 파일")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("팀 프로필 사진 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -115,7 +115,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                 partWithName("teamProfileImage").description("팀 프로필 이미지 파일")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("팀 프로필 사진 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -140,7 +140,7 @@ public class TeamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 팀 목록 조회하기",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("팀 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -169,7 +169,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                 parameterWithName("teamId").description("team id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("사용자 팀 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -197,7 +197,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                 parameterWithName("teamId").description("team id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("팀")
+                                .tag("유저 - 팀")
                                 .summary("사용자 팀 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

@@ -18,4 +18,6 @@ public interface PaymentJpaRepository extends JpaRepository<Payment, Long> {
     Optional<Payment> findByOrderId(final String orderId);
     List<Payment> findAllByItemId(final long itemId);
     List<Payment> findAllByMemberIdAndItemTypeAndPaymentStateOrderByExpiredDateDesc(final long memberId, final ItemType itemType, final PaymentState paymentState);
+    List<Payment> findByMemberId(final long memberId);
+    Page<Payment> findAllByItemType(final ItemType itemType, final Pageable pageable);
 }

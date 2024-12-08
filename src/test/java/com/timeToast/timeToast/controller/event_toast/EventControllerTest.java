@@ -49,10 +49,10 @@ public class EventControllerTest extends BaseControllerTests {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("이벤트 토스트 저장",
+                .andDo(document("유저의 새로운 이벤트 토스트 저장",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
-                                .summary("새로운 이벤트 토스트를 저장")
+                                .tag("유저 - 이벤트 토스트")
+                                .summary("새로운 이벤트 토스트를 저장 할 수 있다.")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -82,10 +82,10 @@ public class EventControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(document("이벤트 토스트 목록 조회",
+                .andDo(document("로그인한 유저의 이벤트 토스트 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
-                                .summary("마이페이지의 이벤트 토스트 목록 조회")
+                                .tag("유저 - 이벤트 토스트")
+                                .summary("로그인한 유저의 마이페이지의 이벤트 토스트 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -110,9 +110,9 @@ public class EventControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(document("타사용자 이벤트 토스트 목록 조회",
+                .andDo(document("타사용자의 이벤트 토스트 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
+                                .tag("유저 - 이벤트 토스트")
                                 .summary("타사용자 마이페이지의 이벤트 토스트 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -145,9 +145,9 @@ public class EventControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(document("팔로우 하고 있는 타사용자의 이벤트 토스트 목록 조회",
+                .andDo(document("로그인한 유저의 모든 팔로잉 유저의 이벤트 토스트 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
+                                .tag("유저 - 이벤트 토스트")
                                 .summary("팔로우 하고 있는 타사용자의 이벤트 토스트 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -180,10 +180,10 @@ public class EventControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, TEST_ACCESS_TOKEN.value())
                 )
                 .andExpect(status().isOk())
-                .andDo(document("이벤트 토스트 상세 조회",
+                .andDo(document("특정 이벤트 토스트 상세 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
-                                .summary("이벤트 토스트 상세 조회")
+                                .tag("유저 - 이벤트 토스트")
+                                .summary("특정 이벤트 토스트 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -224,12 +224,12 @@ public class EventControllerTest extends BaseControllerTests {
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("이벤트 토스트 삭제",
+                .andDo(document("로그인한 유저의 자신의 이벤트 토스트 삭제",
                         pathParameters(
                                 parameterWithName("eventToastId").description("삭제하는 eventToastId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
+                                .tag("유저 - 이벤트 토스트")
                                 .summary("이벤트 토스트 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -243,7 +243,7 @@ public class EventControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("자신의 이벤트 토스트를 삭제할 수 있다. - 실패")
+    @DisplayName("자신의 이벤트 토스트를 삭제할 수 있다. : 실패")
     @WithMockCustomUser
     @Test
     void deleteEventToastsFail() throws Exception {
@@ -258,7 +258,7 @@ public class EventControllerTest extends BaseControllerTests {
                                 parameterWithName("eventToastId").description("삭제하는 eventToastId")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("이벤트 토스트")
+                                .tag("유저 - 이벤트 토스트")
                                 .summary("이벤트 토스트 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

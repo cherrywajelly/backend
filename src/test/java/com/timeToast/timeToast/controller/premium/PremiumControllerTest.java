@@ -45,7 +45,7 @@ class PremiumControllerTest extends BaseControllerTests {
                                 parameterWithName("premiumId").description("premium id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("프리미엄")
+                                .tag("유저 - 프리미엄")
                                 .summary("로그인한 사용자의 프리미엄 정보 저장")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -73,7 +73,7 @@ class PremiumControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("프리미엄 정보 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("프리미엄")
+                                .tag("유저 - 프리미엄")
                                 .summary("프리미엄 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -84,6 +84,35 @@ class PremiumControllerTest extends BaseControllerTests {
                                         fieldWithPath("premiumResponses[0].price").type(NUMBER).description("가격"),
                                         fieldWithPath("premiumResponses[0].count").type(NUMBER).description("이미지 갯수"),
                                         fieldWithPath("premiumResponses[0].description").type(STRING).description("설명")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자 월 별 구독 플랜 가입자 수 조회")
+    @Test
+    void iconGroupMonthlyRevenue() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/premiums/monthly-revenue")
+                                .param("year", "2024")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 월 별 프리미엄 가입자 수 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 - 프리미엄")
+                                .summary("관리자 월 별 프리미엄 가입자 수 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year")
+                                )
+                                .responseFields(
+                                        fieldWithPath("premiumMonthlyRevenues[0].year").type(NUMBER).description("year"),
+                                        fieldWithPath("premiumMonthlyRevenues[0].month").type(NUMBER).description("month"),
+                                        fieldWithPath("premiumMonthlyRevenues[0].premiumCount").type(NUMBER).description("프리미엄 가입자 수")
                                 )
                                 .build()
                         )));

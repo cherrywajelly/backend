@@ -2,9 +2,8 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class IconGroupServiceTest implements IconGroupService {
 

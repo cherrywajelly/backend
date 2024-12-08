@@ -4,8 +4,8 @@ import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.member.member.response.ManagerProfileResponse;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.*;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.BasicImage.*;
@@ -115,7 +116,7 @@ public class TeamServiceImpl implements TeamService {
         List<TeamMember> teamMembers = teamMemberRepository.findAllByMemberId(memberId);
         List<TeamResponse> teamResponses = new ArrayList<>();
 
-        teamMembers.forEach(
+        teamMembers.stream().sorted(Comparator.comparing(TeamMember::getCreatedAt).reversed()).forEach(
                 team -> teamResponses.add(TeamResponse.from(teamRepository.getById(team.getTeamId()))));
 
         return new TeamResponses(teamResponses);
@@ -159,7 +160,10 @@ public class TeamServiceImpl implements TeamService {
         List<Team> teams = teamRepository.findAll();
 
         teams.forEach(
-                team -> teamManagerResponses.add(TeamManagerResponse.from(team))
+                team -> {
+                    List<TeamMember> teamMembers = teamMemberRepository.findAllByTeamId(team.getId());
+                    teamManagerResponses.add(TeamManagerResponse.from(team, teamMembers.size()));
+                }
         );
         return new TeamManagerResponses(teamManagerResponses);
     }

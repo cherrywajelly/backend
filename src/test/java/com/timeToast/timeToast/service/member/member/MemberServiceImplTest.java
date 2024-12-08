@@ -10,11 +10,13 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
@@ -23,6 +25,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,12 +41,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertNotNull;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR;
+import static com.timeToast.timeToast.global.constant.StatusCode.BAD_REQUEST;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceImplTest {
@@ -64,6 +69,9 @@ public class MemberServiceImplTest {
 
     @Mock
     CreatorAccountRepository creatorAccountRepository;
+
+    @Mock
+    IconGroupAdminService iconGroupAdminService;
 
     @InjectMocks
     MemberServiceImpl memberService;
@@ -312,11 +320,50 @@ public class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("아이콘 제작자 정보 저장 실패")
+    public void saveCreatorInfoFail(){
+        Member member = setUpMember();
+
+        MultipartFile profileImage = mock(MultipartFile.class);
+        CreatorRequest creatorRequest = mock(CreatorRequest.class);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> memberService.saveCreatorInfo(1L, profileImage, creatorRequest));
+    }
+
+    @Test
+    @DisplayName("아이콘 제작자 정보 저장 실패 - 저장된 계좌 정보가 없을 경우")
+    public void saveCreatorInfoSuccess(){
+        Member creator = setUpMember();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        CreatorAccountResponse creatorAccountResponse = mock(CreatorAccountResponse.class);
+
+        MockMultipartFile mockMultipartFile = mock(MockMultipartFile.class);
+        CreatorRequest creatorRequest = mock(CreatorRequest.class);
+        when(creatorRequest.creatorAccountResponse()).thenReturn(creatorAccountResponse);
+
+        Response response = memberService.saveCreatorInfo(1L, mockMultipartFile, creatorRequest);
+
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.getStatusCode());
+        assertThat(response.message()).isEqualTo(INVALID_CREATOR.getMessage());
+    }
+
+    @Test
     @DisplayName("제작자 리스트 조회")
     public void getCreators(){
+        Member member = setUpMember();
         //given
         List<Member> members = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(members);
+
+        List<CreatorIconInfo> creatorIconInfoList = List.of(
+                CreatorIconInfo.builder()
+                        .title("title")
+                        .revenue(1000)
+                        .salesCount(1)
+                        .iconImageUrl(List.of("iconImageUrl"))
+                        .build()
+        );
+        CreatorIconInfos creatorIconInfos =  new CreatorIconInfos(1, 1000, 10,creatorIconInfoList);
+        when(iconGroupAdminService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();
@@ -347,8 +394,7 @@ public class MemberServiceImplTest {
         assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
 
     }
-    
-    
-    
-    
+
+
+
 }

@@ -39,7 +39,7 @@ public class PaymentServiceTest implements PaymentService {
     }
 
     @Override
-    public PaymentsAdminResponses getPayments(int page, int size) {
+    public PaymentsAdminResponses getIconPayments(int page, int size) {
         List<PaymentsAdminResponse> paymentsAdminResponses = new ArrayList<>();
 
         paymentsAdminResponses.add(
@@ -49,6 +49,27 @@ public class PaymentServiceTest implements PaymentService {
                         .nickname("nickname")
                         .itemName("item name")
                         .createdAt(LocalDate.now())
+                        .amount(1100)
+                        .paymentState(PaymentState.SUCCESS)
+                        .build()
+        );
+
+        return new PaymentsAdminResponses(paymentsAdminResponses);
+    }
+
+    @Override
+    public PaymentsAdminResponses getPremiumPayments(int page, int size) {
+        List<PaymentsAdminResponse> paymentsAdminResponses = new ArrayList<>();
+
+        paymentsAdminResponses.add(
+                PaymentsAdminResponse.builder()
+                        .paymentId(1L)
+                        .itemType(ItemType.ICON)
+                        .nickname("nickname")
+                        .createdAt(LocalDate.now())
+                        .amount(1100)
+                        .paymentState(PaymentState.SUCCESS)
+                        .expiredDate(LocalDate.now().plusDays(1))
                         .build()
         );
 

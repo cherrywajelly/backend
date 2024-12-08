@@ -39,7 +39,7 @@ public class OAuthControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("카카오 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("유저 - 로그인")
                                 .summary("카카오 로그인")
                                 .queryParameters(
                                         parameterWithName("code").description("인증 코드")
@@ -65,7 +65,7 @@ public class OAuthControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("구글 로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("유저 - 로그인")
                                 .summary("구글 로그인")
                                 .queryParameters(
                                         parameterWithName("code").description("인증 코드")

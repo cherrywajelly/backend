@@ -57,6 +57,21 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+
+cors:
+  local: ${LOCAL}
+  dev: ${DEV}
+  front-localhost: ${FRONT_LOCAL}
+  back-localhost: ${BACK_LOCAL}
+  service-dev: ${SERVICE_DEV}
+  back-dev: ${BACK_DEV}
+  admin-dev: ${ADMIN_DEV}
+  creator-dev: ${CREATOR_DEV}
+  service-prod: ${SERVICE_PROD}
+  admin-prod: ${ADMIN_PROD}
+  creator-prod: ${CREATOR_PROD}
+
+
 fcm:
   url: ${FCM_URL}
   path: ${FCM_CONFIG_PATH}

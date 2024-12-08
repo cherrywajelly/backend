@@ -5,12 +5,13 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +31,7 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     @Override
     public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
         List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED));
+        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED, 0, 0));
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
@@ -74,16 +75,17 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     }
 
     @Override
-    public IconGroupInfoResponses getAllIconGroups() {
-        List<IconGroupInfoResponse> iconGroupInfoResponses = new ArrayList<>();
-        iconGroupInfoResponses.add(IconGroupInfoResponse.builder()
+    public IconGroupAdminResponses getAllIconGroups() {
+        List<IconGroupAdminResponse> iconGroupInfoResponses = new ArrayList<>();
+        iconGroupInfoResponses.add(IconGroupAdminResponse.builder()
                 .iconGroupId(1L)
-                .iconType(IconType.TOAST)
-                .iconState(IconState.WAITING)
                 .title("title")
                 .thumbnailUrl("thumbnailUrl")
+                .iconType(IconType.TOAST)
+                .iconState(IconState.WAITING)
+                .nickname("nickname")
                 .build());
-        return new IconGroupInfoResponses(iconGroupInfoResponses);
+        return new IconGroupAdminResponses(iconGroupInfoResponses);
     }
 
     @Override
@@ -107,6 +109,34 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", "thumbnailUrl", List.of("iconImageUrl"), 1, 1, IconState.REGISTERED);
         IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
         return iconGroupCreatorDetail;
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month) {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue( final int year) {
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+        iconGroupMonthlyRevenues.add(
+                IconGroupMonthlyRevenue.builder()
+                        .year(year)
+                        .month(1)
+                        .toastsRevenue(100L)
+                        .jamsRevenue(100L)
+                        .build()
+        );
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 
 }

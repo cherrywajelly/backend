@@ -11,17 +11,22 @@ import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
+import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
+import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -29,6 +34,7 @@ import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 
 import java.time.LocalDate;
@@ -49,11 +55,12 @@ public class MemberServiceImpl implements MemberService{
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
+    private final IconGroupAdminService iconGroupAdminService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                            final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository) {
+                             final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
+                             final PaymentRepository paymentRepository, final IconGroupAdminService iconGroupAdminService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -62,6 +69,7 @@ public class MemberServiceImpl implements MemberService{
         this.premiumRepository = premiumRepository;
         this.creatorAccountRepository = creatorAccountRepository;
         this.paymentRepository = paymentRepository;
+        this.iconGroupAdminService = iconGroupAdminService;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -136,8 +144,22 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
-                .sorted(Comparator.comparing(Member::getNickname)).map(CreatorResponse::from).toList();
+        List<CreatorResponse> creatorResponses = new ArrayList<>();
+        memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname)).forEach(
+                        member -> {
+                            CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
+                            creatorResponses.add(CreatorResponse.builder()
+                                    .memberId(member.getId())
+                                    .profileUrl(member.getMemberProfileUrl())
+                                    .nickname(member.getNickname())
+                                    .createdIconCount(creatorIconInfos.createdIconCount())
+                                    .totalRevenue(creatorIconInfos.totalRevenue())
+                                    .salesIconCount(creatorIconInfos.salesIconCount())
+                                    .build());
+                        }
+
+                );
         return new CreatorResponses(creatorResponses);
     }
 
@@ -206,18 +228,5 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public MemberManagerResponses getMembersForManagers() {
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
-        List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
-        members.forEach(
-                member -> {
-                    memberManagerResponses.add(MemberManagerResponse.from(member));
-                }
-        );
-        return new MemberManagerResponses(memberManagerResponses);
     }
 }

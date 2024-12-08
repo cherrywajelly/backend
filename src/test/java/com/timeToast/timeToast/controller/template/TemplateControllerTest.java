@@ -48,7 +48,7 @@ public class TemplateControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("공유 템플릿 텍스트 작성",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("공유 템플릿")
+                                .tag("유저 - 공유 템플릿")
                                 .summary("공유 템플릿 작성")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -77,7 +77,7 @@ public class TemplateControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("공유 템플릿 목록 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("공유 템플릿")
+                                .tag("유저 - 공유 템플릿")
                                 .summary("공유 템플릿 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

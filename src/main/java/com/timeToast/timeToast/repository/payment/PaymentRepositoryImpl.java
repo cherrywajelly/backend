@@ -6,13 +6,13 @@ import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.payment.PaymentDto;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +78,58 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     @Override
     public Optional<Payment> findRecentPremiumByMemberId(final long memberId) {
         return paymentJpaRepository.findAllByMemberIdAndItemTypeAndPaymentStateOrderByExpiredDateDesc(memberId,ItemType.PREMIUM, PaymentState.SUCCESS).stream().findFirst();
+    }
+
+    @Override
+    public List<IconGroupPaymentSummaryDto> findPaymentSummaryDto() {
+        return queryFactory.select(Projections.constructor(
+                IconGroupPaymentSummaryDto.class, payment.itemId,iconGroup.name, iconGroup.iconType, iconGroup.price, payment.count()))
+                .from(payment)
+                .join(iconGroup).on(payment.itemId.eq(iconGroup.id))
+                .where(payment.itemType.eq(ItemType.ICON))
+                .groupBy(payment.itemId)
+                .fetch();
+    }
+
+    @Override
+    public List<IconGroupPaymentSummaryDto> findIconGroupPaymentSummaryDtoByYearMonth(final int year, final int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+
+        return queryFactory.select(Projections.constructor(
+                        IconGroupPaymentSummaryDto.class, payment.itemId,iconGroup.name, iconGroup.iconType, iconGroup.price, payment.count()))
+                .from(payment)
+                .join(iconGroup).on(payment.itemId.eq(iconGroup.id))
+                .where(payment.itemType.eq(ItemType.ICON).and(payment.createdAt.between(startDate.atStartOfDay(), endDate.atTime(23, 59, 59)))
+                        .and(payment.paymentState.eq(PaymentState.SUCCESS)))
+                .groupBy(payment.itemId)
+                .fetch();
+    }
+
+    @Override
+    public Long findPremiumPaymentSummaryDtoByYearMonth(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+
+        return queryFactory.select(payment.count())
+                .from(payment)
+                .where(payment.itemType.eq(ItemType.PREMIUM)
+                        .and(payment.createdAt.between(startDate.atStartOfDay(), endDate.atTime(23, 59, 59)))
+                        .and(payment.paymentState.eq(PaymentState.SUCCESS)))
+                .groupBy(payment.itemId)
+                .fetchOne();
+    }
+
+    @Override
+    public Page<Payment> findAllByItemType(final ItemType itemType, final Pageable pageable) {
+        return paymentJpaRepository.findAllByItemType(itemType, pageable);
+    }
+
+
+    @Override
+    public List<Payment> findByMemberId(final long memberId) {
+        return paymentJpaRepository.findByMemberId(memberId);
     }
 }

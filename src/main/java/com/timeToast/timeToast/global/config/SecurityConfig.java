@@ -1,12 +1,16 @@
 package com.timeToast.timeToast.global.config;
 
+import com.timeToast.timeToast.global.constant.CorsProperties;
 import com.timeToast.timeToast.global.jwt.JwtAccessDeniedHandler;
 import com.timeToast.timeToast.global.jwt.JwtAuthenticationEntryPoint;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,9 +27,11 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CorsProperties corsProperties;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CorsProperties corsProperties) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.corsProperties = corsProperties;
     }
 
     @Bean
@@ -41,14 +47,16 @@ public class SecurityConfig {
                 .headers(httpSecurityHeaders -> httpSecurityHeaders.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
                 .authorizeHttpRequests(
                         request -> {
+                            request.requestMatchers("/api/v4/**").hasAnyRole("MANAGER");
+
                             request.requestMatchers("/api/v3/login/**").permitAll()
-                                    .requestMatchers("/api/v3/**").hasRole("MANAGER");
+                                    .requestMatchers("/api/v3/**").hasAnyRole("MANAGER", "STAFF");
 
                             request.requestMatchers("/api/v2/login/**","/api/v2/iconGroups/**").permitAll()
-                                    .requestMatchers("/api/v2/**").hasRole("CREATOR");
+                                    .requestMatchers("/api/v2/**").hasAnyRole("CREATOR");
 
                             request.requestMatchers("/api/v1/login/**","/api/v1/members/refreshToken").permitAll().
-                                    requestMatchers("/api/v1/**").hasAnyRole("MANAGER","CREATOR","USER");
+                                    requestMatchers("/api/v1/**").hasAnyRole("MANAGER","STAFF","CREATOR","USER");
 
                             request.requestMatchers("/h2-console/**", "/actuator/**", "/api/swagger-ui/** ",
                                     "/docs/**", "/v3/api-docs/**", "/swagger-ui/**","/api-docs/**").permitAll();
@@ -71,13 +79,15 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-          "http://localhost:3000",
-          "http://localhost:8080",
-          "https://dev-back.timetoast.app:8080",
-          "https://dev-front.timetoast.app",
-          "https://timetoast.app",
-          "https://dev-admin.timetoast.app",
-          "https://admin.timetoast.app"
+                corsProperties.getFrontLocalHost(),
+                corsProperties.getBackLocalHost(),
+                corsProperties.getServiceDev(),
+                corsProperties.getBackDev(),
+                corsProperties.getAdminDev(),
+                corsProperties.getCreatorDev(),
+                corsProperties.getServiceProd(),
+                corsProperties.getAdminProd(),
+                corsProperties.getCreatorProd()
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

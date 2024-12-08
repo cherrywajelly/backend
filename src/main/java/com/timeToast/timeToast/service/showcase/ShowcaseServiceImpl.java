@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
         List<Showcase> showcases = showcaseRepository.findAllByMemberId(memberId);
         List<ShowcaseEditResponse> showcaseEditResponses = new ArrayList<>();
 
-        eventToastRepository.findAllByMemberId(memberId).forEach(
+        eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
                 eventToast -> {
 
                     String iconUrl = iconRepository.getById(eventToast.getIconId()).getIconImageUrl();
@@ -87,6 +88,7 @@ public class ShowcaseServiceImpl implements ShowcaseService{
 
                 }
         );
+
 
         return new ShowcaseEditResponses(showcaseEditResponses);
     }

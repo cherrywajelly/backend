@@ -12,21 +12,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.TeamManagerResponses;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.response.TeamManagerResponses;
+import com.timeToast.timeToast.dto.team.response.TeamResponse;
+import com.timeToast.timeToast.dto.team.response.TeamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,7 +85,10 @@ public class TeamServiceImplTest  {
     private List<TeamMember> setUpTeamMembers(){
         List<TeamMember> teamMembers = new ArrayList<>();
         for (int i = 1; i < 10; i++) {
-            teamMembers.add(setUpTeamMember(1L, i));
+
+            TeamMember teamMember = setUpTeamMember(1L, i);
+            ReflectionTestUtils.setField(teamMember, "createdAt", LocalDateTime.now());
+            teamMembers.add(teamMember);
         }
         return teamMembers;
     }
@@ -206,21 +209,42 @@ public class TeamServiceImplTest  {
     }
 
     @Test
-    @DisplayName("관리자 그룹 목록 조회")
+    @DisplayName("관리자 그룹 목록 조회 성공")
     public void getTeamForManager(){
         //given
         Team team = setUpTeam();
         ReflectionTestUtils.setField(team, "id", 1L);
+        ReflectionTestUtils.setField(team, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(setUpTeamMembers());
         when(teamRepository.findAll()).thenReturn(List.of(team));
+
 
         //when
         TeamManagerResponses teamManagerResponses = teamService.getTeamForManager();
 
         //then
-
         assertThat(teamManagerResponses).isNotNull();
     }
 
+    @Test
+    @DisplayName("관리자 그룹 상세 조회 성공")
+    public void getTeamInfoForManager(){
+        //given
+        Team team = setUpTeam();
+        Member member = setUpMember();
+        ReflectionTestUtils.setField(team, "id", 1L);
+        ReflectionTestUtils.setField(team, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
+        when(teamMemberRepository.findAllByTeamId(anyLong())).thenReturn(setUpTeamMembers());
 
+        ReflectionTestUtils.setField(member, "id", 1L);
+        when(teamRepository.findAll()).thenReturn(List.of(team));
+
+
+        //when
+        TeamManagerResponses teamManagerResponses = teamService.getTeamForManager();
+
+        //then
+        assertThat(teamManagerResponses).isNotNull();
+    }
 
 }

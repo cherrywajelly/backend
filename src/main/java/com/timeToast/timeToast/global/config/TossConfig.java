@@ -1,16 +1,13 @@
 package com.timeToast.timeToast.global.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class TossConfig {
 
-    @Autowired
     public static String TOSS_SECRET_KEY;
 
-    @Autowired
     public static String TOSS_CONFIRM_URL;
 
     @Value("${payment.toss.secret-key}")

@@ -15,11 +15,18 @@ public class PaymentAdminController {
     }
 
 
-    @GetMapping("")
-    public PaymentsAdminResponses getPayments( @RequestParam("size") int size,
+    @GetMapping("/icons")
+    public PaymentsAdminResponses getIconPayments( @RequestParam("size") int size,
                                                @RequestParam("page") int page) {
-        return paymentService.getPayments(page,size);
+        return paymentService.getIconPayments(page,size);
     }
+
+    @GetMapping("/premiums")
+    public PaymentsAdminResponses getPremiumPayments( @RequestParam("size") int size,
+                                               @RequestParam("page") int page) {
+        return paymentService.getPremiumPayments(page,size);
+    }
+
 
     @GetMapping("/{paymentId}")
     public PaymentDetailResponse getPaymentDetails(@PathVariable("paymentId") long paymentId) {

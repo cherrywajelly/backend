@@ -24,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,6 +80,8 @@ public class ShowcaseServiceImplTest {
                     .memberId(1L)
                     .build();
             ReflectionTestUtils.setField(showcase, "id", i);
+            ReflectionTestUtils.setField(showcase, "createdAt", LocalDateTime.now());
+
             showcases.add(showcase);
         }
         return showcases;
@@ -96,6 +99,8 @@ public class ShowcaseServiceImplTest {
                     .build();
 
             ReflectionTestUtils.setField(eventToast, "id", i);
+            ReflectionTestUtils.setField(eventToast, "createdAt", LocalDateTime.now());
+
             eventToasts.add(eventToast);
         }
         return eventToasts;

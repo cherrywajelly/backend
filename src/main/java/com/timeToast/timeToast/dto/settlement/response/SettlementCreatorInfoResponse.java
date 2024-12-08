@@ -8,6 +8,9 @@ import java.time.LocalDate;
 public record SettlementCreatorInfoResponse(
         int year,
         int month,
-        LocalDate settlementDate
+        LocalDate settlementDate,
+        long settlement,
+        long revenue,
+        long saleCount
 ) {
 }

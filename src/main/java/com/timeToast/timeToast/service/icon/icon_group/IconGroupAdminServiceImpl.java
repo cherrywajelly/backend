@@ -2,21 +2,24 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
+import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
@@ -33,11 +36,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.SLASH;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
@@ -80,8 +84,13 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
 
         iconGroups.forEach(
-                iconGroup ->
-                        iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup)));
+                iconGroup -> {
+                    List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+                    long totalRevenue = payments.stream()
+                            .mapToLong(Payment::getAmount)
+                            .sum();
+                    iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup, payments.size(), totalRevenue));
+                });
 
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
@@ -108,6 +117,67 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         } else {
             throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
         }
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, month)
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Transactional
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
+
+        if(year>LocalDate.now().getYear()){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+
+        for(int i=1; i<=LocalDate.now().getMonthValue(); i++){
+            Map<IconType, Long> revenueByIconType = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, i).stream().collect(Collectors.groupingBy(
+                    IconGroupPaymentSummaryDto::iconType,
+                    Collectors.summingLong(dto -> dto.totalCount()*dto.price())
+            ));
+            iconGroupMonthlyRevenues.add(IconGroupMonthlyRevenue.builder()
+                    .year(year)
+                    .month(i)
+                    .toastsRevenue(revenueByIconType.getOrDefault(IconType.TOAST, 0L))
+                    .jamsRevenue(revenueByIconType.getOrDefault(IconType.JAM, 0L))
+                    .build());
+        }
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 
     @Transactional
@@ -148,13 +218,25 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     }
 
+//    @Transactional(readOnly = true)
+//    @Override
+//    public IconGroupInfoResponses getAllIconGroups(){
+//        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
+//                IconGroupInfoResponse::from
+//        ).toList();
+//        return new IconGroupInfoResponses(iconGroupInfoResponses);
+//    }
+
     @Transactional(readOnly = true)
     @Override
-    public IconGroupInfoResponses getAllIconGroups(){
-        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
-                IconGroupInfoResponse::from
-        ).toList();
-        return new IconGroupInfoResponses(iconGroupInfoResponses);
+    public IconGroupAdminResponses getAllIconGroups(){
+        List<IconGroupAdminResponse> iconGroupAdminResponses = new ArrayList<>();
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN);
+        iconGroups.forEach(iconGroup -> {
+            Member member = memberRepository.getById(iconGroup.getMemberId());
+            iconGroupAdminResponses.add(IconGroupAdminResponse.from(iconGroup,member.getNickname()));
+        });
+        return new IconGroupAdminResponses(iconGroupAdminResponses);
     }
 
 

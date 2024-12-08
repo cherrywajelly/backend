@@ -12,11 +12,8 @@ public class BasicImage {
 
     }
 
-
-    @Autowired
     public static String BASIC_PROFILE_IMAGE_URL;
 
-    @Autowired
     public static String NOT_OPEN_IMAGE_URL;
 
     @Value("${spring.cloud.oci.base-profile-image-url}")

@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.gift_toast;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
@@ -13,18 +13,17 @@ import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponse;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceManagerResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.DDayCount;
-import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -42,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -249,7 +249,7 @@ public class GiftToastServiceImpl implements GiftToastService{
 
         List<GiftToastResponse> giftToastResponses = new ArrayList<>();
 
-        giftToastRepository.findAllGiftToastsByMemberId(memberId).forEach(
+        giftToastRepository.findAllGiftToastsByMemberId(memberId).stream().sorted(Comparator.comparing(GiftToast::getCreatedAt).reversed()).forEach(
                 giftToast -> {
                     String giftToastOwner = null;
 
@@ -286,7 +286,7 @@ public class GiftToastServiceImpl implements GiftToastService{
     public GiftToastIncompleteResponses getGiftToastIncomplete(final long memberId) {
         List<GiftToastIncompleteResponse> giftToastIncompleteResponses = new ArrayList<>();
 
-        giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId).forEach(
+        giftToastRepository.findAllGiftToastsByMemberIdAndNotOpen(memberId).stream().sorted(Comparator.comparing(GiftToast::getOpenedDate)).forEach(
                 giftToast -> {
                     Optional<ToastPiece> toastPiecesByGiftToast = toastPieceRepository.
                             findAllByMemberIdAndGiftToastId(memberId,giftToast.getId()).stream().findFirst();
@@ -423,7 +423,7 @@ public class GiftToastServiceImpl implements GiftToastService{
                     Icon icon = iconRepository.getById(giftToast.getIconId());
                     Team team = teamRepository.getById(giftToast.getTeamId());
                     if (team != null) {
-                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast.getId(), icon.getIconImageUrl(), giftToast.getTitle(), team.getName()));
+                        giftToastManagerResponses.add(GiftToastManagerResponse.from(giftToast, icon.getIconImageUrl(),  team.getName()));
                     }
                 }
         );
@@ -452,5 +452,17 @@ public class GiftToastServiceImpl implements GiftToastService{
         } else {
             throw new BadRequestException(INVALID_GIFT_TOAST.getMessage());
         }
+    }
+
+    @Transactional
+    @Override
+    public GiftToastRequest editGiftToast(final long giftToastId, final GiftToastRequest giftToastRequest) {
+        GiftToast giftToast = giftToastRepository.getById(giftToastId);
+
+        giftToast.updateDatesAndStatus(giftToastRequest.memorizedDate(), giftToastRequest.openedDate(), giftToastRequest.isOpened());
+        giftToastRepository.save(giftToast);
+
+        log.info("edit event toast");
+        return giftToastRequest;
     }
 }

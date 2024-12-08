@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.team;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member_group.request.TeamSaveRequest;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponse;
-import com.timeToast.timeToast.dto.member_group.response.TeamResponses;
+import com.timeToast.timeToast.dto.team.request.TeamSaveRequest;
+import com.timeToast.timeToast.dto.team.response.TeamResponse;
+import com.timeToast.timeToast.dto.team.response.TeamResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.team.TeamService;

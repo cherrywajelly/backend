@@ -45,7 +45,7 @@ public class SearchControllerTest  extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("검색 결과 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("검색")
+                                .tag("유저 - 검색")
                                 .summary("키워드를 통한 검색 결과 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

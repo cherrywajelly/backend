@@ -76,7 +76,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("사용자의 토스트 아이콘 그룹 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("사용자 토스트 아이콘 그룹 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -103,7 +103,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("사용자의 잼 아이콘 그룹 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("사용자 잼 아이콘 그룹 목록 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -130,7 +130,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("마켓의 토스트 아이콘 그룹 목록을 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("마켓의 토스트 아이콘 그룹 목록을 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -160,7 +160,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("마켓의 토스트 아이콘 그룹 목록을 조회",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("마켓의 토스트 아이콘 그룹 목록을 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -193,7 +193,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                                 parameterWithName("iconGroupId").description("iconGroup Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("아이콘 그룹 단일 상세 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -225,7 +225,7 @@ public class IconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 그룹 삭제",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("아이콘")
+                                .tag("유저 - 아이콘")
                                 .summary("아이콘 그룹 목록 삭제")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
