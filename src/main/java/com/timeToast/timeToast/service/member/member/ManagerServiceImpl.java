@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
@@ -29,6 +30,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
@@ -60,6 +62,7 @@ public class ManagerServiceImpl implements ManagerService {
     private final GiftToastRepository giftToastRepository;
     private final IconRepository iconRepository;
     private final IconGroupRepository iconGroupRepository;
+    private final IconMemberRepository iconMemberRepository;
 
     @Transactional
     @Override
@@ -187,12 +190,13 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional(readOnly = true)
     @Override
     public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-        List<IconGroupManagerResponse> iconGroupManagerResponses = iconGroups.stream()
-                .map(iconGroup -> {
-                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream()
+        List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
+        List<IconGroupManagerResponse> iconGroupManagerResponses = iconMembers.stream()
+                .map(iconMember -> {
+                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconMember.getIconGroupId()).stream()
                             .map(Icon::getIconImageUrl)
                             .toList();
+                    IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
                     return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
                 })
                 .toList();
