@@ -356,7 +356,7 @@ public class PaymentServiceImplTest {
         //given
 
         Page<Payment> payments = paymentSetUp();
-        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+        when(paymentRepository.findAllByItemType(any(ItemType.class), any(Pageable.class))).thenReturn(payments);
 
         Member member = setUpMember();
         ReflectionTestUtils.setField(member,"id", 1L);
@@ -364,11 +364,12 @@ public class PaymentServiceImplTest {
 
         IconGroup iconGroup = setUpIconGroup();
         ReflectionTestUtils.setField(iconGroup, "id", 1L);
+        when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
         //when
         PaymentsAdminResponses paymentsAdminResponses = paymentService.getIconPayments(0,5);
         //then
-        assertEquals(0, paymentsAdminResponses.paymentsAdminResponses().size());
+        assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
     }
 
     @Test
@@ -377,7 +378,7 @@ public class PaymentServiceImplTest {
         //given
 
         Page<Payment> payments = paymentSetUp();
-        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+        when(paymentRepository.findAllByItemType(any(ItemType.class), any(Pageable.class))).thenReturn(payments);
 
         Member member = setUpMember();
         ReflectionTestUtils.setField(member,"id", 1L);
