@@ -356,7 +356,7 @@ public class PaymentServiceImplTest {
         //given
 
         Page<Payment> payments = paymentSetUp();
-        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+        when(paymentRepository.findAllByItemType(any(ItemType.class), any(Pageable.class))).thenReturn(payments);
 
         Member member = setUpMember();
         ReflectionTestUtils.setField(member,"id", 1L);
@@ -378,7 +378,7 @@ public class PaymentServiceImplTest {
         //given
 
         Page<Payment> payments = paymentSetUp();
-        when(paymentRepository.findAll(any(Pageable.class))).thenReturn(payments);
+        when(paymentRepository.findAllByItemType(any(ItemType.class), any(Pageable.class))).thenReturn(payments);
 
         Member member = setUpMember();
         ReflectionTestUtils.setField(member,"id", 1L);

@@ -21,6 +21,7 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
@@ -130,7 +131,7 @@ public class PaymentServiceImpl implements PaymentService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
 
-        paymentRepository.findAll(pageRequest).forEach(
+        paymentRepository.findAllByItemType(ItemType.ICON, pageRequest).forEach(
                 payment -> {
                     String nickname = null;
                     Optional<Member> member = memberRepository.findById(payment.getMemberId());
@@ -159,7 +160,7 @@ public class PaymentServiceImpl implements PaymentService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<PaymentsAdminResponse> paymentsResponse = new ArrayList<>();
 
-        paymentRepository.findAll(pageRequest).forEach(
+        paymentRepository.findAllByItemType(ItemType.PREMIUM, pageRequest).forEach(
                 payment -> {
                     String nickname = null;
                     Optional<Member> member = memberRepository.findById(payment.getMemberId());

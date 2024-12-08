@@ -23,6 +23,7 @@ public interface PaymentRepository {
     List<IconGroupPaymentSummaryDto> findPaymentSummaryDto();
     List<IconGroupPaymentSummaryDto> findIconGroupPaymentSummaryDtoByYearMonth(final int year, final int month);
     Long findPremiumPaymentSummaryDtoByYearMonth(final int year, final int month);
+    Page<Payment> findAllByItemType(final ItemType itemType, final Pageable pageable);
 
     List<Payment> findByMemberId(final long memberId);
 }
