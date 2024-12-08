@@ -4,9 +4,11 @@ import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
+import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
@@ -25,6 +27,7 @@ import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.settlement.SettlementRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
@@ -145,6 +148,7 @@ public class MemberServiceImpl implements MemberService{
                 .sorted(Comparator.comparing(Member::getNickname)).map(CreatorResponse::from).toList();
         return new CreatorResponses(creatorResponses);
     }
+
 
     @Transactional(readOnly = true)
     @Override
