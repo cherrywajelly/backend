@@ -26,7 +26,7 @@ public class IconGroupAdminController {
     }
 
     @GetMapping("")
-    public IconGroupInfoResponses iconGroupList() {
+    public IconGroupAdminResponses iconGroupList() {
         return iconGroupAdminService.getAllIconGroups();
     }
 

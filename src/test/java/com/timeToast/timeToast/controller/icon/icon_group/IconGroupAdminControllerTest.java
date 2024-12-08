@@ -122,7 +122,8 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupNonApprovalResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupNonApprovalResponses[0].thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
                                         fieldWithPath("iconGroupNonApprovalResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconState").type(STRING).description("아이콘 state")
+                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconState").type(STRING).description("아이콘 state"),
+                                        fieldWithPath("iconGroupNonApprovalResponses[0].nickname").type(STRING).description("아이콘 제작자 닉네임")
                                 )
                                 .build()
                         )));

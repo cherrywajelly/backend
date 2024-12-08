@@ -40,11 +40,11 @@ public class SettlementServiceImpl implements SettlementService {
     public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
         yearMonthValidation(settlementRequest.year(), settlementRequest.month());
         settlementRepository.findAllByYearMonthAndMemberId(LocalDate.of(settlementRequest.year(), settlementRequest.month(),1), creatorId).forEach(
-                        settlement -> {
-                            settlement.updateSettlementState(SettlementState.APPROVAL);
-                            settlement.updateSettlementDate(LocalDate.now());
+                settlement -> {
+                    settlement.updateSettlementState(SettlementState.APPROVAL);
+                    settlement.updateSettlementDate(LocalDate.now());
 
-                        }
+                }
         );
         return new SettlementCreatorInfoResponse(settlementRequest.year(), settlementRequest.month(), LocalDate.now());
     }
@@ -57,16 +57,16 @@ public class SettlementServiceImpl implements SettlementService {
                 Settlement::getYearsMonth,
                 response -> response,
                 (existing, replacement) -> existing)).values().stream().toList().forEach(
-                        settlementResponse -> {
-                            if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
-                                settlementCreatorInfoResponses.add(
-                                        SettlementCreatorInfoResponse.builder()
-                                                .year(settlementResponse.getYearsMonth().getYear())
-                                                .month(settlementResponse.getYearsMonth().getMonthValue())
-                                                .settlementDate(settlementResponse.getSettlementDate())
-                                                .build());
-                            }
-                        }
+                settlementResponse -> {
+                    if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
+                        settlementCreatorInfoResponses.add(
+                                SettlementCreatorInfoResponse.builder()
+                                        .year(settlementResponse.getYearsMonth().getYear())
+                                        .month(settlementResponse.getYearsMonth().getMonthValue())
+                                        .settlementDate(settlementResponse.getSettlementDate())
+                                        .build());
+                    }
+                }
 
         );
         return new SettlementCreatorInfoResponses(settlementCreatorInfoResponses);

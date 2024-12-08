@@ -4,7 +4,7 @@ import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 
 public interface SettlementService {
-//    SettlementCreatorResponses getCreatorMonthSettlements(final long creatorId);
+    //    SettlementCreatorResponses getCreatorMonthSettlements(final long creatorId);
     SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest);
     SettlementCreatorInfoResponses getSettlementByYearMonthByCreator(final long memberId);
     SettlementResponses getSettlementByYearMonth(final int year, final int month);

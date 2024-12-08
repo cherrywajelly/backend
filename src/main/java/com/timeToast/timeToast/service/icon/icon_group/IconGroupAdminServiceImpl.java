@@ -92,9 +92,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                     iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup, payments.size(), totalRevenue));
                 });
 
-
-
-
         return new IconGroupCreatorResponses(iconGroupCreatorResponses);
     }
 
@@ -221,13 +218,25 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     }
 
+//    @Transactional(readOnly = true)
+//    @Override
+//    public IconGroupInfoResponses getAllIconGroups(){
+//        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
+//                IconGroupInfoResponse::from
+//        ).toList();
+//        return new IconGroupInfoResponses(iconGroupInfoResponses);
+//    }
+
     @Transactional(readOnly = true)
     @Override
-    public IconGroupInfoResponses getAllIconGroups(){
-        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
-                IconGroupInfoResponse::from
-        ).toList();
-        return new IconGroupInfoResponses(iconGroupInfoResponses);
+    public IconGroupAdminResponses getAllIconGroups(){
+        List<IconGroupAdminResponse> iconGroupAdminResponses = new ArrayList<>();
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN);
+        iconGroups.forEach(iconGroup -> {
+            Member member = memberRepository.getById(iconGroup.getMemberId());
+            iconGroupAdminResponses.add(IconGroupAdminResponse.from(iconGroup,member.getNickname()));
+        });
+        return new IconGroupAdminResponses(iconGroupAdminResponses);
     }
 
 

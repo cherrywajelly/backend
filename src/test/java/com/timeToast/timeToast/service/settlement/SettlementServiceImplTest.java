@@ -109,14 +109,14 @@ class SettlementServiceImplTest {
 
         for(long i = 1; i < 5; i++) {
             settlements.add(Settlement.builder()
-                            .memberId(i)
-                            .salesCount(10)
-                            .settlementState(SettlementState.APPROVAL)
-                            .settlements(100)
-                            .revenue(100)
-                            .yearMonth(LocalDate.now())
-                            .iconGroupId(i)
-                            .build());
+                    .memberId(i)
+                    .salesCount(10)
+                    .settlementState(SettlementState.APPROVAL)
+                    .settlements(100)
+                    .revenue(100)
+                    .yearMonth(LocalDate.now())
+                    .iconGroupId(i)
+                    .build());
         }
 
         settlements.add(Settlement.builder()

@@ -11,4 +11,5 @@ public interface SettlementJpaRepository extends JpaRepository<Settlement, Long>
     List<Settlement> findAllByMemberId(final long memberId);
     List<Settlement> findAllByYearsMonth(final LocalDate yearMonth);
     List<Settlement> findAllByYearsMonthAndMemberId(final LocalDate yearMonth, final long memberId);
+    List<Settlement> findAllByYearsMonthBetweenAndMemberId(LocalDate startDate, LocalDate endDate, long memberId);
 }
