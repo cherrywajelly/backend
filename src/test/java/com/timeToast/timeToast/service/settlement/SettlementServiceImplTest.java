@@ -182,12 +182,12 @@ class SettlementServiceImplTest {
         SettlementRequest settlementRequest = new SettlementRequest(LocalDate.now().getYear(),LocalDate.now().getMonthValue() );
 
         //when
-        SettlementCreatorInfoResponse creatorInfoResponse = settlementService.approvalSettlement(1L, settlementRequest);
+        SettlementApprovalResponse settlementApprovalResponse = settlementService.approvalSettlement(1L, settlementRequest);
 
         //then
-        assertEquals(creatorInfoResponse.month(), LocalDate.now().getMonthValue());
-        assertEquals(creatorInfoResponse.year(),  LocalDate.now().getYear());
-        assertEquals(creatorInfoResponse.settlementDate(), LocalDate.now());
+        assertEquals(settlementApprovalResponse.month(), LocalDate.now().getMonthValue());
+        assertEquals(settlementApprovalResponse.year(),  LocalDate.now().getYear());
+        assertEquals(settlementApprovalResponse.settlementDate(), LocalDate.now());
     }
 
     @Test

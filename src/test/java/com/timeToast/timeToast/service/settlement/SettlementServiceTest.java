@@ -13,8 +13,8 @@ import java.util.List;
 public class SettlementServiceTest implements SettlementService{
 
     @Override
-    public SettlementCreatorInfoResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
-        return SettlementCreatorInfoResponse.builder()
+    public SettlementApprovalResponse approvalSettlement(final long creatorId, SettlementRequest settlementRequest) {
+        return SettlementApprovalResponse.builder()
                 .year(1)
                 .month(1)
                 .settlementDate(LocalDate.now())
