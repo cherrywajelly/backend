@@ -31,22 +31,16 @@ public class TeamIntegrationTest extends TestContainerSupport {
 
     private final TeamService teamService;
     private final FollowService followService;
-    private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
-    private final FileUploadService fileUploadService;
 
     @Autowired
     public TeamIntegrationTest(final TeamService teamService, final FollowService followService,
-                               final TeamRepository teamRepository,
-                               final TeamMemberRepository teamMemberRepository, final MemberRepository memberRepository,
-                               final FileUploadService fileUploadService) {
+                               final TeamMemberRepository teamMemberRepository, final MemberRepository memberRepository) {
         this.teamService = teamService;
         this.followService = followService;
-        this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.memberRepository = memberRepository;
-        this.fileUploadService = fileUploadService;
     }
 
     @Test
