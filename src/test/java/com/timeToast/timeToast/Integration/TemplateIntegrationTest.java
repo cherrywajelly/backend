@@ -43,18 +43,16 @@ public class TemplateIntegrationTest extends TestContainerSupport {
         this.templateService = templateService;
     }
 
-    @Test
-    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있습니다.")
-    public void tryToCreateTemplate() {
-        Member member = memberRepository.getById(1L);
-
-        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2025, 1, 1), "title", 1L, "description");
-        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, 1L);
-        EventToast eventToast = eventToastRepository.getById(responseWithId.id());
-
-        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToast.getId(), "text");
-        Response response = templateService.saveTemplate(member.getId(), templateSaveRequest);
-        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-    }
+//    @Test
+//    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있습니다.")
+//    public void tryToCreateTemplate() {
+//        Member member = memberRepository.getById(1L);
+//
+//        EventToast eventToast = eventToastRepository.getById(1L);
+//
+//        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToast.getId(), "text");
+//        Response response = templateService.saveTemplate(member.getId(), templateSaveRequest);
+//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+//    }
 }

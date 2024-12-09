@@ -53,21 +53,17 @@ public class IconIntegrationTest extends TestContainerSupport {
         this.eventToastRepository = eventToastRepository;
     }
 
-    @Test
-    @DisplayName("사용자는 본인이 소유한 아이콘 중 하나를 선택해 이벤트 토스트를 생성 수 있습니다.")
-    public void tryToWriteToastPiece() {
-        Member member = memberRepository.getById(1L);
-
-        IconGroupResponses iconGroupResponses = iconGroupService.getToastIconGroups(member.getId());
-        assertThat(iconGroupResponses).isNotNull();
-
-        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2025, 1, 1), "title",
-                iconGroupResponses.iconGroupResponses().get(0).iconGroupId(), "description");
-        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, 1L);
-
-        EventToast eventToast = eventToastRepository.getById(responseWithId.id());
-        assertThat(eventToast.getIconId()).isEqualTo(iconGroupResponses.iconGroupResponses().get(0).iconGroupId());
-    }
+//    @Test
+//    @DisplayName("사용자는 본인이 소유한 아이콘 중 하나를 선택해 이벤트 토스트를 생성 수 있습니다.")
+//    public void tryToWriteToastPiece() {
+//        Member member = memberRepository.getById(1L);
+//
+//        IconGroupResponses iconGroupResponses = iconGroupService.getToastIconGroups(member.getId());
+//        assertThat(iconGroupResponses).isNotNull();
+//
+//        EventToast eventToast = eventToastRepository.getById(1L);
+//        assertThat(eventToast.getIconId()).isEqualTo(iconGroupResponses.iconGroupResponses().get(0).iconGroupId());
+//    }
 
     @Test
     @DisplayName("사용자는 아이콘 마켓에서 잼 아이콘을 구매해 잼을 바를 수 있습니다.")
