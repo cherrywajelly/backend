@@ -64,6 +64,7 @@ public class IconIntegrationTest extends TestContainerSupport {
 //        EventToast eventToast = eventToastRepository.getById(1L);
 //        assertThat(eventToast.getIconId()).isEqualTo(iconGroupResponses.iconGroupResponses().get(0).iconGroupId());
 //    }
+    //
 
     @Test
     @DisplayName("사용자는 아이콘 마켓에서 잼 아이콘을 구매해 잼을 바를 수 있습니다.")
