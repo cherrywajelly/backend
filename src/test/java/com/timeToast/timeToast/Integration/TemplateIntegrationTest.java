@@ -12,7 +12,6 @@ import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.event_toast.EventToastServiceImpl;
-import com.timeToast.timeToast.service.jam.JamService;
 import com.timeToast.timeToast.service.template.TemplateService;
 import com.timeToast.timeToast.util.TestContainerSupport;
 import org.junit.jupiter.api.DisplayName;

@@ -9,7 +9,6 @@ import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.fcm.FcmService;
