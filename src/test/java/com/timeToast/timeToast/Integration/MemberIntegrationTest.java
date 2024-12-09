@@ -53,7 +53,7 @@ public class MemberIntegrationTest extends TestContainerSupport {
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         MemberInfoResponse updatedNicknameResponse = memberService.postNickname("nickname", member.getId());
 
-        // 프로필 이미지 수정
+        // TODO 프로필 이미지 수정
 //        MemberInfoResponse updatedProfileImage = memberService.saveProfileImageByLogin(member.getId(), );
 
         assertThat(updatedNicknameResponse.nickname()).isEqualTo("nickname");
