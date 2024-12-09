@@ -58,6 +58,7 @@ CREATE TABLE team (
 );
 
 INSERT INTO team VALUES (1, "team1", "teamProfileUrl", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779" );
+INSERT INTO team VALUES (2, "team2", "teamProfileUrl2", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779" );
 
 CREATE TABLE team_member (
                              team_member_id BIGINT AUTO_INCREMENT,
@@ -72,7 +73,9 @@ INSERT INTO team_member VALUES (1,1, 1, "2024-11-03 22:34:32.431779", "2024-11-0
 INSERT INTO team_member VALUES (2,2, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO team_member VALUES (3,3, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO team_member VALUES (4,5, 1, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
+INSERT INTO team_member VALUES (5,1, 2, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO team_member VALUES (6,2, 2, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO team_member VALUES (7,3, 2, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE follow (
                         follow_id BIGINT AUTO_INCREMENT,
@@ -159,7 +162,7 @@ CREATE TABLE gift_toast (
                             PRIMARY KEY (gift_toast_id)
 );
 
-INSERT INTO gift_toast VALUES (1,1,1, "2024-12-03","2024-12-03", false, "title", "MINE","description","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO gift_toast VALUES (1,1,1, "2024-12-03","2024-12-03", true, "title", "MINE","description","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE gift_toast_owner (
                                   gift_toast_owner_id BIGINT AUTO_INCREMENT,
