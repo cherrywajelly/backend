@@ -75,16 +75,17 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
     }
 
     @Override
-    public IconGroupInfoResponses getAllIconGroups() {
-        List<IconGroupInfoResponse> iconGroupInfoResponses = new ArrayList<>();
-        iconGroupInfoResponses.add(IconGroupInfoResponse.builder()
+    public IconGroupAdminResponses getAllIconGroups() {
+        List<IconGroupAdminResponse> iconGroupInfoResponses = new ArrayList<>();
+        iconGroupInfoResponses.add(IconGroupAdminResponse.builder()
                 .iconGroupId(1L)
-                .iconType(IconType.TOAST)
-                .iconState(IconState.WAITING)
                 .title("title")
                 .thumbnailUrl("thumbnailUrl")
+                .iconType(IconType.TOAST)
+                .iconState(IconState.WAITING)
+                .nickname("nickname")
                 .build());
-        return new IconGroupInfoResponses(iconGroupInfoResponses);
+        return new IconGroupAdminResponses(iconGroupInfoResponses);
     }
 
     @Override

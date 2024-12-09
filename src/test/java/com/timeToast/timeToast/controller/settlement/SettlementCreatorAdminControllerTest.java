@@ -51,7 +51,10 @@ public class SettlementCreatorAdminControllerTest extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("settlementCreatorInfoResponses[0].year").type(NUMBER).description("year"),
                                         fieldWithPath("settlementCreatorInfoResponses[0].month").type(NUMBER).description("month"),
-                                        fieldWithPath("settlementCreatorInfoResponses[0].settlementDate").type(ARRAY).description("승인 날짜")
+                                        fieldWithPath("settlementCreatorInfoResponses[0].settlementDate").type(ARRAY).description("승인 날짜"),
+                                        fieldWithPath("settlementCreatorInfoResponses[0].settlement").type(NUMBER).description("정산금"),
+                                        fieldWithPath("settlementCreatorInfoResponses[0].revenue").type(NUMBER).description("수익"),
+                                        fieldWithPath("settlementCreatorInfoResponses[0].saleCount").type(NUMBER).description("전체 판매 갯수")
                                 )
                                 .build()
                         )));
@@ -98,7 +101,7 @@ public class SettlementCreatorAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("settlementIcons[0].revenue").type(NUMBER).description("아이콘 별 수익"),
                                         fieldWithPath("settlementIcons[0].salesCount").type(NUMBER).description("아이콘 별 판매 수량"),
                                         fieldWithPath("settlementIcons[0].settlementState").type(STRING).description("아이콘 별 정산 승인 상태")
-                                        )
+                                )
                                 .build()
                         )));
     }

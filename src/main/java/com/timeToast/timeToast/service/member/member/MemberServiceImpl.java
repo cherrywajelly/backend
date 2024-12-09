@@ -37,6 +37,7 @@ import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
+import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 
 import java.time.LocalDate;
@@ -57,11 +58,12 @@ public class MemberServiceImpl implements MemberService{
     private final PremiumRepository premiumRepository;
     private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
+    private final IconGroupAdminService iconGroupAdminService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                            final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository) {
+                             final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
+                             final PaymentRepository paymentRepository, final IconGroupAdminService iconGroupAdminService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
@@ -70,6 +72,7 @@ public class MemberServiceImpl implements MemberService{
         this.premiumRepository = premiumRepository;
         this.creatorAccountRepository = creatorAccountRepository;
         this.paymentRepository = paymentRepository;
+        this.iconGroupAdminService = iconGroupAdminService;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -144,8 +147,22 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
-                .sorted(Comparator.comparing(Member::getNickname)).map(CreatorResponse::from).toList();
+        List<CreatorResponse> creatorResponses = new ArrayList<>();
+        memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname)).forEach(
+                        member -> {
+                            CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
+                            creatorResponses.add(CreatorResponse.builder()
+                                    .memberId(member.getId())
+                                    .profileUrl(member.getMemberProfileUrl())
+                                    .nickname(member.getNickname())
+                                    .createdIconCount(creatorIconInfos.createdIconCount())
+                                    .totalRevenue(creatorIconInfos.totalRevenue())
+                                    .salesIconCount(creatorIconInfos.salesIconCount())
+                                    .build());
+                        }
+
+                );
         return new CreatorResponses(creatorResponses);
     }
 

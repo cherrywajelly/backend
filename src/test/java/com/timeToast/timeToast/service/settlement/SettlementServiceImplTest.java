@@ -109,14 +109,14 @@ class SettlementServiceImplTest {
 
         for(long i = 1; i < 5; i++) {
             settlements.add(Settlement.builder()
-                            .memberId(i)
-                            .salesCount(10)
-                            .settlementState(SettlementState.APPROVAL)
-                            .settlements(100)
-                            .revenue(100)
-                            .yearMonth(LocalDate.now())
-                            .iconGroupId(i)
-                            .build());
+                    .memberId(i)
+                    .salesCount(10)
+                    .settlementState(SettlementState.APPROVAL)
+                    .settlements(100)
+                    .revenue(100)
+                    .yearMonth(LocalDate.now())
+                    .iconGroupId(i)
+                    .build());
         }
 
         settlements.add(Settlement.builder()
@@ -182,12 +182,12 @@ class SettlementServiceImplTest {
         SettlementRequest settlementRequest = new SettlementRequest(LocalDate.now().getYear(),LocalDate.now().getMonthValue() );
 
         //when
-        SettlementCreatorInfoResponse creatorInfoResponse = settlementService.approvalSettlement(1L, settlementRequest);
+        SettlementApprovalResponse settlementApprovalResponse = settlementService.approvalSettlement(1L, settlementRequest);
 
         //then
-        assertEquals(creatorInfoResponse.month(), LocalDate.now().getMonthValue());
-        assertEquals(creatorInfoResponse.year(),  LocalDate.now().getYear());
-        assertEquals(creatorInfoResponse.settlementDate(), LocalDate.now());
+        assertEquals(settlementApprovalResponse.month(), LocalDate.now().getMonthValue());
+        assertEquals(settlementApprovalResponse.year(),  LocalDate.now().getYear());
+        assertEquals(settlementApprovalResponse.settlementDate(), LocalDate.now());
     }
 
     @Test

@@ -60,4 +60,9 @@ public class SettlementRepositoryImpl implements SettlementRepository {
 //        return null;
     }
 
+    @Override
+    public List<Settlement> findAllByYearsMonthBetweenAndMemberId(LocalDate startDate, LocalDate endDate, long memberId) {
+        return settlementJpaRepository.findAllByYearsMonthBetweenAndMemberId(startDate, endDate, memberId);
+    }
+
 }

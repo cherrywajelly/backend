@@ -118,11 +118,12 @@ public class IconGroupAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconState").type(STRING).description("아이콘 state")
+                                        fieldWithPath("iconGroupAdminResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupAdminResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupAdminResponses[0].thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
+                                        fieldWithPath("iconGroupAdminResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupAdminResponses[0].iconState").type(STRING).description("아이콘 state"),
+                                        fieldWithPath("iconGroupAdminResponses[0].nickname").type(STRING).description("아이콘 제작자 닉네임")
                                 )
                                 .build()
                         )));
