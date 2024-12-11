@@ -47,7 +47,7 @@ public class JamIntegrationTest extends TestContainerSupport {
     @Test
     @DisplayName("사용자는 타사용자의 이벤트 토스트에 잼을 바를 수 있습니다.")
     public void tryToSpreadJamWithEventToast() {
-        Member member1 = memberRepository.getById(1L);
+        Member member3 = memberRepository.getById(3L);
         Member member2 = memberRepository.getById(2L);
 
         try {
@@ -58,14 +58,14 @@ public class JamIntegrationTest extends TestContainerSupport {
                     "image/jpeg",
                     imageResource.getInputStream());
 
-            EventToastMemberResponses eventToastMemberResponses = eventToastService.getMemberEventToastList(member1.getId(), member2.getId());
+            EventToastMemberResponses eventToastMemberResponses = eventToastService.getMemberEventToastList(member3.getId(), member2.getId());
             eventToastMemberResponses.eventToastMemberResponses().forEach(
                     eventToastMemberResponse -> {
-                        IconGroupMarketResponses iconGroupMarketResponses = iconGroupService.getAllJamsIconGroups(member1.getId());
-                        IconGroupMarketDetailResponse iconGroupMarketDetailResponse = iconGroupService.getIconGroupDetail(member1.getId(), iconGroupMarketResponses.iconGroupMarketResponses().get(0).iconGroupId());
+                        IconGroupMarketResponses iconGroupMarketResponses = iconGroupService.getAllJamsIconGroups(member3.getId());
+                        IconGroupMarketDetailResponse iconGroupMarketDetailResponse = iconGroupService.getIconGroupDetail(member3.getId(), iconGroupMarketResponses.iconGroupMarketResponses().get(0).iconGroupId());
 
                         JamRequest jamRequest = new JamRequest("title", iconGroupMarketDetailResponse.iconResponses().get(0).iconId());
-                        Response response = jamService.postJam(jamRequest, jamData, jamData, 1L, member1.getId());
+                        Response response = jamService.postJam(jamRequest, jamData, jamData, 1L, member3.getId());
 
                         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
                         assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
@@ -82,7 +82,7 @@ public class JamIntegrationTest extends TestContainerSupport {
         Member member1 = memberRepository.getById(1L);
 
         EventToastOwnResponses eventToastOwnResponses = eventToastService.getOwnEventToastList(member1.getId());
-        EventToastResponse eventToastResponse = eventToastService.getEventToast(member1.getId(), eventToastOwnResponses.eventToastOwnResponses().get(0).eventToastId());
+        EventToastResponse eventToastResponse = eventToastService.getEventToast(member1.getId(), eventToastOwnResponses.eventToastOwnResponses().get(2).eventToastId());
         Response response = jamService.deleteJam(member1.getId(), eventToastResponse.jams().get(0).jamId());
 
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());

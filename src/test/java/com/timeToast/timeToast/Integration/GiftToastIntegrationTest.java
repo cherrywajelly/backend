@@ -122,7 +122,6 @@ public class GiftToastIntegrationTest extends TestContainerSupport{
         //login member
         Member member = memberRepository.getById(1L);
 
-
         try {
             //save toastPiece
             ClassPathResource imageResource = new ClassPathResource("test_image.jpg");

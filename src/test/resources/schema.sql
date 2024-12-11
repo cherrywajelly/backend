@@ -152,6 +152,7 @@ INSERT INTO icon_member VALUES (6,3,2,"2024-11-03 22:34:32.431779", "2024-11-03 
 INSERT INTO icon_member VALUES (7,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (8,5,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (9,1,3, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon_member VALUES (10,3,3, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE gift_toast (
                             gift_toast_id BIGINT AUTO_INCREMENT,
@@ -243,7 +244,8 @@ CREATE TABLE jam (
 INSERT INTO jam VALUES (1,5,1,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO jam VALUES (2,2,2,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO jam VALUES (3,3,3,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
+INSERT INTO jam VALUES (4,2,3,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO jam VALUES (5,3,2,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE showcase (
                           showcase_id BIGINT AUTO_INCREMENT,
@@ -276,33 +278,33 @@ INSERT INTO fcm VALUES (3,1,"EVENTTOASTOPENED",null,"toast_name",false,2,"image_
 
 
 CREATE TABLE template (
-                     template_id BIGINT AUTO_INCREMENT,
-                     member_id BIGINT,
-                     event_toast_id BIGINT,
-                     template_text VARCHAR(200),
-                     created_at DATETIME,
-                     last_modified_at DATETIME,
-                     PRIMARY KEY (template_id)
+                          template_id BIGINT AUTO_INCREMENT,
+                          member_id BIGINT,
+                          event_toast_id BIGINT,
+                          template_text VARCHAR(200),
+                          created_at DATETIME,
+                          last_modified_at DATETIME,
+                          PRIMARY KEY (template_id)
 );
 
 CREATE TABLE inquiry (
-                     inquiry_id BIGINT AUTO_INCREMENT,
-                     title VARCHAR(100),
-                     contentsUrl VARCHAR(255),
-                     email VARCHAR(100),
-                     inquiry_state VARCHAR(40),
-                     created_at DATETIME,
-                     last_modified_at DATETIME,
-                     PRIMARY KEY (inquiry_id)
+                         inquiry_id BIGINT AUTO_INCREMENT,
+                         title VARCHAR(100),
+                         contentsUrl VARCHAR(255),
+                         email VARCHAR(100),
+                         inquiry_state VARCHAR(40),
+                         created_at DATETIME,
+                         last_modified_at DATETIME,
+                         PRIMARY KEY (inquiry_id)
 );
 
 CREATE TABLE creator_account (
-    creator_account_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id BIGINT NOT NULL,
-    bank VARCHAR(20) NOT NULL,
-    account_number VARCHAR(255) NOT NULL,
-    created_at DATETIME,
-    last_modified_at DATETIME
+                                 creator_account_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                 member_id BIGINT NOT NULL,
+                                 bank VARCHAR(20) NOT NULL,
+                                 account_number VARCHAR(255) NOT NULL,
+                                 created_at DATETIME,
+                                 last_modified_at DATETIME
 );
 
 

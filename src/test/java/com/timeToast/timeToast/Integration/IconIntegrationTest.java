@@ -66,7 +66,6 @@ public class IconIntegrationTest extends TestContainerSupport {
     public void tryToBuyJamIcon() {
         Member member1 = memberRepository.getById(1L);
 
-        IconGroupPostRequest iconGroupPostRequest = new IconGroupPostRequest("name", 1100, IconType.JAM, IconBuiltin.NONBUILTIN, "description");
         try {
             ClassPathResource imageResource = new ClassPathResource("test_image.jpg");
             MockMultipartFile iconData = new MockMultipartFile(
