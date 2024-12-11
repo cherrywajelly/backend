@@ -5,6 +5,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponses;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
@@ -50,10 +51,9 @@ public class TemplateIntegrationTest extends TestContainerSupport {
         Member member = memberRepository.getById(1L);
 
         EventToastOwnResponses eventToastOwnResponses = eventToastService.getOwnEventToastList(member.getId());
+        EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), eventToastOwnResponses.eventToastOwnResponses().get(0).eventToastId());
 
-        EventToast eventToast = eventToastRepository.getById(eventToastOwnResponses.eventToastOwnResponses().stream().findFirst().get().eventToastId());
-
-        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToast.getId(), "text");
+        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToastResponse.eventToastId(), "template text");
         Response response = templateService.saveTemplate(member.getId(), templateSaveRequest);
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());

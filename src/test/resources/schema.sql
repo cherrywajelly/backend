@@ -255,8 +255,7 @@ CREATE TABLE showcase (
 );
 
 INSERT INTO showcase VALUES (1,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
-
+INSERT INTO showcase VALUES (2,1,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 CREATE TABLE fcm (
                      fcm_id BIGINT AUTO_INCREMENT,
                      member_id BIGINT,

@@ -52,8 +52,8 @@ public class JamIntegrationTest extends TestContainerSupport {
 
         try {
             ClassPathResource imageResource = new ClassPathResource("test_image.jpg");
-            MockMultipartFile iconData = new MockMultipartFile(
-                    "iconImages",
+            MockMultipartFile jamData = new MockMultipartFile(
+                    "jamImages",
                     imageResource.getFilename(),
                     "image/jpeg",
                     imageResource.getInputStream());
@@ -65,7 +65,7 @@ public class JamIntegrationTest extends TestContainerSupport {
                         IconGroupMarketDetailResponse iconGroupMarketDetailResponse = iconGroupService.getIconGroupDetail(member1.getId(), iconGroupMarketResponses.iconGroupMarketResponses().get(0).iconGroupId());
 
                         JamRequest jamRequest = new JamRequest("title", iconGroupMarketDetailResponse.iconResponses().get(0).iconId());
-                        Response response = jamService.postJam(jamRequest, iconData, iconData, 1L, member1.getId());
+                        Response response = jamService.postJam(jamRequest, jamData, jamData, 1L, member1.getId());
 
                         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
                         assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());

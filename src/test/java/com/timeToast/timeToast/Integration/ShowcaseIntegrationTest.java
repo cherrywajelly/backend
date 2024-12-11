@@ -1,14 +1,12 @@
 package com.timeToast.timeToast.Integration;
 
 import com.timeToast.timeToast.TimeToastApplication;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseEditResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseSaveResponses;
-import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.showcase.ShowcaseService;
@@ -20,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,22 +42,23 @@ public class ShowcaseIntegrationTest extends TestContainerSupport {
     public void tryToGetEventToastByShowcase() {
         Member member = memberRepository.getById(1L);
 
-        List<Long> showcases = new ArrayList<>();
-        showcases.add(1L);
         ShowcaseResponses showcaseResponses = showcaseService.getShowcase(member.getId());
-
-        assertThat(showcaseResponses).isNotNull();
+        EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), showcaseResponses.showcaseResponses().get(0).eventToastId());
+        assertThat(eventToastResponse.memberId()).isEqualTo(member.getId());
     }
 
-//    @Test
-//    @DisplayName("사용자는 진열장 목록 편집을 통해 원하는 이벤트 토스트를 진열할 수 있습니다.")
-//    public void tryToSelectEventToastByShowcase() {
-//        Member member = memberRepository.getById(1L);
-//
-//        List<Long> showcases = new ArrayList<>();
-//        ShowcaseEditResponses showcaseEditResponses = showcaseService.getShowcaseSaveList(member.getId());
-//        showcases.add(showcaseEditResponses.showcaseEditResponses().get(0).eventToastId());
-//        ShowcaseSaveResponses showcaseSaveResponses = showcaseService.saveShowcase(member.getId(), new ShowcaseSaveRequest(showcases));
-//        assertThat(showcaseSaveResponses).isNotNull();
-//    }
+    @Test
+    @DisplayName("사용자는 진열장 목록 편집을 통해 원하는 이벤트 토스트를 진열할 수 있습니다.")
+    public void tryToSelectEventToastByShowcase() {
+        Member member = memberRepository.getById(1L);
+
+        ShowcaseEditResponses showcaseEditResponses = showcaseService.getShowcaseSaveList(member.getId());
+
+        List<Long> showcases = new ArrayList<>();
+        showcases.add(showcaseEditResponses.showcaseEditResponses().get(0).eventToastId());
+
+        ShowcaseSaveRequest showcaseSaveRequest = new ShowcaseSaveRequest(showcases);
+        ShowcaseSaveResponses showcaseSaveResponses = showcaseService.saveShowcase(member.getId(), showcaseSaveRequest);
+        assertThat(showcaseSaveResponses.showcaseSaveResponses().get(0)).isEqualTo(showcaseEditResponses.showcaseEditResponses().get(0).title());
+    }
 }
