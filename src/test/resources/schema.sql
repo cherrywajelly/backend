@@ -218,6 +218,7 @@ CREATE TABLE event_toast (
 );
 
 INSERT INTO event_toast VALUES (1,5,1,"title1","2024-12-04",false,"description1","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO event_toast VALUES (2,1,1,"title2","2024-12-04",true,"description2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 
@@ -234,6 +235,7 @@ CREATE TABLE jam (
                      PRIMARY KEY (jam_id)
 );
 INSERT INTO jam VALUES (1,5,1,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO jam VALUES (2,2,2,1,"title2","contents_url2","image_url2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 
