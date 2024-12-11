@@ -112,6 +112,7 @@ CREATE TABLE icon_group (
 
 INSERT INTO icon_group VALUES (1,4,"TOAST","BUILTIN","보통맛","0","REGISTERED",  "타임토스트 제공 기본 토스트 아이콘","thumbnailImageUrl","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_group VALUES (2,4,"JAM","BUILTIN","보통맛","0","REGISTERED", "타임토스트 제공 기본 잼 아이콘","thumbnailImageUrl", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon_group VALUES (3,4,"JAM","NONBUILTIN","홀리맛","0","REGISTERED", "타임토스트만의 홀리맛 잼 아이콘","thumbnailImageUrl", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE icon (
                       icon_id BIGINT AUTO_INCREMENT,
@@ -128,6 +129,10 @@ INSERT INTO icon VALUES (3,1,"toastImageUrl3", "2024-11-03 22:34:32.431779", "20
 INSERT INTO icon VALUES (4,2,"jamImageUrl1", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon VALUES (5,2,"jamImageUrl2", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon VALUES (6,2,"jamImageUrl3", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon VALUES (7,3,"holyJamImageUrl1", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon VALUES (8,3,"holyJamImageUrl2", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon VALUES (9,3,"holyJamImageUrl3", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+
 
 CREATE TABLE icon_member (
                              icon_member_id BIGINT AUTO_INCREMENT,
@@ -146,6 +151,7 @@ INSERT INTO icon_member VALUES (5,3,1, "2024-11-03 22:34:32.431779", "2024-11-03
 INSERT INTO icon_member VALUES (6,3,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (7,5,1,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 INSERT INTO icon_member VALUES (8,5,2,"2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO icon_member VALUES (9,1,3, "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE gift_toast (
                             gift_toast_id BIGINT AUTO_INCREMENT,
@@ -218,9 +224,9 @@ CREATE TABLE event_toast (
 );
 
 INSERT INTO event_toast VALUES (1,5,1,"title1","2024-12-04",false,"description1","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO event_toast VALUES (2,1,1,"title2","2024-12-04",true,"description2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
-
+INSERT INTO event_toast VALUES (2,1,1,"title2","2024-12-04",true,"description1","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO event_toast VALUES (3,1,1,"title3","2024-12-04",true,"description2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO event_toast VALUES (4,2,1,"title3","2024-12-04",true,"description2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 CREATE TABLE jam (
                      jam_id BIGINT AUTO_INCREMENT,
@@ -235,8 +241,8 @@ CREATE TABLE jam (
                      PRIMARY KEY (jam_id)
 );
 INSERT INTO jam VALUES (1,5,1,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO jam VALUES (2,2,2,1,"title2","contents_url2","image_url2","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
+INSERT INTO jam VALUES (2,2,2,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO jam VALUES (3,3,3,1,"title","contents_url1","image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 CREATE TABLE showcase (
@@ -266,7 +272,8 @@ CREATE TABLE fcm (
 );
 
 INSERT INTO fcm VALUES (1,5,"FOLLOW",4,"toast_name",false,2,"image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-
+INSERT INTO fcm VALUES (2,1,"FOLLOW",4,"toast_name",false,2,"image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO fcm VALUES (3,1,"EVENTTOASTOPENED",null,"toast_name",false,2,"image_url","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 CREATE TABLE template (

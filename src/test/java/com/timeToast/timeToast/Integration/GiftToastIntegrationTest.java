@@ -116,44 +116,44 @@ public class GiftToastIntegrationTest extends TestContainerSupport{
     }
 
 
-//    @Test
-//    @DisplayName("사용자는 토스트 조각을 작성할 수 있으며, 상세 조회에서 알 수 있다.")
-//    public void tryToastPiece(){
-//        //login member
-//        Member member = memberRepository.getById(1L);
-//
-//
-//        try {
-//            //save toastPiece
-//            ClassPathResource imageResource = new ClassPathResource("test_image.jpg");
-//            MockMultipartFile toastPieceContent = new MockMultipartFile(
-//                    "toastPieceContents",
-//                    imageResource.getFilename(),
-//                    "image/jpeg",
-//                    imageResource.getInputStream()
-//            );
-//
-//            MockMultipartFile toastPieceImage = new MockMultipartFile(
-//                    "toastPieceImages",
-//                    imageResource.getFilename(),
-//                    "image/jpeg",
-//                    imageResource.getInputStream()
-//            );
-//
-//            ToastPieceRequest toastPieceRequest = new ToastPieceRequest(1L, 1L, "title");
-//            ToastPieceSaveResponse toastPieceSaveResponse = toastPieceService.saveToastPiece(member.getId(), toastPieceRequest, toastPieceContent, List.of(toastPieceImage));
-//
-//
-//            //get giftToastDetail
-//            GiftToastDetailResponse giftToastDetailResponse = giftToastService.getGiftToastDetail(member.getId(), toastPieceSaveResponse.giftToastId());
-//            Assertions.assertTrue(giftToastDetailResponse.toastPieceResponses().toastPieceResponses().stream().anyMatch(
-//                    toastPieceResponse -> toastPieceResponse.toastPieceId() == toastPieceSaveResponse.toastPieceId()
-//            ));
-//
-//        }catch (IOException exception){
-//
-//        }
-//
-//    }
+    @Test
+    @DisplayName("사용자는 토스트 조각을 작성할 수 있으며, 상세 조회에서 알 수 있다.")
+    public void tryToastPiece(){
+        //login member
+        Member member = memberRepository.getById(1L);
+
+
+        try {
+            //save toastPiece
+            ClassPathResource imageResource = new ClassPathResource("test_image.jpg");
+            MockMultipartFile toastPieceContent = new MockMultipartFile(
+                    "toastPieceContents",
+                    imageResource.getFilename(),
+                    "image/jpeg",
+                    imageResource.getInputStream()
+            );
+
+            MockMultipartFile toastPieceImage = new MockMultipartFile(
+                    "toastPieceImages",
+                    imageResource.getFilename(),
+                    "image/jpeg",
+                    imageResource.getInputStream()
+            );
+
+            ToastPieceRequest toastPieceRequest = new ToastPieceRequest(1L, 1L, "title");
+            ToastPieceSaveResponse toastPieceSaveResponse = toastPieceService.saveToastPiece(member.getId(), toastPieceRequest, toastPieceContent, List.of(toastPieceImage));
+
+
+            //get giftToastDetail
+            GiftToastDetailResponse giftToastDetailResponse = giftToastService.getGiftToastDetail(member.getId(), toastPieceSaveResponse.giftToastId());
+            Assertions.assertTrue(giftToastDetailResponse.toastPieceResponses().toastPieceResponses().stream().anyMatch(
+                    toastPieceResponse -> toastPieceResponse.toastPieceId() == toastPieceSaveResponse.toastPieceId()
+            ));
+
+        }catch (IOException exception){
+
+        }
+
+    }
 
 }

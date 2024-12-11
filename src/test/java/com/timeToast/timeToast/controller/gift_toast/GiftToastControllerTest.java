@@ -37,7 +37,8 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void saveGiftToastGroup() throws Exception {
 
-        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.now(), LocalDate.now(), "title","description");
+        GiftToastGroupRequest giftToastGroupRequest = new GiftToastGroupRequest(1L, 1L,LocalDate.now(),
+                LocalDate.now(), "title","description");
         String json = objectMapper.writeValueAsString(giftToastGroupRequest);
 
         mockMvc.perform(

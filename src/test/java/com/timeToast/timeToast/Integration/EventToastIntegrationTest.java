@@ -5,8 +5,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastMemberResponses;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
+import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.ResponseWithId;
@@ -14,6 +13,7 @@ import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
+import com.timeToast.timeToast.service.event_toast.EventToastServiceImpl;
 import com.timeToast.timeToast.service.jam.JamService;
 import com.timeToast.timeToast.util.TestContainerSupport;
 import org.junit.jupiter.api.DisplayName;
@@ -41,8 +41,8 @@ public class EventToastIntegrationTest extends TestContainerSupport {
 
     @Autowired
     public EventToastIntegrationTest(final EventToastService eventToastService, final MemberRepository memberRepository,
-                                     final JamService jamService,
-                                     final EventToastRepository eventToastRepository, final JamRepository jamRepository) {
+                                     final JamService jamService, final EventToastRepository eventToastRepository,
+                                     final JamRepository jamRepository) {
         this.eventToastService = eventToastService;
         this.memberRepository = memberRepository;
         this.jamService = jamService;
@@ -53,15 +53,15 @@ public class EventToastIntegrationTest extends TestContainerSupport {
     @Test
     @DisplayName("사용자는 이벤트 토스트를 생성하고 조회할 수 있다.")
     public void tryToCreateEventToast (){
-        Member member = memberRepository.getById(1L);
+        Member member = memberRepository.getById(2L);
 
         EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2025, 1, 1), "title", 1L, "description");
-        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, 1L);
+        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, member.getId());
 
         EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), responseWithId.id());
-
         assertThat(eventToastResponse.isOpened()).isFalse();
-        assertThat(eventToastResponse.memberId()).isEqualTo(member.getId());
+
+        assertThat(responseWithId.id()).isEqualTo(eventToastResponse.eventToastId());
     }
 
     @Test
@@ -69,14 +69,18 @@ public class EventToastIntegrationTest extends TestContainerSupport {
     public void tryToGetOpenedEventToast (){
         Member member = memberRepository.getById(1L);
 
-        EventToast eventToast = eventToastRepository.getById(2L);
-        assertThat(eventToast.isOpened()).isTrue();
+        EventToastOwnResponses eventToastOwnResponses = eventToastService.getOwnEventToastList(member.getId());
+        eventToastOwnResponses.eventToastOwnResponses().forEach(
+                eventToastOwnResponse -> {
+                    EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), eventToastOwnResponse.eventToastId());
 
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToast.getId());
-        jams.forEach(
-                jam -> {
-                    JamDetailResponse jamDetailResponse = jamService.getJam(member.getId(), jam.getId());
-                    assertThat(jamDetailResponse).isNotNull();
+                    eventToastResponse.jams().forEach(
+                            jamResponse -> {
+                                JamDetailResponse jamDetailResponse = jamService.getJam(member.getId(), jamResponse.jamId());
+                                assertThat(eventToastResponse.isOpened()).isTrue();
+                                assertThat(jamDetailResponse.eventToastDataResponse().eventToastNickname()).isEqualTo(member.getNickname());
+                            }
+                    );
                 }
         );
     }
@@ -100,4 +104,5 @@ public class EventToastIntegrationTest extends TestContainerSupport {
                 }
         );
     }
+
 }
