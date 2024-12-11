@@ -46,7 +46,7 @@ public class TemplateIntegrationTest extends TestContainerSupport {
     }
 
     @Test
-    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있습니다.")
+    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있다.")
     public void tryToCreateTemplate() {
         Member member = memberRepository.getById(1L);
 

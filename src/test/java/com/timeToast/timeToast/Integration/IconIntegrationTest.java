@@ -49,7 +49,7 @@ public class IconIntegrationTest extends TestContainerSupport {
     }
 
     @Test
-    @DisplayName("사용자는 본인이 소유한 아이콘 중 하나를 선택해 이벤트 토스트를 생성 수 있습니다.")
+    @DisplayName("사용자는 본인이 소유한 아이콘 중 하나를 선택해 이벤트 토스트를 생성할 수 있다.")
     public void tryToWriteToastPiece() {
         Member member = memberRepository.getById(1L);
 
@@ -62,7 +62,7 @@ public class IconIntegrationTest extends TestContainerSupport {
 
 
     @Test
-    @DisplayName("사용자는 아이콘 마켓에서 잼 아이콘을 구매해 잼을 바를 수 있습니다.")
+    @DisplayName("사용자는 아이콘 마켓에서 잼 아이콘을 구매해 잼을 바를 수 있다.")
     public void tryToBuyJamIcon() {
         Member member1 = memberRepository.getById(1L);
 

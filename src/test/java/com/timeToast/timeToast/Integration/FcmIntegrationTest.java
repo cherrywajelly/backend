@@ -30,7 +30,7 @@ public class FcmIntegrationTest extends TestContainerSupport {
     }
 
     @Test
-    @DisplayName("사용자는 알림 목록에서 알림을 선택하여 관련 상세페이지로 이동할 수 있습니다.")
+    @DisplayName("사용자는 알림 목록에서 알림을 선택하여 관련 상세페이지로 이동할 수 있다.")
     public void tryToGetAlarm() {
         Member member = memberRepository.getById(1L);
 

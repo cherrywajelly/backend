@@ -38,7 +38,7 @@ public class ShowcaseIntegrationTest extends TestContainerSupport {
         this.eventToastService = eventToastService;
     }
     @Test
-    @DisplayName("사용자는 본인의 진열장 목록을 통해 이벤트 토스트를 상세조회 할 수 있습니다.")
+    @DisplayName("사용자는 본인의 진열장 목록을 통해 이벤트 토스트를 상세조회 할 수 있다.")
     public void tryToGetEventToastByShowcase() {
         Member member = memberRepository.getById(1L);
 
@@ -48,7 +48,7 @@ public class ShowcaseIntegrationTest extends TestContainerSupport {
     }
 
     @Test
-    @DisplayName("사용자는 진열장 목록 편집을 통해 원하는 이벤트 토스트를 진열할 수 있습니다.")
+    @DisplayName("사용자는 진열장 목록 편집을 통해 원하는 이벤트 토스트를 진열할 수 있다.")
     public void tryToSelectEventToastByShowcase() {
         Member member = memberRepository.getById(1L);
 
