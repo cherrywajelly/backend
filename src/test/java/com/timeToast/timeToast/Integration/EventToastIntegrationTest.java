@@ -4,6 +4,9 @@ import com.timeToast.timeToast.TimeToastApplication;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastFriendResponses;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponse;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponses;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
@@ -44,19 +47,19 @@ public class EventToastIntegrationTest extends TestContainerSupport {
         this.eventToastRepository = eventToastRepository;
     }
 
-//    @Test
-//    @DisplayName("사용자는 이벤트 토스트를 생성하고 조회할 수 있다.")
-//    public void tryToCreateEventToast (){
-//        Member member = memberRepository.getById(1L);
-//
-//        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2025, 1, 1), "title", 1L, "description");
-//        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, 1L);
-//
-//        EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), responseWithId.id());
-//        assertThat(eventToastResponse.isOpened()).isFalse();
-//
-//        assertThat(responseWithId.id()).isEqualTo(2L);
-//    }
+    @Test
+    @DisplayName("사용자는 이벤트 토스트를 생성하고 조회할 수 있다.")
+    public void tryToCreateEventToast (){
+        Member member = memberRepository.getById(1L);
+
+        EventToastPostRequest eventToastPostRequest = new EventToastPostRequest(LocalDate.of(2025, 1, 1), "title", 1L, "description");
+        ResponseWithId responseWithId = eventToastService.saveEventToast(eventToastPostRequest, 1L);
+
+        EventToastResponse eventToastResponse = eventToastService.getEventToast(member.getId(), responseWithId.id());
+        assertThat(eventToastResponse.isOpened()).isFalse();
+
+        assertThat(responseWithId.id()).isEqualTo(eventToastResponse.eventToastId());
+    }
 
     @Test
     @DisplayName("사용자는 오픈된 토스트와 토스트에 작성된 잼을 조회할 수 있다.")
@@ -80,22 +83,8 @@ public class EventToastIntegrationTest extends TestContainerSupport {
         );
     }
 
-//    @Test
-//    @DisplayName("사용자는 타사용자의 이벤트 토스트 목록을 조회하고 잼을 제외한 이벤트 토스트 내용을 조회할 수 있다.")
-//    public void tryToGetOtherEventToast (){
-//        Member member1 = memberRepository.getById(1L);
-//        Member member2 = memberRepository.getById(2L);
-//
-//        eventToastService.getEventToasts(2L);
-//        EventToastResponse eventToastResponse = eventToastService.getEventToast(member1.getId(), 1L);
-//        assertThat(eventToastResponse.isOpened()).isTrue();
-//
-//        JamResponses jamResponses = jamService.getJams(eventToastResponse.eventToastId());
-//        jamResponses.jamResponses().forEach(
-//                jamResponse -> {
-//                    JamDetailResponse jamDetailResponse = jamService.getJam(member2.getId(), jamResponse.jamId());
-//                    assertThat(jamDetailResponse).isNull();
-//                }
-//        );
-//    }
+
+
+
+
 }

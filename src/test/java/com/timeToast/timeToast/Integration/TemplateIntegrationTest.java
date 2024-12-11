@@ -4,6 +4,7 @@ import com.timeToast.timeToast.TimeToastApplication;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastOwnResponses;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
@@ -43,16 +44,18 @@ public class TemplateIntegrationTest extends TestContainerSupport {
         this.templateService = templateService;
     }
 
-//    @Test
-//    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있습니다.")
-//    public void tryToCreateTemplate() {
-//        Member member = memberRepository.getById(1L);
-//
-//        EventToast eventToast = eventToastRepository.getById(1L);
-//
-//        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToast.getId(), "text");
-//        Response response = templateService.saveTemplate(member.getId(), templateSaveRequest);
-//        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
-//        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
-//    }
+    @Test
+    @DisplayName("사용자는 이벤트 토스트의 공유 템플릿을 생성할 수 있습니다.")
+    public void tryToCreateTemplate() {
+        Member member = memberRepository.getById(1L);
+
+        EventToastOwnResponses eventToastOwnResponses = eventToastService.getOwnEventToastList(member.getId());
+
+        EventToast eventToast = eventToastRepository.getById(eventToastOwnResponses.eventToastOwnResponses().stream().findFirst().get().eventToastId());
+
+        TemplateSaveRequest templateSaveRequest = new TemplateSaveRequest(eventToast.getId(), "text");
+        Response response = templateService.saveTemplate(member.getId(), templateSaveRequest);
+        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
+        assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
+    }
 }
