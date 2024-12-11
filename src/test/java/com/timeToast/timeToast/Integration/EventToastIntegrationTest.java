@@ -5,6 +5,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.response.EventToastMemberResponses;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastResponse;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -86,15 +87,16 @@ public class EventToastIntegrationTest extends TestContainerSupport {
         Member member1 = memberRepository.getById(1L);
         Member member2 = memberRepository.getById(2L);
 
-        EventToast eventToast = eventToastRepository.getById(2L);
-        assertThat(eventToast.getMemberId()).isEqualTo(member1.getId());
-        assertThat(eventToast.isOpened()).isTrue();
-
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToast.getId());
-        jams.forEach(
-                jam -> {
-                    BadRequestException exception = assertThrows(BadRequestException.class, () -> jamService.getJam(member2.getId(), jam.getId()));
-                    assertThat(exception.getMessage()).isEqualTo(INVALID_JAM.getMessage());
+        EventToastMemberResponses eventToastMemberResponses = eventToastService.getMemberEventToastList(member2.getId(), member1.getId());
+        eventToastMemberResponses.eventToastMemberResponses().forEach(
+                eventToastMemberResponse -> {
+                    EventToastResponse eventToastResponse = eventToastService.getEventToast(member2.getId(), eventToastMemberResponse.eventToastId());
+                    eventToastResponse.jams().forEach(
+                            jamResponse -> {
+                                BadRequestException exception = assertThrows(BadRequestException.class, () -> jamService.getJam(member2.getId(), jamResponse.jamId()));
+                                assertThat(exception.getMessage()).isEqualTo(INVALID_JAM.getMessage());
+                            }
+                    );
                 }
         );
     }
