@@ -12,7 +12,6 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -93,7 +92,7 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(toastPiece.getGiftToastId());
         GiftToast giftToast = giftToastRepository.getById(toastPiece.getGiftToastId());
 
-        if(isGiftToastOpen(giftToastOwners, toastPieces, giftToast)){
+        if(isToastPieces(giftToastOwners, toastPieces) && isOpenDate(giftToast)) {
             giftToast.updateIsOpened(true);
         }
         giftToastOwners.forEach(giftToastOwner -> {
@@ -110,11 +109,14 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         });
     }
 
-    private static boolean isGiftToastOpen(List<GiftToastOwner> giftToastOwners, List<ToastPiece> toastPieces, GiftToast giftToast) {
+    private static boolean isToastPieces(List<GiftToastOwner> giftToastOwners, List<ToastPiece> toastPieces) {
         return giftToastOwners.stream().allMatch(giftToastOwner ->
-                toastPieces.stream().anyMatch(toast -> toast.getMemberId().equals(giftToastOwner.getMemberId()))) && (giftToast.getOpenedDate().isEqual(LocalDate.now()) || giftToast.getOpenedDate().isAfter(LocalDate.now()));
+                toastPieces.stream().anyMatch(toast -> toast.getMemberId().equals(giftToastOwner.getMemberId())));
     }
 
+    private static boolean isOpenDate(GiftToast giftToast){
+        return (giftToast.getOpenedDate().isEqual(LocalDate.now()) || giftToast.getOpenedDate().isAfter(LocalDate.now()));
+    }
 
     private String saveToastPieceContents(final ToastPiece toastPiece, final MultipartFile contents ) {
 
