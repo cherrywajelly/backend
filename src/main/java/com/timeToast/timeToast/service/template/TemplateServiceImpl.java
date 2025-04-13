@@ -1,17 +1,15 @@
 package com.timeToast.timeToast.service.template;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.eventToast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.template.Template;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateResponse;
+import com.timeToast.timeToast.dto.eventToast.response.EventToastTemplateResponse;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
-import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.eventToast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.template.TemplateRepository;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TEMPLATE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service

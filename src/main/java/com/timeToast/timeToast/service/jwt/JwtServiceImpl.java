@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.service.member_token.MemberTokenService;
+import com.timeToast.timeToast.service.memberToken.MemberTokenService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,6 @@ import java.util.UUID;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.REFRESH_TOKEN_EXPIRED;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
-import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_HOUR;
 import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_DAY;
 
 

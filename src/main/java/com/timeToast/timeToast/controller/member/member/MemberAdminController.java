@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.member.member;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
+import com.timeToast.timeToast.dto.eventToast.response.EventToastDataManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
-import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
+import com.timeToast.timeToast.dto.giftToast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;

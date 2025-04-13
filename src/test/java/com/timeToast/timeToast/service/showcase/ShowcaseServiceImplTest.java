@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.showcase;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.eventToast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.showcase.Showcase;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
@@ -12,7 +12,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.eventToast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import org.junit.jupiter.api.DisplayName;

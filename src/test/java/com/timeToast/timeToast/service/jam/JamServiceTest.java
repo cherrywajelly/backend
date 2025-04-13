@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.jam;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
+import com.timeToast.timeToast.dto.eventToast.response.EventToastDataResponse;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;

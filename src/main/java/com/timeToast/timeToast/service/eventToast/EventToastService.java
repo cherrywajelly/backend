@@ -1,0 +1,20 @@
+package com.timeToast.timeToast.service.eventToast;
+
+import com.timeToast.timeToast.dto.eventToast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.eventToast.request.EventToastRequest;
+import com.timeToast.timeToast.dto.eventToast.response.*;
+import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.global.response.ResponseWithId;
+
+public interface EventToastService {
+    ResponseWithId saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId);
+    EventToastOwnResponses getOwnEventToastList(final long memberId);
+    EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId);
+    EventToastFriendResponses getEventToasts(final long memberId);
+    EventToastResponse getEventToast(final long memberId, final long eventToastId);
+    void deleteAllEventToastByMemberId(final long memberId);
+    Response deleteEventToast(final long memberId, final long eventToastId);
+    EventToastManagerResponses getEventToastsForManager();
+    EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId);
+    EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest);
+}

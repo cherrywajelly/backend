@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
@@ -13,14 +13,14 @@ import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
-import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.creatorAccount.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
+import com.timeToast.timeToast.repository.creatorAccount.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;

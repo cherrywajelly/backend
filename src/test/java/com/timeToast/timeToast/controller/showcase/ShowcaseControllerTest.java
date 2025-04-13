@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.controller.showcase;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.service.showcase.ShowcaseService;
 import com.timeToast.timeToast.service.showcase.ShowcaseServiceTest;

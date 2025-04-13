@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.eventToast;
 
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastInfoManagerResponse;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastManagerResponses;
-import com.timeToast.timeToast.service.event_toast.EventToastService;
+import com.timeToast.timeToast.dto.eventToast.request.EventToastRequest;
+import com.timeToast.timeToast.dto.eventToast.response.EventToastInfoManagerResponse;
+import com.timeToast.timeToast.dto.eventToast.response.EventToastManagerResponses;
+import com.timeToast.timeToast.service.eventToast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

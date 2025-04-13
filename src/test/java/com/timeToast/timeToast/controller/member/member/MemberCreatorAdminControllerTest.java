@@ -2,7 +2,7 @@ package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
-import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.creatorAccount.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.service.member.member.CreatorService;
 import com.timeToast.timeToast.service.member.member.CreatorServiceTest;

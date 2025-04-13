@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.dto.showcase.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
+import com.timeToast.timeToast.domain.eventToast.EventToast;
 import lombok.Builder;
 
 import java.time.LocalDate;

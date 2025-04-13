@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.settlement;
 
-import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
@@ -8,7 +8,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
+import com.timeToast.timeToast.repository.creatorAccount.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.settlement.SettlementRepository;

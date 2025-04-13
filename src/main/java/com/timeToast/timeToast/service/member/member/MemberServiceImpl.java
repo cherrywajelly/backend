@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
+import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -16,17 +16,11 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.creatorAccount.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
-import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;

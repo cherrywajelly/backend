@@ -1,12 +1,12 @@
 package com.timeToast.timeToast.controller.eventToast;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.eventToast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.eventToast.response.*;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
-import com.timeToast.timeToast.service.event_toast.EventToastService;
+import com.timeToast.timeToast.service.eventToast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
