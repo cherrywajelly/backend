@@ -21,7 +21,7 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
@@ -31,7 +31,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,8 +39,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
-import static com.timeToast.timeToast.global.config.TossConfig.TOSS_CONFIRM_URL;
-import static com.timeToast.timeToast.global.config.TossConfig.TOSS_SECRET_KEY;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -52,8 +49,11 @@ public class PaymentServiceImpl implements PaymentService {
     private final MemberRepository memberRepository;
     private final IconMemberRepository iconMemberRepository;
 
+    @Value("${payment.toss.confirm-url}")
+    private String TOSS_CONFIRM_URL;
 
-
+    @Value("${payment.toss.secret-key}")
+    private String TOSS_SECRET_KEY;
 
     public PaymentServiceImpl(final PaymentRepository paymentRepository, final IconGroupRepository iconGroupRepository,
                               final PremiumRepository premiumRepository, final MemberRepository memberRepository,
@@ -68,7 +68,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public PaymentSaveResponse savePayment(final long memberId, final PaymentSaveRequest paymentSaveRequest) {
-
         String orderName = verifyPaymentSaveRequest(memberId,paymentSaveRequest);
 
         Payment payment = PaymentSaveRequest.to(memberId, paymentSaveRequest);
@@ -266,7 +265,6 @@ public class PaymentServiceImpl implements PaymentService {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(Base64.getEncoder().encodeToString(TOSS_SECRET_KEY.getBytes(StandardCharsets.UTF_8)));
