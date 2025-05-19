@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.giftToast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.giftToast.request.GiftToastRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.service.giftToast.GiftToastService;
 import com.timeToast.timeToast.service.giftToast.GiftToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;

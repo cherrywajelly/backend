@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.giftToast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.giftToast.request.GiftToastFriendRequest;
-import com.timeToast.timeToast.dto.giftToast.request.GiftToastGroupRequest;
-import com.timeToast.timeToast.dto.giftToast.request.GiftToastMineRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
+import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.service.giftToast.GiftToastService;
 import com.timeToast.timeToast.service.giftToast.GiftToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;

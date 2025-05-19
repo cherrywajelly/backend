@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.service.toastPiece;
 
-import com.timeToast.timeToast.dto.toastPiece.request.ToastPieceRequest;
-import com.timeToast.timeToast.dto.toastPiece.response.ToastPieceResponse;
-import com.timeToast.timeToast.dto.toastPiece.response.ToastPieceResponses;
-import com.timeToast.timeToast.dto.toastPiece.response.ToastPieceSaveResponse;
+import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
+import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
 import com.timeToast.timeToast.global.exception.BadRequestException;

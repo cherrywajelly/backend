@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.iconGroup.IconGroupCreatorController;
+import com.timeToast.timeToast.controller.icon.IconGroupCreatorController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;

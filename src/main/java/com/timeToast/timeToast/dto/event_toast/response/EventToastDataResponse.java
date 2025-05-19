@@ -1,0 +1,22 @@
+package com.timeToast.timeToast.dto.event_toast.response;
+
+import com.timeToast.timeToast.domain.eventToast.EventToast;
+import lombok.Builder;
+
+@Builder
+public record EventToastDataResponse(
+
+        String eventToastTitle,
+        String eventToastMemberProfile,
+        String eventToastNickname,
+        String eventToastIconImageUrl
+){
+    public static EventToastDataResponse fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, final String imageurl ){
+        return EventToastDataResponse.builder()
+                .eventToastTitle(eventToast.getTitle())
+                .eventToastMemberProfile(memberProfileUrl)
+                .eventToastNickname(nickname)
+                .eventToastIconImageUrl(imageurl)
+                .build();
+    }
+}

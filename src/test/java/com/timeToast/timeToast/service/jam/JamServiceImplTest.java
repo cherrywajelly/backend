@@ -10,7 +10,7 @@ import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.eventToast.EventToastRepository;
+import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;

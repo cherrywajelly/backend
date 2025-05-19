@@ -16,7 +16,7 @@ import com.timeToast.timeToast.dto.fcm.requset.FcmSendRequest;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.eventToast.EventToastRepository;
+import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.fcm.FcmRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;

@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.eventToast;
 
-import com.timeToast.timeToast.dto.eventToast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.eventToast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.eventToast.response.*;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
+import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;

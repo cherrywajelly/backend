@@ -8,7 +8,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.eventToast.EventToastRepository;
+import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import lombok.extern.slf4j.Slf4j;

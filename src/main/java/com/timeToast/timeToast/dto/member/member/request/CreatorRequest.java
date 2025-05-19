@@ -2,7 +2,7 @@ package com.timeToast.timeToast.dto.member.member.request;
 
 import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
-import com.timeToast.timeToast.dto.creatorAccount.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
 
 public record CreatorRequest(
         String nickname,

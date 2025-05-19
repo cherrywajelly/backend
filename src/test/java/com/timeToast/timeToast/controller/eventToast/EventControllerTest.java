@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.eventToast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.eventToast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.service.eventToast.EventToastService;
 import com.timeToast.timeToast.service.eventToast.EventToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;

@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.memberToken;
 
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.service.member_token.MemberTokenServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.service.memberToken.MemberTokenService;
+import com.timeToast.timeToast.service.member_token.MemberTokenService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

@@ -6,7 +6,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.service.memberToken.MemberTokenService;
+import com.timeToast.timeToast.service.member_token.MemberTokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

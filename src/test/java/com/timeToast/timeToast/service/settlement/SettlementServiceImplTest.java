@@ -8,7 +8,7 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
-import com.timeToast.timeToast.repository.creatorAccount.CreatorAccountRepository;
+import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.settlement.SettlementRepository;
