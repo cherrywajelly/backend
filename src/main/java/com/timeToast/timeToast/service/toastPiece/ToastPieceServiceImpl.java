@@ -17,7 +17,6 @@ import com.timeToast.timeToast.repository.giftToast.gift_toast_owner.GiftToastOw
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toastPiece.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.toastPiece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +29,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.timeToast.timeToast.domain.enums.fcm.FcmConstant.GIFTTOASTBAKED;
 import static com.timeToast.timeToast.global.constant.BasicImage.BASIC_PROFILE_IMAGE_URL;
@@ -42,7 +42,6 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DE
 public class ToastPieceServiceImpl implements ToastPieceService{
 
     private final ToastPieceRepository toastPieceRepository;
-    private final ToastPieceImageRepository toastPieceImageRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final FileUploadService fileUploadService;
@@ -50,12 +49,11 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     private final GiftToastRepository giftToastRepository;
     private final FcmService fcmService;
 
-    public ToastPieceServiceImpl(final ToastPieceRepository toastPieceRepository, final ToastPieceImageRepository toastPieceImageRepository,
+    public ToastPieceServiceImpl(final ToastPieceRepository toastPieceRepository,
                                  final MemberRepository memberRepository, final FileUploadService fileUploadService,
                                  final IconRepository iconRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                  final FcmService fcmService, final GiftToastRepository giftToastRepository) {
         this.toastPieceRepository = toastPieceRepository;
-        this.toastPieceImageRepository = toastPieceImageRepository;
         this.fileUploadService = fileUploadService;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
@@ -73,18 +71,21 @@ public class ToastPieceServiceImpl implements ToastPieceService{
     @Override
     public ToastPieceSaveResponse saveToastPiece(final long memberId, final ToastPieceRequest toastPieceRequest,
                                                  final MultipartFile contents, final List<MultipartFile> toastPieceImages) {
-        if(toastPieceRequest.title().length() > 20) {
+        if(toastPieceTitleValidation(toastPieceRequest)) {
             throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
         }
+
         ToastPiece toastPiece = toastPieceRepository.saveToastPiece(ToastPieceRequest.to(memberId, toastPieceRequest));
+
+        toastPiece.updateToastPieceImage(saveToastPieceImages(toastPieceImages));
         toastPiece.updateContentsUrl(saveToastPieceContents(toastPiece, contents));
-        List<String> toastPieceImageUrls = new ArrayList<>();
-        if(toastPieceImages!=null){
-            toastPieceImageUrls = saveToastPieceImages(toastPiece, toastPieceImages);
-        }
         sendMessage(memberId, toastPiece);
 
-        return ToastPieceSaveResponse.from(toastPiece, toastPieceImageUrls);
+        return ToastPieceSaveResponse.from(toastPiece);
+    }
+
+    private static boolean toastPieceTitleValidation(ToastPieceRequest toastPieceRequest) {
+        return toastPieceRequest.title().length() > 20;
     }
 
     private void sendMessage(long memberId, ToastPiece toastPiece) {
@@ -124,24 +125,42 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
-    private List<String> saveToastPieceImages(final ToastPiece toastPiece , List<MultipartFile> toastPieceImages) {
+//    private List<String> saveToastPieceImages(final ToastPiece toastPiece , List<MultipartFile> toastPieceImages) {
+//
+//        List<String> toastPieceImageUrls = new ArrayList<>();
+//
+//        toastPieceImages.forEach(
+//                toastPieceImage -> {
+//                    ToastPieceImage saveToastPieceImage = toastPieceImageRepository.save(
+//                            ToastPieceImage.builder()
+//                                    .toastPieceId(toastPiece.getId())
+//                                    .build());
+//
+//                    String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
+//                    String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
+//                    saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
+//                    toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());
+//                }
+//        );
+//        return toastPieceImageUrls;
+//    }
 
-        List<String> toastPieceImageUrls = new ArrayList<>();
+    private List<ToastPieceImage> saveToastPieceImages(List<MultipartFile> toastPieceImages) {
+
+        List<ToastPieceImage> uploadedToastPieceImages = new ArrayList<>();
 
         toastPieceImages.forEach(
                 toastPieceImage -> {
-                    ToastPieceImage saveToastPieceImage = toastPieceImageRepository.save(
-                            ToastPieceImage.builder()
-                                    .toastPieceId(toastPiece.getId())
-                                    .build());
+                    ToastPieceImage saveToastPieceImage = ToastPieceImage.builder().build();
 
                     String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
                     String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
+
                     saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
-                    toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());
+                    uploadedToastPieceImages.add(saveToastPieceImage);
                 }
         );
-        return toastPieceImageUrls;
+        return uploadedToastPieceImages;
     }
 
     @Transactional(readOnly = true)
@@ -170,10 +189,13 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         }
 
         String iconImageUrl = iconRepository.getById(toastPiece.getIconId()).getIconImageUrl();
-        List<String> toastPieceImages = new ArrayList<>();
+        List<String> toastPieceImages = toastPiece.getToastPieceImages()
+                .stream()
+                .map(ToastPieceImage::getImageUrl)
+                .collect(Collectors.toList());
 
-        toastPieceImageRepository.findAllByToastPieceId(toastPieceId)
-                .forEach( toastPieceImage -> toastPieceImages.add(toastPieceImage.getImageUrl()));
+//        toastPieceImageRepository.findAllByToastPieceId(toastPieceId)
+//                .forEach( toastPieceImage -> toastPieceImages.add(toastPieceImage.getImageUrl()));
 
         return ToastPieceResponse.from(toastPieceMember,toastPiece, iconImageUrl, toastPieceImages);
     }
@@ -189,7 +211,9 @@ public class ToastPieceServiceImpl implements ToastPieceService{
         }
 
         log.info("delete toastPiece contents {} by {}", toastPiece.getId(), memberId);
-        toastPieceImageRepository.deleteAllByToastPieceId(toastPieceId);
+
+        //TODO 확인
+//        toastPieceImageRepository.deleteAllByToastPieceId(toastPieceId);
         toastPieceRepository.deleteToastPiece(toastPiece);
 
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());

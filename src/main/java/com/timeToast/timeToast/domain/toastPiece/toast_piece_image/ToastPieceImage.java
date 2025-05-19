@@ -18,13 +18,10 @@ public class ToastPieceImage extends BaseTime {
     @Column(name = "toast_piece_image_id")
     private Long id;
 
-    private Long toastPieceId;
-
     private String imageUrl;
 
     @Builder
-    public ToastPieceImage(final long toastPieceId, final String imageUrl){
-        this.toastPieceId = toastPieceId;
+    public ToastPieceImage(final String imageUrl){
         this.imageUrl = imageUrl;
     }
 
