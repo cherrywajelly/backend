@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.timeToast.timeToast.domain.giftToast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
 import static com.timeToast.timeToast.domain.member.member.QMember.member;
-import static com.timeToast.timeToast.domain.toastPiece.toast_piece.QToastPiece.toastPiece;
+import static com.timeToast.timeToast.domain.toast_piece.toast_piece.QToastPiece.toastPiece;
 
 @Repository
 public class GiftToastOwnerRepositoryImpl implements GiftToastOwnerRepository{

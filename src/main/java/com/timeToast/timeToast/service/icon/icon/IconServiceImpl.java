@@ -17,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IconServiceImpl implements IconService{
 
-    private final IconRepository iconRepository;
     private final FileUploadService fileUploadService;
+    private final IconRepository iconRepository;
 
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
@@ -28,7 +28,7 @@ public class IconServiceImpl implements IconService{
     public void postIconSet(final List<MultipartFile> files, final long iconGroupId) {
 
         files.forEach(file-> {
-            Icon icon = iconRepository.save(new Icon("", iconGroupId));
+            Icon icon = Icon.builder().build();
             String endpoint = "icon/image/" + Long.toString(icon.getId());
             String imageUrl = fileUploadService.uploadfile(file, endpoint);
             icon.updateUrl(imageUrl);

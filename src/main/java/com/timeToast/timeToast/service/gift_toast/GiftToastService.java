@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.giftToast;
+package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;

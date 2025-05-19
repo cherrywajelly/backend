@@ -8,7 +8,7 @@ import java.util.List;
 public interface IconRepository {
     Icon getById(final long iconId);
     Icon getDefaultIcon();
-    List<Icon> findAllByIconGroupId(final long iconGroupId);
+//    List<Icon> findAllByIconGroupId(final long iconGroupId);
     Icon save(final Icon icon);
     void deleteById(final long iconId);
     Icon findByIconImageUrl(final String iconImageUrl);

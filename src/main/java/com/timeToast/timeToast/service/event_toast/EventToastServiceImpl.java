@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.eventToast;
+package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
 import com.timeToast.timeToast.domain.eventToast.EventToast;

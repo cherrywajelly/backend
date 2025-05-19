@@ -53,7 +53,6 @@ public class IconServiceImplTest {
         long iconGroupId = 1L;
 
         Icon icon = Icon.builder()
-                .iconGroupId(iconGroupId)
                 .iconImageUrl("iconImageUrl")
                 .build();
         when(iconRepository.save(any(Icon.class))).thenReturn(icon);

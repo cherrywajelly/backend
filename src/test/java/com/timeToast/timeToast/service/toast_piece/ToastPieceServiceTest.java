@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.toastPiece;
+package com.timeToast.timeToast.service.toast_piece;
 
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;

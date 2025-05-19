@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.toast_piece.request;
 
-import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 
 public record ToastPieceRequest(
         long giftToastId,

@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.toastPiece.toast_piece_image;
+package com.timeToast.timeToast.domain.toast_piece.toast_piece_image;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.dto.toast_piece.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import lombok.Builder;
 
 import java.time.LocalDate;

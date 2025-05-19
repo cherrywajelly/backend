@@ -8,7 +8,6 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
@@ -23,7 +22,6 @@ import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
@@ -52,7 +50,6 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
-    private final IconRepository iconRepository;
     private final PaymentRepository paymentRepository;
     private final IconService iconService;
     private final FileUploadService fileUploadService;
@@ -65,6 +62,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     public Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
 
         IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId,IconState.WAITING));
+
         iconService.postIconSet(files, iconGroup.getId());
 
         String iconGroupUrl = baseUrl +  ICON_GROUP.value() + SLASH.value() + IMAGE.value() + SLASH.value() + iconGroup.getId();
@@ -101,9 +99,8 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
 
         if (iconGroup.isPresent()) {
-            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroupId);
             List<String> iconImageUrls = new ArrayList<>();
-            icons.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+            iconGroup.get().getIcons().forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
             Member member = memberRepository.getById(memberId);
 
@@ -204,7 +201,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
-        List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
+        List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
 
         return IconGroupDetailResponse.builder()
                 .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
@@ -256,7 +253,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                                     .title(iconGroup.getName())
                                     .revenue(salesIconCount * iconGroup.getPrice())
                                     .salesCount(salesIconCount)
-                                    .iconImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(Icon::getIconImageUrl).toList())
+                                    .iconImageUrl(iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList())
                                     .build()
                     );
                 }

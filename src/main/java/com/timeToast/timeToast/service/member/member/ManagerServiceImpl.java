@@ -193,10 +193,11 @@ public class ManagerServiceImpl implements ManagerService {
         List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
         List<IconGroupManagerResponse> iconGroupManagerResponses = iconMembers.stream()
                 .map(iconMember -> {
-                    List<String> iconImages = iconRepository.findAllByIconGroupId(iconMember.getIconGroupId()).stream()
+
+                    IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
+                    List<String> iconImages = iconGroup.getIcons().stream()
                             .map(Icon::getIconImageUrl)
                             .toList();
-                    IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
                     return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
                 })
                 .toList();
@@ -230,8 +231,7 @@ public class ManagerServiceImpl implements ManagerService {
         }
         else {
             itemTypeData = iconGroup.getName();
-            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroup.getId());
-            icons.forEach(
+            iconGroup.getIcons().forEach(
                     icon -> {
                         images.add(icon.getIconImageUrl());
                     }

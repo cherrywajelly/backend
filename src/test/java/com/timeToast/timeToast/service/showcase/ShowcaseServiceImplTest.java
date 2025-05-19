@@ -66,7 +66,6 @@ public class ShowcaseServiceImplTest {
 
     private Icon iconSetup(){
         return Icon.builder()
-                .iconGroupId(1L)
                 .iconImageUrl("iconImageUrl")
                 .build();
     }

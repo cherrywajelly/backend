@@ -1,7 +1,7 @@
-package com.timeToast.timeToast.domain.toastPiece.toast_piece;
+package com.timeToast.timeToast.domain.toast_piece.toast_piece;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece_image.ToastPieceImage;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceImage;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,7 +51,7 @@ public class ToastPiece extends BaseTime {
         this.contentsUrl = contentsUrl;
     }
 
-    public void updateToastPieceImage(final List<ToastPieceImage> toastPieceImages){
+    public void addToastPieceImages(final List<ToastPieceImage> toastPieceImages){
         this.toastPieceImages.addAll(toastPieceImages);
     }
 

@@ -1,12 +1,13 @@
 package com.timeToast.timeToast.domain.icon.icon;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.enums.icon_group.ThumbnailIcon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "icon")
@@ -18,14 +19,12 @@ public class Icon extends BaseTime {
     @Column(name = "icon_id")
     private long id;
 
-    private Long iconGroupId;
-
     private String iconImageUrl;
 
+
     @Builder
-    public Icon(final String iconImageUrl, final Long iconGroupId) {
+    public Icon(final String iconImageUrl) {
         this.iconImageUrl = iconImageUrl;
-        this.iconGroupId = iconGroupId;
     }
 
 

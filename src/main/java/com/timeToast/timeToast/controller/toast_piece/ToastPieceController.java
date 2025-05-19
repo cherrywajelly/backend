@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.controller.toastPiece;
+package com.timeToast.timeToast.controller.toast_piece;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
@@ -6,8 +6,8 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.service.giftToast.GiftToastService;
-import com.timeToast.timeToast.service.toastPiece.ToastPieceService;
+import com.timeToast.timeToast.service.gift_toast.GiftToastService;
+import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

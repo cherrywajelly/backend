@@ -8,7 +8,6 @@ public record IconPostRequest(
     public Icon toEntity(IconPostRequest iconPostRequest, final long iconGroupId){
         return Icon.builder()
                 .iconImageUrl(iconPostRequest.iconImageUrl)
-                .iconGroupId(iconGroupId)
                 .build();
     }
 }

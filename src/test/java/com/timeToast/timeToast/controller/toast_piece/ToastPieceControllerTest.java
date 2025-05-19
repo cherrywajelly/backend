@@ -1,11 +1,11 @@
-package com.timeToast.timeToast.controller.toastPiece;
+package com.timeToast.timeToast.controller.toast_piece;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
-import com.timeToast.timeToast.service.giftToast.GiftToastService;
-import com.timeToast.timeToast.service.giftToast.GiftToastServiceTest;
-import com.timeToast.timeToast.service.toastPiece.ToastPieceService;
-import com.timeToast.timeToast.service.toastPiece.ToastPieceServiceTest;
+import com.timeToast.timeToast.service.gift_toast.GiftToastService;
+import com.timeToast.timeToast.service.gift_toast.GiftToastServiceTest;
+import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
+import com.timeToast.timeToast.service.toast_piece.ToastPieceServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;

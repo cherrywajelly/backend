@@ -70,10 +70,9 @@ public class CreatorServiceImpl implements CreatorService {
         List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
 
         iconGroups.forEach(iconGroup -> {
-            List<Icon> icon = iconRepository.findAllByIconGroupId(iconGroup.getId());
 
             List<String> iconImageUrls = new ArrayList<>();
-            icon.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+            iconGroup.getIcons().forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
 
             List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());

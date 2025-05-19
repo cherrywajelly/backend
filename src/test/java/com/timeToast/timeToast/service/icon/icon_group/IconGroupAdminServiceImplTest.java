@@ -143,7 +143,6 @@ public class IconGroupAdminServiceImplTest {
 
         for(long i=0; i<5; i++){
             Icon icon = Icon.builder()
-                    .iconGroupId(1L)
                     .iconImageUrl("iconImageUrl")
                     .build();
             ReflectionTestUtils.setField(icon, "id", i);
@@ -172,11 +171,10 @@ public class IconGroupAdminServiceImplTest {
     @BeforeEach
     void setUp() {
         long memberId = 1L;
-        long iconGroupId = 1L;
 
         member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
-        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl("imageUrl").build();
+        icon = Icon.builder().iconImageUrl("imageUrl").build();
     }
 
 //    @Test

@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.giftToast;
+package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
@@ -31,7 +31,7 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
-import com.timeToast.timeToast.service.toastPiece.ToastPieceService;
+import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DE
 
 @Service
 @Slf4j
-public class GiftToastServiceImpl implements com.timeToast.timeToast.service.giftToast.GiftToastService {
+public class GiftToastServiceImpl implements com.timeToast.timeToast.service.gift_toast.GiftToastService {
 
     private final GiftToastRepository giftToastRepository;
     private final GiftToastOwnerRepository giftToastOwnerRepository;

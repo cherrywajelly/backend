@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.controller.creator;
+package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;

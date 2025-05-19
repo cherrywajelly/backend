@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.toastPiece;
+package com.timeToast.timeToast.service.toast_piece;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
@@ -7,8 +7,8 @@ import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.giftToast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece_image.ToastPieceImage;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece_image.ToastPieceImage;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
@@ -16,10 +16,8 @@ import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
@@ -53,13 +51,7 @@ public class ToastPieceServiceImplTest {
     ToastPieceRepository toastPieceRepository;
 
     @Mock
-    ToastPieceImageRepository toastPieceImageRepository;
-
-    @Mock
     MemberRepository memberRepository;
-
-    @Mock
-    IconRepository iconRepository;
 
     @Mock
     FileUploadService fileUploadService;
@@ -121,7 +113,6 @@ public class ToastPieceServiceImplTest {
 
     private Icon iconSetUp(){
         return Icon.builder()
-                .iconGroupId(1L)
                 .iconImageUrl("imageUrl")
                 .build();
     }
@@ -139,7 +130,6 @@ public class ToastPieceServiceImplTest {
         for (int i = 0; i < 10; i++) {
             toastPieceImages.add(
                     ToastPieceImage.builder()
-                            .toastPieceId(1L)
                             .imageUrl("imageUrl").build());
         }
 
@@ -201,9 +191,6 @@ public class ToastPieceServiceImplTest {
         ReflectionTestUtils.setField(icon, "id", 1L);
         when(iconRepository.getById(1L)).thenReturn(icon);
 
-        List<ToastPieceImage> toastPieceImages = toastPieceImagesSetUp();
-        when(toastPieceImageRepository.findAllByToastPieceId(1L)).thenReturn(toastPieceImages);
-
         List<ToastPiece> toastPieces = toastPiecesSetUp();
         when(toastPieceRepository.findAllByGiftToastId(1L)).thenReturn(toastPieces);
 
@@ -234,9 +221,6 @@ public class ToastPieceServiceImplTest {
         ReflectionTestUtils.setField(icon, "id", 1L);
         when(iconRepository.getById(1L)).thenReturn(icon);
 
-        List<ToastPieceImage> toastPieceImages = toastPieceImagesSetUp();
-        when(toastPieceImageRepository.findAllByToastPieceId(1L)).thenReturn(toastPieceImages);
-
         //when
         ToastPieceResponse toastPieceResponse = toastPieceService.getToastPieceResponse(1L);
 
@@ -249,7 +233,7 @@ public class ToastPieceServiceImplTest {
         assertEquals(toastPiece.getContentsUrl(),toastPieceResponse.contentsUrl());
         assertEquals(toastPiece.getCreatedAt().toLocalDate(),toastPieceResponse.createdAt());
         assertEquals(icon.getIconImageUrl(),toastPieceResponse.iconImageUrl());
-        assertEquals(toastPieceImages.size(),toastPieceResponse.toastPieceImages().size());
+        assertEquals(toastPiece.getToastPieceImages().size(),toastPieceResponse.toastPieceImages().size());
     }
 
     @Test
@@ -268,9 +252,6 @@ public class ToastPieceServiceImplTest {
         ReflectionTestUtils.setField(member, "id", 1L);
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
 
-        List<ToastPieceImage> toastPieceImages = toastPieceImagesSetUp();
-        when(toastPieceImageRepository.findAllByToastPieceId(1L)).thenReturn(toastPieceImages);
-
         //when
         ToastPieceResponse toastPieceResponse = toastPieceService.getToastPieceResponse(1L);
 
@@ -283,6 +264,6 @@ public class ToastPieceServiceImplTest {
         assertEquals(toastPiece.getContentsUrl(),toastPieceResponse.contentsUrl());
         assertEquals(toastPiece.getCreatedAt().toLocalDate(),toastPieceResponse.createdAt());
         assertEquals(icon.getIconImageUrl(),toastPieceResponse.iconImageUrl());
-        assertEquals(toastPieceImages.size(),toastPieceResponse.toastPieceImages().size());
+        assertEquals(toastPiece.getToastPieceImages().size(),toastPieceResponse.toastPieceImages().size());
     }
 }

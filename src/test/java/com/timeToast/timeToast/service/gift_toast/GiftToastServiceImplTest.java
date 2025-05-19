@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.giftToast;
+package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
@@ -9,7 +9,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
+import com.timeToast.timeToast.domain.toast_piece.toast_piece.ToastPiece;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
@@ -28,9 +28,8 @@ import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
-import com.timeToast.timeToast.service.toastPiece.ToastPieceService;
+import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,8 +77,6 @@ public class GiftToastServiceImplTest {
     @Mock
     FcmService fcmService;
 
-    @Mock
-    ToastPieceImageRepository toastPieceImageRepository;
 
     @Mock
     TeamRepository teamRepository;
@@ -100,7 +97,6 @@ public class GiftToastServiceImplTest {
 
     private Icon giftToastIconSetUp(){
         return Icon.builder()
-                .iconGroupId(1L)
                 .iconImageUrl("imageUrl")
                 .build();
     }
