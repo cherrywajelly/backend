@@ -16,7 +16,7 @@ import com.timeToast.timeToast.repository.giftToast.gift_toast.GiftToastReposito
 import com.timeToast.timeToast.repository.giftToast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.toastPiece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toastPiece.ToastPieceRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.extern.slf4j.Slf4j;

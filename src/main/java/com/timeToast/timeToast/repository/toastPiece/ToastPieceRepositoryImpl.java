@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.repository.toastPiece.toast_piece;
+package com.timeToast.timeToast.repository.toastPiece;
 
 import com.timeToast.timeToast.domain.toastPiece.toast_piece.ToastPiece;
 import org.springframework.stereotype.Repository;

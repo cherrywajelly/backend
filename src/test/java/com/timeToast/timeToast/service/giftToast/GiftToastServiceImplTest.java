@@ -27,7 +27,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
-import com.timeToast.timeToast.repository.toastPiece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toastPiece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.toastPiece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toastPiece.ToastPieceService;

@@ -26,7 +26,7 @@ import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.giftToast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.giftToast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.toastPiece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toastPiece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
