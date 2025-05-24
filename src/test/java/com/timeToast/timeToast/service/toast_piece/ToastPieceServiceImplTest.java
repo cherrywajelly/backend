@@ -189,7 +189,7 @@ public class ToastPieceServiceImplTest {
 
         Icon icon = iconSetUp();
         ReflectionTestUtils.setField(icon, "id", 1L);
-        when(iconRepository.getById(1L)).thenReturn(icon);
+//        when(iconRepository.getById(1L)).thenReturn(icon);
 
         List<ToastPiece> toastPieces = toastPiecesSetUp();
         when(toastPieceRepository.findAllByGiftToastId(1L)).thenReturn(toastPieces);
@@ -219,7 +219,7 @@ public class ToastPieceServiceImplTest {
 
         Icon icon = iconSetUp();
         ReflectionTestUtils.setField(icon, "id", 1L);
-        when(iconRepository.getById(1L)).thenReturn(icon);
+//        when(iconRepository.getById(1L)).thenReturn(icon);
 
         //when
         ToastPieceResponse toastPieceResponse = toastPieceService.getToastPieceResponse(1L);
@@ -246,7 +246,7 @@ public class ToastPieceServiceImplTest {
 
         Icon icon = iconSetUp();
         ReflectionTestUtils.setField(icon, "id", 1L);
-        when(iconRepository.getById(1L)).thenReturn(icon);
+//        when(iconRepository.getById(1L)).thenReturn(icon);
 
         Member member = setUpMember();
         ReflectionTestUtils.setField(member, "id", 1L);

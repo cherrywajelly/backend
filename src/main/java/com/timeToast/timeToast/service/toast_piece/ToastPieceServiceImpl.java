@@ -126,26 +126,6 @@ public class ToastPieceServiceImpl implements com.timeToast.timeToast.service.to
         return fileUploadService.uploadfile(contents, saveUrl);
     }
 
-//    private List<String> saveToastPieceImages(final ToastPiece toastPiece , List<MultipartFile> toastPieceImages) {
-//
-//        List<String> toastPieceImageUrls = new ArrayList<>();
-//
-//        toastPieceImages.forEach(
-//                toastPieceImage -> {
-//                    ToastPieceImage saveToastPieceImage = toastPieceImageRepository.save(
-//                            ToastPieceImage.builder()
-//                                    .toastPieceId(toastPiece.getId())
-//                                    .build());
-//
-//                    String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() +  saveToastPieceImage.getId();
-//                    String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
-//                    saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
-//                    toastPieceImageUrls.add(saveToastPieceImage.getImageUrl());
-//                }
-//        );
-//        return toastPieceImageUrls;
-//    }
-
     private void saveToastPieceImages(ToastPiece toastPiece, List<MultipartFile> toastPieceImages) {
 
         List<ToastPieceImage> uploadedToastPieceImages = new ArrayList<>();
@@ -154,7 +134,8 @@ public class ToastPieceServiceImpl implements com.timeToast.timeToast.service.to
                 toastPieceImage -> {
                     ToastPieceImage saveToastPieceImage = ToastPieceImage.builder().build();
 
-                    String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() + IMAGE.value() + SLASH.value() + toastPiece.getId() + RandomStringUtils.randomAlphanumeric(10);;
+                    String saveUrl = baseUrl + TOAST_PIECE.value() + SLASH.value() +  toastPiece.getId()
+                            + RandomStringUtils.randomAlphanumeric(10) + SLASH.value() + IMAGE.value() ;
                     String toastPieceImageUrl = fileUploadService.uploadfile(toastPieceImage, saveUrl);
 
                     saveToastPieceImage.updateImageUrl(toastPieceImageUrl);
@@ -196,9 +177,6 @@ public class ToastPieceServiceImpl implements com.timeToast.timeToast.service.to
                 .stream()
                 .map(ToastPieceImage::getImageUrl)
                 .collect(Collectors.toList());
-
-//        toastPieceImageRepository.findAllByToastPieceId(toastPieceId)
-//                .forEach( toastPieceImage -> toastPieceImages.add(toastPieceImage.getImageUrl()));
 
         return ToastPieceResponse.from(toastPieceMember,toastPiece, iconImageUrl, toastPieceImages);
     }
