@@ -106,6 +106,7 @@ public class IconGroupAdminServiceImplTest {
                     .build();
 
             ReflectionTestUtils.setField(iconGroup1, "id", i);
+            iconGroup1.addIcons(iconsSetUp());
             iconGroups.add(iconGroup1);
         }
 
@@ -318,6 +319,7 @@ public class IconGroupAdminServiceImplTest {
     void getIconGroupDetail() {
         // Given
         IconGroup iconGroup = iconGroupSetUp();
+        iconGroup.addIcons(iconsSetUp());
         ReflectionTestUtils.setField(iconGroup, "id", 1L);
         when(iconGroupRepository.getById(1L)).thenReturn(iconGroup);
 
@@ -325,7 +327,6 @@ public class IconGroupAdminServiceImplTest {
         ReflectionTestUtils.setField(creator, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(creator);
 
-        List<Icon> icons = iconsSetUp();
 
         // When
         IconGroupDetailResponse iconGroupDetailResponse = iconGroupAdminService.getIconGroupDetail(1L);
@@ -337,7 +338,7 @@ public class IconGroupAdminServiceImplTest {
         assertEquals(iconGroup.getPrice(), iconGroupDetailResponse.price());
         assertEquals(iconGroup.getIconState(), iconGroupDetailResponse.iconState());
         assertEquals(iconGroup.getDescription(), iconGroupDetailResponse.description());
-        assertEquals(icons.size(), iconGroupDetailResponse.iconResponses().size());
+        assertEquals(iconGroup.getIcons().size(), iconGroupDetailResponse.iconResponses().size());
 
 
 
