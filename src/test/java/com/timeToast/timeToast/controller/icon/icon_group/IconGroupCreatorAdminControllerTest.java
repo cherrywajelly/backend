@@ -5,8 +5,6 @@ import com.timeToast.timeToast.controller.icon.IconGroupCreatorController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.service.icon.icon.IconService;
-import com.timeToast.timeToast.service.icon.icon.IconServiceTest;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -31,11 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
-    private final IconService iconService = new IconServiceTest();
 
     @Override
     protected Object initController() {
-        return new IconGroupCreatorController(iconGroupAdminService, iconService);
+        return new IconGroupCreatorController(iconGroupAdminService);
     }
 
 

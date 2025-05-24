@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table(name = "icon")
 @Getter
@@ -20,7 +18,6 @@ public class Icon extends BaseTime {
     private long id;
 
     private String iconImageUrl;
-
 
     @Builder
     public Icon(final String iconImageUrl) {

@@ -334,7 +334,7 @@ public class ManagerServiceImplTest {
     public void getIconGroupSuccess(){
         ReflectionTestUtils.setField(member, "id", 1L);
         when(iconMemberRepository.findByMemberId(anyLong())).thenReturn(List.of(iconMember));
-        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(List.of(icon));
+//        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(List.of(icon));
         when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
         IconGroupManagerResponses responses = managerService.getMemberIconGroupInfo(1L);

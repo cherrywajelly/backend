@@ -25,10 +25,10 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +51,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final PaymentRepository paymentRepository;
-    private final IconService iconService;
     private final FileUploadService fileUploadService;
 
     @Value("${spring.cloud.oci.base-url}")
@@ -59,20 +58,37 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     @Transactional
     @Override
-    public Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public Response postIconGroup(final MultipartFile thumbnailIcon, final List<MultipartFile> files,
+                                  final IconGroupPostRequest iconGroupPostRequest, long memberId) {
 
         IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId,IconState.WAITING));
 
-        iconService.postIconSet(files, iconGroup.getId());
-
-        String iconGroupUrl = baseUrl +  ICON_GROUP.value() + SLASH.value() + IMAGE.value() + SLASH.value() + iconGroup.getId();
+        String iconGroupUrl = baseUrl + ICON_GROUP.value() + SLASH.value() + iconGroup.getId() + SLASH.value() + IMAGE.value();
         String thumbnailImageUrl = fileUploadService.uploadfile(thumbnailIcon, iconGroupUrl);
         iconGroup.updateThumbnailImageUrl(thumbnailImageUrl);
+
+        iconGroup.addIcons(postIconSet(files, iconGroup.getId()));
 
         log.info("save icon group");
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
+    private List<Icon> postIconSet(List<MultipartFile> files, long iconGroupId) {
+
+        List<Icon> icons = new ArrayList<>();
+
+        files.forEach(file-> {
+
+            String endpoint = baseUrl + ICON_GROUP.value() + SLASH.value() + iconGroupId + SLASH.value()
+                    + ICON.value() + SLASH.value() + RandomStringUtils.randomAlphanumeric(10) + SLASH.value() + IMAGE.value();
+
+            String iconImageUrl = fileUploadService.uploadfile(file, endpoint);
+            Icon icon = Icon.builder().iconImageUrl(iconImageUrl).build();
+            icons.add(icon);
+        });
+
+        return icons;
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -214,15 +230,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .build();
 
     }
-
-//    @Transactional(readOnly = true)
-//    @Override
-//    public IconGroupInfoResponses getAllIconGroups(){
-//        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
-//                IconGroupInfoResponse::from
-//        ).toList();
-//        return new IconGroupInfoResponses(iconGroupInfoResponses);
-//    }
 
     @Transactional(readOnly = true)
     @Override

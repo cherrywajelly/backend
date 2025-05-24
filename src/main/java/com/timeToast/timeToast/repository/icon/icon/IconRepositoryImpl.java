@@ -5,7 +5,6 @@ import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_NOT_FOUND;
 
@@ -23,28 +22,14 @@ public class IconRepositoryImpl implements IconRepository {
             });
     }
 
-    @Override
-    public Icon getDefaultIcon() {
-        return iconJpaRepository.getById(1L);
-    }
-
 //    @Override
-//    public List<Icon> findAllByIconGroupId(final long iconGroupId){
-//        return iconJpaRepository.findAllByIconGroupId(iconGroupId);
+//    public Icon save(final Icon icon) {
+//        return iconJpaRepository.save(icon);
+//    }
+//
+//    @Override
+//    public void deleteById(final long iconId) {
+//        iconJpaRepository.deleteById(iconId);
 //    }
 
-    @Override
-    public Icon save(final Icon icon) {
-        return iconJpaRepository.save(icon);
-    }
-
-    @Override
-    public void deleteById(final long iconId) {
-        iconJpaRepository.deleteById(iconId);
-    }
-
-    @Override
-    public Icon findByIconImageUrl(final String iconImageUrl) {
-        return iconJpaRepository.findByIconImageUrl(iconImageUrl);
-    }
 }

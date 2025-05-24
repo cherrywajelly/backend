@@ -6,7 +6,6 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCre
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +21,6 @@ import java.util.List;
 public class IconGroupCreatorController {
 
     private final IconGroupAdminService iconGroupAdminService;
-    private final IconService iconService;
 
     @PostMapping("")
     public Response postIconGroup(@Login LoginMember loginMember, @RequestPart("thumbnailIcon") MultipartFile thumbnailIcon, @RequestPart("files") List<MultipartFile> files, @RequestPart final IconGroupPostRequest iconGroupPostRequest) {

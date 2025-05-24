@@ -110,7 +110,6 @@ public class CreatorServiceImplTest {
 
         for(long i=0; i<5; i++){
             Icon icon = Icon.builder()
-                    .iconGroupId(1L)
                     .iconImageUrl("iconImageUrl")
                     .build();
 
@@ -162,7 +161,7 @@ public class CreatorServiceImplTest {
         when(iconGroupRepository.findAllByMemberId(1L)).thenReturn(iconGroups);
 
         List<Icon> iconsSetup = iconsSetup();
-        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(iconsSetup);
+//        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(iconsSetup);
 
         List<Payment> payments = paymentsSetup();
         when(paymentRepository.findAllByItemId(anyLong())).thenReturn(payments);
@@ -188,7 +187,7 @@ public class CreatorServiceImplTest {
         when(iconGroupRepository.findAllByMemberId(1L)).thenReturn(iconGroups);
 
         List<Icon> iconsSetup = iconsSetup();
-        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(iconsSetup);
+//        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(iconsSetup);
 
         List<Payment> payments = paymentsSetup();
         when(paymentRepository.findAllByItemId(anyLong())).thenReturn(payments);
@@ -198,7 +197,7 @@ public class CreatorServiceImplTest {
 
         //then
         assertEquals(iconGroups.size(),iconGroupOrderedResponses.iconGroupOrderedResponses().size());
-        verify(iconRepository, times(iconGroups.size())).findAllByIconGroupId(anyLong());
+//        verify(iconRepository, times(iconGroups.size())).findAllByIconGroupId(anyLong());
         verify(paymentRepository, times(iconGroups.size())).findAllByItemId(anyLong());
 
     }

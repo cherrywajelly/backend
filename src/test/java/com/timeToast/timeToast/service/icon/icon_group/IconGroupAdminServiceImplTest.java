@@ -21,7 +21,6 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,9 +57,6 @@ public class IconGroupAdminServiceImplTest {
 
     @Mock
     private FileUploadService fileUploadService;
-
-    @Mock
-    private IconService iconService;
 
     @Mock
     private PaymentRepository paymentRepository;
@@ -331,7 +326,6 @@ public class IconGroupAdminServiceImplTest {
         when(memberRepository.getById(1L)).thenReturn(creator);
 
         List<Icon> icons = iconsSetUp();
-        when(iconRepository.findAllByIconGroupId(1L)).thenReturn(icons);
 
         // When
         IconGroupDetailResponse iconGroupDetailResponse = iconGroupAdminService.getIconGroupDetail(1L);
@@ -378,7 +372,6 @@ public class IconGroupAdminServiceImplTest {
         when(paymentRepository.findAllByItemIdAndItemType(anyLong(), any(ItemType.class))).thenReturn(payments);
 
         List<Icon> icons = iconsSetUp();
-        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(icons);
 
         // When
         CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(1L);

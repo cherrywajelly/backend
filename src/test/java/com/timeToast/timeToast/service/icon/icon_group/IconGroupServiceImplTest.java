@@ -66,7 +66,7 @@ public class IconGroupServiceImplTest {
         member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
         iconMember = IconMember.builder().build();
-        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl(imageUrl).build();
+//        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl(imageUrl).build();
     }
 
 
@@ -161,7 +161,7 @@ public class IconGroupServiceImplTest {
 
         when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
         when(memberRepository.getById(iconGroup.getMemberId())).thenReturn(member);
-        when(iconRepository.findAllByIconGroupId(0L)).thenReturn(List.of(icon));
+//        when(iconRepository.findAllByIconGroupId(0L)).thenReturn(List.of(icon));
 
         IconGroupMarketDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
 
