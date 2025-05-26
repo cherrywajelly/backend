@@ -195,7 +195,7 @@ public class MemberServiceImpl implements MemberService{
         CreatorInfoResponse creatorInfoResponse = CreatorInfoResponse.from(member);
 
         IconGroupOrderedResponses iconGroupOrderedResponses = iconGroupAdminService.getIconOrderedResponse(memberId);
-        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().count();
+        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().size();
         long selledIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
         long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
         long settlement = (long) (revenue * 0.7);

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_YEAR_MONTH;
 
 @Service
@@ -76,23 +75,6 @@ public class SettlementServiceImpl implements SettlementService {
                 )
         ));
 
-
-//                .collect(Collectors.toMap(
-//                Settlement::getYearsMonth,
-//                response -> response,
-//                (existing, replacement) -> existing)).values().stream().toList().forEach(
-//                        settlementResponse -> {
-//                            if(settlementResponse.getSettlementState().equals(SettlementState.APPROVAL)){
-//                                settlementCreatorInfoResponses.add(
-//                                        SettlementCreatorInfoResponse.builder()
-//                                                .year(settlementResponse.getYearsMonth().getYear())
-//                                                .month(settlementResponse.getYearsMonth().getMonthValue())
-//                                                .settlementDate(settlementResponse.getSettlementDate())
-//                                                .build());
-//                            }
-//                        }
-//
-//        );
         return new SettlementCreatorInfoResponses(settlementCreatorInfoResponses);
     }
 
@@ -171,14 +153,6 @@ public class SettlementServiceImpl implements SettlementService {
                 .build();
     }
 
-//    private CreatorAccount getCreatorAccount(final long monthSettlementDetailRequest) {
-//        Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(monthSettlementDetailRequest);
-//
-//        if (creatorAccount.isEmpty()) {
-//            throw new BadRequestException(INVALID_CREATOR.getMessage());
-//        }
-//        return creatorAccount.get();
-//    }
 
     private List<SettlementIcon> getMonthSettlementIcons(final int year, final int month, final long creatorId) {
         return settlementRepository.findAllByYearMonthAndMemberIdToIcon(

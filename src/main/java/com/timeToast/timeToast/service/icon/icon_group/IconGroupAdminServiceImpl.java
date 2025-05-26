@@ -202,9 +202,10 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Override
     public IconGroupInfoResponses getIconGroupForNonApproval() {
         List<IconGroupInfoResponse> iconGroupNonApprovalResponses =
-                iconGroupRepository.findAllByIconState(IconState.WAITING).stream().map(
-                        iconGroup -> IconGroupInfoResponse.from(iconGroup)
-                ).toList();
+                iconGroupRepository.findAllByIconState(IconState.WAITING)
+                        .stream()
+                        .map(IconGroupInfoResponse::from)
+                        .toList();
 
         return new IconGroupInfoResponses(iconGroupNonApprovalResponses);
     }

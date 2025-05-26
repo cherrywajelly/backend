@@ -4,7 +4,6 @@ import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

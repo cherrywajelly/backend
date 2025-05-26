@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class MemberServiceTest implements MemberService{
 

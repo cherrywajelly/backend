@@ -7,7 +7,6 @@ import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.settlement.SettlementRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,6 @@ class SettlementServiceImplTest {
 
     @Mock
     MemberRepository memberRepository;
-
-    @Mock
-    PaymentRepository paymentRepository;
 
     @InjectMocks
     SettlementServiceImpl settlementService;
