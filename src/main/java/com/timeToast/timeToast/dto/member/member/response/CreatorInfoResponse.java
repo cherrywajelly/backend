@@ -1,6 +1,6 @@
-package com.timeToast.timeToast.dto.creator.response;
+package com.timeToast.timeToast.dto.member.member.response;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.member.member.Member;
 import lombok.Builder;
 

@@ -1,16 +1,16 @@
-package com.timeToast.timeToast.dto.member.member.response;
+package com.timeToast.timeToast.dto.member;
 
 import lombok.Builder;
 
 @Builder
-public record LoginResponse(
+public record Login(
         String accessToken,
         String refreshToken,
         boolean isNew
 ) {
 
-    public static LoginResponse of(final String accessToken, final String refreshToken, final boolean isNew){
-        return LoginResponse.builder()
+    public static Login of(final String accessToken, final String refreshToken, final boolean isNew){
+        return Login.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .isNew(isNew)

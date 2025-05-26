@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.creator.response;
+package com.timeToast.timeToast.dto.member.member.response;
 
 import lombok.Builder;
 
