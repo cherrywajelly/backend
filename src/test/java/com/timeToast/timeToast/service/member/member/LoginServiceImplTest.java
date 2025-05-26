@@ -7,7 +7,7 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
@@ -77,7 +77,7 @@ public class LoginServiceImplTest {
         Premium premium = setPremium();
         when(premiumRepository.getByPremiumType(any())).thenReturn(premium);
 
-        when(jwtService.createJwts(any(LoginMember.class), any(Boolean.class))).thenReturn(new LoginResponse("accessToken","refreshToken", true));
+        when(jwtService.createJwts(any(LoginMember.class), any(Boolean.class))).thenReturn(new Login("accessToken","refreshToken", true));
 
         when(iconGroupRepository.findAllByIconBuiltin(IconBuiltin.BUILTIN)).thenReturn(List.of());
 

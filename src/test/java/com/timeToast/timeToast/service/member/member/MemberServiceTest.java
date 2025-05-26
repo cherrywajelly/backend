@@ -1,12 +1,11 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorMemberInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
@@ -64,8 +63,8 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public CreatorMemberInfo getCreatorMemberInfo(final long creatorId){
-        return new CreatorMemberInfo("profileUrl", "nickname", Bank.IBK,"accountNumber");
+    public CreatorInfoResponse getCreatorMemberInfo(final long creatorId){
+        return new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl");
     }
 
     @Override
@@ -73,9 +72,7 @@ public class MemberServiceTest implements MemberService{
         List<CreatorResponse> creatorResponses = new ArrayList<>();
         creatorResponses.add(
                 CreatorResponse.builder()
-                        .memberId(1L)
-                        .profileUrl("profileUrl")
-                        .nickname("nickname")
+                        .creatorInfo(new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"))
                         .salesIconCount(10)
                         .totalRevenue(100)
                         .createdIconCount(10)
@@ -104,7 +101,6 @@ public class MemberServiceTest implements MemberService{
         CreatorInfoResponse creatorInfoResponse = new CreatorInfoResponse("nickname", Bank.HANA, "1234", "profileUrl");
         List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
         iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
-        CreatorProfileResponse creatorProfileResponse = new CreatorProfileResponse(creatorInfoResponse, new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
-        return creatorProfileResponse;
+        return new CreatorProfileResponse(creatorInfoResponse, new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
     }
 }

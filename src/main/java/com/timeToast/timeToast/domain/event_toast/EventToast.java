@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.eventToast;
+package com.timeToast.timeToast.domain.event_toast;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;

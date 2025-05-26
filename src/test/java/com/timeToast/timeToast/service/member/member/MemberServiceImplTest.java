@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -8,8 +8,7 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.dto.creator.response.*;
-import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccountRequest;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -320,12 +319,12 @@ public class MemberServiceImplTest {
         when(memberRepository.getById(1L)).thenReturn(creator);
 
         MockMultipartFile mockMultipartFile = mock(MockMultipartFile.class);
-        CreatorRequest creatorRequest = new CreatorRequest("testNick", new CreatorAccountResponse(Bank.IBK, "accountNumber"));
+        CreatorRequest creatorRequest = new CreatorRequest("testNick", new CreatorAccountRequest(Bank.IBK, "accountNumber"));
 
         CreatorInfoResponse response = memberService.saveCreatorInfo(1L, mockMultipartFile, creatorRequest);
 
-        assertThat(response.bank()).isEqualTo(creatorRequest.creatorAccountResponse().bank());
-        assertThat(response.accountNumber()).isEqualTo(creatorRequest.creatorAccountResponse().accountNumber());
+        assertThat(response.bank()).isEqualTo(creatorRequest.creatorAccountRequest().bank());
+        assertThat(response.accountNumber()).isEqualTo(creatorRequest.creatorAccountRequest().accountNumber());
     }
 
     @Test
@@ -363,13 +362,13 @@ public class MemberServiceImplTest {
         when(memberRepository.getById(1L)).thenReturn(creator);
 
         //when
-        CreatorMemberInfo creatorMemberInfo = memberService.getCreatorMemberInfo(1L);
+        CreatorInfoResponse creatorInfoResponse = memberService.getCreatorMemberInfo(1L);
 
         //then
-        assertEquals(creator.getMemberProfileUrl(), creatorMemberInfo.profileUrl());
-        assertEquals(creator.getNickname(), creatorMemberInfo.nickname());
-        assertEquals(creator.getAccountNumber(), creatorMemberInfo.accountNumber());
-        assertEquals(creator.getBank(), creatorMemberInfo.bank());
+        assertEquals(creator.getMemberProfileUrl(), creatorInfoResponse.profileUrl());
+        assertEquals(creator.getNickname(), creatorInfoResponse.nickname());
+        assertEquals(creator.getAccountNumber(), creatorInfoResponse.accountNumber());
+        assertEquals(creator.getBank(), creatorInfoResponse.bank());
 
     }
 

@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.settlement.response;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import lombok.Builder;
 

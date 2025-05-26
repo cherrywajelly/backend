@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.event_toast.request;
 
-import com.timeToast.timeToast.domain.eventToast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 
 import java.time.LocalDate;
 

@@ -32,7 +32,6 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
@@ -51,7 +50,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
     private final MemberRepository memberRepository;
-    private final MemberTokenRepository memberTokenRepository;
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PremiumRepository premiumRepository;
@@ -94,12 +92,12 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional(readOnly = true)
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberInfoManagerResponse> memberManagerResponses = new ArrayList<>();
+        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
         List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
         members.forEach(
                 member -> {
                     Premium premium = premiumRepository.getById(member.getPremiumId());
-                    memberManagerResponses.add(MemberInfoManagerResponse.from(member, premium.getPremiumType()));
+                    memberManagerResponses.add(MemberManagerResponse.from(member, premium.getPremiumType()));
                 }
         );
         return new MemberManagerResponses(memberManagerResponses);
@@ -115,11 +113,11 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Transactional(readOnly = true)
     @Override
-    public MemberInfoManagerResponse getMemberInfoForManager(final long memberId) {
+    public MemberManagerResponse getMemberInfoForManager(final long memberId) {
         Member member = memberRepository.getById(memberId);
         Premium premium = premiumRepository.getById(member.getPremiumId());
 
-        return MemberInfoManagerResponse.from(member, premium.getPremiumType());
+        return MemberManagerResponse.from(member, premium.getPremiumType());
     }
 
     @Transactional(readOnly = true)

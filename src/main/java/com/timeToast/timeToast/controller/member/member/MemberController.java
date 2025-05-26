@@ -1,11 +1,10 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
@@ -25,12 +24,12 @@ public class MemberController {
     }
 
     @PostMapping("/profile-image")
-    public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
+    public MemberInfoResponse saveProfileImage(@com.timeToast.timeToast.global.annotation.Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
         return memberService.saveProfileImage(loginMember.id(), profileImage);
     }
 
     @PutMapping("")
-    public MemberInfoResponse saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
+    public MemberInfoResponse saveNickname(@com.timeToast.timeToast.global.annotation.Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
         return memberService.saveNickname(nickname, loginMember.id());
     }
 
@@ -40,12 +39,12 @@ public class MemberController {
     }
 
     @PostMapping("/refreshToken")
-    public LoginResponse tokenRenewal(@RequestParam("refreshToken") final String refreshToken){
+    public Login tokenRenewal(@RequestParam("refreshToken") final String refreshToken){
         return jwtService.tokenRenewal(refreshToken);
     }
 
     @GetMapping("/info")
-    public MemberInfoResponse getMemberInfoByLogin(@Login final LoginMember loginMember){
+    public MemberInfoResponse getMemberInfoByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
         return memberService.getMemberInfo(loginMember.id());
     }
 
@@ -55,17 +54,17 @@ public class MemberController {
     }
 
     @GetMapping("")
-    public MemberProfileResponse getMemberProfileInfoByLogin(@Login final LoginMember loginMember){
+    public MemberProfileResponse getMemberProfileInfoByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
         return memberService.getMemberProfileByLogin(loginMember.id());
     }
 
     @GetMapping("/{memberId}")
-    public MemberProfileResponse getProfileInfo(@Login final LoginMember loginMember, @PathVariable long memberId){
+    public MemberProfileResponse getProfileInfo(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember, @PathVariable long memberId){
         return memberService.getMemberProfile(loginMember.id(), memberId);
     }
 
     @GetMapping("/premiums")
-    public MemberPremium getPremiumByLogin(@Login final LoginMember loginMember){
+    public MemberPremium getPremiumByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
         return memberService.getMemberPremium(loginMember.id());
     }
 }

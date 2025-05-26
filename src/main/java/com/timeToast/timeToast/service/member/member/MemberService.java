@@ -1,8 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorMemberInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -18,7 +17,7 @@ public interface MemberService {
     MemberProfileResponse getMemberProfileByLogin(final long memberId);
     MemberProfileResponse getMemberProfile(final long loginId, final long memberId);
     CreatorResponses getCreators();
-    CreatorMemberInfo getCreatorMemberInfo(final long creatorId);
+    CreatorInfoResponse getCreatorMemberInfo(final long creatorId);
     MemberPremium getMemberPremium(final long memberId);
     CreatorInfoResponse saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest);
     CreatorProfileResponse getCreatorProfile(final long memberId);

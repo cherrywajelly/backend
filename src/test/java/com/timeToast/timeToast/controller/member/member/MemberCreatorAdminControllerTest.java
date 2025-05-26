@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
-import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.domain.enums.member.Bank;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccountRequest;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
@@ -63,8 +63,8 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 회원가입 시, 자신의 정보를 등록할 수 있다.")
     @Test
     void saveCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
-        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
+        CreatorAccountRequest creatorAccountRequest = new CreatorAccountRequest(Bank.HANA, "accountNumber");
+        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountRequest);
         String json = objectMapper.writeValueAsString(creatorRequest);
 
         mockMvc.perform(
@@ -141,8 +141,8 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 자신의 정보를 수정할 수 있다.")
     @Test
     void putCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
-        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
+        CreatorAccountRequest creatorAccountRequest = new CreatorAccountRequest(Bank.HANA, "accountNumber");
+        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountRequest);
         String json = objectMapper.writeValueAsString(creatorRequest);
 
         mockMvc.perform(

@@ -8,7 +8,7 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -50,7 +50,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Transactional
     @Override
-    public LoginResponse loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {
+    public Login loginToService(final String email, final LoginType loginType, final MemberRole memberRole) {
 
         Optional<Member> findMember = memberRepository.findByEmail(email);
 

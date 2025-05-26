@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.repository.event_toast;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.timeToast.timeToast.domain.eventToast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.domain.eventToast.QEventToast.eventToast;
+import static com.timeToast.timeToast.domain.event_toast.QEventToast.eventToast;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.EVENT_TOAST_NOT_FOUND;
 
 @Repository

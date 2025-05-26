@@ -9,7 +9,6 @@ import lombok.Builder;
 @Builder
 public record MemberManagerResponse(
         MemberInfoResponse memberInfoResponse,
-        String email,
         MemberRole memberRole,
         LoginType loginType,
         PremiumType premiumType

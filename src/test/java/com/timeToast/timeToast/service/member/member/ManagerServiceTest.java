@@ -15,10 +15,7 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerRespo
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
@@ -49,9 +46,9 @@ public class ManagerServiceTest implements ManagerService{
 
     @Override
     public MemberManagerResponses getMembersForManagers() {
-        List<MemberInfoManagerResponse> memberInfoManagerResponses = new ArrayList<>();
-        memberInfoManagerResponses.add(new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname","email",  MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM));
-        return new MemberManagerResponses(memberInfoManagerResponses);
+        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+        memberManagerResponses.add(new MemberManagerResponse( new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"),   MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM));
+        return new MemberManagerResponses(memberManagerResponses);
     }
 
     @Override
@@ -63,8 +60,8 @@ public class ManagerServiceTest implements ManagerService{
     }
 
     @Override
-    public MemberInfoManagerResponse getMemberInfoForManager(final long memberId){
-        return new MemberInfoManagerResponse(1L, "memberProfileUrl", "nickname", "email", MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
+    public MemberManagerResponse getMemberInfoForManager(final long memberId){
+        return new MemberManagerResponse(new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"), MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
     }
 
     @Override

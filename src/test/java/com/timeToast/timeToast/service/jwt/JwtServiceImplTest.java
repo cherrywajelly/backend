@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.service.member_token.MemberTokenService;
@@ -51,11 +51,11 @@ class JwtServiceImplTest {
         ReflectionTestUtils.setField(jwtKey, "JWT_KEY", "uYk/J8WlWFI+RukF+sEq6HZT98lOozvW3Z8lcIvlkBY=");
 
         //when
-        LoginResponse loginResponse = jwtService.createJwts(loginMember, true);
+        Login login = jwtService.createJwts(loginMember, true);
 
         //then
-        assertNotNull(loginResponse);
-        assertEquals(true, loginResponse.isNew());
+        assertNotNull(login);
+        assertEquals(true, login.isNew());
     }
 
 //    @Test

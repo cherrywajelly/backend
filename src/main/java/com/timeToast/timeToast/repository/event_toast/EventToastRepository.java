@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.event_toast;
 
-import com.timeToast.timeToast.domain.eventToast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 
 import java.time.LocalDate;
 import java.util.List;

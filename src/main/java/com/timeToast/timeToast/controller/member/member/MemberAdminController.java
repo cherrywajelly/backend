@@ -1,14 +1,14 @@
 package com.timeToast.timeToast.controller.member.member;
 
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.creator.response.CreatorMemberInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoManagerResponse;
+import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
@@ -55,7 +55,7 @@ public class MemberAdminController {
     }
 
     @GetMapping("/api/v3/members/{memberId}/info")
-    public MemberInfoManagerResponse getMemberInfo(@PathVariable final long memberId) {
+    public MemberManagerResponse getMemberInfo(@PathVariable final long memberId) {
         return managerService.getMemberInfoForManager(memberId);
     }
 
@@ -101,7 +101,7 @@ public class MemberAdminController {
     }
 
     @GetMapping("/api/v3/creators/{creatorId}")
-    public CreatorMemberInfo getCreatorByCreatorId(@PathVariable long creatorId) {
+    public CreatorInfoResponse getCreatorByCreatorId(@PathVariable long creatorId) {
         return memberService.getCreatorMemberInfo(creatorId);
     }
 

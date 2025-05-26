@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.annotation.Login;

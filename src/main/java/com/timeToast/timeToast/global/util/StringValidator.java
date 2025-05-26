@@ -4,8 +4,8 @@ import java.util.regex.Pattern;
 
 public class StringValidator {
 
-    public static boolean stringValidation(final String input) {
-        if (input == null || input.isEmpty()) {
+    public static boolean nicknameValidation(final String input) {
+        if (input == null || input.isEmpty() || input.length()>10) {
             return false;
         }
 

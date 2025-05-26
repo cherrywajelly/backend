@@ -5,8 +5,7 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.creator.response.*;
-import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccountRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
@@ -105,7 +104,7 @@ public class MemberServiceImpl implements MemberService{
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
 
-        if((!StringValidator.stringValidation(nickname))||nickname.length()>10){
+        if(!StringValidator.nicknameValidation(nickname)){
             throw new BadRequestException(INVALID_NICKNAME.getMessage());
         }
     }
@@ -116,13 +115,13 @@ public class MemberServiceImpl implements MemberService{
         Member creator = memberRepository.getById(creatorId);
         updateNicknameByMember(creator, creatorRequest.nickname());
         saveProfileImage(creatorId, profile);
-        updateCreatorAccount(creator, creatorRequest.creatorAccountResponse());
+        updateCreatorAccount(creator, creatorRequest.creatorAccountRequest());
 
         return CreatorInfoResponse.from(creator);
     }
 
-    private void updateCreatorAccount(final Member creator, final CreatorAccountResponse creatorAccountResponse) {
-        creator.updateAccount(creatorAccountResponse.bank(), creatorAccountResponse.accountNumber());
+    private void updateCreatorAccount(final Member creator, final CreatorAccountRequest creatorAccountRequest) {
+        creator.updateAccount(creatorAccountRequest.bank(), creatorAccountRequest.accountNumber());
     }
 
     @Transactional(readOnly = true)
@@ -161,9 +160,7 @@ public class MemberServiceImpl implements MemberService{
                         member -> {
                             CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
                             creatorResponses.add(CreatorResponse.builder()
-                                    .memberId(member.getId())
-                                    .profileUrl(member.getMemberProfileUrl())
-                                    .nickname(member.getNickname())
+                                    .creatorInfo(CreatorInfoResponse.from(member))
                                     .createdIconCount(creatorIconInfos.createdIconCount())
                                     .totalRevenue(creatorIconInfos.totalRevenue())
                                     .salesIconCount(creatorIconInfos.salesIconCount())
@@ -176,15 +173,10 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     @Override
-    public CreatorMemberInfo getCreatorMemberInfo(final long creatorId) {
+    public CreatorInfoResponse getCreatorMemberInfo(final long creatorId) {
         Member creator = memberRepository.getById(creatorId);
 
-        return CreatorMemberInfo.builder()
-                .profileUrl(creator.getMemberProfileUrl())
-                .nickname(creator.getNickname())
-                .bank(creator.getBank())
-                .accountNumber(creator.getAccountNumber())
-                .build();
+        return CreatorInfoResponse.from(creator);
     }
 
     @Transactional(readOnly = true)

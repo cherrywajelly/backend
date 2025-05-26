@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.dto.member.member.response;
 
-import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import lombok.Builder;
 
