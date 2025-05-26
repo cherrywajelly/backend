@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.enums.creator_account;
+package com.timeToast.timeToast.domain.enums.member;
 
 public enum Bank {
     IBK("IBKOKRSE"),
