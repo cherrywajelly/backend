@@ -1,8 +1,8 @@
 //package com.timeToast.timeToast.service.member.member;
 //
-//import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+//import com.timeToast.timeToast.domain.enums.member.Bank;
 //import com.timeToast.timeToast.domain.enums.icon_group.IconState;
-//import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
+//import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
 //import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
 //import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 //import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
