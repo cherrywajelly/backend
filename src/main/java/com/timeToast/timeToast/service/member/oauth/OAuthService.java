@@ -1,12 +1,12 @@
 package com.timeToast.timeToast.service.member.oauth;
 
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 
 public interface OAuthService {
-    LoginResponse kakaoLoginMember(String accessToken);
-    LoginResponse kakaoLoginCreator(String accessToken);
-    LoginResponse kakaoLoginAdmin(String accessToken);
-    LoginResponse googleLoginMember(String accessToken);
-    LoginResponse googleLoginCreator(String accessToken);
-    LoginResponse googleLoginAdmin(String accessToken);
+    Login kakaoLoginMember(String accessToken);
+    Login kakaoLoginCreator(String accessToken);
+    Login kakaoLoginAdmin(String accessToken);
+    Login googleLoginMember(String accessToken);
+    Login googleLoginCreator(String accessToken);
+    Login googleLoginAdmin(String accessToken);
 }

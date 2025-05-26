@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.Login;
 import com.timeToast.timeToast.dto.member.oauth.GoogleUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
 import com.timeToast.timeToast.dto.member.oauth.OAuthResponseDto;
@@ -75,42 +75,42 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Transactional
     @Override
-    public LoginResponse kakaoLoginMember(final String accessToken) {
+    public Login kakaoLoginMember(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.USER, kakaoMemberRedirectUrl);
     }
 
     @Transactional
     @Override
-    public LoginResponse kakaoLoginCreator(final String accessToken) {
+    public Login kakaoLoginCreator(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.CREATOR, kakaoCreatorRedirectUrl);
     }
 
     @Transactional
     @Override
-    public LoginResponse kakaoLoginAdmin(final String accessToken) {
+    public Login kakaoLoginAdmin(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.MANAGER, kakaoAdminRedirectUrl);
     }
 
     @Transactional
     @Override
-    public LoginResponse googleLoginMember(final String accessToken) {
+    public Login googleLoginMember(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.USER, googleMemberRedirectUrl);
     }
 
     @Transactional
     @Override
-    public LoginResponse googleLoginCreator(final String accessToken) {
+    public Login googleLoginCreator(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.CREATOR, googleCreatorRedirectUrl);
     }
 
     @Transactional
     @Override
-    public LoginResponse googleLoginAdmin(final String accessToken) {
+    public Login googleLoginAdmin(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.MANAGER, googleAdminRedirectUrl);
     }
 
 
-    private LoginResponse getKakaoAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
+    private Login getKakaoAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
@@ -133,7 +133,7 @@ public class OAuthServiceImpl implements OAuthService {
         return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.KAKAO, memberRole);
     }
 
-    private LoginResponse getGoogleAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
+    private Login getGoogleAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> params = new HashMap<>();
 
