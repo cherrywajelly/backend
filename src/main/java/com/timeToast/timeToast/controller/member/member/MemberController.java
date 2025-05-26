@@ -5,7 +5,6 @@ import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jwt.JwtService;
@@ -27,12 +26,12 @@ public class MemberController {
 
     @PostMapping("/profile-image")
     public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
-        return memberService.saveProfileImageByLogin(loginMember.id(), profileImage);
+        return memberService.saveProfileImage(loginMember.id(), profileImage);
     }
 
     @PutMapping("")
     public MemberInfoResponse saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
-        return memberService.postNickname(nickname, loginMember.id());
+        return memberService.saveNickname(nickname, loginMember.id());
     }
 
     @GetMapping ("/nickname-validation")

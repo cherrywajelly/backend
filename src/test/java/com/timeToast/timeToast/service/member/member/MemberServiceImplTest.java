@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
@@ -9,10 +8,7 @@ import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.creator.response.*;
 import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
@@ -20,7 +16,6 @@ import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
@@ -41,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_CREATOR;
-import static com.timeToast.timeToast.global.constant.StatusCode.BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,9 +59,6 @@ public class MemberServiceImplTest {
 
     @Mock
     FileUploadService fileUploadService;
-
-    @Mock
-    CreatorAccountRepository creatorAccountRepository;
 
     @Mock
     IconGroupAdminService iconGroupAdminService;
@@ -152,17 +142,10 @@ public class MemberServiceImplTest {
                 .build();
     }
 
-    private CreatorAccount creatorAccountSetUp(){
-        return CreatorAccount.builder()
-                .memberId(1L)
-                .bank(Bank.IBK)
-                .accountNumber("accountNumber")
-                .build();
-    }
 
     @Test
     @DisplayName("프로필 이미지 등록")
-    public void saveProfileImageByLogin(){
+    public void saveProfileImage(){
         //given
         Member member = setUpMember();
         when(memberRepository.getById(any(Long.class))).thenReturn(member);
@@ -175,7 +158,7 @@ public class MemberServiceImplTest {
         when(fileUploadService.uploadfile(any(), any())).thenReturn(fileUrl);
 
         //when
-        MemberInfoResponse memberInfoResponse = memberService.saveProfileImageByLogin(1L,profileImage );
+        MemberInfoResponse memberInfoResponse = memberService.saveProfileImage(1L,profileImage );
 
         //then
         assertEquals(fileUrl,memberInfoResponse.profileUrl());
@@ -183,7 +166,7 @@ public class MemberServiceImplTest {
 
     @Test
     @DisplayName("닉네임 저장하기")
-    public void postNicknameTest(){
+    public void saveNicknameTest(){
         //given
         Member member = setUpMember();
         when(memberRepository.getById(any(Long.class))).thenReturn(member);
@@ -191,7 +174,7 @@ public class MemberServiceImplTest {
 
         String newNickname = "testNick";
         //when
-        MemberInfoResponse memberInfoResponse = memberService.postNickname(newNickname, member.getId());
+        MemberInfoResponse memberInfoResponse = memberService.saveNickname(newNickname, member.getId());
 
         //then
         assertEquals(newNickname, memberInfoResponse.nickname());
@@ -334,16 +317,15 @@ public class MemberServiceImplTest {
     public void saveCreatorInfoSuccess(){
         Member creator = setUpMember();
         ReflectionTestUtils.setField(creator, "id", 1L);
-        CreatorAccountResponse creatorAccountResponse = mock(CreatorAccountResponse.class);
+        when(memberRepository.getById(1L)).thenReturn(creator);
 
         MockMultipartFile mockMultipartFile = mock(MockMultipartFile.class);
-        CreatorRequest creatorRequest = mock(CreatorRequest.class);
-        when(creatorRequest.creatorAccountResponse()).thenReturn(creatorAccountResponse);
+        CreatorRequest creatorRequest = new CreatorRequest("testNick", new CreatorAccountResponse(Bank.IBK, "accountNumber"));
 
-        Response response = memberService.saveCreatorInfo(1L, mockMultipartFile, creatorRequest);
+        CreatorInfoResponse response = memberService.saveCreatorInfo(1L, mockMultipartFile, creatorRequest);
 
-        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.getStatusCode());
-        assertThat(response.message()).isEqualTo(INVALID_CREATOR.getMessage());
+        assertThat(response.bank()).isEqualTo(creatorRequest.creatorAccountResponse().bank());
+        assertThat(response.accountNumber()).isEqualTo(creatorRequest.creatorAccountResponse().accountNumber());
     }
 
     @Test
@@ -374,24 +356,20 @@ public class MemberServiceImplTest {
 
     @Test
     @DisplayName("제작자 id로 제작자 조회")
-    public void getCreatorByCreatorId(){
+    public void getCreatorMemberInfo(){
         //given
         Member creator = setUpCreator();
         ReflectionTestUtils.setField(creator, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(creator);
 
-        CreatorAccount creatorAccount = creatorAccountSetUp();
-        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
-
-
         //when
-        CreatorDetailResponse creatorDetailResponse = memberService.getCreatorByCreatorId(1L);
+        CreatorMemberInfo creatorMemberInfo = memberService.getCreatorMemberInfo(1L);
 
         //then
-        assertEquals(creator.getMemberProfileUrl(), creatorDetailResponse.profileUrl());
-        assertEquals(creator.getNickname(), creatorDetailResponse.nickname());
-        assertEquals(creatorAccount.getAccountNumber(), creatorDetailResponse.accountNumber());
-        assertEquals(creatorAccount.getBank().value(), creatorDetailResponse.bank());
+        assertEquals(creator.getMemberProfileUrl(), creatorMemberInfo.profileUrl());
+        assertEquals(creator.getNickname(), creatorMemberInfo.nickname());
+        assertEquals(creator.getAccountNumber(), creatorMemberInfo.accountNumber());
+        assertEquals(creator.getBank(), creatorMemberInfo.bank());
 
     }
 

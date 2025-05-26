@@ -1,10 +1,14 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorMemberInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -24,12 +28,12 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class MemberServiceTest implements MemberService{
 
     @Override
-    public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
+    public MemberInfoResponse saveProfileImage(long memberId, MultipartFile profileImage) {
         return new MemberInfoResponse(1L, "nickname","profileUrl","email");
     }
 
     @Override
-    public MemberInfoResponse postNickname(String nickname, long memberId) {
+    public MemberInfoResponse saveNickname(String nickname, long memberId) {
         if(nickname.equals("conflictNickname")){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
@@ -61,8 +65,8 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
-        return new CreatorDetailResponse("profileUrl", "nickname", Bank.IBK.value(),"accountNumber");
+    public CreatorMemberInfo getCreatorMemberInfo(final long creatorId){
+        return new CreatorMemberInfo("profileUrl", "nickname", Bank.IBK,"accountNumber");
     }
 
     @Override
@@ -87,7 +91,21 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
+        return CreatorInfoResponse.builder()
+                .nickname("nickname")
+                .profileUrl("profileUrl")
+                .bank(Bank.KB)
+                .accountNumber("accountNumber")
+                .build();
+    }
+
+    @Override
+    public CreatorProfileResponse getCreatorProfile(long memberId) {
+        CreatorInfoResponse creatorInfoResponse = new CreatorInfoResponse("nickname", Bank.HANA, "1234", "profileUrl");
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
+        CreatorProfileResponse creatorProfileResponse = new CreatorProfileResponse(creatorInfoResponse, new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
+        return creatorProfileResponse;
     }
 }

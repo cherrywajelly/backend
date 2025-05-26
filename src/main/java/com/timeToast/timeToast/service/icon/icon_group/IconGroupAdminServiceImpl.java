@@ -13,10 +13,7 @@ import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -272,6 +269,25 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
                 .creatorIconInfos(creatorIconInfos)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupOrderedResponses getIconOrderedResponse (final long memberId) {
+
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+
+        iconGroups.forEach(iconGroup -> {
+
+            List<String> iconImageUrls = iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList();
+
+            List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+            long income = payments.stream().mapToLong(Payment::getAmount).sum();
+
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
+        });
+        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }
 
 

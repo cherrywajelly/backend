@@ -1,13 +1,11 @@
 package com.timeToast.timeToast.service.settlement;
 
-import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.settlement.SettlementRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
@@ -32,7 +30,6 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 public class SettlementServiceImpl implements SettlementService {
     private final SettlementRepository settlementRepository;
     private final MemberRepository memberRepository;
-    private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
 
     @Transactional
@@ -149,7 +146,7 @@ public class SettlementServiceImpl implements SettlementService {
     }
 
     private SettlementDetailResponse getSettlementByYearMonth(final long creatorId, final int year, final int month) {
-        CreatorAccount creatorAccount = getCreatorAccount(creatorId);
+        Member member = memberRepository.getById(creatorId);
 
         List<SettlementIcon> settlementIcons = getMonthSettlementIcons(year, month, creatorId);
 
@@ -167,21 +164,21 @@ public class SettlementServiceImpl implements SettlementService {
                 .salesIconCount(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum())
                 .totalRevenue(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum())
                 .settlement((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7))
-                .bank(creatorAccount.getBank().value())
-                .accountNumber(creatorAccount.getAccountNumber())
+                .bank(member.getBank())
+                .accountNumber(member.getAccountNumber())
                 .settlementState(settlementState)
                 .settlementIcons(settlementIcons)
                 .build();
     }
 
-    private CreatorAccount getCreatorAccount(final long monthSettlementDetailRequest) {
-        Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(monthSettlementDetailRequest);
-
-        if (creatorAccount.isEmpty()) {
-            throw new BadRequestException(INVALID_CREATOR.getMessage());
-        }
-        return creatorAccount.get();
-    }
+//    private CreatorAccount getCreatorAccount(final long monthSettlementDetailRequest) {
+//        Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByMemberId(monthSettlementDetailRequest);
+//
+//        if (creatorAccount.isEmpty()) {
+//            throw new BadRequestException(INVALID_CREATOR.getMessage());
+//        }
+//        return creatorAccount.get();
+//    }
 
     private List<SettlementIcon> getMonthSettlementIcons(final int year, final int month, final long creatorId) {
         return settlementRepository.findAllByYearMonthAndMemberIdToIcon(

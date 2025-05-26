@@ -1,13 +1,14 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.creatorAccount.CreatorAccount;
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.creator.response.*;
+import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -16,7 +17,6 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
@@ -25,7 +25,6 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
@@ -47,21 +46,19 @@ public class MemberServiceImpl implements MemberService{
     private final TeamMemberRepository teamMemberRepository;
     private final FileUploadService fileUploadService;
     private final PremiumRepository premiumRepository;
-    private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
     private final IconGroupAdminService iconGroupAdminService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                             final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository, final IconGroupAdminService iconGroupAdminService) {
+                             final PremiumRepository premiumRepository, final PaymentRepository paymentRepository,
+                             final IconGroupAdminService iconGroupAdminService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.fileUploadService = fileUploadService;
         this.premiumRepository = premiumRepository;
-        this.creatorAccountRepository = creatorAccountRepository;
         this.paymentRepository = paymentRepository;
         this.iconGroupAdminService = iconGroupAdminService;
     }
@@ -72,23 +69,28 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
+    public MemberInfoResponse saveProfileImage(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
 
         String url = baseUrl + MEMBER.value() + SLASH.value() + IMAGE.value() + SLASH.value() + memberId;
         String profileImageUrl = fileUploadService.uploadfile(profileImage,url);
 
         member.updateProfileUrl(profileImageUrl);
+
         return MemberInfoResponse.from(member);
     }
 
     @Transactional
     @Override
-    public MemberInfoResponse postNickname(final String nickname, final long memberId){
-        nicknameCheck(nickname);
+    public MemberInfoResponse saveNickname(final String nickname, final long memberId){
         Member member = memberRepository.getById(memberId);
-        member.updateNickname(nickname);
+        updateNicknameByMember(member, nickname);
         return MemberInfoResponse.from(member);
+    }
+
+    private void updateNicknameByMember(final Member member, final String nickname) {
+        nicknameCheck(nickname);
+        member.updateNickname(nickname);
     }
 
     @Transactional(readOnly = true)
@@ -106,6 +108,21 @@ public class MemberServiceImpl implements MemberService{
         if((!StringValidator.stringValidation(nickname))||nickname.length()>10){
             throw new BadRequestException(INVALID_NICKNAME.getMessage());
         }
+    }
+
+    @Transactional
+    @Override
+    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
+        Member creator = memberRepository.getById(creatorId);
+        updateNicknameByMember(creator, creatorRequest.nickname());
+        saveProfileImage(creatorId, profile);
+        updateCreatorAccount(creator, creatorRequest.creatorAccountResponse());
+
+        return CreatorInfoResponse.from(creator);
+    }
+
+    private void updateCreatorAccount(final Member creator, final CreatorAccountResponse creatorAccountResponse) {
+        creator.updateAccount(creatorAccountResponse.bank(), creatorAccountResponse.accountNumber());
     }
 
     @Transactional(readOnly = true)
@@ -159,26 +176,32 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional(readOnly = true)
     @Override
-    public CreatorDetailResponse getCreatorByCreatorId(final long creatorId) {
-        if(!memberRepository.getById(creatorId).getMemberRole().equals(MemberRole.CREATOR)){
-            throw new BadRequestException(INVALID_CREATOR.getMessage());
-        }
+    public CreatorMemberInfo getCreatorMemberInfo(final long creatorId) {
+        Member creator = memberRepository.getById(creatorId);
 
-        Member member = memberRepository.getById(creatorId);
-        String creatorAccount = null;
-        Bank bank = null;
-        Optional<CreatorAccount> findCreatorAccount = creatorAccountRepository.findByMemberId(creatorId);
-        if(findCreatorAccount.isPresent()){
-            bank = findCreatorAccount.get().getBank();
-            creatorAccount = findCreatorAccount.get().getAccountNumber();
-        }
-
-        return CreatorDetailResponse.builder()
-                .profileUrl(member.getMemberProfileUrl())
-                .nickname(member.getNickname())
-                .bank(bank.value())
-                .accountNumber(creatorAccount)
+        return CreatorMemberInfo.builder()
+                .profileUrl(creator.getMemberProfileUrl())
+                .nickname(creator.getNickname())
+                .bank(creator.getBank())
+                .accountNumber(creator.getAccountNumber())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorProfileResponse getCreatorProfile(final long memberId){
+        Member member = memberRepository.getById(memberId);
+
+        CreatorInfoResponse creatorInfoResponse = CreatorInfoResponse.from(member);
+
+        IconGroupOrderedResponses iconGroupOrderedResponses = iconGroupAdminService.getIconOrderedResponse(memberId);
+        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().count();
+        long selledIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+        long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+        long settlement = (long) (revenue * 0.7);
+
+        return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, selledIconCount, revenue, settlement);
+
     }
 
     @Transactional(readOnly = true)
@@ -196,31 +219,5 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return MemberPremium.from(premium,expiredDate);
-    }
-
-    @Transactional
-    @Override
-    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
-
-        for (Bank bank : Bank.values()) {
-            if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
-                Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByBankAndAccountNumber(bank, creatorRequest.creatorAccountResponse().accountNumber());
-
-                if (creatorAccount.isEmpty()) {
-                    Member member = memberRepository.getById(creatorId);
-                    member.updateNickname(creatorRequest.nickname());
-                    saveProfileImageByLogin(creatorId, profile);
-                    memberRepository.save(member);
-
-                    CreatorAccount newCreatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
-                    creatorAccountRepository.save(newCreatorAccount);
-                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-                } else {
-                    return new Response(StatusCode.BAD_REQUEST.getStatusCode(), ACCOUNT_ALREADY_EXIST.getMessage());
-                }
-            }
-        }
-
-        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
     }
 }

@@ -6,6 +6,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,5 +24,5 @@ public interface IconGroupAdminService {
     IconGroupSummaries iconGroupSummary();
     IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month);
     IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year);
-
+    IconGroupOrderedResponses getIconOrderedResponse (final long memberId);
 }

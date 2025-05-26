@@ -4,8 +4,6 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.dto.creator_account.response.CreatorAccountResponse;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.service.member.member.CreatorService;
-import com.timeToast.timeToast.service.member.member.CreatorServiceTest;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -27,12 +25,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.partWith
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class MemberCreatorAdminControllerTest extends BaseControllerTests {
-    private final CreatorService creatorService = new CreatorServiceTest();
     private final MemberService memberService = new MemberServiceTest();
 
     @Override
     protected Object initController() {
-        return new MemberCreatorController(creatorService, memberService);
+        return new MemberCreatorController(memberService);
     }
 
     @DisplayName("아이콘 제작자는 닉네임의 중복 여부를 조회할 수 있다.")
@@ -66,7 +63,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 회원가입 시, 자신의 정보를 등록할 수 있다.")
     @Test
     void saveCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA.value(), "accountNumber");
+        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
         CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
         String json = objectMapper.writeValueAsString(creatorRequest);
 
@@ -96,8 +93,10 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(STRING).description("메시지")
+                                        fieldWithPath("nickname").type(STRING).description("아이콘 제작자 닉네임"),
+                                        fieldWithPath("bank").type(STRING).description("아이콘 제작자 은행"),
+                                        fieldWithPath("accountNumber").type(STRING).description("아이콘 제작자 계좌번호"),
+                                        fieldWithPath("profileUrl").type(STRING).description("아이콘 제작자 프로필 이미지")
                                 )
                                 .build()
                         )));
@@ -142,7 +141,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 자신의 정보를 수정할 수 있다.")
     @Test
     void putCreatorInfo() throws Exception {
-        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA.value(), "accountNumber");
+        CreatorAccountResponse creatorAccountResponse = new CreatorAccountResponse(Bank.HANA, "accountNumber");
         CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountResponse);
         String json = objectMapper.writeValueAsString(creatorRequest);
 

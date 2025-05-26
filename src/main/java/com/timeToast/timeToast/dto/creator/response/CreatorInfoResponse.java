@@ -1,21 +1,22 @@
 package com.timeToast.timeToast.dto.creator.response;
 
 import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.member.member.Member;
 import lombok.Builder;
 
 @Builder
 public record CreatorInfoResponse(
         String nickname,
-        String bank,
+        Bank bank,
         String accountNumber,
         String profileUrl
 ) {
-    public static CreatorInfoResponse from(String nickname, String bank, String accountNumber, String profileUrl) {
+    public static CreatorInfoResponse from(Member member) {
         return CreatorInfoResponse.builder()
-                .nickname(nickname)
-                .bank(bank)
-                .accountNumber(accountNumber)
-                .profileUrl(profileUrl)
+                .nickname(member.getNickname())
+                .bank(member.getBank())
+                .accountNumber(member.getAccountNumber())
+                .profileUrl(member.getMemberProfileUrl())
                 .build();
     }
 }

@@ -14,7 +14,7 @@ public record SettlementDetailResponse(
         long salesIconCount,
         long totalRevenue,
         long settlement,
-        String bank,
+        Bank bank,
         String accountNumber,
         SettlementState settlementState,
         List<SettlementIcon> settlementIcons

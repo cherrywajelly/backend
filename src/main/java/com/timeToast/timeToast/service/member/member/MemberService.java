@@ -1,6 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.creator.response.CreatorMemberInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
@@ -10,16 +11,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
-    MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage);
-    MemberInfoResponse postNickname(final String nickname, final long memberId);
+    MemberInfoResponse saveProfileImage(final long memberId, final MultipartFile profileImage);
+    MemberInfoResponse saveNickname(final String nickname, final long memberId);
     Response nicknameValidation(final String nickname);
     MemberInfoResponse getMemberInfo(final long memberId);
     MemberProfileResponse getMemberProfileByLogin(final long memberId);
     MemberProfileResponse getMemberProfile(final long loginId, final long memberId);
     CreatorResponses getCreators();
-    CreatorDetailResponse getCreatorByCreatorId(final long creatorId);
+    CreatorMemberInfo getCreatorMemberInfo(final long creatorId);
     MemberPremium getMemberPremium(final long memberId);
-    Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest);
+    CreatorInfoResponse saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest);
+    CreatorProfileResponse getCreatorProfile(final long memberId);
 //    void getCreatorMonthSettlement(final int year, final int month);
 //    getCreatorMonthSettlementByCreatorId();
 }

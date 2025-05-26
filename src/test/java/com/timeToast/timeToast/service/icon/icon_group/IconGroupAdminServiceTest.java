@@ -6,11 +6,8 @@ import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
@@ -137,6 +134,13 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
                         .build()
         );
         return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
+    }
+
+    @Override
+    public IconGroupOrderedResponses getIconOrderedResponse(final long memberId) {
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
+        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
     }
 
 }

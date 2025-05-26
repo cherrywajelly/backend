@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.dto.search.response;
 
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import lombok.Builder;
 
 @Builder
