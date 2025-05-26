@@ -11,7 +11,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;

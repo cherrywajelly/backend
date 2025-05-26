@@ -2,8 +2,8 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
