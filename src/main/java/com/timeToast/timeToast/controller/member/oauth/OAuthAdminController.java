@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.controller.member.oauth;
 
-import com.timeToast.timeToast.dto.member.Login;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.service.member.oauth.OAuthService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +13,12 @@ public class OAuthAdminController {
     }
 
     @GetMapping("/kakao")
-    public Login loginWithKakao(@RequestParam("code") String code) {
+    public LoginResponse loginWithKakao(@RequestParam("code") String code) {
         return oAuthService.kakaoLoginAdmin(code);
     }
 
     @GetMapping("/google")
-    public Login loginWithGoogle(@RequestParam("code") String code) {
+    public LoginResponse loginWithGoogle(@RequestParam("code") String code) {
         return oAuthService.googleLoginAdmin(code);
     }
 }

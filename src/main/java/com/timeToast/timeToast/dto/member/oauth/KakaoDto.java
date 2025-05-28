@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class KakaoUserDataDto {
+public class KakaoDto {
     private String iss;
     private String aud;
     private String sub;

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.dto.member.Login;
-import com.timeToast.timeToast.dto.member.oauth.GoogleUserDataDto;
-import com.timeToast.timeToast.dto.member.oauth.KakaoUserDataDto;
-import com.timeToast.timeToast.dto.member.oauth.OAuthResponseDto;
+import com.timeToast.timeToast.dto.member.LoginResponse;
+import com.timeToast.timeToast.dto.member.oauth.GoogleDto;
+import com.timeToast.timeToast.dto.member.oauth.KakaoDto;
+import com.timeToast.timeToast.dto.member.oauth.OAuthDto;
 import com.timeToast.timeToast.service.member.member.LoginService;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import lombok.extern.slf4j.Slf4j;
@@ -75,42 +75,42 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Transactional
     @Override
-    public Login kakaoLoginMember(final String accessToken) {
+    public LoginResponse kakaoLoginMember(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.USER, kakaoMemberRedirectUrl);
     }
 
     @Transactional
     @Override
-    public Login kakaoLoginCreator(final String accessToken) {
+    public LoginResponse kakaoLoginCreator(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.CREATOR, kakaoCreatorRedirectUrl);
     }
 
     @Transactional
     @Override
-    public Login kakaoLoginAdmin(final String accessToken) {
+    public LoginResponse kakaoLoginAdmin(final String accessToken) {
         return getKakaoAccessToken(accessToken, MemberRole.MANAGER, kakaoAdminRedirectUrl);
     }
 
     @Transactional
     @Override
-    public Login googleLoginMember(final String accessToken) {
+    public LoginResponse googleLoginMember(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.USER, googleMemberRedirectUrl);
     }
 
     @Transactional
     @Override
-    public Login googleLoginCreator(final String accessToken) {
+    public LoginResponse googleLoginCreator(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.CREATOR, googleCreatorRedirectUrl);
     }
 
     @Transactional
     @Override
-    public Login googleLoginAdmin(final String accessToken) {
+    public LoginResponse googleLoginAdmin(final String accessToken) {
         return getGoogleAccessToken(accessToken, MemberRole.MANAGER, googleAdminRedirectUrl);
     }
 
 
-    private Login getKakaoAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
+    private LoginResponse getKakaoAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
@@ -127,13 +127,13 @@ public class OAuthServiceImpl implements OAuthService {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
 
         log.info("redirect Url: {}", redirectUrl);
-        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthResponseDto.class);
-        Optional<KakaoUserDataDto> decodeInfo = decodeKakaoToken(responseEntity.getBody().getId_token().split("\\.")[1]);
+        ResponseEntity<OAuthDto> responseEntity = restTemplate.postForEntity(kakaoTokenUrl, requestEntity, OAuthDto.class);
+        Optional<KakaoDto> decodeInfo = decodeKakaoToken(responseEntity.getBody().getId_token().split("\\.")[1]);
 
         return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.KAKAO, memberRole);
     }
 
-    private Login getGoogleAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
+    private LoginResponse getGoogleAccessToken(final String accessToken, final MemberRole memberRole, final String redirectUrl) {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> params = new HashMap<>();
 
@@ -143,17 +143,17 @@ public class OAuthServiceImpl implements OAuthService {
         params.put("redirect_uri", redirectUrl);
         params.put("grant_type", "authorization_code");
 
-        ResponseEntity<OAuthResponseDto> responseEntity = restTemplate.postForEntity(googleTokenUrl, params, OAuthResponseDto.class);
-        Optional<GoogleUserDataDto> decodeInfo = decodeGoogleToken(responseEntity.getBody().getId_token().split("\\.")[1]);
+        ResponseEntity<OAuthDto> responseEntity = restTemplate.postForEntity(googleTokenUrl, params, OAuthDto.class);
+        Optional<GoogleDto> decodeInfo = decodeGoogleToken(responseEntity.getBody().getId_token().split("\\.")[1]);
         return loginService.loginToService(decodeInfo.get().getEmail(),LoginType.GOOGLE, memberRole);
     }
 
-    private Optional<GoogleUserDataDto> decodeGoogleToken(String jwtToken) {
+    private Optional<GoogleDto> decodeGoogleToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            GoogleUserDataDto userDataDto = objectMapper.readValue(decode_data, GoogleUserDataDto.class);
+            GoogleDto userDataDto = objectMapper.readValue(decode_data, GoogleDto.class);
             return Optional.ofNullable(userDataDto);
         }
         catch (JsonProcessingException e) {
@@ -162,12 +162,12 @@ public class OAuthServiceImpl implements OAuthService {
         }
     }
 
-    private Optional<KakaoUserDataDto> decodeKakaoToken(String jwtToken) {
+    private Optional<KakaoDto> decodeKakaoToken(String jwtToken) {
         byte[] decode = new Base64UrlCodec().decode(jwtToken);
         String decode_data = new String(decode, StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            KakaoUserDataDto userDataDto = objectMapper.readValue(decode_data, KakaoUserDataDto.class);
+            KakaoDto userDataDto = objectMapper.readValue(decode_data, KakaoDto.class);
             return Optional.ofNullable(userDataDto);
         }
         catch (JsonProcessingException e) {
