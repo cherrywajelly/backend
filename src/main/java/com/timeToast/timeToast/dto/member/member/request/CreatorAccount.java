@@ -4,7 +4,7 @@ import com.timeToast.timeToast.domain.enums.member.Bank;
 import lombok.Builder;
 
 @Builder
-public record CreatorAccountRequest(
+public record CreatorAccount(
         Bank bank,
         String accountNumber
 ){

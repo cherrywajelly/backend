@@ -6,10 +6,10 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
-import com.timeToast.timeToast.dto.member.member.request.CreatorAccountRequest;
-import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -27,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,8 +131,8 @@ public class MemberServiceImplTest {
         return teamMembers;
     }
 
-    private Premium setUpPremium(){
-        return Premium.builder()
+    private com.timeToast.timeToast.domain.premium.Premium setUpPremium(){
+        return com.timeToast.timeToast.domain.premium.Premium.builder()
                 .premiumType(PremiumType.BASIC)
                 .price(0)
                 .count(0)
@@ -220,37 +219,6 @@ public class MemberServiceImplTest {
 
     @Test
     @DisplayName("로그인한 유저 프로필 조회")
-    public void getMemberProfileByLoginTest(){
-        //given
-        Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
-        ReflectionTestUtils.setField(member, "id", 1L);
-        List<Follow> followers = getFollowers();
-        List<Follow> following = getFollowing();
-        List<TeamMember> teamMembers = getTeams();
-        boolean isFollowing = true;
-
-        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followers);
-        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(following);
-        when(followRepository.findByFollowingIdAndFollowerId(any(Long.class),any(Long.class))).thenReturn(Optional.of(getFollow()));
-
-        when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
-
-        //when
-        MemberProfileResponse memberProfileResponse = memberService.getMemberProfileByLogin(1L);
-
-        //then
-        assertEquals(member.getNickname(), memberProfileResponse.nickname());
-        assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
-        assertEquals(following.size(), memberProfileResponse.followerCount());
-        assertEquals(followers.size(), memberProfileResponse.followingCount());
-        assertEquals(isFollowing, memberProfileResponse.isFollow());
-        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
-    }
-
-
-    @Test
-    @DisplayName("유저 프로필 조회")
     public void getMemberProfileTest(){
         //given
         Member member = setUpMember();
@@ -268,7 +236,7 @@ public class MemberServiceImplTest {
         when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
 
         //when
-        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L, 2L);
+        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L);
 
         //then
         assertEquals(member.getNickname(), memberProfileResponse.nickname());
@@ -280,16 +248,47 @@ public class MemberServiceImplTest {
     }
 
 
+//    @Test
+//    @DisplayName("유저 프로필 조회")
+//    public void getMemberProfileTest(){
+//        //given
+//        Member member = setUpMember();
+//        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+//        ReflectionTestUtils.setField(member, "id", 1L);
+//        List<Follow> followers = getFollowers();
+//        List<Follow> following = getFollowing();
+//        List<TeamMember> teamMembers = getTeams();
+//        boolean isFollowing = true;
+//
+//        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followers);
+//        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(following);
+//        when(followRepository.findByFollowingIdAndFollowerId(any(Long.class),any(Long.class))).thenReturn(Optional.of(getFollow()));
+//
+//        when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
+//
+//        //when
+//        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L, 2L);
+//
+//        //then
+//        assertEquals(member.getNickname(), memberProfileResponse.nickname());
+//        assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
+//        assertEquals(following.size(), memberProfileResponse.followerCount());
+//        assertEquals(followers.size(), memberProfileResponse.followingCount());
+//        assertEquals(isFollowing, memberProfileResponse.isFollow());
+//        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
+//    }
+
+
 
     @Test
     @DisplayName("유저 멤버십 조회")
-    public void getMemberPremiumTest(){
+    public void getMemberPremiumByMemberTest(){
         //given
         Member member = setUpMember();
         when(memberRepository.getById(any(Long.class))).thenReturn(member);
         ReflectionTestUtils.setField(member, "id", 1L);
 
-        Premium premium = setUpPremium();
+        com.timeToast.timeToast.domain.premium.Premium premium = setUpPremium();
         ReflectionTestUtils.setField(premium, "id", 1L);
         when(premiumRepository.getById(any(Long.class))).thenReturn(premium);
 
@@ -304,11 +303,8 @@ public class MemberServiceImplTest {
     @Test
     @DisplayName("아이콘 제작자 정보 저장 실패")
     public void saveCreatorInfoFail(){
-        Member member = setUpMember();
-
-        MultipartFile profileImage = mock(MultipartFile.class);
-        CreatorRequest creatorRequest = mock(CreatorRequest.class);
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> memberService.saveCreatorInfo(1L, profileImage, creatorRequest));
+        CreatorAccount creatorAccount = mock(CreatorAccount.class);
+        assertThrows(NullPointerException.class, () -> memberService.saveCreatorInfo(1L, creatorAccount));
     }
 
     @Test
@@ -318,19 +314,17 @@ public class MemberServiceImplTest {
         ReflectionTestUtils.setField(creator, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(creator);
 
-        MockMultipartFile mockMultipartFile = mock(MockMultipartFile.class);
-        CreatorRequest creatorRequest = new CreatorRequest("testNick", new CreatorAccountRequest(Bank.IBK, "accountNumber"));
+        CreatorAccount creatorAccount =  new CreatorAccount(Bank.IBK, "accountNumber");
 
-        CreatorInfoResponse response = memberService.saveCreatorInfo(1L, mockMultipartFile, creatorRequest);
+        CreatorInfoResponse response = memberService.saveCreatorInfo(1L, creatorAccount);
 
-        assertThat(response.bank()).isEqualTo(creatorRequest.creatorAccountRequest().bank());
-        assertThat(response.accountNumber()).isEqualTo(creatorRequest.creatorAccountRequest().accountNumber());
+        assertThat(response.bank()).isEqualTo(creatorAccount.bank());
+        assertThat(response.accountNumber()).isEqualTo(creatorAccount.accountNumber());
     }
 
     @Test
     @DisplayName("제작자 리스트 조회")
     public void getCreators(){
-        Member member = setUpMember();
         //given
         List<Member> members = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(members);
@@ -355,14 +349,14 @@ public class MemberServiceImplTest {
 
     @Test
     @DisplayName("제작자 id로 제작자 조회")
-    public void getCreatorMemberInfo(){
+    public void getCreatorInfo(){
         //given
         Member creator = setUpCreator();
         ReflectionTestUtils.setField(creator, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(creator);
 
         //when
-        CreatorInfoResponse creatorInfoResponse = memberService.getCreatorMemberInfo(1L);
+        CreatorInfoResponse creatorInfoResponse = memberService.getCreatorInfo(1L);
 
         //then
         assertEquals(creator.getMemberProfileUrl(), creatorInfoResponse.profileUrl());

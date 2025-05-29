@@ -1,14 +1,11 @@
 package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.member.Bank;
-import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.CreatorResponse;
 import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
-import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
@@ -25,9 +22,13 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME
 
 public class MemberServiceTest implements MemberService{
 
+    private MemberPremium setMockMemberPremium(){
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    }
+
     @Override
     public MemberInfoResponse saveProfileImage(long memberId, MultipartFile profileImage) {
-        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
+        return new MemberInfoResponse(1L, "nickname","profileUrl","email", setMockMemberPremium());
     }
 
     @Override
@@ -35,7 +36,7 @@ public class MemberServiceTest implements MemberService{
         if(nickname.equals("conflictNickname")){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
-        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
+        return new MemberInfoResponse(1L, "nickname","profileUrl","email", setMockMemberPremium());
     }
 
     @Override
@@ -48,22 +49,21 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse getMemberInfo(long memberId) {
-
-        return new MemberInfoResponse(1L,"nickname","profileUrl","email");
+        return new MemberInfoResponse(1L,"nickname","profileUrl","email", setMockMemberPremium());
     }
 
     @Override
-    public MemberProfileResponse getMemberProfileByLogin(long memberId) {
-        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+    public MemberProfileResponse getMemberProfile(long memberId) {
+        return new MemberProfileResponse("nickname", "profileUrl",  false);
     }
 
     @Override
     public MemberProfileResponse getMemberProfile(long loginId, long memberId) {
-        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+        return new MemberProfileResponse("nickname", "profileUrl", false);
     }
 
     @Override
-    public CreatorInfoResponse getCreatorMemberInfo(final long creatorId){
+    public CreatorInfoResponse getCreatorInfo(final long creatorId){
         return new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl");
     }
 
@@ -82,12 +82,7 @@ public class MemberServiceTest implements MemberService{
     }
 
     @Override
-    public MemberPremium getMemberPremium(final long memberId) {
-        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
-    }
-
-    @Override
-    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
+    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final CreatorAccount creatorAccount) {
         return CreatorInfoResponse.builder()
                 .nickname("nickname")
                 .profileUrl("profileUrl")
@@ -96,11 +91,5 @@ public class MemberServiceTest implements MemberService{
                 .build();
     }
 
-    @Override
-    public CreatorProfileResponse getCreatorProfile(long memberId) {
-        CreatorInfoResponse creatorInfoResponse = new CreatorInfoResponse("nickname", Bank.HANA, "1234", "profileUrl");
-        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
-        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
-        return new CreatorProfileResponse(creatorInfoResponse, new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
-    }
+
 }

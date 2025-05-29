@@ -16,10 +16,7 @@ import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberItemDataResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
@@ -163,12 +160,12 @@ public class ManagerServiceImplTest {
         assertEquals(MemberRole.USER, user.getMemberRole());
 
         //when
-        MemberAdminResponse memberAdminResponse = managerService.saveToStaff(user.getId());
+        MemberInfoResponse memberInfoResponse = managerService.saveToStaff(user.getId());
 
 
         //then
         assertEquals(MemberRole.STAFF, user.getMemberRole());
-        assertEquals(MemberRole.STAFF, memberAdminResponse.memberRole());
+        assertEquals(MemberRole.STAFF, memberInfoResponse.memberRole());
     }
 
     @Test
@@ -186,12 +183,12 @@ public class ManagerServiceImplTest {
         assertEquals(MemberRole.USER, user.getMemberRole());
 
         //when
-        MemberAdminResponse memberAdminResponse = managerService.saveToCreators(user.getId());
+        MemberInfoResponse memberInfoResponse = managerService.saveToCreators(user.getId());
 
 
         //then
         assertEquals(MemberRole.CREATOR, user.getMemberRole());
-        assertEquals(MemberRole.CREATOR, memberAdminResponse.memberRole());
+        assertEquals(MemberRole.CREATOR, memberInfoResponse.memberRole());
     }
 
     @Test
@@ -209,12 +206,12 @@ public class ManagerServiceImplTest {
         assertEquals(MemberRole.CREATOR, user.getMemberRole());
 
         //when
-        MemberAdminResponse memberAdminResponse = managerService.saveToUser(user.getId());
+        MemberInfoResponse memberInfoResponse = managerService.saveToUser(user.getId());
 
 
         //then
         assertEquals(MemberRole.USER, user.getMemberRole());
-        assertEquals(MemberRole.USER, memberAdminResponse.memberRole());
+        assertEquals(MemberRole.USER, memberInfoResponse.memberRole());
     }
 
 
@@ -230,9 +227,9 @@ public class ManagerServiceImplTest {
         ReflectionTestUtils.setField(premium, "id", 1L);
         when(premiumRepository.getById(anyLong())).thenReturn(premium);
 
-        MemberManagerResponses memberManagerResponses = managerService.getMembersForManagers();
+        MemberInfoResponses memberInfoResponses = managerService.getMembersForManagers();
 
-        assertThat(memberManagerResponses).isNotNull();
+        assertThat(memberInfoResponses).isNotNull();
     }
 
     @Test

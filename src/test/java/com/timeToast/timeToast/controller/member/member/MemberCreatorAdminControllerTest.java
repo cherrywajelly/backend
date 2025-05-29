@@ -2,8 +2,7 @@ package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.domain.enums.member.Bank;
-import com.timeToast.timeToast.dto.member.member.request.CreatorAccountRequest;
-import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -29,7 +28,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
 
     @Override
     protected Object initController() {
-        return new MemberCreatorController(memberService);
+        return new FactoryMemberController(memberService);
     }
 
     @DisplayName("아이콘 제작자는 닉네임의 중복 여부를 조회할 수 있다.")
@@ -63,9 +62,8 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 회원가입 시, 자신의 정보를 등록할 수 있다.")
     @Test
     void saveCreatorInfo() throws Exception {
-        CreatorAccountRequest creatorAccountRequest = new CreatorAccountRequest(Bank.HANA, "accountNumber");
-        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountRequest);
-        String json = objectMapper.writeValueAsString(creatorRequest);
+        CreatorAccount creatorAccount = new CreatorAccount(Bank.HANA, "accountNumber");
+        String json = objectMapper.writeValueAsString(creatorAccount);
 
         mockMvc.perform(
                         multipart("/api/v2/members/creator-info")
@@ -82,9 +80,8 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                         ),
                         requestPartBody("creatorRequest"),
                         requestPartFields("creatorRequest",
-                                fieldWithPath("nickname").type(STRING).description("아이콘 제작자 닉네임"),
-                                fieldWithPath("creatorAccountResponse.bank").type(STRING).description("아이콘 제작자 은행"),
-                                fieldWithPath("creatorAccountResponse.accountNumber").type(STRING).description("아이콘 제작자 계좌번호")
+                                fieldWithPath("bank").type(STRING).description("제작자의 은행"),
+                                fieldWithPath("accountNumber").type(STRING).description("제작자의 계좌번호")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("제작자 - 멤버")
@@ -130,7 +127,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupOrderedResponses.iconGroupOrderedResponses[0].income").type(NUMBER).description("아이콘 판매 수익"),
                                         fieldWithPath("iconGroupOrderedResponses.iconGroupOrderedResponses[0].iconState").type(STRING).description("아이콘 등록 상태"),
                                         fieldWithPath("createdIconCount").type(NUMBER).description("제작한 아이콘 개수"),
-                                        fieldWithPath("selledIconCount").type(NUMBER).description("판매한 아이콘 개수"),
+                                        fieldWithPath("soldIconCount").type(NUMBER).description("판매한 아이콘 개수"),
                                         fieldWithPath("revenue").type(NUMBER).description("판매 수익"),
                                         fieldWithPath("settlement").type(NUMBER).description("정산 금액")
                                 )
@@ -141,9 +138,8 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
     @DisplayName("아이콘 제작자는 자신의 정보를 수정할 수 있다.")
     @Test
     void putCreatorInfo() throws Exception {
-        CreatorAccountRequest creatorAccountRequest = new CreatorAccountRequest(Bank.HANA, "accountNumber");
-        CreatorRequest creatorRequest = new CreatorRequest("nickname", creatorAccountRequest);
-        String json = objectMapper.writeValueAsString(creatorRequest);
+        CreatorAccount creatorAccount = new CreatorAccount(Bank.HANA, "accountNumber");
+        String json = objectMapper.writeValueAsString(creatorAccount);
 
         mockMvc.perform(
                         multipart("/api/v2/members")

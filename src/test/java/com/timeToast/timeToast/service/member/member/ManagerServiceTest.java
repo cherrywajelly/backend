@@ -16,6 +16,7 @@ import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerRespo
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponse;
@@ -30,25 +31,25 @@ import java.util.List;
 public class ManagerServiceTest implements ManagerService{
 
     @Override
-    public MemberAdminResponse saveToStaff(long memberId) {
-        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.STAFF);
+    public MemberInfoResponse saveToStaff(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.STAFF, MemberPremium.builder().build());
     }
 
     @Override
-    public MemberAdminResponse saveToCreators(long memberId) {
-        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.CREATOR);
+    public MemberInfoResponse saveToCreators(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.CREATOR, MemberPremium.builder().build());
     }
 
     @Override
-    public MemberAdminResponse saveToUser(long memberId) {
-        return new MemberAdminResponse(1L, "memberProfileUrl", "nickname", MemberRole.USER);
+    public MemberInfoResponse saveToUser(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.USER, MemberPremium.builder().build());
     }
 
     @Override
-    public MemberManagerResponses getMembersForManagers() {
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
-        memberManagerResponses.add(new MemberManagerResponse( new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"),   MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM));
-        return new MemberManagerResponses(memberManagerResponses);
+    public MemberInfoResponses getMembersForManagers() {
+        List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
+        memberInfoResponses.add( new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"),   MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
+        return new MemberInfoResponses(memberInfoResponses);
     }
 
     @Override
@@ -60,8 +61,8 @@ public class ManagerServiceTest implements ManagerService{
     }
 
     @Override
-    public MemberManagerResponse getMemberInfoForManager(final long memberId){
-        return new MemberManagerResponse(new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"), MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
+    public MemberInfoResponse getMemberInfoForManager(final long memberId){
+        return new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email", MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
     }
 
     @Override

@@ -8,13 +8,14 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -289,6 +290,21 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
             iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
         });
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorProfileResponse getIconGroupSaleInfos(final long memberId){
+        Member member = memberRepository.getById(memberId);
+
+        IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
+        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().size();
+        long sellIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+        long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+        long settlement = (long) (revenue * 0.7);
+
+        return new CreatorProfileResponse(iconGroupOrderedResponses, createdIconCount, sellIconCount, revenue, settlement);
+
     }
 
 

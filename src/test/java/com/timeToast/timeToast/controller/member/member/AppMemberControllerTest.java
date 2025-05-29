@@ -1,8 +1,6 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.service.jwt.JwtService;
-import com.timeToast.timeToast.service.jwt.JwtServiceTest;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.member.member.MemberServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -22,14 +20,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MemberControllerTest extends BaseControllerTests {
+class AppMemberControllerTest extends BaseControllerTests {
 
     private final MemberService memberService = new MemberServiceTest();
-    private final JwtService jwtService = new JwtServiceTest();
 
     @Override
     protected Object initController() {
-        return new MemberController(memberService, jwtService);
+        return new AppMemberController(memberService);
     }
     @DisplayName("로그인한 사용자의 프로필 사진을 변경할 수 있다.")
     @WithMockCustomUser

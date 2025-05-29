@@ -5,8 +5,8 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponses;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponses;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PremiumServiceImplTest {
+class MemberPremiumServiceImplTest {
 
     @Mock
     private PremiumRepository premiumRepository;
@@ -91,14 +91,14 @@ class PremiumServiceImplTest {
         when(premiumRepository.getById(2L)).thenReturn(premium);
 
         //when
-        PremiumResponse premiumResponse = premiumService.savePremium(1L, 2L);
+        PremiumInfoResponse premiumInfoResponse = premiumService.savePremium(1L, 2L);
 
         //then
-        assertEquals(premium.getId(), premiumResponse.premiumId());
-        assertEquals(premium.getPrice(), premiumResponse.price());
-        assertEquals(premium.getCount(), premiumResponse.count());
-        assertEquals(premium.getDescription(), premiumResponse.description());
-        assertEquals(premium.getPremiumType(), premiumResponse.premiumType());
+        assertEquals(premium.getId(), premiumInfoResponse.premiumId());
+        assertEquals(premium.getPrice(), premiumInfoResponse.price());
+        assertEquals(premium.getCount(), premiumInfoResponse.count());
+        assertEquals(premium.getDescription(), premiumInfoResponse.description());
+        assertEquals(premium.getPremiumType(), premiumInfoResponse.premiumType());
     }
 
     @Test
@@ -109,10 +109,10 @@ class PremiumServiceImplTest {
         when(premiumRepository.getPremiums()).thenReturn(premiumList);
 
         //when
-        PremiumResponses premiumResponses = premiumService.getPremium();
+        PremiumInfoResponses premiumInfoResponses = premiumService.getPremium();
 
         // then
-        assertEquals(premiumList.size(), premiumResponses.premiumResponses().size());
+        assertEquals(premiumList.size(), premiumInfoResponses.premiumInfoResponses().size());
     }
 
 }

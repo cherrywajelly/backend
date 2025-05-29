@@ -5,7 +5,7 @@ import com.timeToast.timeToast.domain.premium.Premium;
 import lombok.Builder;
 
 @Builder
-public record PremiumResponse(
+public record PremiumInfoResponse(
         Long premiumId,
         PremiumType premiumType,
         int price,
@@ -14,8 +14,8 @@ public record PremiumResponse(
 
 ) {
 
-    public static PremiumResponse from(final Premium premium){
-        return PremiumResponse.builder()
+    public static PremiumInfoResponse from(final Premium premium){
+        return PremiumInfoResponse.builder()
                 .premiumId(premium.getId())
                 .premiumType(premium.getPremiumType())
                 .price(premium.getPrice())

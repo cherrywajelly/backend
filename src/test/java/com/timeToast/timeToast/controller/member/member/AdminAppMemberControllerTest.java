@@ -23,13 +23,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class MemberAdminControllerTest extends BaseControllerTests {
+public class AdminAppMemberControllerTest extends BaseControllerTests {
     private final ManagerService managerService = new ManagerServiceTest();
     private final MemberService memberService = new MemberServiceTest();
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
     @Override
     protected Object initController() {
-        return new MemberAdminController(managerService, memberService, iconGroupAdminService);
+        return new AdminMemberController(managerService, memberService, iconGroupAdminService);
     }
 
     @DisplayName("최고 관리자는 staff로 지정할 수 있다.")

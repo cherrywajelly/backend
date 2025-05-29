@@ -2,13 +2,14 @@ package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
@@ -141,6 +142,13 @@ public class IconGroupAdminServiceTest implements IconGroupAdminService {
         List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
         iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
         return new IconGroupOrderedResponses(iconGroupOrderedResponses);
+    }
+
+    @Override
+    public CreatorProfileResponse getIconGroupSaleInfos(final long memberId) {
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
+        return new CreatorProfileResponse(new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
     }
 
 }

@@ -3,14 +3,14 @@ package com.timeToast.timeToast.dto.member;
 import lombok.Builder;
 
 @Builder
-public record Login(
+public record LoginResponse(
         String accessToken,
         String refreshToken,
         boolean isNew
 ) {
 
-    public static Login of(final String accessToken, final String refreshToken, final boolean isNew){
-        return Login.builder()
+    public static LoginResponse of(final String accessToken, final String refreshToken, final boolean isNew){
+        return LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .isNew(isNew)

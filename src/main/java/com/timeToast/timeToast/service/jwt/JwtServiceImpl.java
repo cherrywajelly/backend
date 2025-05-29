@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.Login;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
@@ -42,12 +42,12 @@ public class JwtServiceImpl implements JwtService {
 
     @Transactional
     @Override
-    public Login createJwts(final LoginMember loginMember, final boolean isNew) {
+    public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
         String accessToken = createToken(loginMember, 7*ONE_DAY.time());
         String refreshToken = createToken(loginMember, 30*ONE_DAY.time());
         memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
         log.info("login by {}", loginMember.id());
-        return Login.of(accessToken, refreshToken, isNew);
+        return LoginResponse.of(accessToken, refreshToken, isNew);
     }
 
 
@@ -77,7 +77,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Transactional
     @Override
-    public Login tokenRenewal(final String refreshToken) {
+    public LoginResponse tokenRenewal(final String refreshToken) {
         if(jwtTokenProvider.validateToken(refreshToken)){
             String claims = jwtTokenProvider.getUserClaims(refreshToken);
 

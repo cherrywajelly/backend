@@ -1,17 +1,12 @@
 package com.timeToast.timeToast.controller.member.member;
 
-import com.timeToast.timeToast.dto.member.member.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberAdminResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberManagerResponses;
-import com.timeToast.timeToast.dto.member.member.response.MemberSummaryResponse;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
@@ -23,29 +18,29 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberAdminController {
+public class AdminMemberController {
     private final ManagerService managerService;
     private final MemberService memberService;
     private final IconGroupAdminService iconGroupAdminService;
 
     @PostMapping("/api/v4/members/{memberId}/staffs")
-    public MemberAdminResponse saveToStaff(@PathVariable final long memberId){
+    public MemberInfoResponse saveToStaff(@PathVariable final long memberId){
         return managerService.saveToStaff(memberId);
     }
 
     @PostMapping("/api/v4/members/{memberId}/creators")
-    public MemberAdminResponse saveToCreators(@PathVariable final long memberId){
+    public MemberInfoResponse saveToCreators(@PathVariable final long memberId){
         return managerService.saveToCreators(memberId);
     }
 
 
     @PostMapping("/api/v4/members/{memberId}/users")
-    public MemberAdminResponse saveToUser(@PathVariable final long memberId){
+    public MemberInfoResponse saveToUser(@PathVariable final long memberId){
         return managerService.saveToUser(memberId);
     }
 
     @GetMapping("/api/v3/members")
-    public MemberManagerResponses getMembersManager() {
+    public MemberInfoResponses getMembersManager() {
         return managerService.getMembersForManagers();
     }
 
@@ -55,8 +50,8 @@ public class MemberAdminController {
     }
 
     @GetMapping("/api/v3/members/{memberId}/info")
-    public MemberManagerResponse getMemberInfo(@PathVariable final long memberId) {
-        return managerService.getMemberInfoForManager(memberId);
+    public MemberInfoResponse getMemberInfo(@PathVariable final long memberId) {
+        return memberService.getMemberInfo(memberId);
     }
 
     @GetMapping("/api/v3/members/{memberId}/follows")
@@ -102,7 +97,7 @@ public class MemberAdminController {
 
     @GetMapping("/api/v3/creators/{creatorId}")
     public CreatorInfoResponse getCreatorByCreatorId(@PathVariable long creatorId) {
-        return memberService.getCreatorMemberInfo(creatorId);
+        return memberService.getCreatorInfo(creatorId);
     }
 
     @GetMapping("/api/v3/creators/{creatorId}/iconGroups")

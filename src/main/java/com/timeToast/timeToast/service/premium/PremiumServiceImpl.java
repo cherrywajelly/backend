@@ -3,8 +3,8 @@ package com.timeToast.timeToast.service.premium;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.premium.response.PremiumMonthlyRevenue;
 import com.timeToast.timeToast.dto.premium.response.PremiumMonthlyRevenues;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponses;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
@@ -34,19 +34,19 @@ public class PremiumServiceImpl implements PremiumService{
 
     @Transactional
     @Override
-    public PremiumResponse savePremium(final long memberId, final long premiumId) {
+    public PremiumInfoResponse savePremium(final long memberId, final long premiumId) {
         Member member = memberRepository.getById(memberId);
         member.updatePremiumId(premiumId);
-        return PremiumResponse.from(premiumRepository.getById(premiumId));
+        return PremiumInfoResponse.from(premiumRepository.getById(premiumId));
     }
 
     @Transactional(readOnly = true)
     @Override
-        public PremiumResponses getPremium() {
-        List<PremiumResponse> premiumResponses = new ArrayList<>();
+        public PremiumInfoResponses getPremium() {
+        List<PremiumInfoResponse> premiumInfoRespons = new ArrayList<>();
         premiumRepository.getPremiums().forEach(
-                premium -> premiumResponses.add(PremiumResponse.from(premium)));
-        return new PremiumResponses(premiumResponses);
+                premium -> premiumInfoRespons.add(PremiumInfoResponse.from(premium)));
+        return new PremiumInfoResponses(premiumInfoRespons);
     }
 
     @Override

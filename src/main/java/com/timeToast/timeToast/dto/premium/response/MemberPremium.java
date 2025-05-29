@@ -2,7 +2,6 @@ package com.timeToast.timeToast.dto.premium.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.domain.premium.Premium;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ public record MemberPremium(
         LocalDate expiredDate
 ) {
 
-    public static MemberPremium from(final Premium premium, final LocalDate expiredDate) {
+    public static MemberPremium from(final com.timeToast.timeToast.domain.premium.Premium premium, final LocalDate expiredDate) {
         return MemberPremium.builder()
                 .premiumId(premium.getId())
                 .premiumType(premium.getPremiumType())

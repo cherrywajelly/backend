@@ -1,10 +1,9 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.Login;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
-import com.timeToast.timeToast.dto.premium.response.MemberPremium;
+import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.member.member.MemberService;
@@ -23,48 +22,24 @@ public class MemberController {
         this.jwtService = jwtService;
     }
 
+    @PostMapping("/refreshToken")
+    public LoginResponse tokenRenewal(@RequestParam("refreshToken") final String refreshToken){
+        return jwtService.tokenRenewal(refreshToken);
+    }
+
     @PostMapping("/profile-image")
-    public MemberInfoResponse saveProfileImage(@com.timeToast.timeToast.global.annotation.Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
+    public MemberInfoResponse saveProfileImage(@Login LoginMember loginMember, @RequestPart MultipartFile profileImage){
         return memberService.saveProfileImage(loginMember.id(), profileImage);
     }
 
-    @PutMapping("")
-    public MemberInfoResponse saveNickname(@com.timeToast.timeToast.global.annotation.Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
-        return memberService.saveNickname(nickname, loginMember.id());
-    }
-
-    @GetMapping ("/nickname-validation")
+    @GetMapping("/nickname-validation")
     public Response isNicknameAvailable(@RequestParam("nickname") final String nickname) {
         return memberService.nicknameValidation(nickname);
     }
 
-    @PostMapping("/refreshToken")
-    public Login tokenRenewal(@RequestParam("refreshToken") final String refreshToken){
-        return jwtService.tokenRenewal(refreshToken);
+    @PutMapping("")
+    public MemberInfoResponse saveNickname(@Login LoginMember loginMember, @RequestParam("nickname") String nickname) {
+        return memberService.saveNickname(nickname, loginMember.id());
     }
 
-    @GetMapping("/info")
-    public MemberInfoResponse getMemberInfoByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
-        return memberService.getMemberInfo(loginMember.id());
-    }
-
-    @GetMapping("/{memberId}/info")
-    public MemberInfoResponse getMemberInfo(@PathVariable long memberId){
-        return memberService.getMemberInfo(memberId);
-    }
-
-    @GetMapping("")
-    public MemberProfileResponse getMemberProfileInfoByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
-        return memberService.getMemberProfileByLogin(loginMember.id());
-    }
-
-    @GetMapping("/{memberId}")
-    public MemberProfileResponse getProfileInfo(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember, @PathVariable long memberId){
-        return memberService.getMemberProfile(loginMember.id(), memberId);
-    }
-
-    @GetMapping("/premiums")
-    public MemberPremium getPremiumByLogin(@com.timeToast.timeToast.global.annotation.Login final LoginMember loginMember){
-        return memberService.getMemberPremium(loginMember.id());
-    }
 }

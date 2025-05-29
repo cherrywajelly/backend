@@ -22,7 +22,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PremiumControllerTest extends BaseControllerTests {
+class MemberPremiumControllerTest extends BaseControllerTests {
 
     private final PremiumService premiumService = new PremiumServiceTest();
     @Override

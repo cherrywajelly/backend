@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -61,26 +62,27 @@ public class ManagerServiceImpl implements ManagerService {
     private final IconRepository iconRepository;
     private final IconGroupRepository iconGroupRepository;
     private final IconMemberRepository iconMemberRepository;
+    private final MemberService memberService;
 
     @Transactional
     @Override
-    public MemberAdminResponse saveToStaff(final long memberId) {
+    public MemberInfoResponse saveToStaff(final long memberId) {
         Member member = updateRole(memberId, MemberRole.STAFF);
-        return MemberAdminResponse.from(member);
+        return memberService.getMemberInfo(member.getId());
     }
 
     @Transactional
     @Override
-    public MemberAdminResponse saveToCreators(final long memberId) {
+    public MemberInfoResponse saveToCreators(final long memberId) {
         Member member = updateRole(memberId, MemberRole.CREATOR);
-        return MemberAdminResponse.from(member);
+        return memberService.getMemberInfo(member.getId());
     }
 
     @Transactional
     @Override
-    public MemberAdminResponse saveToUser(final long memberId) {
+    public MemberInfoResponse saveToUser(final long memberId) {
         Member member = updateRole(memberId, MemberRole.USER);
-        return MemberAdminResponse.from(member);
+        return memberService.getMemberInfo(member.getId());
     }
 
     private Member updateRole(final long memberId, final MemberRole role) {
@@ -91,16 +93,14 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Transactional(readOnly = true)
     @Override
-    public MemberManagerResponses getMembersForManagers() {
-        List<MemberManagerResponse> memberManagerResponses = new ArrayList<>();
+    public MemberInfoResponses getMembersForManagers() {
         List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
-        members.forEach(
-                member -> {
-                    Premium premium = premiumRepository.getById(member.getPremiumId());
-                    memberManagerResponses.add(MemberManagerResponse.from(member, premium.getPremiumType()));
-                }
-        );
-        return new MemberManagerResponses(memberManagerResponses);
+        List<MemberInfoResponse> memberInfos = members.stream()
+                .map(member ->
+                        MemberInfoResponse.from(member, memberService.getMemberPremiumByMember(member)))
+                .collect(Collectors.toList());
+
+        return new MemberInfoResponses(memberInfos);
     }
 
     @Override
@@ -111,14 +111,6 @@ public class ManagerServiceImpl implements ManagerService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public MemberManagerResponse getMemberInfoForManager(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        Premium premium = premiumRepository.getById(member.getPremiumId());
-
-        return MemberManagerResponse.from(member, premium.getPremiumType());
-    }
 
     @Transactional(readOnly = true)
     @Override

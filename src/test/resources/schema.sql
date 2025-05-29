@@ -15,7 +15,7 @@ CREATE TABLE member (
 
 
 
-CREATE TABLE premium (
+CREATE TABLE memberPremium (
                          premium_id BIGINT AUTO_INCREMENT,
                          premium_type VARCHAR(20),
                          price INT,
@@ -37,8 +37,8 @@ CREATE TABLE member_token (
 );
 
 
-INSERT INTO premium VALUES (1,"BASIC",0, 3, "베이직", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO premium VALUES (2,"PREMIUM",5500, 10, "프리미엄", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO memberPremium VALUES (1,"BASIC",0, 3, "베이직", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO memberPremium VALUES (2,"PREMIUM",5500, 10, "프리미엄", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 INSERT INTO member VALUES (1,1,"test1@email.com", "memberProfileUrl1", "user1", "GOOGLE", "USER", "KB", "account_number","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");

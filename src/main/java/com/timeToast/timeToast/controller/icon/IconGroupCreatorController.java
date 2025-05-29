@@ -4,6 +4,7 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
@@ -35,5 +36,10 @@ public class IconGroupCreatorController {
     @GetMapping("/{iconGroupId}")
     public IconGroupCreatorDetailResponse getIconGroupDetail(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
         return iconGroupAdminService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
+    }
+
+    @GetMapping("")
+    public CreatorProfileResponse getCreatorProfile(@Login LoginMember loginMember) {
+        return iconGroupAdminService.getIconGroupSaleInfos(loginMember.id());
     }
 }
