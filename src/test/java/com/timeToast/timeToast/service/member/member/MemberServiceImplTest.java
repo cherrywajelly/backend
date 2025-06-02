@@ -127,6 +127,83 @@ public class MemberServiceImplTest {
                 .build();
     }
 
+    @Test
+    @DisplayName("관리자 role staff로 변환")
+    public void saveToStaff(){
+        //given
+        Member member = Member.builder()
+                .memberRole(MemberRole.USER)
+                .premiumId(1L)
+                .build();
+
+        ReflectionTestUtils.setField(member, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(member);
+
+        Premium premium = setUpPremium();
+        ReflectionTestUtils.setField(premium, "id", 1L);
+        when(premiumRepository.getById(1L)).thenReturn(premium);
+
+        assertEquals(MemberRole.USER, member.getMemberRole());
+
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.saveToStaff(member.getId());
+
+
+        //then
+        assertEquals(MemberRole.STAFF, member.getMemberRole());
+        assertEquals(MemberRole.STAFF, memberInfoResponse.memberRole());
+    }
+
+    @Test
+    @DisplayName("관리자 role creators로 변환")
+    public void saveToCreators(){
+        //given
+        Member member = Member.builder()
+                .memberRole(MemberRole.USER)
+                .premiumId(1L)
+                .build();
+        ReflectionTestUtils.setField(member, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(member);
+
+        Premium premium = setUpPremium();
+        ReflectionTestUtils.setField(premium, "id", 1L);
+        when(premiumRepository.getById(1L)).thenReturn(premium);
+
+        assertEquals(MemberRole.USER, member.getMemberRole());
+
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.saveToCreators(member.getId());
+
+        //then
+        assertEquals(MemberRole.CREATOR, member.getMemberRole());
+        assertEquals(MemberRole.CREATOR, memberInfoResponse.memberRole());
+    }
+
+    @Test
+    @DisplayName("관리자 role user로 변환")
+    public void saveToUser(){
+        //given
+        Member member = Member.builder()
+                .memberRole(MemberRole.CREATOR)
+                .premiumId(1L)
+                .build();
+        ReflectionTestUtils.setField(member, "id", 1L);
+        when(memberRepository.getById(1L)).thenReturn(member);
+
+        Premium premium = setUpPremium();
+        ReflectionTestUtils.setField(premium, "id", 1L);
+        when(premiumRepository.getById(1L)).thenReturn(premium);
+
+        assertEquals(MemberRole.CREATOR, member.getMemberRole());
+
+        //when
+        MemberInfoResponse memberInfoResponse = memberService.saveToUser(member.getId());
+
+
+        //then
+        assertEquals(MemberRole.USER, member.getMemberRole());
+        assertEquals(MemberRole.USER, memberInfoResponse.memberRole());
+    }
 
     @Test
     @DisplayName("프로필 이미지 등록")

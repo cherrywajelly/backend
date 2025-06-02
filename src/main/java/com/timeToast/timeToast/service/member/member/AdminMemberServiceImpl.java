@@ -32,7 +32,6 @@ import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
@@ -62,32 +61,6 @@ public class AdminMemberServiceImpl implements AdminMemberService {
     private final IconMemberRepository iconMemberRepository;
     private final MemberService memberService;
 
-    @Transactional
-    @Override
-    public MemberInfoResponse saveToStaff(final long memberId) {
-        Member member = updateRole(memberId, MemberRole.STAFF);
-        return memberService.getMemberInfo(member.getId());
-    }
-
-    @Transactional
-    @Override
-    public MemberInfoResponse saveToCreators(final long memberId) {
-        Member member = updateRole(memberId, MemberRole.CREATOR);
-        return memberService.getMemberInfo(member.getId());
-    }
-
-    @Transactional
-    @Override
-    public MemberInfoResponse saveToUser(final long memberId) {
-        Member member = updateRole(memberId, MemberRole.USER);
-        return memberService.getMemberInfo(member.getId());
-    }
-
-    private Member updateRole(final long memberId, final MemberRole role) {
-        Member member = memberRepository.getById(memberId);
-        member.updateMemberRole(role);
-        return member;
-    }
 
     @Transactional(readOnly = true)
     @Override

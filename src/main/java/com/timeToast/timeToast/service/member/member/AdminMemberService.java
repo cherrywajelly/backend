@@ -11,9 +11,6 @@ import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 
 public interface AdminMemberService {
-    MemberInfoResponse saveToStaff(final long memberId);
-    MemberInfoResponse saveToCreators(final long memberId);
-    MemberInfoResponse saveToUser(final long memberId);
     MemberInfoResponses getMembersForManagers();
     MemberSummaryResponse getMembersCountForManagers();
     FollowManagerResponses getMemberFollowInfo(final long memberId);

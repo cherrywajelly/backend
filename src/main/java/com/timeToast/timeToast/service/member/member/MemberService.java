@@ -10,6 +10,9 @@ import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
+    MemberInfoResponse saveToStaff(final long memberId);
+    MemberInfoResponse saveToCreators(final long memberId);
+    MemberInfoResponse saveToUser(final long memberId);
     MemberInfoResponse saveProfileImage(final long memberId, final MultipartFile profileImage);
     Response nicknameValidation(final String nickname);
     MemberInfoResponse saveNickname(final String nickname, final long memberId);

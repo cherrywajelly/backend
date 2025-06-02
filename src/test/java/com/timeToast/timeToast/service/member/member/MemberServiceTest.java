@@ -29,6 +29,24 @@ public class MemberServiceTest implements MemberService{
         return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
     }
 
+    private MemberPremium getMemberPremium() {
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    }
+    @Override
+    public MemberInfoResponse saveToStaff(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.STAFF, LoginType.GOOGLE, getMemberPremium());
+    }
+
+    @Override
+    public MemberInfoResponse saveToCreators(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.CREATOR,LoginType.GOOGLE, getMemberPremium());
+    }
+
+    @Override
+    public MemberInfoResponse saveToUser(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.USER,LoginType.GOOGLE, getMemberPremium());
+    }
+
     @Override
     public MemberInfoResponse saveProfileImage(long memberId, MultipartFile profileImage) {
         return new MemberInfoResponse(1L, "nickname","profileUrl",

@@ -58,6 +58,33 @@ public class MemberServiceImpl implements MemberService{
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
+    @Transactional
+    @Override
+    public MemberInfoResponse saveToStaff(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.STAFF);
+        return getMemberInfo(member.getId());
+    }
+
+    @Transactional
+    @Override
+    public MemberInfoResponse saveToCreators(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.CREATOR);
+        return getMemberInfo(member.getId());
+    }
+
+    @Transactional
+    @Override
+    public MemberInfoResponse saveToUser(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.USER);
+        return getMemberInfo(member.getId());
+    }
+
+
+    private Member updateRole(final long memberId, final MemberRole role) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(role);
+        return member;
+    }
 
     @Transactional
     @Override

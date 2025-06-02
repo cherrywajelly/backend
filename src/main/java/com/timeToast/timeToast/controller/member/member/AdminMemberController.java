@@ -93,17 +93,17 @@ public class AdminMemberController {
 
     @PostMapping("/api/v4/members/{memberId}/staffs")
     public MemberInfoResponse saveToStaff(@PathVariable final long memberId){
-        return adminMemberService.saveToStaff(memberId);
+        return memberService.saveToStaff(memberId);
     }
 
     @PostMapping("/api/v4/members/{memberId}/creators")
     public MemberInfoResponse saveToCreators(@PathVariable final long memberId){
-        return adminMemberService.saveToCreators(memberId);
+        return memberService.saveToCreators(memberId);
     }
 
 
     @PostMapping("/api/v4/members/{memberId}/users")
     public MemberInfoResponse saveToUser(@PathVariable final long memberId){
-        return adminMemberService.saveToUser(memberId);
+        return memberService.saveToUser(memberId);
     }
 }
