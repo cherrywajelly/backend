@@ -79,11 +79,11 @@ class MemberPremiumControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("premiumResponses[0].premiumId").type(NUMBER).description("premium id"),
-                                        fieldWithPath("premiumResponses[0].premiumType").type(STRING).description("premium type"),
-                                        fieldWithPath("premiumResponses[0].price").type(NUMBER).description("가격"),
-                                        fieldWithPath("premiumResponses[0].count").type(NUMBER).description("이미지 갯수"),
-                                        fieldWithPath("premiumResponses[0].description").type(STRING).description("설명")
+                                        fieldWithPath("premiumInfoResponses[0].premiumId").type(NUMBER).description("premium id"),
+                                        fieldWithPath("premiumInfoResponses[0].premiumType").type(STRING).description("premium type"),
+                                        fieldWithPath("premiumInfoResponses[0].price").type(NUMBER).description("가격"),
+                                        fieldWithPath("premiumInfoResponses[0].count").type(NUMBER).description("이미지 갯수"),
+                                        fieldWithPath("premiumInfoResponses[0].description").type(STRING).description("설명")
                                 )
                                 .build()
                         )));

@@ -31,6 +31,7 @@ import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
+import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -62,12 +63,13 @@ public class GiftToastServiceImpl implements com.timeToast.timeToast.service.gif
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final FcmService fcmService;
+    private final MemberService memberService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final ToastPieceService toastPieceService, final ToastPieceRepository toastPieceRepository,
-                                 final TeamRepository teamRepository,
+                                final TeamRepository teamRepository,
                                 final MemberRepository memberRepository, final TeamMemberRepository teamMemberRepository,
-                                final IconRepository iconRepository, final FcmService fcmService) {
+                                final IconRepository iconRepository, final FcmService fcmService, MemberService memberService) {
 
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
@@ -78,6 +80,7 @@ public class GiftToastServiceImpl implements com.timeToast.timeToast.service.gif
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
         this.fcmService = fcmService;
+        this.memberService = memberService;
     }
 
 
@@ -184,10 +187,9 @@ public class GiftToastServiceImpl implements com.timeToast.timeToast.service.gif
             List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
 
             giftToastOwners.forEach(
-                    member -> {
-                        if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(member.getMemberId()))){
-                            memberInfoResponses.add(
-                                    MemberInfoResponse.from(memberRepository.getById(member.getMemberId())));
+                    owner -> {
+                        if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(owner.getMemberId()))){
+                            memberInfoResponses.add(memberService.getMemberInfo(owner.getMemberId()));
                         }
                     }
             );

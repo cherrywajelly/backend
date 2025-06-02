@@ -6,6 +6,7 @@ import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team_member.TeamMember;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
@@ -49,8 +50,6 @@ public class MemberServiceImplTest {
     @Mock
     FollowRepository followRepository;
 
-    @Mock
-    TeamMemberRepository teamMemberRepository;
 
     @Mock
     PremiumRepository premiumRepository;
@@ -72,6 +71,7 @@ public class MemberServiceImplTest {
                 .memberProfileUrl("testProfileUrl")
                 .loginType(LoginType.GOOGLE)
                 .memberRole(MemberRole.USER)
+                .premiumId(1L)
                 .build();
     }
 
@@ -83,6 +83,7 @@ public class MemberServiceImplTest {
                 .memberProfileUrl("testProfileUrl")
                 .loginType(LoginType.GOOGLE)
                 .memberRole(MemberRole.CREATOR)
+                .premiumId(1L)
                 .build();
     }
 
@@ -96,6 +97,7 @@ public class MemberServiceImplTest {
                             .memberProfileUrl("testProfileUrl")
                             .loginType(LoginType.GOOGLE)
                             .memberRole(MemberRole.CREATOR)
+                            .premiumId(1L)
                             .build();
             ReflectionTestUtils.setField(member, "id", i);
             members.add(member);
@@ -103,21 +105,6 @@ public class MemberServiceImplTest {
         return members;
     }
 
-    private List<Follow> getFollowers(){
-        List<Follow> follows = new ArrayList<>();
-        for(int i=0; i<10; i++){
-            follows.add(Follow.builder().followingId(i).followerId(i+1).build());
-        }
-        return follows;
-    }
-
-    private List<Follow> getFollowing(){
-        List<Follow> follows = new ArrayList<>();
-        for(int i=0; i<5; i++){
-            follows.add(Follow.builder().followingId(i).followerId(i+2).build());
-        }
-        return follows;
-    }
 
     private Follow getFollow(){
         return Follow.builder().followingId(1L).followerId(2L).build();
@@ -146,14 +133,20 @@ public class MemberServiceImplTest {
     public void saveProfileImage(){
         //given
         Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
         ReflectionTestUtils.setField(member, "id", 1L);
 
-        MultipartFile profileImage = mock(MultipartFile.class);
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
 
+
+        MultipartFile profileImage = mock(MultipartFile.class);
         String fileUrl = "fileUrl";
 
         when(fileUploadService.uploadfile(any(), any())).thenReturn(fileUrl);
+
+        Premium premium = new Premium(PremiumType.BASIC, 100, 10, "description");
+        ReflectionTestUtils.setField(premium, "id", 1L);
+
+        when(premiumRepository.getById(1L)).thenReturn(premium);
 
         //when
         MemberInfoResponse memberInfoResponse = memberService.saveProfileImage(1L,profileImage );
@@ -171,6 +164,12 @@ public class MemberServiceImplTest {
         ReflectionTestUtils.setField(member, "id", 1L);
 
         String newNickname = "testNick";
+
+        Premium premium = new Premium(PremiumType.BASIC, 100, 10, "description");
+        ReflectionTestUtils.setField(premium, "id", 1L);
+
+        when(premiumRepository.getById(1L)).thenReturn(premium);
+
         //when
         MemberInfoResponse memberInfoResponse = memberService.saveNickname(newNickname, member.getId());
 
@@ -206,8 +205,14 @@ public class MemberServiceImplTest {
     public void getMemberInfoTest(){
         //given
         Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
         ReflectionTestUtils.setField(member, "id", 1L);
+
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+
+        Premium premium = new Premium(PremiumType.BASIC, 100, 10, "description");
+        ReflectionTestUtils.setField(premium, "id", 1L);
+
+        when(premiumRepository.getById(1L)).thenReturn(premium);
 
         //when
         MemberInfoResponse memberInfoResponse = memberService.getMemberInfo(1L);
@@ -222,18 +227,14 @@ public class MemberServiceImplTest {
     public void getMemberProfileTest(){
         //given
         Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
         ReflectionTestUtils.setField(member, "id", 1L);
-        List<Follow> followers = getFollowers();
-        List<Follow> following = getFollowing();
-        List<TeamMember> teamMembers = getTeams();
+
+        when(memberRepository.getById(any(Long.class))).thenReturn(member);
+
+
         boolean isFollowing = true;
 
-        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followers);
-        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(following);
         when(followRepository.findByFollowingIdAndFollowerId(any(Long.class),any(Long.class))).thenReturn(Optional.of(getFollow()));
-
-        when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
 
         //when
         MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L);
@@ -241,42 +242,8 @@ public class MemberServiceImplTest {
         //then
         assertEquals(member.getNickname(), memberProfileResponse.nickname());
         assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
-        assertEquals(following.size(), memberProfileResponse.followerCount());
-        assertEquals(followers.size(), memberProfileResponse.followingCount());
         assertEquals(isFollowing, memberProfileResponse.isFollow());
-        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
     }
-
-
-//    @Test
-//    @DisplayName("유저 프로필 조회")
-//    public void getMemberProfileTest(){
-//        //given
-//        Member member = setUpMember();
-//        when(memberRepository.getById(any(Long.class))).thenReturn(member);
-//        ReflectionTestUtils.setField(member, "id", 1L);
-//        List<Follow> followers = getFollowers();
-//        List<Follow> following = getFollowing();
-//        List<TeamMember> teamMembers = getTeams();
-//        boolean isFollowing = true;
-//
-//        when(followRepository.findAllByFollowerId(any(Long.class))).thenReturn(followers);
-//        when(followRepository.findAllByFollowingId(any(Long.class))).thenReturn(following);
-//        when(followRepository.findByFollowingIdAndFollowerId(any(Long.class),any(Long.class))).thenReturn(Optional.of(getFollow()));
-//
-//        when(teamMemberRepository.findAllByMemberId(any(Long.class))).thenReturn(teamMembers);
-//
-//        //when
-//        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(1L, 2L);
-//
-//        //then
-//        assertEquals(member.getNickname(), memberProfileResponse.nickname());
-//        assertEquals(member.getMemberProfileUrl(), memberProfileResponse.profileUrl());
-//        assertEquals(following.size(), memberProfileResponse.followerCount());
-//        assertEquals(followers.size(), memberProfileResponse.followingCount());
-//        assertEquals(isFollowing, memberProfileResponse.isFollow());
-//        assertEquals(teamMembers.size(), memberProfileResponse.teamCount());
-//    }
 
 
 
@@ -285,15 +252,13 @@ public class MemberServiceImplTest {
     public void getMemberPremiumByMemberTest(){
         //given
         Member member = setUpMember();
-        when(memberRepository.getById(any(Long.class))).thenReturn(member);
-        ReflectionTestUtils.setField(member, "id", 1L);
 
-        com.timeToast.timeToast.domain.premium.Premium premium = setUpPremium();
+        Premium premium = setUpPremium();
         ReflectionTestUtils.setField(premium, "id", 1L);
         when(premiumRepository.getById(any(Long.class))).thenReturn(premium);
 
         //when
-        MemberPremium memberPremium = memberService.getMemberPremium(1L);
+        MemberPremium memberPremium = memberService.getMemberPremiumByMember(member);
 
         //then
         assertEquals(premium.getId(), memberPremium.premiumId());

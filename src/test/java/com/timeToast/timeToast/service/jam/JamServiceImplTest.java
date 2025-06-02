@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.jam;
 
-import com.timeToast.timeToast.domain.eventToast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;

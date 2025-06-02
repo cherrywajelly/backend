@@ -23,13 +23,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AdminAppMemberControllerTest extends BaseControllerTests {
-    private final ManagerService managerService = new ManagerServiceTest();
+public class AdminMemberControllerTest extends BaseControllerTests {
+    private final AdminMemberService adminMemberService = new AdminMemberServiceTest();
     private final MemberService memberService = new MemberServiceTest();
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
+
     @Override
     protected Object initController() {
-        return new AdminMemberController(managerService, memberService, iconGroupAdminService);
+        return new AdminMemberController(adminMemberService, memberService, iconGroupAdminService);
     }
 
     @DisplayName("최고 관리자는 staff로 지정할 수 있다.")
@@ -54,9 +55,15 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
-                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
-                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
+
 
                                 )
                                 .build()
@@ -85,9 +92,14 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
-                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
-                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
 
                                 )
                                 .build()
@@ -116,9 +128,14 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
-                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
-                                        fieldWithPath("memberRole").type(STRING).description("사용자 role")
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
 
                                 )
                                 .build()
@@ -147,13 +164,15 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("memberManagerResponses[0].memberId").type(NUMBER).description("사용자 id"),
-                                        fieldWithPath("memberManagerResponses[0].memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("memberManagerResponses[0].profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("memberManagerResponses[0].email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("memberManagerResponses[0].loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
-                                        fieldWithPath("memberManagerResponses[0].premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)")
+                                        fieldWithPath("memberManagerResponses[0].memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberManagerResponses[0].memberPremium.premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"),
+                                        fieldWithPath("memberManagerResponses[0].memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )
                                 .build()
                         )));
@@ -206,12 +225,14 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                 )
                                 .responseFields(
                                         fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
-                                        fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지 url"),
+                                        fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
-                                        fieldWithPath("premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"))
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자"))
                                 .build()
                         )));
     }
@@ -465,9 +486,10 @@ public class AdminAppMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("creatorResponses[0].memberId").type(NUMBER).description("제작자 id 값"),
-                                        fieldWithPath("creatorResponses[0].profileUrl").type(STRING).description("제작자 profile url"),
-                                        fieldWithPath("creatorResponses[0].nickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[0].creatorInfo.nickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[0].creatorInfo.bank").type(STRING).description("은행"),
+                                        fieldWithPath("creatorResponses[0].creatorInfo.accountNumber").type(STRING).description("계좌번호"),
+                                        fieldWithPath("creatorResponses[0].creatorInfo.profileUrl").type(STRING).description("프로필 사진"),
                                         fieldWithPath("creatorResponses[0].salesIconCount").type(NUMBER).description("판매 아이콘 갯수"),
                                         fieldWithPath("creatorResponses[0].totalRevenue").type(NUMBER).description("전체 수익"),
                                         fieldWithPath("creatorResponses[0].createdIconCount").type(NUMBER).description("제작한 아이콘 갯수")

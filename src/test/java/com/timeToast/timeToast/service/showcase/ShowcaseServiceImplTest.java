@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.showcase;
 
-import com.timeToast.timeToast.domain.eventToast.EventToast;
+import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.showcase.Showcase;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;

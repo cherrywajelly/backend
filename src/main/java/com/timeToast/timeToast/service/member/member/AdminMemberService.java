@@ -10,7 +10,7 @@ import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 
-public interface ManagerService {
+public interface AdminMemberService {
     MemberInfoResponse saveToStaff(final long memberId);
     MemberInfoResponse saveToCreators(final long memberId);
     MemberInfoResponse saveToUser(final long memberId);

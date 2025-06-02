@@ -1,6 +1,9 @@
 package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
+import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
@@ -8,6 +11,7 @@ import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastRequest;
 import com.timeToast.timeToast.dto.gift_toast.response.*;
 import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
+import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.toast_piece.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -65,6 +69,9 @@ public class GiftToastServiceTest implements GiftToastService {
                 .email("email")
                 .nickname("nickname")
                 .profileUrl("profileUrl")
+                .loginType(LoginType.GOOGLE)
+                .memberRole(MemberRole.USER)
+                .memberPremium(new MemberPremium(1L, PremiumType.BASIC, LocalDate.now()))
                 .build());
 
         GiftToastTeamMember giftToastTeamMember = new GiftToastTeamMember(3, 1, memberInfoResponses);

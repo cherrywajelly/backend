@@ -141,6 +141,36 @@ public class FollowerControllerTest extends BaseControllerTests {
                         )));
     }
 
+    @DisplayName("특정 사용자의 팔로잉 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowingListByMemberId() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followings/{memberId}", 1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로잉 리스트 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("유저 - 팔로우")
+                                .summary("로그인한 사용자의 팔로잉 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[0].memberId").type(NUMBER).description("사용자Id"),
+                                        fieldWithPath("followResponses[0].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[0].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
     @DisplayName("로그인한 사용자의 팔로워 리스트를 조회할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -152,6 +182,36 @@ public class FollowerControllerTest extends BaseControllerTests {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 유저의 팔로워 리스트 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("유저 - 팔로우")
+                                .summary("로그인한 사용자의 팔로워 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[0].memberId").type(NUMBER).description("사용자Id"),
+                                        fieldWithPath("followResponses[0].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[0].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("특정 사용자의 팔로워 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowerListByMemberId() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followers/{memberId}", 1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로워 리스트 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 팔로우")
                                 .summary("로그인한 사용자의 팔로워 리스트 조회")

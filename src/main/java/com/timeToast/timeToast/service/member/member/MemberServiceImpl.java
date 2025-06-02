@@ -16,15 +16,14 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
-import static com.timeToast.timeToast.global.constant.FileConstant.*;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
-
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
 import com.timeToast.timeToast.service.image.FileUploadService;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
+import static com.timeToast.timeToast.global.constant.FileConstant.*;
+import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
 
 import java.time.LocalDate;
 import java.util.*;

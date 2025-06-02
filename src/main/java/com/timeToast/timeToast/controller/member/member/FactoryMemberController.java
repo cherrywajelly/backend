@@ -18,7 +18,7 @@ public class FactoryMemberController {
     }
 
     @PostMapping("")
-    public CreatorInfoResponse saveCreatorInfo(@Login LoginMember loginMember, @RequestPart CreatorAccount creatorAccount) {
+    public CreatorInfoResponse saveCreatorInfo(@Login LoginMember loginMember, @RequestBody CreatorAccount creatorAccount) {
         return memberService.saveCreatorInfo(loginMember.id(), creatorAccount);
     }
 

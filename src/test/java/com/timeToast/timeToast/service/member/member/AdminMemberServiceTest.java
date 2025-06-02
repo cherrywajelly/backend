@@ -28,27 +28,36 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerServiceTest implements ManagerService{
+public class AdminMemberServiceTest implements AdminMemberService {
+
+    private MemberPremium getMemberPremium() {
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    }
+
+    private MemberInfoResponse getMemberInfoResponse() {
+        return new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email",
+                MemberRole.USER, LoginType.GOOGLE, getMemberPremium());
+    }
 
     @Override
     public MemberInfoResponse saveToStaff(long memberId) {
-        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.STAFF, MemberPremium.builder().build());
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.STAFF, LoginType.GOOGLE, getMemberPremium());
     }
 
     @Override
     public MemberInfoResponse saveToCreators(long memberId) {
-        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.CREATOR, MemberPremium.builder().build());
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.CREATOR,LoginType.GOOGLE, getMemberPremium());
     }
 
     @Override
     public MemberInfoResponse saveToUser(long memberId) {
-        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.USER, MemberPremium.builder().build());
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.USER,LoginType.GOOGLE, getMemberPremium());
     }
 
     @Override
     public MemberInfoResponses getMembersForManagers() {
         List<MemberInfoResponse> memberInfoResponses = new ArrayList<>();
-        memberInfoResponses.add( new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email"),   MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
+        memberInfoResponses.add(getMemberInfoResponse());
         return new MemberInfoResponses(memberInfoResponses);
     }
 
@@ -60,10 +69,6 @@ public class ManagerServiceTest implements ManagerService{
                 .build();
     }
 
-    @Override
-    public MemberInfoResponse getMemberInfoForManager(final long memberId){
-        return new MemberInfoResponse(1L,"nickname","memberProfileUrl", "email", MemberRole.USER, LoginType.GOOGLE, PremiumType.PREMIUM);
-    }
 
     @Override
     public FollowManagerResponses getMemberFollowInfo(final long memberId) {

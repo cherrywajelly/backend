@@ -7,7 +7,6 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponse;
@@ -49,11 +48,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ManagerServiceImpl implements ManagerService {
+public class AdminMemberServiceImpl implements AdminMemberService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
-    private final PremiumRepository premiumRepository;
     private final PaymentRepository paymentRepository;
     private final TeamRepository teamRepository;
     private final ShowcaseRepository showcaseRepository;

@@ -38,7 +38,7 @@ public class IconGroupCreatorController {
         return iconGroupAdminService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
     }
 
-    @GetMapping("")
+    @GetMapping("/salesInfo")
     public CreatorProfileResponse getCreatorProfile(@Login LoginMember loginMember) {
         return iconGroupAdminService.getIconGroupSaleInfos(loginMember.id());
     }
