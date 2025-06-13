@@ -49,10 +49,7 @@ public class AdminMemberServiceTest implements AdminMemberService {
 
     @Override
     public MemberSummaryResponse getMembersCountForManagers() {
-        return MemberSummaryResponse.builder()
-                .totalUserCount(100)
-                .totalCreatorCount(50)
-                .build();
+        return new MemberSummaryResponse(100, 50);
     }
 
 

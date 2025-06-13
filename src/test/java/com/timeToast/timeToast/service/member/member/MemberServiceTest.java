@@ -100,24 +100,17 @@ public class MemberServiceTest implements MemberService{
     public CreatorResponses getCreators() {
         List<CreatorResponse> creatorResponses = new ArrayList<>();
         creatorResponses.add(
-                CreatorResponse.builder()
-                        .creatorInfo(new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"))
-                        .salesIconCount(10)
-                        .totalRevenue(100)
-                        .createdIconCount(10)
-                        .build()
-        );
-        return new CreatorResponses(creatorResponses) ;
+                new CreatorResponse(
+                        new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"),
+                        0,
+                        0,
+                        0));
+        return new CreatorResponses(creatorResponses);
     }
 
     @Override
     public CreatorInfoResponse saveCreatorInfo(final long creatorId, final CreatorAccount creatorAccount) {
-        return CreatorInfoResponse.builder()
-                .nickname("nickname")
-                .profileUrl("profileUrl")
-                .bank(creatorAccount.bank())
-                .accountNumber(creatorAccount.accountNumber())
-                .build();
+        return new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl");
     }
 
 

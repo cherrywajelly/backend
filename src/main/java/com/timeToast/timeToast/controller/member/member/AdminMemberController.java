@@ -23,8 +23,6 @@ public class AdminMemberController {
     private final MemberService memberService;
     private final IconGroupAdminService iconGroupAdminService;
 
-
-
     @GetMapping("/api/v3/members")
     public MemberInfoResponses getMembersManager() {
         return adminMemberService.getMembersForManagers();
@@ -100,7 +98,6 @@ public class AdminMemberController {
     public MemberInfoResponse saveToCreators(@PathVariable final long memberId){
         return memberService.saveToCreators(memberId);
     }
-
 
     @PostMapping("/api/v4/members/{memberId}/users")
     public MemberInfoResponse saveToUser(@PathVariable final long memberId){
