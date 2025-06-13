@@ -48,7 +48,7 @@ public class FactoryMemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("아이콘 제작자 정보 등록",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("제작자 - 멤버")
+                                .tag("[팩토리] 멤버")
                                 .summary("정보 등록")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

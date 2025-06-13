@@ -44,7 +44,7 @@ public class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("리프레쉬 토큰 갱신",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("리프레쉬 토큰 갱신")
                                 .responseFields(
                                         fieldWithPath("accessToken").type(STRING).description("access token"),
@@ -73,7 +73,7 @@ public class MemberControllerTest extends BaseControllerTests {
                                 partWithName("profileImage").description("프로필 이미지")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("사용자의 프로필 사진 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -106,7 +106,7 @@ public class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("닉네임 중복 확인",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("닉네임 중복 확인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -135,7 +135,7 @@ public class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isConflict())
                 .andDo(document("닉네임 중복 확인",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("닉네임 중복 확인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -165,7 +165,7 @@ public class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 닉네임 변경",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -199,7 +199,7 @@ public class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isConflict())
                 .andDo(document("로그인한 사용자의 닉네임 변경",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
