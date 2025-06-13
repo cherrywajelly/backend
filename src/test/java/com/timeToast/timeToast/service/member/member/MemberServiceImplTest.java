@@ -146,7 +146,7 @@ public class MemberServiceImplTest {
         ReflectionTestUtils.setField(premium, "id", 1L);
         when(premiumRepository.getById(premium.getId())).thenReturn(premium);
 
-        assertEquals(MemberRole.USER, creator.getMemberRole());
+        assertEquals(MemberRole.CREATOR, creator.getMemberRole());
 
         //when
         MemberInfoResponse memberInfoResponse = memberService.saveToCreators(creator.getId());
