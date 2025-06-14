@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.service.toast_piece;
 
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;

@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.service.member_token.MemberTokenService;

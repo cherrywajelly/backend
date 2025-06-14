@@ -1,11 +1,10 @@
 package com.timeToast.timeToast.service.jwt;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static com.timeToast.timeToast.util.TestConstant.TEST_REFRESH_TOKEN;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class JwtServiceTest implements JwtService{
 

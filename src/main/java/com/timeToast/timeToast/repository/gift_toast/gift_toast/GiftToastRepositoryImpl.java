@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.timeToast.timeToast.domain.gift_toast.gift_toast.QGiftToast.giftToast;
-import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
+import static com.timeToast.timeToast.domain.giftToast.gift_toast.QGiftToast.giftToast;
+import static com.timeToast.timeToast.domain.giftToast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.GIFT_TOAST_NOT_FOUND;
 
 @Repository

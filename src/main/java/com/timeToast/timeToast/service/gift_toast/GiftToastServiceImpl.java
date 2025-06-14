@@ -1,9 +1,8 @@
 package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
@@ -27,12 +26,12 @@ import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast_owner.GiftToastOwnerRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
+import com.timeToast.timeToast.repository.toast_piece.ToastPieceRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
+import com.timeToast.timeToast.service.member.member.MemberService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -53,35 +52,35 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DE
 
 @Service
 @Slf4j
-public class GiftToastServiceImpl implements GiftToastService{
+public class GiftToastServiceImpl implements com.timeToast.timeToast.service.gift_toast.GiftToastService {
 
     private final GiftToastRepository giftToastRepository;
     private final GiftToastOwnerRepository giftToastOwnerRepository;
     private final ToastPieceService toastPieceService;
     private final ToastPieceRepository toastPieceRepository;
-    private final ToastPieceImageRepository toastPieceImageRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
     private final IconRepository iconRepository;
     private final FcmService fcmService;
+    private final MemberService memberService;
 
     public GiftToastServiceImpl(final GiftToastRepository giftToastRepository, final GiftToastOwnerRepository giftToastOwnerRepository,
                                 final ToastPieceService toastPieceService, final ToastPieceRepository toastPieceRepository,
-                                final ToastPieceImageRepository toastPieceImageRepository, final TeamRepository teamRepository,
+                                final TeamRepository teamRepository,
                                 final MemberRepository memberRepository, final TeamMemberRepository teamMemberRepository,
-                                final IconRepository iconRepository, final FcmService fcmService) {
+                                final IconRepository iconRepository, final FcmService fcmService, MemberService memberService) {
 
         this.giftToastRepository = giftToastRepository;
         this.giftToastOwnerRepository = giftToastOwnerRepository;
         this.toastPieceService = toastPieceService;
         this.toastPieceRepository = toastPieceRepository;
-        this.toastPieceImageRepository = toastPieceImageRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.memberRepository = memberRepository;
         this.iconRepository = iconRepository;
         this.fcmService = fcmService;
+        this.memberService = memberService;
     }
 
 
@@ -188,10 +187,9 @@ public class GiftToastServiceImpl implements GiftToastService{
             List<GiftToastOwner> giftToastOwners = giftToastOwnerRepository.findAllByGiftToastId(giftToast.getId());
 
             giftToastOwners.forEach(
-                    member -> {
-                        if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(member.getMemberId()))){
-                            memberInfoResponses.add(
-                                    MemberInfoResponse.from(memberRepository.getById(member.getMemberId())));
+                    owner -> {
+                        if(toastPieces.stream().anyMatch(toastPiece -> toastPiece.getMemberId().equals(owner.getMemberId()))){
+                            memberInfoResponses.add(memberService.getMemberInfo(owner.getMemberId()));
                         }
                     }
             );
@@ -323,10 +321,7 @@ public class GiftToastServiceImpl implements GiftToastService{
         if(giftToastOwnerRepository.findAllByGiftToastId(giftToastId).isEmpty()){
             List<ToastPiece> toastPieces = toastPieceRepository.findAllByGiftToastId(giftToastId);
             toastPieces.forEach(
-                    toastPiece -> {
-                        toastPieceImageRepository.deleteAllByToastPieceId(toastPiece.getId());
-                        toastPieceRepository.deleteToastPiece(toastPiece);
-                    }
+                    toastPieceRepository::deleteToastPiece
             );
             giftToastRepository.deleteById(giftToastId);
             log.info("delete giftToast {} by {}", giftToastId, memberId);

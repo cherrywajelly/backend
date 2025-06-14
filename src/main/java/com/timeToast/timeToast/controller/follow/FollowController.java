@@ -23,13 +23,23 @@ public class FollowController {
     }
 
     @GetMapping("/followings")
-    public FollowResponses findFollowingList(@Login final LoginMember loginMember){
+    public FollowResponses findFollowings(@Login final LoginMember loginMember){
         return followService.findFollowingList(loginMember.id());
     }
 
+    @GetMapping("/followings/{memberId}")
+    public FollowResponses findFollowingsById(@PathVariable final long memberId){
+        return followService.findFollowingList(memberId);
+    }
+
     @GetMapping("/followers")
-    public FollowResponses findFollowerList(@Login final LoginMember loginMember){
+    public FollowResponses findFollowers(@Login final LoginMember loginMember){
         return followService.findFollowerList(loginMember.id());
+    }
+
+    @GetMapping("/followers/{memberId}")
+    public FollowResponses findFollowersById(@PathVariable final long memberId){
+        return followService.findFollowerList(memberId);
     }
 
     @DeleteMapping("/followings/{memberId}")

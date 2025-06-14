@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.member.oauth;
 
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 
 public interface OAuthService {
     LoginResponse kakaoLoginMember(String accessToken);

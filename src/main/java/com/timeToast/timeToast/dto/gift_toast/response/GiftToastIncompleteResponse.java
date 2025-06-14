@@ -1,9 +1,7 @@
 package com.timeToast.timeToast.dto.gift_toast.response;
 
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import lombok.Builder;
-
-import java.util.List;
 
 @Builder
 public record GiftToastIncompleteResponse(

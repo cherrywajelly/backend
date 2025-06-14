@@ -1,8 +1,6 @@
 package com.timeToast.timeToast.service.member_token;
 
-import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
 import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 

@@ -11,7 +11,7 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
@@ -21,7 +21,6 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,9 +57,6 @@ public class IconGroupAdminServiceImplTest {
 
     @Mock
     private FileUploadService fileUploadService;
-
-    @Mock
-    private IconService iconService;
 
     @Mock
     private PaymentRepository paymentRepository;
@@ -111,6 +106,7 @@ public class IconGroupAdminServiceImplTest {
                     .build();
 
             ReflectionTestUtils.setField(iconGroup1, "id", i);
+            iconGroup1.addIcons(iconsSetUp());
             iconGroups.add(iconGroup1);
         }
 
@@ -143,7 +139,6 @@ public class IconGroupAdminServiceImplTest {
 
         for(long i=0; i<5; i++){
             Icon icon = Icon.builder()
-                    .iconGroupId(1L)
                     .iconImageUrl("iconImageUrl")
                     .build();
             ReflectionTestUtils.setField(icon, "id", i);
@@ -172,11 +167,10 @@ public class IconGroupAdminServiceImplTest {
     @BeforeEach
     void setUp() {
         long memberId = 1L;
-        long iconGroupId = 1L;
 
         member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
-        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl("imageUrl").build();
+        icon = Icon.builder().iconImageUrl("imageUrl").build();
     }
 
 //    @Test
@@ -325,6 +319,7 @@ public class IconGroupAdminServiceImplTest {
     void getIconGroupDetail() {
         // Given
         IconGroup iconGroup = iconGroupSetUp();
+        iconGroup.addIcons(iconsSetUp());
         ReflectionTestUtils.setField(iconGroup, "id", 1L);
         when(iconGroupRepository.getById(1L)).thenReturn(iconGroup);
 
@@ -332,8 +327,6 @@ public class IconGroupAdminServiceImplTest {
         ReflectionTestUtils.setField(creator, "id", 1L);
         when(memberRepository.getById(1L)).thenReturn(creator);
 
-        List<Icon> icons = iconsSetUp();
-        when(iconRepository.findAllByIconGroupId(1L)).thenReturn(icons);
 
         // When
         IconGroupDetailResponse iconGroupDetailResponse = iconGroupAdminService.getIconGroupDetail(1L);
@@ -345,7 +338,7 @@ public class IconGroupAdminServiceImplTest {
         assertEquals(iconGroup.getPrice(), iconGroupDetailResponse.price());
         assertEquals(iconGroup.getIconState(), iconGroupDetailResponse.iconState());
         assertEquals(iconGroup.getDescription(), iconGroupDetailResponse.description());
-        assertEquals(icons.size(), iconGroupDetailResponse.iconResponses().size());
+        assertEquals(iconGroup.getIcons().size(), iconGroupDetailResponse.iconResponses().size());
 
 
 
@@ -380,7 +373,6 @@ public class IconGroupAdminServiceImplTest {
         when(paymentRepository.findAllByItemIdAndItemType(anyLong(), any(ItemType.class))).thenReturn(payments);
 
         List<Icon> icons = iconsSetUp();
-        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(icons);
 
         // When
         CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(1L);

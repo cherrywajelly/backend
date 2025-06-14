@@ -1,16 +1,12 @@
 package com.timeToast.timeToast.service.settlement;
 
-import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.settlement.Settlement;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.settlement.SettlementRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,13 +34,6 @@ class SettlementServiceImplTest {
 
     @Mock
     MemberRepository memberRepository;
-
-    @Mock
-    CreatorAccountRepository creatorAccountRepository;
-
-    @Mock
-    PaymentRepository paymentRepository;
-
 
     @InjectMocks
     SettlementServiceImpl settlementService;
@@ -145,14 +134,6 @@ class SettlementServiceImplTest {
         return member;
     }
 
-    private CreatorAccount creatorAccountSetUp(){
-        return CreatorAccount.builder()
-                .memberId(1L)
-                .bank(Bank.IBK)
-                .accountNumber("accountNumber")
-                .build();
-    }
-
     private List<SettlementIcon> settlementIconSetUp(){
         List<SettlementIcon> settlementIcons = new ArrayList<>();
 
@@ -235,9 +216,6 @@ class SettlementServiceImplTest {
         Member member = memberSetUp(1L);
         when(memberRepository.getById(1L)).thenReturn(member);
 
-        CreatorAccount creatorAccount = creatorAccountSetUp();
-        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
-
         List<SettlementIcon> settlementIcons = settlementIconSetUp();
         when(settlementRepository.findAllByYearMonthAndMemberIdToIcon(any(LocalDate.class), eq(1L))).thenReturn(settlementIcons);
 
@@ -251,8 +229,8 @@ class SettlementServiceImplTest {
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
         assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
-        assertEquals(creatorAccount.getBank().value(), settlementDetailResponse.bank());
-        assertEquals(creatorAccount.getAccountNumber(), settlementDetailResponse.accountNumber());
+        assertEquals(member.getBank(), settlementDetailResponse.bank());
+        assertEquals(member.getAccountNumber(), settlementDetailResponse.accountNumber());
         assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());
         assertEquals(settlementIcons.size(), settlementDetailResponse.settlementIcons().size());
     }
@@ -265,9 +243,6 @@ class SettlementServiceImplTest {
         Member member = memberSetUp(1L);
         when(memberRepository.getById(1L)).thenReturn(member);
 
-        CreatorAccount creatorAccount = creatorAccountSetUp();
-        when(creatorAccountRepository.findByMemberId(1L)).thenReturn(Optional.of(creatorAccount));
-
         List<SettlementIcon> settlementIcons = settlementIconSetUp();
         when(settlementRepository.findAllByYearMonthAndMemberIdToIcon(any(LocalDate.class), eq(1L))).thenReturn(settlementIcons);
 
@@ -281,8 +256,8 @@ class SettlementServiceImplTest {
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
         assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
-        assertEquals(creatorAccount.getBank().value(), settlementDetailResponse.bank());
-        assertEquals(creatorAccount.getAccountNumber(), settlementDetailResponse.accountNumber());
+        assertEquals(member.getBank(), settlementDetailResponse.bank());
+        assertEquals(member.getAccountNumber(), settlementDetailResponse.accountNumber());
         assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());
         assertEquals(settlementIcons.size(), settlementDetailResponse.settlementIcons().size());
     }

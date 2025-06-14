@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.jwt;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 
 public interface JwtService {
 

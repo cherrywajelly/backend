@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.domain.gift_toast.gift_toast_owner;
+package com.timeToast.timeToast.domain.giftToast.gift_toast_owner;
 
 import com.timeToast.timeToast.domain.BaseTime;
 import jakarta.persistence.*;

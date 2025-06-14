@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast_owner;
 
-import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.giftToast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastOwnerResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceMember;
 

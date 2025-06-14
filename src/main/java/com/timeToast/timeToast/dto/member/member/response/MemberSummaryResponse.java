@@ -6,6 +6,5 @@ import lombok.Builder;
 public record MemberSummaryResponse(
         long totalUserCount,
         long totalCreatorCount
-
 ) {
 }

@@ -9,7 +9,6 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,6 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DE
 public class IconGroupServiceImpl implements IconGroupService{
     private final IconGroupRepository iconGroupRepository;
     private final MemberRepository memberRepository;
-    private final IconRepository iconRepository;
     private final IconMemberRepository iconMemberRepository;
 
 
@@ -57,7 +55,7 @@ public class IconGroupServiceImpl implements IconGroupService{
 
             if(iconGroup.getIconType().equals(iconType)){
                 List<IconResponse> iconResponses = new ArrayList<>();
-                iconRepository.findAllByIconGroupId(iconMember.getIconGroupId())
+                iconGroup.getIcons()
                         .forEach(icon -> iconResponses.add(new IconResponse(icon.getId(), icon.getIconImageUrl())));
 
                 iconGroupResponses.add(new IconGroupResponse(iconGroup.getId(), iconGroup.getName(), iconResponses));
@@ -86,7 +84,7 @@ public class IconGroupServiceImpl implements IconGroupService{
     public IconGroupMarketDetailResponse getIconGroupDetail(final long memberId, final long iconGroupId) {
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
-        List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
+        List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
         return IconGroupMarketDetailResponse.builder()
                 .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
                 .title(iconGroup.getName())

@@ -3,7 +3,6 @@ package com.timeToast.timeToast.dto.event_toast.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponses;
 import lombok.Builder;
 
 import java.time.LocalDate;

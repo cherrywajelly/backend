@@ -1,9 +1,6 @@
 package com.timeToast.timeToast.domain.jam;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
-import com.timeToast.timeToast.domain.member.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -22,15 +22,40 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MemberControllerTest extends BaseControllerTests {
-
+public class MemberControllerTest extends BaseControllerTests {
     private final MemberService memberService = new MemberServiceTest();
-    private final JwtService jwtService = new JwtServiceTest();
+    private JwtService jwtService = new JwtServiceTest();
 
     @Override
     protected Object initController() {
         return new MemberController(memberService, jwtService);
     }
+
+    @DisplayName("사용자는 리프레쉬 토큰으로 토큰 갱신을 할 수 있다. ")
+    @WithMockCustomUser
+    @Test
+    void tokenRenewal() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/members/refreshToken")
+                                .param("refreshToken", USER_ACCESS_TOKEN)
+
+                )
+                .andExpect(status().isOk())
+                .andDo(document("리프레쉬 토큰 갱신",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[공통] 멤버")
+                                .summary("리프레쉬 토큰 갱신")
+                                .responseFields(
+                                        fieldWithPath("accessToken").type(STRING).description("access token"),
+                                        fieldWithPath("refreshToken").type(STRING).description("access token"),
+                                        fieldWithPath("isNew").type(BOOLEAN).description("신규 가입 여부")
+
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("로그인한 사용자의 프로필 사진을 변경할 수 있다.")
     @WithMockCustomUser
     @Test
@@ -48,8 +73,8 @@ class MemberControllerTest extends BaseControllerTests {
                                 partWithName("profileImage").description("프로필 이미지")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("로그인한 사용자의 프로필 사진 변경")
+                                .tag("[공통] 멤버")
+                                .summary("사용자의 프로필 사진 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -57,63 +82,12 @@ class MemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("email").type(STRING).description("이메일")
-                                )
-                                .build()
-                        )));
-    }
-
-    @DisplayName("사용자는 닉네임을 변경할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void saveNickname() throws Exception {
-
-        mockMvc.perform(
-                        put("/api/v1/members")
-                                .param("nickname", "nickname")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-
-                )
-                .andExpect(status().isOk())
-                .andDo(document("로그인한 사용자의 닉네임 변경",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("로그인한 사용자의 닉네임 변경")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
-                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("email").type(STRING).description("이메일")
-                                )
-                                .build()
-                        )));
-    }
-
-    @DisplayName("사용자는 닉네임을 변경할 수 있다. - 실패: 중복")
-    @WithMockCustomUser
-    @Test
-    void saveNicknameConflict() throws Exception {
-
-        mockMvc.perform(
-                        put("/api/v1/members")
-                                .param("nickname", "conflictNickname")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-
-                )
-                .andExpect(status().isConflict())
-                .andDo(document("로그인한 사용자의 닉네임 변경",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("로그인한 사용자의 닉네임 변경")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(STRING).description("이미 존재하는 닉네임입니다.")
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )
                                 .build()
                         )));
@@ -132,7 +106,7 @@ class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("닉네임 중복 확인",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("닉네임 중복 확인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -161,7 +135,7 @@ class MemberControllerTest extends BaseControllerTests {
                 .andExpect(status().isConflict())
                 .andDo(document("닉네임 중복 확인",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
+                                .tag("[공통] 멤버")
                                 .summary("닉네임 중복 확인")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -177,45 +151,22 @@ class MemberControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("사용자는 리프레쉬 토큰으로 토큰 갱신을 할 수 있다. ")
+    @DisplayName("사용자는 닉네임을 변경할 수 있다.")
     @WithMockCustomUser
     @Test
-    void tokenRenewal() throws Exception {
+    void saveNickname() throws Exception {
 
         mockMvc.perform(
-                        post("/api/v1/members/refreshToken")
-                                .param("refreshToken", USER_ACCESS_TOKEN)
-
-                )
-                .andExpect(status().isOk())
-                .andDo(document("리프레쉬 토큰 갱신",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("리프레쉬 토큰 갱신")
-                                .responseFields(
-                                        fieldWithPath("accessToken").type(STRING).description("access token"),
-                                        fieldWithPath("refreshToken").type(STRING).description("access token"),
-                                        fieldWithPath("isNew").type(BOOLEAN).description("신규 가입 여부")
-
-                                )
-                                .build()
-                        )));
-    }
-
-    @DisplayName("로그인한 사용자의 닉네임과 프로필 사진을 조회할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void getMemberInfoByLogin() throws Exception {
-
-        mockMvc.perform(
-                        get("/api/v1/members/info")
+                        put("/api/v1/members")
+                                .param("nickname", "nickname")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
                 )
                 .andExpect(status().isOk())
-                .andDo(document("로그인한 사용자의 닉네임, 프로필 사진 조회",
+                .andDo(document("로그인한 사용자의 닉네임 변경",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("닉네임과 프로필 사진을 조회")
+                                .tag("[공통] 멤버")
+                                .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
@@ -223,129 +174,42 @@ class MemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("memberId").type(NUMBER).description("member id"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("email").type(STRING).description("이메일")
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("사용자의 닉네임과 프로필 사진을 조회할 수 있다.")
+    @DisplayName("사용자는 닉네임을 변경할 수 있다. - 실패: 중복")
     @WithMockCustomUser
     @Test
-    void getMemberInfo() throws Exception {
+    void saveNicknameConflict() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v1/members/{memberId}/info",1)
+                        put("/api/v1/members")
+                                .param("nickname", "conflictNickname")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+
                 )
-                .andExpect(status().isOk())
-                .andDo(document("사용자의 닉네임, 프로필 사진 조회",
-                        pathParameters(
-                                parameterWithName("memberId").description("조회 대상의 memberId")
-                        ),
+                .andExpect(status().isConflict())
+                .andDo(document("로그인한 사용자의 닉네임 변경",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("닉네임과 프로필 사진을 조회")
+                                .tag("[공통] 멤버")
+                                .summary("로그인한 사용자의 닉네임 변경")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
-                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("email").type(STRING).description("이메일")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("이미 존재하는 닉네임입니다.")
                                 )
                                 .build()
                         )));
     }
-
-    @DisplayName("로그인한 사용자의 프로필을 조회할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void getMemberProfileInfoByLogin() throws Exception {
-
-        mockMvc.perform(
-                        get("/api/v1/members")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("로그인한 사용자의 프로필 조회",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("로그인한 사용자의 프로필 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("followingCount").type(NUMBER).description("팔로잉 수"),
-                                        fieldWithPath("followerCount").type(NUMBER).description("팔로워 수"),
-                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수"),
-                                        fieldWithPath("isFollow").type(BOOLEAN).description("팔로우 여부")
-                                )
-                                .build()
-                        )));
-    }
-
-    @DisplayName("사용자의 프로필을 조회할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void getProfileInfo() throws Exception {
-
-        mockMvc.perform(
-                        get("/api/v1/members/{memberId}",1)
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("사용자의 프로필 조회",
-                        pathParameters(
-                                parameterWithName("memberId").description("조회 대상의 memberId")
-                        ),
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("사용자의 프로필 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                        fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
-                                        fieldWithPath("followingCount").type(NUMBER).description("팔로잉 수"),
-                                        fieldWithPath("followerCount").type(NUMBER).description("팔로워 수"),
-                                        fieldWithPath("teamCount").type(NUMBER).description("팀 수"),
-                                        fieldWithPath("isFollow").type(BOOLEAN).description("팔로우 여부")
-                                )
-                                .build()
-                        )));
-    }
-
-
-    @DisplayName("사용자의 프리미엄 구독을 조회할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void getPremiumByLogin() throws Exception {
-
-        mockMvc.perform(
-                        get("/api/v1/members/premiums")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("사용자의 프리미엄 구독 조회",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("유저 - 멤버")
-                                .summary("사용자의 프리미엄 구독 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("premiumId").type(NUMBER).description("premium id"),
-                                        fieldWithPath("premiumType").type(STRING).description("premium type"),
-                                        fieldWithPath("expiredDate").type(STRING).description("만료일")
-                                )
-                                .build()
-                        )));
-    }
-
 
 }

@@ -1,15 +1,11 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.iconGroup.IconGroupCreatorController;
+import com.timeToast.timeToast.controller.icon.IconGroupCreatorController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.service.icon.icon.IconService;
-import com.timeToast.timeToast.service.icon.icon.IconServiceTest;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceImpl;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceImplTest;
 import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
@@ -24,7 +20,6 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -34,11 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
     private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
-    private final IconService iconService = new IconServiceTest();
 
     @Override
     protected Object initController() {
-        return new IconGroupCreatorController(iconGroupAdminService, iconService);
+        return new IconGroupCreatorController(iconGroupAdminService);
     }
 
 

@@ -16,9 +16,7 @@ import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentSaveResponse;
-import com.timeToast.timeToast.dto.payment.response.PaymentSuccessResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentsAdminResponses;
-import com.timeToast.timeToast.global.config.TossConfig;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
@@ -32,13 +30,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,11 +64,15 @@ public class PaymentServiceImplTest {
     @Mock
     IconMemberRepository iconMemberRepository;
 
-    @Mock
-    TossConfig tossConfig;
 
     @InjectMocks
     PaymentServiceImpl paymentService;
+
+    @Value("${payment.toss.confirm-url}")
+    private String TOSS_CONFIRM_URL;
+
+    @Value("${payment.toss.secret-key}")
+    private String TOSS_SECRET_KEY;
 
     private Member setUpMember() {
         return Member.builder()

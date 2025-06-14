@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.member.member.response.LoginResponse;
+import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
@@ -22,7 +22,6 @@ import java.util.UUID;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.REFRESH_TOKEN_EXPIRED;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
-import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_HOUR;
 import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_DAY;
 
 

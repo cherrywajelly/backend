@@ -3,8 +3,8 @@ package com.timeToast.timeToast.service.gift_toast;
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.team.team.Team;
@@ -27,8 +27,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece.ToastPieceRepository;
-import com.timeToast.timeToast.repository.toast_piece.toast_piece_image.ToastPieceImageRepository;
+import com.timeToast.timeToast.repository.toast_piece.ToastPieceRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.toast_piece.ToastPieceService;
 import org.junit.jupiter.api.DisplayName;
@@ -78,8 +77,6 @@ public class GiftToastServiceImplTest {
     @Mock
     FcmService fcmService;
 
-    @Mock
-    ToastPieceImageRepository toastPieceImageRepository;
 
     @Mock
     TeamRepository teamRepository;
@@ -100,7 +97,6 @@ public class GiftToastServiceImplTest {
 
     private Icon giftToastIconSetUp(){
         return Icon.builder()
-                .iconGroupId(1L)
                 .iconImageUrl("imageUrl")
                 .build();
     }

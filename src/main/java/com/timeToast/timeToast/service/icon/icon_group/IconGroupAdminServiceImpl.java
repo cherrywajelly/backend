@@ -8,29 +8,25 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.domain.settlement.Settlement;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.creator.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.service.icon.icon.IconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,9 +48,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
-    private final IconRepository iconRepository;
     private final PaymentRepository paymentRepository;
-    private final IconService iconService;
     private final FileUploadService fileUploadService;
 
     @Value("${spring.cloud.oci.base-url}")
@@ -62,19 +56,37 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
 
     @Transactional
     @Override
-    public Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, long memberId) {
+    public Response postIconGroup(final MultipartFile thumbnailIcon, final List<MultipartFile> files,
+                                  final IconGroupPostRequest iconGroupPostRequest, long memberId) {
 
         IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId,IconState.WAITING));
-        iconService.postIconSet(files, iconGroup.getId());
 
-        String iconGroupUrl = baseUrl +  ICON_GROUP.value() + SLASH.value() + IMAGE.value() + SLASH.value() + iconGroup.getId();
+        String iconGroupUrl = baseUrl + ICON_GROUP.value() + SLASH.value() + iconGroup.getId() + SLASH.value() + IMAGE.value();
         String thumbnailImageUrl = fileUploadService.uploadfile(thumbnailIcon, iconGroupUrl);
         iconGroup.updateThumbnailImageUrl(thumbnailImageUrl);
+
+        iconGroup.addIcons(postIconSet(files, iconGroup.getId()));
 
         log.info("save icon group");
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
+    private List<Icon> postIconSet(List<MultipartFile> files, long iconGroupId) {
+
+        List<Icon> icons = new ArrayList<>();
+
+        files.forEach(file-> {
+
+            String endpoint = baseUrl + ICON_GROUP.value() + SLASH.value() + iconGroupId + SLASH.value()
+                    + ICON.value() + SLASH.value() + RandomStringUtils.randomAlphanumeric(10) + SLASH.value() + IMAGE.value();
+
+            String iconImageUrl = fileUploadService.uploadfile(file, endpoint);
+            Icon icon = Icon.builder().iconImageUrl(iconImageUrl).build();
+            icons.add(icon);
+        });
+
+        return icons;
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -101,9 +113,8 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
         Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
 
         if (iconGroup.isPresent()) {
-            List<Icon> icons = iconRepository.findAllByIconGroupId(iconGroupId);
             List<String> iconImageUrls = new ArrayList<>();
-            icons.forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
+            iconGroup.get().getIcons().forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
 
             Member member = memberRepository.getById(memberId);
 
@@ -192,9 +203,10 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     @Override
     public IconGroupInfoResponses getIconGroupForNonApproval() {
         List<IconGroupInfoResponse> iconGroupNonApprovalResponses =
-                iconGroupRepository.findAllByIconState(IconState.WAITING).stream().map(
-                        iconGroup -> IconGroupInfoResponse.from(iconGroup)
-                ).toList();
+                iconGroupRepository.findAllByIconState(IconState.WAITING)
+                        .stream()
+                        .map(IconGroupInfoResponse::from)
+                        .toList();
 
         return new IconGroupInfoResponses(iconGroupNonApprovalResponses);
     }
@@ -204,7 +216,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
     public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
-        List<IconResponse> iconResponses = iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(IconResponse::from).toList();
+        List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
 
         return IconGroupDetailResponse.builder()
                 .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
@@ -217,15 +229,6 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .build();
 
     }
-
-//    @Transactional(readOnly = true)
-//    @Override
-//    public IconGroupInfoResponses getAllIconGroups(){
-//        List<IconGroupInfoResponse> iconGroupInfoResponses = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN).stream().map(
-//                IconGroupInfoResponse::from
-//        ).toList();
-//        return new IconGroupInfoResponses(iconGroupInfoResponses);
-//    }
 
     @Transactional(readOnly = true)
     @Override
@@ -256,7 +259,7 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                                     .title(iconGroup.getName())
                                     .revenue(salesIconCount * iconGroup.getPrice())
                                     .salesCount(salesIconCount)
-                                    .iconImageUrl(iconRepository.findAllByIconGroupId(iconGroup.getId()).stream().map(Icon::getIconImageUrl).toList())
+                                    .iconImageUrl(iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList())
                                     .build()
                     );
                 }
@@ -268,6 +271,40 @@ public class IconGroupAdminServiceImpl implements IconGroupAdminService {
                 .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
                 .creatorIconInfos(creatorIconInfos)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupOrderedResponses getIconOrderedResponse (final long memberId) {
+
+        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
+        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
+
+        iconGroups.forEach(iconGroup -> {
+
+            List<String> iconImageUrls = iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList();
+
+            List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+            long income = payments.stream().mapToLong(Payment::getAmount).sum();
+
+            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
+        });
+        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorProfileResponse getIconGroupSaleInfos(final long memberId){
+        Member member = memberRepository.getById(memberId);
+
+        IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
+        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().size();
+        long sellIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+        long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
+        long settlement = (long) (revenue * 0.7);
+
+        return new CreatorProfileResponse(iconGroupOrderedResponses, createdIconCount, sellIconCount, revenue, settlement);
+
     }
 
 

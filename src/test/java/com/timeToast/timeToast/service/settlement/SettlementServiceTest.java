@@ -1,10 +1,9 @@
 package com.timeToast.timeToast.service.settlement;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import com.timeToast.timeToast.dto.settlement.request.SettlementRequest;
 import com.timeToast.timeToast.dto.settlement.response.*;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class SettlementServiceTest implements SettlementService{
                 .salesIconCount(1L)
                 .totalRevenue(1L)
                 .settlement(1L)
-                .bank(Bank.NH.value())
+                .bank(Bank.NH)
                 .accountNumber("accountNumber")
                 .settlementState(SettlementState.APPROVAL)
                 .settlementIcons(List.of(new SettlementIcon("title", 1L, 1, SettlementState.APPROVAL)))
@@ -71,7 +70,7 @@ public class SettlementServiceTest implements SettlementService{
                 .salesIconCount(1L)
                 .totalRevenue(1L)
                 .settlement(1L)
-                .bank(Bank.KAKAO.value())
+                .bank(Bank.KAKAO)
                 .accountNumber("accountNumber")
                 .settlementState(SettlementState.APPROVAL)
                 .settlementIcons(List.of(new SettlementIcon("title", 1L, 1, SettlementState.APPROVAL)))

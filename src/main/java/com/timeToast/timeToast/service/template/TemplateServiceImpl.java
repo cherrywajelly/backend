@@ -8,8 +8,6 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateRespon
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
-import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TEMPLATE;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 @Service

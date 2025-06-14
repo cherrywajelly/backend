@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast;
 
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 
 import java.util.List;
 import java.util.Optional;

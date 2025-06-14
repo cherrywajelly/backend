@@ -1,19 +1,16 @@
 package com.timeToast.timeToast.repository.gift_toast.gift_toast_owner;
 
-import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
+import com.timeToast.timeToast.domain.giftToast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastOwnerResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceMember;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
+import static com.timeToast.timeToast.domain.giftToast.gift_toast_owner.QGiftToastOwner.giftToastOwner;
 import static com.timeToast.timeToast.domain.member.member.QMember.member;
 import static com.timeToast.timeToast.domain.toast_piece.toast_piece.QToastPiece.toastPiece;
 
