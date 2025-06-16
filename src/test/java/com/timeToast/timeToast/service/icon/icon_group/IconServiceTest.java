@@ -1,6 +1,5 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
-import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
@@ -8,7 +7,6 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.IconService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
@@ -17,70 +15,59 @@ public class IconServiceTest implements IconService {
 
 
     @Override
-    public IconGroupResponses getToastIconGroups(final long memberId) {
-        List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
+    public IconGroupDetailResponses getToastIconGroupsByUser(final long memberId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+        boolean isBuy = false;
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
 
-        List<IconResponse> iconResponses = new ArrayList<>();
-        iconResponses.add(new IconResponse(1, "iconUrl"));
-
-        iconGroupResponses.add(new IconGroupResponse(1, "name", iconResponses));
-        return new IconGroupResponses(iconGroupResponses);
+        List<IconGroupDetail> iconGroupDetails = List.of(new IconGroupDetail(iconGroupSummaryInfo, isBuy, iconResponses));
+        return new IconGroupDetailResponses(iconGroupDetails);
     }
 
     @Override
-    public IconGroupResponses getJamIconGroups(final long memberId) {
-        List<IconGroupResponse> iconGroupResponses = new ArrayList<>();
+    public IconGroupDetailResponses getJamIconGroupsByUser(final long memberId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", IconType.JAM, 10);
+        boolean isBuy = false;
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
 
-        List<IconResponse> iconResponses = new ArrayList<>();
-        iconResponses.add(new IconResponse(1, "iconUrl"));
-
-        iconGroupResponses.add(new IconGroupResponse(1, "name", iconResponses));
-        return new IconGroupResponses(iconGroupResponses);
+        List<IconGroupDetail> iconGroupDetails = List.of(new IconGroupDetail(iconGroupSummaryInfo, isBuy, iconResponses));
+        return new IconGroupDetailResponses(iconGroupDetails);
     }
 
     @Override
-    public IconGroupMarketResponses getAllToastsIconGroups(final long memberId) {
-        List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
+    public IconGroupInfoResponses getAllToastsIconGroups(final long memberId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+        boolean isBuy = false;
 
-        iconGroupMarketResponses.add(
-                IconGroupMarketResponse.builder()
-                        .iconGroupId(1L)
-                        .title("title")
-                        .thumbnailImageUrl("thumbnailImage")
-                        .creatorNickname("nickname")
-                        .iconType(IconType.TOAST)
-                        .isBuy(false).build());
+        List<IconGroupInfoResponse> iconGroupInfoResponses = List.of(new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy));
 
-        return new IconGroupMarketResponses(iconGroupMarketResponses);
+        return new IconGroupInfoResponses(iconGroupInfoResponses);
     }
 
     @Override
-    public IconGroupMarketResponses getAllJamsIconGroups(final long memberId) {
-        List<IconGroupMarketResponse> iconGroupMarketResponses = new ArrayList<>();
+    public IconGroupInfoResponses getAllJamsIconGroups(final long memberId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", IconType.JAM, 10);
+        boolean isBuy = false;
 
-        iconGroupMarketResponses.add(
-                IconGroupMarketResponse.builder()
-                        .iconGroupId(1L)
-                        .title("title")
-                        .thumbnailImageUrl("thumbnailImage")
-                        .creatorNickname("nickname")
-                        .iconType(IconType.JAM)
-                        .isBuy(false).build());
+        List<IconGroupInfoResponse> iconGroupInfoResponses = List.of(new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy));
 
-        return new IconGroupMarketResponses(iconGroupMarketResponses);
+        return new IconGroupInfoResponses(iconGroupInfoResponses);
     }
 
     @Override
-    public IconGroupMarketDetailResponse getIconGroupDetail(final long memberId, final long iconGroupId) {
-        return IconGroupMarketDetailResponse.builder()
-                .thumbnailImageUrl("thumbnailImageUrl")
-                .title("title")
-                .creatorNickname("nickname")
-                .price(0)
-                .iconResponses(List.of(new IconResponse(1L, "iconImageUrl")))
-                .iconState(IconState.REGISTERED)
-                .isBuy(false)
-                .build();
+    public IconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+        boolean isBuy = false;
+
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+
+        return new IconGroupDetail(iconGroupSummaryInfo,isBuy,iconResponses );
+
     }
 
     @Override

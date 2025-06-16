@@ -44,7 +44,7 @@ public class AdminIconServiceTest implements AdminIconService {
                 .creatorNickname("nickname")
                 .price(0)
                 .description("description")
-                .iconResponses(List.of(new IconResponse(1L, "iconImageUrl")))
+                .icons(List.of(new IconResponse(1L, "iconImageUrl")))
                 .iconState(IconState.REGISTERED)
                 .build();
     }

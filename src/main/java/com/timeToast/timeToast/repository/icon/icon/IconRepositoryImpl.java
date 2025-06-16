@@ -22,14 +22,4 @@ public class IconRepositoryImpl implements IconRepository {
             });
     }
 
-//    @Override
-//    public Icon save(final Icon icon) {
-//        return iconJpaRepository.save(icon);
-//    }
-//
-//    @Override
-//    public void deleteById(final long iconId) {
-//        iconJpaRepository.deleteById(iconId);
-//    }
-
 }

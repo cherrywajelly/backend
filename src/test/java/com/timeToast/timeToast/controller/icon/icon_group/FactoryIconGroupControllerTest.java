@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IconGroupCreatorAdminControllerTest extends BaseControllerTests {
+public class FactoryIconGroupControllerTest extends BaseControllerTests {
     private final AdminIconService adminIconService = new AdminIconServiceTest();
 
     @Override

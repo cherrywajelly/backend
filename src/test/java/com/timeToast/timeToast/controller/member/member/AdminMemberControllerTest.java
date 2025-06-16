@@ -280,7 +280,7 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("[어드민] 멤버버")
+                                .tag("[어드민] 멤버")
                                 .summary("관리자 사용자 팔로잉 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())

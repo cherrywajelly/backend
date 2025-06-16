@@ -339,7 +339,7 @@ public class AdminIconServiceImplTest {
         assertEquals(iconGroup.getPrice(), iconGroupDetailResponse.price());
         assertEquals(iconGroup.getIconState(), iconGroupDetailResponse.iconState());
         assertEquals(iconGroup.getDescription(), iconGroupDetailResponse.description());
-        assertEquals(iconGroup.getIcons().size(), iconGroupDetailResponse.iconResponses().size());
+        assertEquals(iconGroup.getIcons().size(), iconGroupDetailResponse.icons().size());
 
 
 
@@ -365,7 +365,7 @@ public class AdminIconServiceImplTest {
 
     @Test
     @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
-    void getIconGroupsByCreator() {
+    void getIconGroupsByUserByCreator() {
         // Given
         List<IconGroup> iconGroups = iconGroupList();
         when(iconGroupRepository.findAllByMemberId(anyLong())).thenReturn(iconGroups);

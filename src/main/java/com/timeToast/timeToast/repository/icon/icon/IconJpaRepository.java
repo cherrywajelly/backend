@@ -4,5 +4,4 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IconJpaRepository extends JpaRepository<Icon, Long> {
-//    Icon findByIconImageUrl(final String iconImageUrl);
 }

@@ -20,14 +20,14 @@ public class AdminIconGroupController {
         return adminIconService.saveIconState(iconGroupStateRequest);
     }
 
-    @GetMapping("/{iconGroupId}")
-    public IconGroupDetailResponse iconGroupDetail(@PathVariable long iconGroupId) {
-        return adminIconService.getIconGroupDetail(iconGroupId);
-    }
-
     @GetMapping("")
     public IconGroupAdminResponses iconGroupList() {
         return adminIconService.getAllIconGroups();
+    }
+
+    @GetMapping("/{iconGroupId}")
+    public IconGroupDetailResponse iconGroupDetail(@PathVariable long iconGroupId) {
+        return adminIconService.getIconGroupDetail(iconGroupId);
     }
 
     @GetMapping("/non-approval")

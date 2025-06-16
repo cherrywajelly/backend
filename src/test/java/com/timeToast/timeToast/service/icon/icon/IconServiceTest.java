@@ -17,7 +17,7 @@
 ////public class IconServiceTest implements IconService{
 ////
 ////    @Override
-////    public void postIconSet(List<MultipartFile> files, long iconGroupId) {
+////    public void postIconSet(List<MultipartFile> files, long id) {
 //////        Map<MultipartFile, String> result = new HashMap<>();
 //////        result.put(mock(MockMultipartFile.class), "imageUrl");
 //////        return result;

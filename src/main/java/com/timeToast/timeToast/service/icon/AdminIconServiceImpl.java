@@ -110,7 +110,7 @@ public class AdminIconServiceImpl implements AdminIconService {
     @Transactional(readOnly = true)
     @Override
     public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
-        Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId);
+        Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(memberId,iconGroupId);
 
         if (iconGroup.isPresent()) {
             List<String> iconImageUrls = new ArrayList<>();
@@ -225,7 +225,7 @@ public class AdminIconServiceImpl implements AdminIconService {
                 .price(iconGroup.getPrice())
                 .iconState(iconGroup.getIconState())
                 .description(iconGroup.getDescription())
-                .iconResponses(iconResponses)
+                .icons(iconResponses)
                 .build();
 
     }

@@ -5,17 +5,19 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetail;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetailResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.service.icon.IconServiceImpl;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.ICON_MEMBER_NOT_FOUND;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,7 +70,7 @@ public class IconServiceImplTest {
         member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
         iconMember = IconMember.builder().build();
-//        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl(imageUrl).build();
+//        icon = Icon.builder().id(id).iconImageUrl(imageUrl).build();
     }
 
 
@@ -73,16 +78,16 @@ public class IconServiceImplTest {
 //    @DisplayName("아이콘 그룹 구매 성공")
 //    void buyIconGroupSuccess() {
 //        long memberId = 1L;
-//        long iconGroupId = 1L;
+//        long id = 1L;
 //
 //        ReflectionTestUtils.setField(member, "id", memberId);
-//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
+//        ReflectionTestUtils.setField(iconGroup, "id", id);
 //
 //        when(memberRepository.getById(memberId)).thenReturn(member);
-//        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(null);
+//        when(iconGroupRepository.getById(id)).thenReturn(iconGroup);
+//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, id)).thenReturn(null);
 //
-//        Response response = iconGroupService.buyIconGroup(memberId, iconGroupId);
+//        Response response = iconGroupService.buyIconGroup(memberId, id);
 //
 //        verify(iconMemberRepository, times(1)).save(any(IconMember.class));
 //        assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
@@ -93,40 +98,40 @@ public class IconServiceImplTest {
 //    @DisplayName("아이콘 그룹 구매 실패 - 이미 구매한 아이콘 존재")
 //    void buyIconGroupFailed() {
 //        long memberId = 1L;
-//        long iconGroupId = 1L;
+//        long id = 1L;
 //
 //        ReflectionTestUtils.setField(member, "id", memberId);
-//        ReflectionTestUtils.setField(iconGroup, "id", iconGroupId);
+//        ReflectionTestUtils.setField(iconGroup, "id", id);
 //
 //        when(memberRepository.getById(memberId)).thenReturn(member);
-//        when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(iconMember);
+//        when(iconGroupRepository.getById(id)).thenReturn(iconGroup);
+//        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, id)).thenReturn(iconMember);
 //
-//        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupService.buyIconGroup(memberId, iconGroupId));
+//        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupService.buyIconGroup(memberId, id));
 //
 //        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
-//        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, iconGroupId);
+//        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, id);
 //    }
 
 
     @Test
     @DisplayName("토스트 아이콘 그룹 목록 반환 성공")
-    void getToastIconGroups() {
+    void getToastIconGroupsByUser() {
         long memberId = 1L;
 
-        IconGroupResponses iconGroupResponses = iconGroupService.getToastIconGroups(memberId);
+        IconGroupDetailResponses iconGroupDetailResponses = iconGroupService.getToastIconGroupsByUser(memberId);
 
-        assertThat(iconGroupResponses).isNotNull();
+        assertThat(iconGroupDetailResponses).isNotNull();
     }
 
     @Test
     @DisplayName("잼 아이콘 그룹 목록 반환 성공")
-    void getJamIconGroups() {
+    void getJamIconGroupsByUser() {
         long memberId = 1L;
 
-        IconGroupResponses iconGroupResponses = iconGroupService.getJamIconGroups(memberId);
+        IconGroupDetailResponses iconGroupDetailResponses = iconGroupService.getJamIconGroupsByUser(memberId);
 
-        assertThat(iconGroupResponses).isNotNull();
+        assertThat(iconGroupDetailResponses).isNotNull();
     }
 
     @Test
@@ -134,9 +139,9 @@ public class IconServiceImplTest {
     void getAllToastsIconGroups() {
         long memberId = 1L;
 
-        IconGroupMarketResponses iconGroupMarketResponses = iconGroupService.getAllToastsIconGroups(memberId);
+        IconGroupInfoResponses iconGroupInfoResponses = iconGroupService.getAllToastsIconGroups(memberId);
 
-        assertThat(iconGroupMarketResponses).isNotNull();
+        assertThat(iconGroupInfoResponses).isNotNull();
     }
 
     @Test
@@ -144,9 +149,9 @@ public class IconServiceImplTest {
     void getAllJamsIconGroups() {
         long memberId = 1L;
 
-        IconGroupMarketResponses iconGroupMarketResponses = iconGroupService.getAllJamsIconGroups(memberId);
+        IconGroupInfoResponses iconGroupInfoResponses = iconGroupService.getAllJamsIconGroups(memberId);
 
-        assertThat(iconGroupMarketResponses).isNotNull();
+        assertThat(iconGroupInfoResponses).isNotNull();
     }
 
     @Test
@@ -157,14 +162,11 @@ public class IconServiceImplTest {
         long memberId = 1L;
         IconResponse iconResponse = new IconResponse(iconId, "imageUrl");
 
-
         when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
-        when(memberRepository.getById(iconGroup.getMemberId())).thenReturn(member);
-//        when(iconRepository.findAllByIconGroupId(0L)).thenReturn(List.of(icon));
 
-        IconGroupMarketDetailResponse iconGroupDetailResponse = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
+        IconGroupDetail iconGroupDetail = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
 
-        assertThat(iconGroupDetailResponse).isNotNull();
+        assertThat(iconGroupDetail).isNotNull();
     }
 
     @Test
@@ -176,12 +178,12 @@ public class IconServiceImplTest {
 
         ReflectionTestUtils.setField(iconMember, "id", iconMemberId);
 
-        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(iconMember);
+        when(iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(Optional.of(iconMember));
         doNothing().when(iconMemberRepository).deleteById(iconMember.getId());
 
         Response response = iconGroupService.deleteIconGroup(memberId, iconGroupId);
 
-        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, iconGroupId);
+        verify(iconMemberRepository, times(1)).findByMemberIdAndIconGroupId(memberId, iconGroupId);
         verify(iconMemberRepository, times(1)).deleteById(iconGroupId);
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         assertThat(response.message()).isEqualTo(SUCCESS_DELETE.getMessage());
@@ -192,13 +194,7 @@ public class IconServiceImplTest {
     void deleteIconGroupFail() {
         long memberId = 1L;
         long iconGroupId = 1L;
-        long iconMemberId = 1L;
 
-        when(iconMemberRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId)).thenReturn(null);
-
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupService.deleteIconGroup(memberId, iconGroupId));
-
-        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
-        verify(iconMemberRepository, times(1)).getByMemberIdAndIconGroupId(memberId, iconGroupId);
+        assertThrows(NotFoundException.class, () -> iconGroupService.deleteIconGroup(memberId, iconGroupId));
     }
 }

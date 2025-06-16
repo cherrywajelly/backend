@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.icon;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetail;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetailResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.IconService;
@@ -19,27 +19,27 @@ public class AppIconGroupController {
     private final IconService iconService;
 
     @GetMapping("/members/toasts")
-    public IconGroupResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
-        return iconService.getToastIconGroups(loginMember.id());
+    public IconGroupDetailResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
+        return iconService.getToastIconGroupsByUser(loginMember.id());
     }
 
     @GetMapping("/members/jams")
-    public IconGroupResponses getJamIconGroupsByMember(@Login LoginMember loginMember) {
-        return iconService.getJamIconGroups(loginMember.id());
+    public IconGroupDetailResponses getJamIconGroupsByMember(@Login LoginMember loginMember) {
+        return iconService.getJamIconGroupsByUser(loginMember.id());
     }
 
     @GetMapping("/toasts")
-    public IconGroupMarketResponses getAllToastsIconGroups(@Login LoginMember loginMember) {
+    public IconGroupInfoResponses getAllToastsIconGroups(@Login LoginMember loginMember) {
         return iconService.getAllToastsIconGroups(loginMember.id());
     }
 
     @GetMapping("/jams")
-    public IconGroupMarketResponses getAllJamsIconGroups(@Login LoginMember loginMember) {
+    public IconGroupInfoResponses getAllJamsIconGroups(@Login LoginMember loginMember) {
         return iconService.getAllJamsIconGroups(loginMember.id());
     }
 
     @GetMapping("/{iconGroupId}")
-    public IconGroupMarketDetailResponse getIconGroupDetail(final @Login LoginMember loginMember, final @PathVariable long iconGroupId) {
+    public IconGroupDetail getIconGroupDetail(@Login LoginMember loginMember, final @PathVariable long iconGroupId) {
         return iconService.getIconGroupDetail(loginMember.id(), iconGroupId);
     }
 

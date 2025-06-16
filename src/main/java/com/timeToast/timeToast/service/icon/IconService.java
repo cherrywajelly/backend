@@ -1,15 +1,15 @@
 package com.timeToast.timeToast.service.icon;
 
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetail;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetailResponses;
 import com.timeToast.timeToast.global.response.Response;
 
 public interface IconService {
-    IconGroupResponses getToastIconGroups(final long memberId);
-    IconGroupResponses getJamIconGroups(final long memberId);
-    IconGroupMarketResponses getAllToastsIconGroups(final long memberId);
-    IconGroupMarketResponses getAllJamsIconGroups(final long memberId);
-    IconGroupMarketDetailResponse getIconGroupDetail(final long memberId, final long iconGroupId);
+    IconGroupDetailResponses getToastIconGroupsByUser(final long memberId);
+    IconGroupDetailResponses getJamIconGroupsByUser(final long memberId);
+    IconGroupInfoResponses getAllToastsIconGroups(final long memberId);
+    IconGroupInfoResponses getAllJamsIconGroups(final long memberId);
+    IconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId);
     Response deleteIconGroup(final long memberId, final long iconGroupId);
 }

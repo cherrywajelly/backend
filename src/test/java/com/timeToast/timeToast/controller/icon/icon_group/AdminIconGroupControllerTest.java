@@ -73,13 +73,13 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
     void getManagerIconGroupDetail() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v3/iconGroups/{iconGroupId}", 1L)
+                        get("/api/v3/iconGroups/{id}", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 단일 상세 조회",
                         pathParameters(
-                                parameterWithName("iconGroupId").description("iconGroup Id")
+                                parameterWithName("id").description("iconGroup Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("관리자 - 아이콘")
@@ -94,8 +94,8 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("price").type(NUMBER).description("아이콘 그룹 가격"),
                                         fieldWithPath("iconState").type(STRING).description("아이콘 state"),
                                         fieldWithPath("description").type(STRING).description("아이콘 description"),
-                                        fieldWithPath("iconResponses[0].iconId").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("iconResponses[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
+                                        fieldWithPath("icons[0].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("icons[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
                                 .build()
                         )));
