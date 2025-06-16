@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.icon.IconGroupController;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupServiceTest;
+import com.timeToast.timeToast.controller.icon.AppIconGroupController;
+import com.timeToast.timeToast.service.icon.IconService;
+import com.timeToast.timeToast.service.icon.icon_group.IconServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -21,12 +21,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IconGroupControllerTest extends BaseControllerTests {
-    private final IconGroupService iconGroupService = new IconGroupServiceTest();
+public class AppIconGroupControllerTest extends BaseControllerTests {
+    private final IconService iconService = new IconServiceTest();
 
     @Override
     protected Object initController() {
-        return new IconGroupController(iconGroupService);
+        return new AppIconGroupController(iconService);
     }
 
 //    @DisplayName("아이콘 그룹을 구매할 수 있다.")

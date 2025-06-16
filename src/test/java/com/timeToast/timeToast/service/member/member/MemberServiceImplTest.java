@@ -18,7 +18,7 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -57,7 +56,7 @@ public class MemberServiceImplTest {
     FileUploadService fileUploadService;
 
     @Mock
-    IconGroupAdminService iconGroupAdminService;
+    AdminIconService adminIconService;
 
     @InjectMocks
     MemberServiceImpl memberService;
@@ -342,7 +341,7 @@ public class MemberServiceImplTest {
                         .build()
         );
         CreatorIconInfos creatorIconInfos =  new CreatorIconInfos(1, 1000, 10,creatorIconInfoList);
-        when(iconGroupAdminService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
+        when(adminIconService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();

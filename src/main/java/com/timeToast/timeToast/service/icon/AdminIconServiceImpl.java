@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.icon.icon_group;
+package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
@@ -45,7 +45,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class IconGroupAdminServiceImpl implements IconGroupAdminService {
+public class AdminIconServiceImpl implements AdminIconService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final PaymentRepository paymentRepository;

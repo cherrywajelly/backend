@@ -10,7 +10,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManag
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.member.member.AdminMemberService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminMemberController {
     private final AdminMemberService adminMemberService;
     private final MemberService memberService;
-    private final IconGroupAdminService iconGroupAdminService;
+    private final AdminIconService adminIconService;
 
     @GetMapping("/api/v3/members")
     public MemberInfoResponses getMembersManager() {
@@ -86,7 +86,7 @@ public class AdminMemberController {
 
     @GetMapping("/api/v3/creators/{creatorId}/iconGroups")
     public CreatorIconInfos getIconGroupsByCreator(@PathVariable long creatorId) {
-        return iconGroupAdminService.getIconGroupsByCreator(creatorId);
+        return adminIconService.getIconGroupsByCreator(creatorId);
     }
 
     @PostMapping("/api/v4/members/{memberId}/staffs")

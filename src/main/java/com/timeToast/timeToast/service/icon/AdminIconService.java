@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.icon.icon_group;
+package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface IconGroupAdminService {
+public interface AdminIconService {
     Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId);
 
     IconGroupCreatorResponses getIconGroupForCreator(final long memberId);

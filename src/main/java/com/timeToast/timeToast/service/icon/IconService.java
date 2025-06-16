@@ -1,11 +1,11 @@
-package com.timeToast.timeToast.service.icon.icon_group;
+package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketDetailResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMarketResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupResponses;
 import com.timeToast.timeToast.global.response.Response;
 
-public interface IconGroupService {
+public interface IconService {
     IconGroupResponses getToastIconGroups(final long memberId);
     IconGroupResponses getJamIconGroups(final long memberId);
     IconGroupMarketResponses getAllToastsIconGroups(final long memberId);

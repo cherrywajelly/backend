@@ -1,11 +1,11 @@
 package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.icon.IconGroupAdminController;
+import com.timeToast.timeToast.controller.icon.AdminIconGroupController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
+import com.timeToast.timeToast.service.icon.AdminIconService;
+import com.timeToast.timeToast.service.icon.icon_group.AdminIconServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,13 +25,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IconGroupAdminControllerTest extends BaseControllerTests {
-    private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
+public class AdminIconGroupControllerTest extends BaseControllerTests {
+    private final AdminIconService adminIconService = new AdminIconServiceTest();
 
 
     @Override
     protected Object initController() {
-        return new IconGroupAdminController(iconGroupAdminService);
+        return new AdminIconGroupController(adminIconService);
     }
 
 

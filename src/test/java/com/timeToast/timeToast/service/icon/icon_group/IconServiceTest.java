@@ -6,13 +6,14 @@ import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
+import com.timeToast.timeToast.service.icon.IconService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 
-public class IconGroupServiceTest implements IconGroupService {
+public class IconServiceTest implements IconService {
 
 
     @Override

@@ -2,52 +2,52 @@ package com.timeToast.timeToast.controller.icon;
 
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v3/iconGroups")
 @RestController
-public class IconGroupAdminController {
+public class AdminIconGroupController {
 
-    private final IconGroupAdminService iconGroupAdminService;
+    private final AdminIconService adminIconService;
 
-    public IconGroupAdminController(IconGroupAdminService iconGroupAdminService) {
-        this.iconGroupAdminService = iconGroupAdminService;
+    public AdminIconGroupController(AdminIconService adminIconService) {
+        this.adminIconService = adminIconService;
     }
 
     @PostMapping("")
     public IconGroupInfoResponse saveIconState(@RequestBody IconGroupStateRequest iconGroupStateRequest) {
-        return iconGroupAdminService.saveIconState(iconGroupStateRequest);
+        return adminIconService.saveIconState(iconGroupStateRequest);
     }
 
     @GetMapping("/{iconGroupId}")
     public IconGroupDetailResponse iconGroupDetail(@PathVariable long iconGroupId) {
-        return iconGroupAdminService.getIconGroupDetail(iconGroupId);
+        return adminIconService.getIconGroupDetail(iconGroupId);
     }
 
     @GetMapping("")
     public IconGroupAdminResponses iconGroupList() {
-        return iconGroupAdminService.getAllIconGroups();
+        return adminIconService.getAllIconGroups();
     }
 
     @GetMapping("/non-approval")
     public IconGroupInfoResponses iconGroupNonApproval() {
-        return iconGroupAdminService.getIconGroupForNonApproval();
+        return adminIconService.getIconGroupForNonApproval();
     }
 
     @GetMapping("/summary")
     public IconGroupSummaries iconGroupSummary() {
-        return iconGroupAdminService.iconGroupSummary();
+        return adminIconService.iconGroupSummary();
     }
 
     @GetMapping(value = "/summary", params = {"year", "month"})
     public IconGroupSummaries iconGroupSummary(@RequestParam(value = "year") int year, @RequestParam(value = "month") int month) {
-        return iconGroupAdminService.iconGroupSummaryByYearMonth(year, month);
+        return adminIconService.iconGroupSummaryByYearMonth(year, month);
     }
 
     @GetMapping("/monthly-revenue")
     public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(@RequestParam(value = "year") int year) {
-        return iconGroupAdminService.iconGroupMonthlyRevenue(year);
+        return adminIconService.iconGroupMonthlyRevenue(year);
     }
 
 }

@@ -21,6 +21,7 @@ import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
+import com.timeToast.timeToast.service.icon.AdminIconServiceImpl;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +45,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IconGroupAdminServiceImplTest {
+public class AdminIconServiceImplTest {
 
     @Mock
     private IconGroupRepository iconGroupRepository;
@@ -62,7 +63,7 @@ public class IconGroupAdminServiceImplTest {
     private PaymentRepository paymentRepository;
 
     @InjectMocks
-    private IconGroupAdminServiceImpl iconGroupAdminService;
+    private AdminIconServiceImpl iconGroupAdminService;
 
     private Member member;
     private IconGroup iconGroup;

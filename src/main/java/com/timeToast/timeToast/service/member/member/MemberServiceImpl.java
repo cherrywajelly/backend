@@ -18,7 +18,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -41,18 +41,18 @@ public class MemberServiceImpl implements MemberService{
     private final PremiumRepository premiumRepository;
     private final PaymentRepository paymentRepository;
     private final FileUploadService fileUploadService;
-    private final IconGroupAdminService iconGroupAdminService;
+    private final AdminIconService adminIconService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final PremiumRepository premiumRepository, final PaymentRepository paymentRepository,
-                             final FileUploadService fileUploadService, final IconGroupAdminService iconGroupAdminService) {
+                             final FileUploadService fileUploadService, final AdminIconService adminIconService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.premiumRepository = premiumRepository;
         this.paymentRepository = paymentRepository;
         this.fileUploadService = fileUploadService;
-        this.iconGroupAdminService = iconGroupAdminService;
+        this.adminIconService = adminIconService;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -190,7 +190,7 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
                 .sorted(Comparator.comparing(Member::getNickname)).forEach(
                         member -> {
-                            CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
+                            CreatorIconInfos creatorIconInfos = adminIconService.getIconGroupsByCreator(member.getId());
                             creatorResponses.add(CreatorResponse.builder()
                                     .creatorInfo(CreatorInfoResponse.from(member))
                                     .createdIconCount(creatorIconInfos.createdIconCount())

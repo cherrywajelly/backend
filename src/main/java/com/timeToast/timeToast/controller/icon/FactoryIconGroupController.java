@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCre
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,27 +19,27 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-public class IconGroupCreatorController {
+public class FactoryIconGroupController {
 
-    private final IconGroupAdminService iconGroupAdminService;
+    private final AdminIconService adminIconService;
 
     @PostMapping("")
     public Response postIconGroup(@Login LoginMember loginMember, @RequestPart("thumbnailIcon") MultipartFile thumbnailIcon, @RequestPart("files") List<MultipartFile> files, @RequestPart final IconGroupPostRequest iconGroupPostRequest) {
-        return iconGroupAdminService.postIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
+        return adminIconService.postIconGroup(thumbnailIcon, files, iconGroupPostRequest, loginMember.id());
     }
 
     @GetMapping("")
     public IconGroupCreatorResponses getIconGroup(@Login LoginMember loginMember) {
-        return iconGroupAdminService.getIconGroupForCreator(loginMember.id());
+        return adminIconService.getIconGroupForCreator(loginMember.id());
     }
 
     @GetMapping("/{iconGroupId}")
     public IconGroupCreatorDetailResponse getIconGroupDetail(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        return iconGroupAdminService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
+        return adminIconService.getIconGroupDetailForCreator(loginMember.id(), iconGroupId);
     }
 
     @GetMapping("/salesInfo")
     public CreatorProfileResponse getCreatorProfile(@Login LoginMember loginMember) {
-        return iconGroupAdminService.getIconGroupSaleInfos(loginMember.id());
+        return adminIconService.getIconGroupSaleInfos(loginMember.id());
     }
 }

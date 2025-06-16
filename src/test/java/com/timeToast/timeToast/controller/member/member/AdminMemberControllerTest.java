@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
+import com.timeToast.timeToast.service.icon.AdminIconService;
+import com.timeToast.timeToast.service.icon.icon_group.AdminIconServiceTest;
 import com.timeToast.timeToast.service.member.member.*;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
@@ -26,11 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminMemberControllerTest extends BaseControllerTests {
     private final AdminMemberService adminMemberService = new AdminMemberServiceTest();
     private final MemberService memberService = new MemberServiceTest();
-    private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
+    private final AdminIconService adminIconService = new AdminIconServiceTest();
 
     @Override
     protected Object initController() {
-        return new AdminMemberController(adminMemberService, memberService, iconGroupAdminService);
+        return new AdminMemberController(adminMemberService, memberService, adminIconService);
     }
 
     @DisplayName("최고 관리자는 staff로 지정할 수 있다.")

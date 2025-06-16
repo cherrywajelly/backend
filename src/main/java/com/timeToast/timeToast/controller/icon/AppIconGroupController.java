@@ -6,7 +6,7 @@ import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupMark
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupResponses;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupService;
+import com.timeToast.timeToast.service.icon.IconService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,37 +15,37 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequiredArgsConstructor
-public class IconGroupController {
-    private final IconGroupService iconGroupService;
+public class AppIconGroupController {
+    private final IconService iconService;
 
     @GetMapping("/members/toasts")
     public IconGroupResponses getToastIconGroupsByMember(@Login LoginMember loginMember) {
-        return iconGroupService.getToastIconGroups(loginMember.id());
+        return iconService.getToastIconGroups(loginMember.id());
     }
 
     @GetMapping("/members/jams")
     public IconGroupResponses getJamIconGroupsByMember(@Login LoginMember loginMember) {
-        return iconGroupService.getJamIconGroups(loginMember.id());
+        return iconService.getJamIconGroups(loginMember.id());
     }
 
     @GetMapping("/toasts")
     public IconGroupMarketResponses getAllToastsIconGroups(@Login LoginMember loginMember) {
-        return iconGroupService.getAllToastsIconGroups(loginMember.id());
+        return iconService.getAllToastsIconGroups(loginMember.id());
     }
 
     @GetMapping("/jams")
     public IconGroupMarketResponses getAllJamsIconGroups(@Login LoginMember loginMember) {
-        return iconGroupService.getAllJamsIconGroups(loginMember.id());
+        return iconService.getAllJamsIconGroups(loginMember.id());
     }
 
     @GetMapping("/{iconGroupId}")
     public IconGroupMarketDetailResponse getIconGroupDetail(final @Login LoginMember loginMember, final @PathVariable long iconGroupId) {
-        return iconGroupService.getIconGroupDetail(loginMember.id(), iconGroupId);
+        return iconService.getIconGroupDetail(loginMember.id(), iconGroupId);
     }
 
     @DeleteMapping("/{iconGroupId}")
     public Response deleteIconGroup(@Login LoginMember loginMember, @PathVariable("iconGroupId") final long iconGroupId) {
-        return iconGroupService.deleteIconGroup(loginMember.id(), iconGroupId);
+        return iconService.deleteIconGroup(loginMember.id(), iconGroupId);
     }
 
 }
