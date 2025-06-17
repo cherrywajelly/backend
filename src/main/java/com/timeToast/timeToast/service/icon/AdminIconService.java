@@ -4,9 +4,7 @@ import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorDetailResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,13 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface AdminIconService {
-    Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId);
-
-    IconGroupCreatorResponses getIconGroupForCreator(final long memberId);
-
-    IconGroupDetailResponse getIconGroupDetail(final long iconGroupId);
+    Response postIconGroup(final MultipartFile thumbnailIcon, final List<MultipartFile> files,
+                           final IconGroupPostRequest iconGroupPostRequest, final long userId);
 
     IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest);
+
+    IconGroupOverview getIconGroupOverview(final long memberId, final long iconGroupId);
+
+    CreatorProfileResponse getIconGroupOverviews(final long memberId);
+
+    IconGroupDetailResponse getIconGroupDetail(final long iconGroupId);
 
     IconGroupInfoResponses getIconGroupForNonApproval();
 
@@ -28,15 +29,7 @@ public interface AdminIconService {
 
     IconGroupAdminResponses getAllIconGroups();
 
-    IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId);
-
-    IconGroupSummaries iconGroupSummary();
-
-    IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month);
-
     IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year);
 
-    IconGroupOrderedResponses getIconOrderedResponse(final long memberId);
 
-    CreatorProfileResponse getIconGroupSaleInfos(final long memberId);
 }

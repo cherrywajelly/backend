@@ -12,6 +12,8 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.PaymentFailResponse;
@@ -37,6 +39,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -395,5 +398,45 @@ public class PaymentServiceImplTest {
         assertEquals(10, paymentsAdminResponses.paymentsAdminResponses().size());
     }
 
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
+    void iconGroupSummary() {
+        // Given
+        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
+
+        when(paymentRepository.findPaymentSummaryDto()).thenReturn(iconGroupSummaries);
+        // When
+        IconGroupSummaries summaries = paymentService.iconGroupSummary();
+
+        // Then
+        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
+    }
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
+    void iconGroupSummaryByYearMonth() {
+        // Given
+        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
+        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
+
+        when(paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(anyInt(), anyInt())).thenReturn(iconGroupSummaries);
+        // When
+        IconGroupSummaries summaries = paymentService.iconGroupSummaryByYearMonth(2024,1);
+
+        // Then
+        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
+    }
+
+    @Test
+    @DisplayName("제작자 별 아이콘 그룹 조회: 실패 날짜 타입 오류")
+    void iconGroupSummaryByYearMonthFail() {
+        // Given When Then
+        assertThrows(BadRequestException.class, () -> paymentService.iconGroupSummaryByYearMonth(LocalDate.now().getYear()+1, 1));
+    }
 
 }

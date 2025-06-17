@@ -47,14 +47,15 @@ public class AppIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.id").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 대표 이미지"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].isBuy").type(BOOLEAN).description("아이콘 구매 여부"),
-                                        fieldWithPath("iconGroupDetailResponses[].icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].icons[].iconId").type(NUMBER).description("아이콘 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].icons[].iconImageUrl").type(STRING).description("아이콘 이미지")
                                 )
                                 .build()
@@ -79,14 +80,15 @@ public class AppIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.id").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 대표 이미지"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].isBuy").type(BOOLEAN).description("아이콘 구매 여부"),
-                                        fieldWithPath("iconGroupDetailResponses[].icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("iconGroupDetailResponses[].icons[].iconId").type(NUMBER).description("아이콘 iconGroupId"),
                                         fieldWithPath("iconGroupDetailResponses[].icons[].iconImageUrl").type(STRING).description("아이콘 이미지")
                                 )
                                 .build()
@@ -111,12 +113,13 @@ public class AppIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.id").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 대표 이미지"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupInfoResponses[].isBuy").type(BOOLEAN).description("구매 여부")
 
                                 )
@@ -142,12 +145,13 @@ public class AppIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.id").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 대표 이미지"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupInfoResponses[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupInfoResponses[].isBuy").type(BOOLEAN).description("구매 여부")
 
                                 )
@@ -176,14 +180,15 @@ public class AppIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupSummaryInfo.id").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
                                         fieldWithPath("iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 대표 이미지"),
+                                        fieldWithPath("iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("isBuy").type(BOOLEAN).description("구매 여부"),
-                                        fieldWithPath("icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("icons[].iconId").type(NUMBER).description("아이콘 iconGroupId"),
                                         fieldWithPath("icons[].iconImageUrl").type(STRING).description("아이콘 이미지")
                                 )
                                 .build()

@@ -59,7 +59,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                         fieldWithPath("teamMembers").type(ARRAY).description("팀 구성원 memberId list")
                                 )
                                 .responseFields(
-                                        fieldWithPath("teamId").type(NUMBER).description("팀 id"),
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 iconGroupId"),
                                         fieldWithPath("teamName").type(STRING).description("팀 이름"),
                                         fieldWithPath("teamProfileUrl").type(STRING).description("팀 profile url")
                                 )
@@ -90,7 +90,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("teamId").type(NUMBER).description("팀 id"),
+                                        fieldWithPath("teamId").type(NUMBER).description("팀 iconGroupId"),
                                         fieldWithPath("teamName").type(STRING).description("팀 이름"),
                                         fieldWithPath("teamProfileUrl").type(STRING).description("팀 profile url")
                                 )
@@ -146,7 +146,7 @@ public class TeamControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("teamResponses[0].teamId").type(NUMBER).description("팀 id"),
+                                        fieldWithPath("teamResponses[0].teamId").type(NUMBER).description("팀 iconGroupId"),
                                         fieldWithPath("teamResponses[0].teamName").type(STRING).description("팀 이름"),
                                         fieldWithPath("teamResponses[0].teamProfileUrl").type(STRING).description("팀 프로필 이미지 url")
                                 )
@@ -166,7 +166,7 @@ public class TeamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 팀 삭제하기",
                         pathParameters(
-                                parameterWithName("teamId").description("team id")
+                                parameterWithName("teamId").description("team iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 팀")
@@ -194,7 +194,7 @@ public class TeamControllerTest extends BaseControllerTests {
                 .andExpect(status().isNotFound())
                 .andDo(document("로그인한 사용자의 팀 삭제하기 실패",
                         pathParameters(
-                                parameterWithName("teamId").description("team id")
+                                parameterWithName("teamId").description("team iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 팀")

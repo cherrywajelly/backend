@@ -10,6 +10,9 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummary;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;
@@ -33,10 +36,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.time.YearMonth;
+import java.util.*;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
@@ -123,6 +124,43 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.updatePaymentState(PaymentState.FAILURE);
         return new PaymentFailResponse(payment.getId(),payment.getOrderId(),"실패 했습니다.");
+    }
+
+    //TODO 실수 함 복구 필요
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+
+    }
+    //TODO
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, month)
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 
     @Override

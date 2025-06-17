@@ -1,25 +1,26 @@
 package com.timeToast.timeToast.dto.icon.icon.response;
 
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOrderedResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
 import lombok.Builder;
+
+import java.util.List;
 
 @Builder
 public record CreatorProfileResponse (
-        IconGroupOrderedResponses iconGroupOrderedResponses,
-        long createdIconCount,
-        long soldIconCount,
-        long revenue,
-        long settlement
+        List<IconGroupOverview> iconGroupOverviews,
+        long totalIconCount,
+        long totalOrderCount,
+        long totalIncome,
+        long totalSettlement
 ) {
-    public static CreatorProfileResponse from(final IconGroupOrderedResponses iconGroupOrderedResponses,
-                                              final int createdIconCount, final int soldIconCount,
-                                              final long revenue, final long settlement) {
+    public static CreatorProfileResponse from(List<IconGroupOverview> iconGroupOverviews) {
         return CreatorProfileResponse.builder()
-                .iconGroupOrderedResponses(iconGroupOrderedResponses)
-                .createdIconCount(createdIconCount)
-                .soldIconCount(soldIconCount)
-                .revenue(revenue)
-                .settlement(settlement)
+                .iconGroupOverviews(iconGroupOverviews)
+                .totalIconCount(iconGroupOverviews.stream().count())
+                .totalOrderCount(iconGroupOverviews.stream().mapToLong(IconGroupOverview::orderCount).sum())
+                .totalIncome(iconGroupOverviews.stream().mapToLong(IconGroupOverview::income).sum())
+                //TODO
+                .totalSettlement((long) (iconGroupOverviews.stream().mapToLong(IconGroupOverview::income).sum() * 0.7))
                 .build();
     }
 }

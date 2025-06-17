@@ -42,7 +42,7 @@ class MemberPremiumControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 사용자의 프리미엄 정보 저장",
                         pathParameters(
-                                parameterWithName("premiumId").description("premium id")
+                                parameterWithName("premiumId").description("premium iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 프리미엄")
@@ -51,7 +51,7 @@ class MemberPremiumControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("premiumId").type(NUMBER).description("premium id"),
+                                        fieldWithPath("premiumId").type(NUMBER).description("premium iconGroupId"),
                                         fieldWithPath("premiumType").type(STRING).description("premium type"),
                                         fieldWithPath("price").type(NUMBER).description("가격"),
                                         fieldWithPath("count").type(NUMBER).description("이미지 갯수"),
@@ -79,7 +79,7 @@ class MemberPremiumControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("premiumInfoResponses[0].premiumId").type(NUMBER).description("premium id"),
+                                        fieldWithPath("premiumInfoResponses[0].premiumId").type(NUMBER).description("premium iconGroupId"),
                                         fieldWithPath("premiumInfoResponses[0].premiumType").type(STRING).description("premium type"),
                                         fieldWithPath("premiumInfoResponses[0].price").type(NUMBER).description("가격"),
                                         fieldWithPath("premiumInfoResponses[0].count").type(NUMBER).description("이미지 갯수"),

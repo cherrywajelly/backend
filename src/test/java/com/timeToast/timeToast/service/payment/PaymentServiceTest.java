@@ -1,7 +1,10 @@
 package com.timeToast.timeToast.service.payment;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummary;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;
@@ -79,7 +82,7 @@ public class PaymentServiceTest implements PaymentService {
     @Override
     public PaymentDetailResponse getPaymentDetails(long paymentId) {
         return PaymentDetailResponse.builder()
-                .orderId("order id")
+                .orderId("order iconGroupId")
                 .nickname("nickname")
                 .itemType(ItemType.ICON)
                 .itemName("item name")
@@ -89,5 +92,19 @@ public class PaymentServiceTest implements PaymentService {
                 .expiredDate(LocalDate.now())
                 .iconThumbnailImageUrl("icon thumbnail url")
                 .build();
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month) {
+        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
+        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 }

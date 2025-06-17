@@ -56,7 +56,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
 
                                 )
                                 .responseFields(
-                                        fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 id"),
+                                        fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 iconGroupId"),
                                         fieldWithPath("paymentsAdminResponses[0].nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("paymentsAdminResponses[0].itemName").type(STRING).description("아이콘 이름"),
                                         fieldWithPath("paymentsAdminResponses[0].itemType").type(STRING).description("아이콘 종류"),
@@ -96,7 +96,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
 
                                 )
                                 .responseFields(
-                                        fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 id"),
+                                        fieldWithPath("paymentsAdminResponses[0].paymentId").type(NUMBER).description("결제 iconGroupId"),
                                         fieldWithPath("paymentsAdminResponses[0].nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("paymentsAdminResponses[0].itemName").type(null).description("아이콘 이름"),
                                         fieldWithPath("paymentsAdminResponses[0].itemType").type(STRING).description("아이템 종류"),
@@ -123,7 +123,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("결제 정보 상세 조회",
                         pathParameters(
-                                parameterWithName("paymentId").description("결제 id")
+                                parameterWithName("paymentId").description("결제 iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("관리자 - 결제")
@@ -132,7 +132,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("orderId").type(STRING).description("주문 id"),
+                                        fieldWithPath("orderId").type(STRING).description("주문 iconGroupId"),
                                         fieldWithPath("nickname").type(STRING).description("주문자 nickname"),
                                         fieldWithPath("itemType").type(STRING).description("아이템 종류"),
                                         fieldWithPath("itemName").type(STRING).description("아이템 이름"),
@@ -141,6 +141,70 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("createdAt").type(STRING).description("결제 생성일"),
                                         fieldWithPath("expiredDate").type(STRING).description("만료일"),
                                         fieldWithPath("iconThumbnailImageUrl").type(STRING).description("아이콘 썸네일 이미지 url")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자 월 별 아이콘 top 3 조회")
+    @Test
+    void iconGroupSummaryByYearMonth() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/payments/iconGroups/summary")
+                                .param("year", "2024")
+                                .param("month", "1")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자 월 별 누적 아이콘 top 3 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자 월 별 누적 아이콘 top 3 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year"),
+                                        parameterWithName("month").description("month")
+                                )
+                                .responseFields(
+                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("아이콘 그룹 수")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("관리자의 월 별 서비스 아이콘 판매 수익 조회")
+    @Test
+    void iconGroupMonthlyRevenue() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v3/payments/iconGroups/summary")
+                                .param("year", "2024")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("관리자의 월 별 서비스 아이콘 판매 수익 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("관리자 - 아이콘")
+                                .summary("관리자의 월 별 서비스 아이콘 판매 수익 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .queryParameters(
+                                        parameterWithName("year").description("year")
+                                )
+                                .responseFields(
+//                                        fieldWithPath("iconGroupMonthlyRevenues[0].year").type(NUMBER).description("year"),
+//                                        fieldWithPath("iconGroupMonthlyRevenues[0].month").type(NUMBER).description("month"),
+//                                        fieldWithPath("iconGroupMonthlyRevenues[0].toastsRevenue").type(NUMBER).description("토스트 아이콘 수익"),
+//                                        fieldWithPath("iconGroupMonthlyRevenues[0].jamsRevenue").type(NUMBER).description("잼 아이콘 수익")
+                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("year"),
+                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("month"),
+                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("토스트 아이콘 수익")
                                 )
                                 .build()
                         )));

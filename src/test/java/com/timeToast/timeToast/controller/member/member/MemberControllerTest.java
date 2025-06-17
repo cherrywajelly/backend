@@ -79,13 +79,13 @@ public class MemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("member iconGroupId"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("역할"),
                                         fieldWithPath("loginType").type(STRING).description("로그인 타입"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )
@@ -171,13 +171,13 @@ public class MemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("member id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("member iconGroupId"),
                                         fieldWithPath("nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("profileUrl").type(STRING).description("프로필 url"),
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("역할"),
                                         fieldWithPath("loginType").type(STRING).description("로그인 타입"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )

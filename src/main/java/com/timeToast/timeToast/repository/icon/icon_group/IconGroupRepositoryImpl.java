@@ -6,7 +6,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.enums.icon_group.*;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupSummaryInfo;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -43,8 +43,9 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     }
 
     @Override
-    public Optional<IconGroup> getByIdAndMemberId(final long memberId,final long iconGroupId) {
-        return iconGroupJpaRepository.findByIdAndMemberId(iconGroupId, memberId);
+    public IconGroup getByIdAndMemberId(final long memberId, final long iconGroupId) {
+        return iconGroupJpaRepository.findByIdAndMemberId(iconGroupId, memberId)
+                .orElseThrow(()-> new NotFoundException(ICON_GROUP_NOT_FOUND.getMessage()));
     }
 
     @Override

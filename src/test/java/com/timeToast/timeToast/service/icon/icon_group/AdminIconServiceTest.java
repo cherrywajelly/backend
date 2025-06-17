@@ -4,7 +4,8 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
@@ -21,6 +22,7 @@ import java.util.List;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class AdminIconServiceTest implements AdminIconService {
+
     @Override
     public Response postIconGroup(MultipartFile thumbnailIcon, List<MultipartFile> files, IconGroupPostRequest iconGroupPostRequest, final long userId){
 
@@ -28,17 +30,8 @@ public class AdminIconServiceTest implements AdminIconService {
     }
 
     @Override
-    public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
-        List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-        iconGroupCreatorResponses.add(new IconGroupCreatorResponse(1, "imageUrl", "iconTitle", IconState.REGISTERED, 0, 0));
-        return new IconGroupCreatorResponses(iconGroupCreatorResponses);
-    }
-
-
-
-    @Override
-    public IconGroupDetailResponse getIconGroupDetail(long iconGroupId) {
-        return IconGroupDetailResponse.builder()
+    public com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse getIconGroupDetail(long iconGroupId) {
+        return com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse.builder()
                 .thumbnailImageUrl("thumbnailImageUrl")
                 .title("title")
                 .creatorNickname("nickname")
@@ -93,7 +86,7 @@ public class AdminIconServiceTest implements AdminIconService {
         creatorIconInfos.add(
           CreatorIconInfo.builder()
                   .title("title")
-                  .revenue(1000)
+                  .income(1000)
                   .salesCount(1)
                   .iconImageUrl(List.of("iconImageUrl"))
                   .build()
@@ -102,27 +95,27 @@ public class AdminIconServiceTest implements AdminIconService {
     }
 
     @Override
-    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
-        List<String> iconImageUrls = new ArrayList<>();
-        List<String> iconTitles = new ArrayList<>();
-        IconGroupOrderedResponse iconGroupOrderedResponse = new IconGroupOrderedResponse("name", "thumbnailUrl", List.of("iconImageUrl"), 1, 1, IconState.REGISTERED);
-        IconGroupCreatorDetailResponse iconGroupCreatorDetail = new IconGroupCreatorDetailResponse(iconGroupOrderedResponse, 1000, "description", "url", "nickname");
-        return iconGroupCreatorDetail;
+    public IconGroupOverview getIconGroupOverview(final long memberId, final long iconGroupId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+
+        return new IconGroupOverview(iconGroupSummaryInfo, IconState.WAITING, iconResponses, 10, 100);
     }
 
     @Override
-    public IconGroupSummaries iconGroupSummary() {
-        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
-        return new IconGroupSummaries(iconGroupSummaries);
+    public CreatorProfileResponse getIconGroupOverviews(final long memberId) {
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+
+        IconGroupOverview iconGroupOverview = new IconGroupOverview(iconGroupSummaryInfo, IconState.WAITING, iconResponses, 10, 100);
+
+        List<IconGroupOverview> iconGroupOverviews = List.of(iconGroupOverview);
+
+        return new CreatorProfileResponse(iconGroupOverviews, 10, 10, 100, 90);
     }
 
-    @Override
-    public IconGroupSummaries iconGroupSummaryByYearMonth(final int year, final int month) {
-        List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
-        return new IconGroupSummaries(iconGroupSummaries);
-    }
 
     @Override
     public IconGroupMonthlyRevenues iconGroupMonthlyRevenue( final int year) {
@@ -136,20 +129,6 @@ public class AdminIconServiceTest implements AdminIconService {
                         .build()
         );
         return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
-    }
-
-    @Override
-    public IconGroupOrderedResponses getIconOrderedResponse(final long memberId) {
-        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
-        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
-        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
-    }
-
-    @Override
-    public CreatorProfileResponse getIconGroupSaleInfos(final long memberId) {
-        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
-        iconGroupOrderedResponses.add(new IconGroupOrderedResponse("iconName", "thumbnailImage", List.of("iconImage"), 1000, 10000, IconState.REGISTERED));
-        return new CreatorProfileResponse(new IconGroupOrderedResponses(iconGroupOrderedResponses), 100, 100, 100, 100);
     }
 
 }

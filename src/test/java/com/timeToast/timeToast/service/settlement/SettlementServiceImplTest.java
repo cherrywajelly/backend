@@ -141,7 +141,7 @@ class SettlementServiceImplTest {
             settlementIcons.add(
                     SettlementIcon.builder()
                             .title("title"+i)
-                            .revenue(100L)
+                            .income(100L)
                             .salesCount(12)
                             .settlementState(SettlementState.APPROVAL)
                             .build());
@@ -227,8 +227,8 @@ class SettlementServiceImplTest {
         assertEquals(LocalDate.now().getMonthValue(), settlementDetailResponse.month());
         assertEquals(member.getNickname(), settlementDetailResponse.creatorNickname());
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
-        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
-        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::income).sum(), settlementDetailResponse.totalIncome());
+        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::income).sum()*0.7), settlementDetailResponse.totalSettlement());
         assertEquals(member.getBank(), settlementDetailResponse.bank());
         assertEquals(member.getAccountNumber(), settlementDetailResponse.accountNumber());
         assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());
@@ -254,8 +254,8 @@ class SettlementServiceImplTest {
         assertEquals(LocalDate.now().getMonthValue(), settlementDetailResponse.month());
         assertEquals(member.getNickname(), settlementDetailResponse.creatorNickname());
         assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::salesCount).sum(), settlementDetailResponse.salesIconCount());
-        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum(), settlementDetailResponse.totalRevenue());
-        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::revenue).sum()*0.7), settlementDetailResponse.settlement());
+        assertEquals(settlementIcons.stream().mapToLong(SettlementIcon::income).sum(), settlementDetailResponse.totalIncome());
+        assertEquals((long) (settlementIcons.stream().mapToLong(SettlementIcon::income).sum()*0.7), settlementDetailResponse.totalSettlement());
         assertEquals(member.getBank(), settlementDetailResponse.bank());
         assertEquals(member.getAccountNumber(), settlementDetailResponse.accountNumber());
         assertEquals(SettlementState.APPROVAL, settlementDetailResponse.settlementState());

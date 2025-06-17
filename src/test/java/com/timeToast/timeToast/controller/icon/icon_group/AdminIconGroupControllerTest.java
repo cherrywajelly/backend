@@ -57,7 +57,7 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
                                         fieldWithPath("iconType").type(STRING).description("아이콘 그룹 타입"),
@@ -73,13 +73,13 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
     void getManagerIconGroupDetail() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v3/iconGroups/{id}", 1L)
+                        get("/api/v3/iconGroups/{iconGroupId}", 1L)
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 단일 상세 조회",
                         pathParameters(
-                                parameterWithName("id").description("iconGroup Id")
+                                parameterWithName("iconGroupId").description("iconGroup Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("관리자 - 아이콘")
@@ -94,7 +94,7 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("price").type(NUMBER).description("아이콘 그룹 가격"),
                                         fieldWithPath("iconState").type(STRING).description("아이콘 state"),
                                         fieldWithPath("description").type(STRING).description("아이콘 description"),
-                                        fieldWithPath("icons[0].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("icons[0].iconId").type(NUMBER).description("아이콘 iconGroupId"),
                                         fieldWithPath("icons[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
                                 .build()
@@ -118,7 +118,7 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupAdminResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupAdminResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupAdminResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupAdminResponses[0].thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
                                         fieldWithPath("iconGroupAdminResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
@@ -146,7 +146,7 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("iconGroupNonApprovalResponses[0].iconGroupId").type(NUMBER).description("아이콘 그룹 iconGroupId"),
                                         fieldWithPath("iconGroupNonApprovalResponses[0].title").type(STRING).description("아이콘 그룹 제목"),
                                         fieldWithPath("iconGroupNonApprovalResponses[0].thumbnailUrl").type(STRING).description("아이콘 그룹 썸네일 이미지"),
                                         fieldWithPath("iconGroupNonApprovalResponses[0].iconType").type(STRING).description("아이콘 그룹 타입"),
@@ -156,90 +156,10 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자 아이콘 그룹 top 3 조회")
-    @Test
-    void iconGroupSummary() throws Exception {
 
-        mockMvc.perform(
-                        get("/api/v3/iconGroups/summary")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("관리자 누적 아이콘 그룹 top 3 조회",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 아이콘")
-                                .summary("관리자 누적 아이콘 그룹 top 3 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("아이콘 그룹 수")
-                                )
-                                .build()
-                        )));
-    }
 
-    @DisplayName("관리자 월 별 아이콘 top 3 조회")
-    @Test
-    void iconGroupSummaryByYearMonth() throws Exception {
 
-        mockMvc.perform(
-                        get("/api/v3/iconGroups/summary")
-                                .param("year", "2024")
-                                .param("month", "1")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("관리자 월 별 누적 아이콘 top 3 조회",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 아이콘")
-                                .summary("관리자 월 별 누적 아이콘 top 3 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .queryParameters(
-                                        parameterWithName("year").description("year"),
-                                        parameterWithName("month").description("month")
-                                )
-                                .responseFields(
-                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("아이콘 그룹 수")
-                                )
-                                .build()
-                        )));
-    }
 
-    @DisplayName("관리자의 월 별 서비스 아이콘 판매 수익 조회")
-    @Test
-    void iconGroupMonthlyRevenue() throws Exception {
 
-        mockMvc.perform(
-                        get("/api/v3/iconGroups/monthly-revenue")
-                                .param("year", "2024")
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("관리자의 월 별 서비스 아이콘 판매 수익 조회",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("관리자 - 아이콘")
-                                .summary("관리자의 월 별 서비스 아이콘 판매 수익 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .queryParameters(
-                                        parameterWithName("year").description("year")
-                                )
-                                .responseFields(
-                                        fieldWithPath("iconGroupMonthlyRevenues[0].year").type(NUMBER).description("year"),
-                                        fieldWithPath("iconGroupMonthlyRevenues[0].month").type(NUMBER).description("month"),
-                                        fieldWithPath("iconGroupMonthlyRevenues[0].toastsRevenue").type(NUMBER).description("토스트 아이콘 수익"),
-                                        fieldWithPath("iconGroupMonthlyRevenues[0].jamsRevenue").type(NUMBER).description("잼 아이콘 수익")
 
-                                )
-                                .build()
-                        )));
-    }
 }

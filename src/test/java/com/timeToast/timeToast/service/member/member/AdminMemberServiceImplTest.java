@@ -179,7 +179,7 @@ public class AdminMemberServiceImplTest {
 //    @Test
 //    @DisplayName("관리자 사용자 정보 조회 실패")
 //    public void getMemberInfoForManagerFail(){
-//        ReflectionTestUtils.setField(member, "id", 1L);
+//        ReflectionTestUtils.setField(member, "iconGroupId", 1L);
 //        when(memberRepository.getById(anyLong())).thenReturn(null);
 //
 //        NullPointerException exception = assertThrows(NullPointerException.class, ()-> managerService.g(1L));
@@ -188,7 +188,7 @@ public class AdminMemberServiceImplTest {
 //    @Test
 //    @DisplayName("관리자 사용자 정보 조회 성공")
 //    public void getMemberInfoForManagerSuccess(){
-//        ReflectionTestUtils.setField(member, "id", 1L);
+//        ReflectionTestUtils.setField(member, "iconGroupId", 1L);
 //        when(memberRepository.getById(anyLong())).thenReturn(member);
 //
 //        NullPointerException exception = assertThrows(NullPointerException.class, ()-> managerService.getMemberInfoForManager(1L));

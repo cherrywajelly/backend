@@ -7,8 +7,8 @@ import lombok.Builder;
 public record CreatorResponse(
         CreatorInfoResponse creatorInfo,
         long salesIconCount,
-        long totalRevenue,
-        int createdIconCount
+        long totalIncome,
+        int totalIconCount
 ) {
 
 }

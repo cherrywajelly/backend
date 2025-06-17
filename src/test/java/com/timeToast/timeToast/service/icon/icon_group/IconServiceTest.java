@@ -1,7 +1,8 @@
 package com.timeToast.timeToast.service.icon.icon_group;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
@@ -17,7 +18,7 @@ public class IconServiceTest implements IconService {
     @Override
     public IconGroupDetailResponses getToastIconGroupsByUser(final long memberId) {
         IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
-                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, 10);
         boolean isBuy = false;
         List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
 
@@ -28,7 +29,7 @@ public class IconServiceTest implements IconService {
     @Override
     public IconGroupDetailResponses getJamIconGroupsByUser(final long memberId) {
         IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
-                "creatorNickname", "thumbnailImageUrl", IconType.JAM, 10);
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.JAM, 10);
         boolean isBuy = false;
         List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
 
@@ -39,7 +40,7 @@ public class IconServiceTest implements IconService {
     @Override
     public IconGroupInfoResponses getAllToastsIconGroups(final long memberId) {
         IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
-                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, 10);
         boolean isBuy = false;
 
         List<IconGroupInfoResponse> iconGroupInfoResponses = List.of(new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy));
@@ -50,7 +51,7 @@ public class IconServiceTest implements IconService {
     @Override
     public IconGroupInfoResponses getAllJamsIconGroups(final long memberId) {
         IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
-                "creatorNickname", "thumbnailImageUrl", IconType.JAM, 10);
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.JAM, 10);
         boolean isBuy = false;
 
         List<IconGroupInfoResponse> iconGroupInfoResponses = List.of(new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy));
@@ -61,7 +62,7 @@ public class IconServiceTest implements IconService {
     @Override
     public IconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId) {
         IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
-                "creatorNickname", "thumbnailImageUrl", IconType.TOAST, 10);
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, 10);
         boolean isBuy = false;
 
         List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));

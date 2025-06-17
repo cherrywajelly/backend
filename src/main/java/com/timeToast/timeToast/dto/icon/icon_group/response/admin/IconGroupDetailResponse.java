@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.dto.icon.icon_group.response.admin;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.IconResponse;
 import lombok.Builder;
 
 import java.util.*;

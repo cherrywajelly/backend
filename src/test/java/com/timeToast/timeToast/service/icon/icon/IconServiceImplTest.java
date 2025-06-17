@@ -50,7 +50,7 @@
 //    @DisplayName("아이콘 이미지 저장 - 성공")
 //    void saveToken() {
 //        // Given
-//        long id = 1L;
+//        long iconGroupId = 1L;
 //
 //        Icon icon = Icon.builder()
 //                .iconImageUrl("iconImageUrl")
@@ -60,7 +60,7 @@
 //        List<MultipartFile> files = List.of(mock(MultipartFile.class),mock(MultipartFile.class));
 //
 //        // When
-//        iconService.postIconSet(files, id);
+//        iconService.postIconSet(files, iconGroupId);
 //
 //        // Then
 //        verify(fileUploadService, times(files.size())).uploadfile(any(), any());

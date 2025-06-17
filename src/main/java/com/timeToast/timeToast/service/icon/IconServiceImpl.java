@@ -1,7 +1,8 @@
 package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 
@@ -48,7 +49,7 @@ public class IconServiceImpl implements IconService {
                 iconGroupRepository.findAllIconGroupSummaryInfoMemberAndIconType(memberId, iconType)
                         .stream().map(
                                 iconGroupSummaryInfo -> {
-                                    List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupSummaryInfo.id())
+                                    List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupSummaryInfo.iconGroupId())
                                             .getIcons().stream().map(IconResponse::from).toList();
 
                                     return new IconGroupDetail(iconGroupSummaryInfo, true, iconResponses);
@@ -75,7 +76,7 @@ public class IconServiceImpl implements IconService {
         List<IconGroupInfoResponse> iconGroupInfoResponses =
                 iconGroupRepository.findAllIconGroupSummaryInfoWithNonBuiltinAndRegisteredByIconType(iconType).stream().map(
                 iconGroupSummaryInfo -> {
-                    boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupSummaryInfo.id()).isPresent();
+                    boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupSummaryInfo.iconGroupId()).isPresent();
                     return new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy);
                 }
         ).collect(Collectors.toList());

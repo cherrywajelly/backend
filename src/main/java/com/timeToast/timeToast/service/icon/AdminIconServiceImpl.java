@@ -10,12 +10,13 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.icon.IconResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.creator.*;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -33,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,9 +57,9 @@ public class AdminIconServiceImpl implements AdminIconService {
     @Transactional
     @Override
     public Response postIconGroup(final MultipartFile thumbnailIcon, final List<MultipartFile> files,
-                                  final IconGroupPostRequest iconGroupPostRequest, long memberId) {
+                                  final IconGroupPostRequest iconGroupPostRequest, final long memberId) {
 
-        IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId,IconState.WAITING));
+        IconGroup iconGroup = iconGroupRepository.save(iconGroupPostRequest.toEntity(iconGroupPostRequest, memberId));
 
         String iconGroupUrl = baseUrl + ICON_GROUP.value() + SLASH.value() + iconGroup.getId() + SLASH.value() + IMAGE.value();
         String thumbnailImageUrl = fileUploadService.uploadfile(thumbnailIcon, iconGroupUrl);
@@ -67,11 +67,11 @@ public class AdminIconServiceImpl implements AdminIconService {
 
         iconGroup.addIcons(postIconSet(files, iconGroup.getId()));
 
-        log.info("save icon group");
+        log.info("save icon group ${}", iconGroup.getId());
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
-    private List<Icon> postIconSet(List<MultipartFile> files, long iconGroupId) {
+    private List<Icon> postIconSet(final List<MultipartFile> files, final long iconGroupId) {
 
         List<Icon> icons = new ArrayList<>();
 
@@ -88,84 +88,45 @@ public class AdminIconServiceImpl implements AdminIconService {
         return icons;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public IconGroupCreatorResponses getIconGroupForCreator(final long memberId) {
-        List<IconGroupCreatorResponse> iconGroupCreatorResponses = new ArrayList<>();
-
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-
-        iconGroups.forEach(
-                iconGroup -> {
-                    List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
-                    long totalRevenue = payments.stream()
-                            .mapToLong(Payment::getAmount)
-                            .sum();
-                    iconGroupCreatorResponses.add(IconGroupCreatorResponse.fromEntity(iconGroup, payments.size(), totalRevenue));
-                });
-
-        return new IconGroupCreatorResponses(iconGroupCreatorResponses);
+    public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
+        IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
+        iconGroup.updateIconState(iconGroupStateRequest.iconState());
+        return IconGroupInfoResponse.from(iconGroup);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupCreatorDetailResponse getIconGroupDetailForCreator(final long memberId, final long iconGroupId) {
-        Optional<IconGroup> iconGroup = iconGroupRepository.getByIdAndMemberId(memberId,iconGroupId);
+    public IconGroupOverview getIconGroupOverview(final long memberId, final long iconGroupId) {
+        IconGroup iconGroup = iconGroupRepository.getByIdAndMemberId(memberId,iconGroupId);
+        Member member = memberRepository.getById(memberId);
 
-        if (iconGroup.isPresent()) {
-            List<String> iconImageUrls = new ArrayList<>();
-            iconGroup.get().getIcons().forEach(iconImage -> iconImageUrls.add(iconImage.getIconImageUrl()));
-
-            Member member = memberRepository.getById(memberId);
-
-            List<Payment> payments = paymentRepository.findAllByItemId(iconGroupId);
-            long income = payments.stream()
-                    .mapToLong(Payment::getAmount)
-                    .sum();
-
-            IconGroupOrderedResponse iconGroupOrderedResponse = IconGroupOrderedResponse.of(iconGroup.get(), iconImageUrls, payments.size(), income);
-            return IconGroupCreatorDetailResponse.fromEntity(iconGroupOrderedResponse, iconGroup.get(), member);
-        } else {
-            throw new BadRequestException(INVALID_ICON_GROUP.getMessage());
-        }
+        return getIconGroupOverviewByIconGroup(iconGroup,member.getNickname());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public IconGroupSummaries iconGroupSummary() {
+    public CreatorProfileResponse getIconGroupOverviews(final long memberId){
+        Member member = memberRepository.getById(memberId);
 
-        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
-                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
-                .limit(3)
-                .map(paymentSummaryDto ->
-                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
-                .toList();
+        List<IconGroupOverview> iconGroupOverviews = iconGroupRepository.findAllByMemberId(memberId).stream()
+                .map(iconGroup -> getIconGroupOverviewByIconGroup(iconGroup, member.getNickname())).toList();
 
-        return new IconGroupSummaries(iconGroupSummaries);
+        return CreatorProfileResponse.from(iconGroupOverviews);
 
     }
 
-    @Transactional
-    @Override
-    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
-        if(year<2000 || month<1 || month>12){
-            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
-        }
+    private IconGroupOverview getIconGroupOverviewByIconGroup(final IconGroup iconGroup, final String creatorName) {
 
-        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
-            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
-        }
+        List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
+        long totalRevenue = payments.stream().mapToLong(Payment::getAmount).sum();
 
-        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, month)
-                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
-                .limit(3)
-                .map(paymentSummaryDto ->
-                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
-                .toList();
-
-        return new IconGroupSummaries(iconGroupSummaries);
+        return IconGroupOverview.from(IconGroupSummaryInfo.from(iconGroup,creatorName), iconGroup,payments.size(),totalRevenue);
     }
 
+
+    //TODO
     @Transactional
     @Override
     public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
@@ -191,14 +152,8 @@ public class AdminIconServiceImpl implements AdminIconService {
         return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 
-    @Transactional
-    @Override
-    public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
-        IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
-        iconGroup.updateIconState(iconGroupStateRequest.iconState());
-        return IconGroupInfoResponse.from(iconGroup);
-    }
 
+    //TODO
     @Transactional(readOnly = true)
     @Override
     public IconGroupInfoResponses getIconGroupForNonApproval() {
@@ -210,15 +165,15 @@ public class AdminIconServiceImpl implements AdminIconService {
 
         return new IconGroupInfoResponses(iconGroupNonApprovalResponses);
     }
-
+    //TODO
     @Transactional(readOnly = true)
     @Override
-    public IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
+    public com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
         List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
 
-        return IconGroupDetailResponse.builder()
+        return com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse.builder()
                 .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
                 .title(iconGroup.getName())
                 .creatorNickname(creator.getNickname())
@@ -229,7 +184,7 @@ public class AdminIconServiceImpl implements AdminIconService {
                 .build();
 
     }
-
+    //TODO
     @Transactional(readOnly = true)
     @Override
     public IconGroupAdminResponses getAllIconGroups(){
@@ -244,7 +199,7 @@ public class AdminIconServiceImpl implements AdminIconService {
         return new IconGroupAdminResponses(iconGroupAdminResponses);
     }
 
-
+    //TODO
     @Transactional(readOnly = true)
     @Override
     public CreatorIconInfos getIconGroupsByCreator(final long creatorId) {
@@ -257,7 +212,7 @@ public class AdminIconServiceImpl implements AdminIconService {
                     creatorIconInfos.add(
                             CreatorIconInfo.builder()
                                     .title(iconGroup.getName())
-                                    .revenue(salesIconCount * iconGroup.getPrice())
+                                    .income(salesIconCount * iconGroup.getPrice())
                                     .salesCount(salesIconCount)
                                     .iconImageUrl(iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList())
                                     .build()
@@ -267,45 +222,10 @@ public class AdminIconServiceImpl implements AdminIconService {
 
         return CreatorIconInfos.builder()
                 .salesIconCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesCount).sum())
-                .totalRevenue(creatorIconInfos.stream().mapToInt(CreatorIconInfo::revenue).sum())
-                .createdIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
+                .totalIncome(creatorIconInfos.stream().mapToInt(CreatorIconInfo::income).sum())
+                .totalIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
                 .creatorIconInfos(creatorIconInfos)
                 .build();
     }
-
-    @Transactional(readOnly = true)
-    @Override
-    public IconGroupOrderedResponses getIconOrderedResponse (final long memberId) {
-
-        List<IconGroupOrderedResponse> iconGroupOrderedResponses = new ArrayList<>();
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(memberId);
-
-        iconGroups.forEach(iconGroup -> {
-
-            List<String> iconImageUrls = iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList();
-
-            List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
-            long income = payments.stream().mapToLong(Payment::getAmount).sum();
-
-            iconGroupOrderedResponses.add(IconGroupOrderedResponse.of(iconGroup, iconImageUrls, payments.size(), income));
-        });
-        return new IconGroupOrderedResponses(iconGroupOrderedResponses);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public CreatorProfileResponse getIconGroupSaleInfos(final long memberId){
-        Member member = memberRepository.getById(memberId);
-
-        IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
-        long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().size();
-        long sellIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
-        long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
-        long settlement = (long) (revenue * 0.7);
-
-        return new CreatorProfileResponse(iconGroupOrderedResponses, createdIconCount, sellIconCount, revenue, settlement);
-
-    }
-
 
 }

@@ -193,8 +193,8 @@ public class MemberServiceImpl implements MemberService{
                             CreatorIconInfos creatorIconInfos = adminIconService.getIconGroupsByCreator(member.getId());
                             creatorResponses.add(CreatorResponse.builder()
                                     .creatorInfo(CreatorInfoResponse.from(member))
-                                    .createdIconCount(creatorIconInfos.createdIconCount())
-                                    .totalRevenue(creatorIconInfos.totalRevenue())
+                                    .totalIconCount(creatorIconInfos.totalIconCount())
+                                    .totalIncome(creatorIconInfos.totalIncome())
                                     .salesIconCount(creatorIconInfos.salesIconCount())
                                     .build());
                         }

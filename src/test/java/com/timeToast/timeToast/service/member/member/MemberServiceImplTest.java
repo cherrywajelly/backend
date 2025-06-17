@@ -335,7 +335,7 @@ public class MemberServiceImplTest {
         List<CreatorIconInfo> creatorIconInfoList = List.of(
                 CreatorIconInfo.builder()
                         .title("title")
-                        .revenue(1000)
+                        .income(1000)
                         .salesCount(1)
                         .iconImageUrl(List.of("iconImageUrl"))
                         .build()

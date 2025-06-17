@@ -51,7 +51,7 @@ public class EventToastAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastManagerResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastManagerResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("eventToastManagerResponses[0].iconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
                                         fieldWithPath("eventToastManagerResponses[0].title").type(STRING).description("이벤트 토스트 이름"),
                                         fieldWithPath("eventToastManagerResponses[0].nickname").type(STRING).description("이벤트 토스트 작성자 닉네임"),
@@ -84,14 +84,14 @@ public class EventToastAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("iconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
                                         fieldWithPath("title").type(STRING).description("이벤트 토스트 이름"),
                                         fieldWithPath("nickname").type(STRING).description("이벤트 토스트 작성자 닉네임"),
                                         fieldWithPath("openedDate").type(STRING).description("이벤트 토스트 오픈 날짜"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 열림 여부"),
                                         fieldWithPath("createdAt").type(STRING).description("이벤트 토스트 생성 날짜"),
-                                        fieldWithPath("jamManagerResponses[0].jamId").type(NUMBER).description("이벤트 토스트의 잼 id"),
+                                        fieldWithPath("jamManagerResponses[0].jamId").type(NUMBER).description("이벤트 토스트의 잼 iconGroupId"),
                                         fieldWithPath("jamManagerResponses[0].iconImageUrl").type(STRING).description("이벤트 토스트의 잼 이미지 url"),
                                         fieldWithPath("jamManagerResponses[0].title").type(STRING).description("이벤트 토스트의 잼 제목"),
                                         fieldWithPath("jamManagerResponses[0].createdAt").type(STRING).description("이벤트 토스트의 잼 작성날짜"),

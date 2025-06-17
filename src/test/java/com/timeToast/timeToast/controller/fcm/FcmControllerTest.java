@@ -74,7 +74,7 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .tag("유저 - 알림")
                                 .summary("알림 목록 조회")
                                 .responseFields(
-                                        fieldWithPath("fcmResponses[0].fcmId").type(NUMBER).description("fcm id"),
+                                        fieldWithPath("fcmResponses[0].fcmId").type(NUMBER).description("fcm iconGroupId"),
                                         fieldWithPath("fcmResponses[0].fcmConstant").type(STRING).description("fcm 타입"),
                                         fieldWithPath("fcmResponses[0].nickname").type(STRING).description("fcm 관련 사용자 닉네임"),
                                         fieldWithPath("fcmResponses[0].text").type(STRING).description("fcm 텍스트"),
@@ -103,7 +103,7 @@ public class FcmControllerTest extends BaseControllerTests {
                                 .tag("유저 - 알림")
                                 .summary("알림 관련 페이지로 이동")
                                 .pathParameters(
-                                        parameterWithName("fcmId").description("알림 id")
+                                        parameterWithName("fcmId").description("알림 iconGroupId")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
@@ -138,9 +138,9 @@ public class FcmControllerTest extends BaseControllerTests {
                                 )
                                 .requestFields(
                                         fieldWithPath("fcmConstant").type(STRING).description("알림 타입"),
-                                        fieldWithPath("senderId").type(NUMBER).description("보낸 사람 id"),
+                                        fieldWithPath("senderId").type(NUMBER).description("보낸 사람 iconGroupId"),
                                         fieldWithPath("toastName").type(STRING).description("알림 관련 토스트 제목"),
-                                        fieldWithPath("param").type(NUMBER).description("알림 관련 id")
+                                        fieldWithPath("param").type(NUMBER).description("알림 관련 iconGroupId")
                                 )
                                 .responseFields()
                                 .build()

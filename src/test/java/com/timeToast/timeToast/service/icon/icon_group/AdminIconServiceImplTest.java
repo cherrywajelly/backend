@@ -12,11 +12,11 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupCreatorResponses;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
-import com.timeToast.timeToast.global.exception.BadRequestException;
+import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
@@ -32,15 +32,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_ICON_GROUP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -66,8 +62,6 @@ public class AdminIconServiceImplTest {
     private AdminIconServiceImpl iconGroupAdminService;
 
     private Member member;
-    private IconGroup iconGroup;
-    private Icon icon;
 
     private Member setUpCreator() {
         return Member.builder()
@@ -170,8 +164,6 @@ public class AdminIconServiceImplTest {
         long memberId = 1L;
 
         member = Member.builder().build();
-        iconGroup = IconGroup.builder().memberId(memberId).build();
-        icon = Icon.builder().iconImageUrl("imageUrl").build();
     }
 
 //    @Test
@@ -196,7 +188,7 @@ public class AdminIconServiceImplTest {
 //    }
 
 //    @Test
-//    @DisplayName("아이콘 그룹 생성 - 잘못된 member id 로의 접근")
+//    @DisplayName("아이콘 그룹 생성 - 잘못된 member iconGroupId 로의 접근")
 //    void saveIconGroupFail() {
 //        // Given
 //        long memberId = 1L;
@@ -213,69 +205,38 @@ public class AdminIconServiceImplTest {
 //                .hasMessageContaining(INVALID_ICON_GROUP.getMessage());
 //    }
 
-    @Test
-    @DisplayName("아이콘 그룹 조회 성공")
-    void getIconGroupForCreator() {
-        // Given
-        long memberId = 1L;
-        long iconGroupId = 1L;
-        ReflectionTestUtils.setField(member, "id", memberId);
-
-        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(List.of(iconGroup));
-
-        // When
-        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
-
-        // Then
-        assertThat(iconGroupCreatorResponses).isNotNull();
-    }
-
-    @Test
-    @DisplayName("아이콘 그룹 조회 실패 - 아이콘 미조회")
-    void getIconGroupForCreatorFail() {
-        // Given
-        long memberId = 1L;
-        long iconId = 0L;
-        ReflectionTestUtils.setField(member, "id", memberId);
-
-        when(iconGroupRepository.findAllByMemberId(memberId)).thenReturn(null);
-
-        // When
-        NullPointerException nullPointerException = assertThrows(NullPointerException.class, () -> iconGroupAdminService.getIconGroupForCreator(memberId));
-
-        // Then
-        assertThat(nullPointerException).isNotNull();
-    }
 
 
-    @Test
-    @DisplayName("아이콘 그룹 상세 조회 성공")
-    void getIconGroupDetailForCreator() {
-        // Given
-        long memberId = 1L;
-        long iconGroupId = 1L;
 
-        // When
-        IconGroupCreatorResponses iconGroupCreatorResponses = iconGroupAdminService.getIconGroupForCreator(memberId);
+    //TODO ...?
+//    @Test
+//    @DisplayName("아이콘 그룹 상세 조회 성공")
+//    void getIconGroupOverview() {
+//        // Given
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//
+//        // When
+//        IconGroupOverview iconGroupOverview = iconGroupAdminService.getIconGroupOverview(memberId, iconGroupId);
+//
+//        // Then
+//        assertThat(iconGroupOverview).isNotNull();
+//    }
 
-        // Then
-        assertThat(iconGroupCreatorResponses).isNotNull();
-    }
-
-    @Test
-    @DisplayName("아이콘 그룹 상세 조회 실패 - 아이콘 그룹 미조회")
-    void getIconGroupDetailForCreatorFail() {
-        // Given
-        long memberId = 1L;
-        long iconGroupId = 1L;
-
-        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId)).thenReturn(Optional.empty());
-
-        // When
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupAdminService.getIconGroupDetailForCreator(memberId, iconGroupId));
-        // Then
-        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
-    }
+//    @Test
+//    @DisplayName("아이콘 그룹 상세 조회 실패 - 아이콘 그룹 미조회")
+//    void getIconGroupOverviewFail() {
+//        // Given
+//        long memberId = 1L;
+//        long iconGroupId = 1L;
+//
+//        when(iconGroupRepository.getByIdAndMemberId(iconGroupId, memberId)).thenReturn(null);
+//
+//        // When
+//        BadRequestException exception = assertThrows(BadRequestException.class, () -> iconGroupAdminService.getIconGroupOverview(memberId, iconGroupId));
+//        // Then
+//        assertThat(exception.getMessage()).isEqualTo(INVALID_ICON_GROUP.getMessage());
+//    }
 
 
     @Test
@@ -299,6 +260,52 @@ public class AdminIconServiceImplTest {
         assertEquals(iconGroup.getIconState(), iconGroupInfoResponse.iconState());
     }
 
+    @Test
+    @DisplayName("icon group overview 조회")
+    void getIconGroupOverview() {
+        //given
+        IconGroup iconGroup = iconGroupSetUp();
+        ReflectionTestUtils.setField(iconGroup, "id", 1L);
+
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(iconGroupRepository.getByIdAndMemberId(iconGroup.getId(), creator.getId())).thenReturn(iconGroup);
+        when(memberRepository.getById(creator.getId())).thenReturn(creator);
+
+        List<Payment> payments = paymentsSetUp();
+        when(paymentRepository.findAllByItemId(iconGroup.getId())).thenReturn(payments);
+
+        //when
+        IconGroupOverview iconGroupOverview = iconGroupAdminService.getIconGroupOverview(creator.getId(), iconGroup.getId());
+
+        //then
+        IconGroupSummaryInfo iconGroupSummaryInfo = IconGroupSummaryInfo.from(iconGroup, creator.getNickname());
+
+        assertEquals(iconGroupSummaryInfo, iconGroupOverview.iconGroupSummaryInfo());
+
+    }
+
+    @Test
+    @DisplayName("creator의 icon group overviews 조회")
+    void getIconGroupOverviews() {
+        //given
+        List<IconGroup> iconGroups = iconGroupList();
+
+        Member creator = setUpCreator();
+        ReflectionTestUtils.setField(creator, "id", 1L);
+        when(iconGroupRepository.findAllByMemberId(creator.getId())).thenReturn(iconGroups);
+        when(memberRepository.getById(creator.getId())).thenReturn(creator);
+
+        List<Payment> payments = paymentsSetUp();
+        when(paymentRepository.findAllByItemId(anyLong())).thenReturn(payments);
+
+        //when
+        CreatorProfileResponse creatorProfileResponse = iconGroupAdminService.getIconGroupOverviews(creator.getId());
+
+        //then
+        assertEquals(iconGroups.size(), creatorProfileResponse.iconGroupOverviews().size());
+
+    }
 
     @Test
     @DisplayName("승인 iconGroup 조회: 성공")
@@ -341,8 +348,6 @@ public class AdminIconServiceImplTest {
         assertEquals(iconGroup.getDescription(), iconGroupDetailResponse.description());
         assertEquals(iconGroup.getIcons().size(), iconGroupDetailResponse.icons().size());
 
-
-
     }
 
 
@@ -380,55 +385,11 @@ public class AdminIconServiceImplTest {
 
         // Then
         assertEquals(iconGroups.get(0).getName(), creatorIconInfos.creatorIconInfos().get(0).title());
-        assertEquals(payments.size()*iconGroups.get(0).getPrice(), creatorIconInfos.creatorIconInfos().get(0).revenue());
+        assertEquals(payments.size()*iconGroups.get(0).getPrice(), creatorIconInfos.creatorIconInfos().get(0).income());
         assertEquals(payments.size(), creatorIconInfos.creatorIconInfos().get(0).salesCount());
         assertEquals(icons.size(), creatorIconInfos.creatorIconInfos().get(0).iconImageUrl().size());
 
 
     }
-
-
-    @Test
-    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
-    void iconGroupSummary() {
-        // Given
-        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
-
-        when(paymentRepository.findPaymentSummaryDto()).thenReturn(iconGroupSummaries);
-        // When
-        IconGroupSummaries summaries = iconGroupAdminService.iconGroupSummary();
-
-        // Then
-        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
-    }
-
-    @Test
-    @DisplayName("제작자 별 아이콘 그룹 조회: 성공")
-    void iconGroupSummaryByYearMonth() {
-        // Given
-        List<IconGroupPaymentSummaryDto> iconGroupSummaries = new ArrayList<>();
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(1L,"title1", IconType.TOAST, 1100,150));
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(2L,"title2", IconType.TOAST, 1100,100));
-        iconGroupSummaries.add(new IconGroupPaymentSummaryDto(3L,"title3", IconType.TOAST, 1100,50));
-
-        when(paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(anyInt(), anyInt())).thenReturn(iconGroupSummaries);
-        // When
-        IconGroupSummaries summaries = iconGroupAdminService.iconGroupSummaryByYearMonth(2024,1);
-
-        // Then
-        assertEquals(iconGroupSummaries.size(), summaries.iconGroupSummaries().size());
-    }
-
-    @Test
-    @DisplayName("제작자 별 아이콘 그룹 조회: 실패 날짜 타입 오류")
-    void iconGroupSummaryByYearMonthFail() {
-        // Given When Then
-        assertThrows(BadRequestException.class, () -> iconGroupAdminService.iconGroupSummaryByYearMonth(LocalDate.now().getYear()+1, 1));
-    }
-
-
 
 }
