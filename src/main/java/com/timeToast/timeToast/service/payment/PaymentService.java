@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.service.payment;
 
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupMonthlyRevenues;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
@@ -14,4 +15,6 @@ public interface PaymentService {
     PaymentsAdminResponses getIconPayments(final int page, final int size);
     PaymentsAdminResponses getPremiumPayments(final int page, final int size);
     PaymentDetailResponse getPaymentDetails(final long paymentId);
+    IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year);
+
 }

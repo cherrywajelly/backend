@@ -3,6 +3,8 @@ package com.timeToast.timeToast.service.payment;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupMonthlyRevenue;
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupMonthlyRevenues;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummary;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
@@ -106,5 +108,19 @@ public class PaymentServiceTest implements PaymentService {
         List<IconGroupSummary> iconGroupSummaries = new ArrayList<>();
         iconGroupSummaries.add(new IconGroupSummary("title", IconType.TOAST, 100));
         return new IconGroupSummaries(iconGroupSummaries);
+    }
+
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+        iconGroupMonthlyRevenues.add(
+                IconGroupMonthlyRevenue.builder()
+                        .year(year)
+                        .month(1)
+                        .toastsRevenue(100L)
+                        .jamsRevenue(100L)
+                        .build()
+        );
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
     }
 }

@@ -182,7 +182,7 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
     void iconGroupMonthlyRevenue() throws Exception {
 
         mockMvc.perform(
-                        get("/api/v3/payments/iconGroups/summary")
+                        get("/api/v3/payments/monthly-revenue")
                                 .param("year", "2024")
                                 .header(AUTHORIZATION, USER_ACCESS_TOKEN)
                 )
@@ -198,13 +198,10 @@ public class PaymentAdminControllerTest extends BaseControllerTests {
                                         parameterWithName("year").description("year")
                                 )
                                 .responseFields(
-//                                        fieldWithPath("iconGroupMonthlyRevenues[0].year").type(NUMBER).description("year"),
-//                                        fieldWithPath("iconGroupMonthlyRevenues[0].month").type(NUMBER).description("month"),
-//                                        fieldWithPath("iconGroupMonthlyRevenues[0].toastsRevenue").type(NUMBER).description("토스트 아이콘 수익"),
-//                                        fieldWithPath("iconGroupMonthlyRevenues[0].jamsRevenue").type(NUMBER).description("잼 아이콘 수익")
-                                        fieldWithPath("iconGroupSummaries[0].title").type(STRING).description("year"),
-                                        fieldWithPath("iconGroupSummaries[0].iconType").type(STRING).description("month"),
-                                        fieldWithPath("iconGroupSummaries[0].count").type(NUMBER).description("토스트 아이콘 수익")
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].year").type(NUMBER).description("year"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].month").type(NUMBER).description("month"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].toastsRevenue").type(NUMBER).description("토스트 아이콘 수익"),
+                                        fieldWithPath("iconGroupMonthlyRevenues[0].jamsRevenue").type(NUMBER).description("잼 아이콘 수익")
                                 )
                                 .build()
                         )));

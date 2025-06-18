@@ -126,31 +126,7 @@ public class AdminIconServiceImpl implements AdminIconService {
     }
 
 
-    //TODO
-    @Transactional
-    @Override
-    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
 
-        if(year>LocalDate.now().getYear()){
-            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
-        }
-
-        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
-
-        for(int i=1; i<=LocalDate.now().getMonthValue(); i++){
-            Map<IconType, Long> revenueByIconType = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, i).stream().collect(Collectors.groupingBy(
-                    IconGroupPaymentSummaryDto::iconType,
-                    Collectors.summingLong(dto -> dto.totalCount()*dto.price())
-            ));
-            iconGroupMonthlyRevenues.add(IconGroupMonthlyRevenue.builder()
-                    .year(year)
-                    .month(i)
-                    .toastsRevenue(revenueByIconType.getOrDefault(IconType.TOAST, 0L))
-                    .jamsRevenue(revenueByIconType.getOrDefault(IconType.JAM, 0L))
-                    .build());
-        }
-        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
-    }
 
 
     //TODO

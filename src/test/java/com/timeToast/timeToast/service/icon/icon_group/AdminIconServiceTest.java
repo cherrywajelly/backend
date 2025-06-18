@@ -117,18 +117,4 @@ public class AdminIconServiceTest implements AdminIconService {
     }
 
 
-    @Override
-    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue( final int year) {
-        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
-        iconGroupMonthlyRevenues.add(
-                IconGroupMonthlyRevenue.builder()
-                        .year(year)
-                        .month(1)
-                        .toastsRevenue(100L)
-                        .jamsRevenue(100L)
-                        .build()
-        );
-        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
-    }
-
 }

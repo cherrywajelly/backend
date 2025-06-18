@@ -1,5 +1,6 @@
 package com.timeToast.timeToast.controller.payment;
 
+import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupMonthlyRevenues;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
 import com.timeToast.timeToast.dto.payment.response.PaymentDetailResponse;
 import com.timeToast.timeToast.dto.payment.response.PaymentsAdminResponses;
@@ -42,5 +43,10 @@ public class PaymentAdminController {
     @GetMapping(value = "/iconGroups/summary", params = {"year", "month"})
     public IconGroupSummaries iconGroupSummary(@RequestParam(value = "year") int year, @RequestParam(value = "month") int month) {
         return paymentService.iconGroupSummaryByYearMonth(year, month);
+    }
+
+    @GetMapping("/monthly-revenue")
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(@RequestParam(value = "year") int year) {
+        return paymentService.iconGroupMonthlyRevenue(year);
     }
 }

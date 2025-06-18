@@ -29,7 +29,4 @@ public interface AdminIconService {
 
     IconGroupAdminResponses getAllIconGroups();
 
-    IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year);
-
-
 }

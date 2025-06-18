@@ -35,9 +35,4 @@ public class AdminIconGroupController {
         return adminIconService.getIconGroupForNonApproval();
     }
 
-    @GetMapping("/monthly-revenue")
-    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(@RequestParam(value = "year") int year) {
-        return adminIconService.iconGroupMonthlyRevenue(year);
-    }
-
 }
