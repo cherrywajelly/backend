@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.icon;
 
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetail;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupInfoResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.IconGroupDetailResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetail;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponses;
 import com.timeToast.timeToast.global.response.Response;
 
 public interface IconService {

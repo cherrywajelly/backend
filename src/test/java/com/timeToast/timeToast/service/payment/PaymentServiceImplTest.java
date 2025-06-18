@@ -12,7 +12,7 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummaries;
 import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;

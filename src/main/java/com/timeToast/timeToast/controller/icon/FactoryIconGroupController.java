@@ -3,7 +3,7 @@ package com.timeToast.timeToast.controller.icon;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOverview;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.AdminIconService;

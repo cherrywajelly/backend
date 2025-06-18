@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.icon.icon_group.response.admin;
+package com.timeToast.timeToast.dto.payment.response;
 
 import java.util.List;
 

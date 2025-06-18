@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.icon.icon.response;
 
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOverview;
 import lombok.Builder;
 
 import java.util.List;

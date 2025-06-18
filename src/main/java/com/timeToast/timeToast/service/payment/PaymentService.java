@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.payment;
 
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupMonthlyRevenues;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupSummaries;
+import com.timeToast.timeToast.dto.payment.response.IconGroupMonthlyRevenues;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummaries;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;

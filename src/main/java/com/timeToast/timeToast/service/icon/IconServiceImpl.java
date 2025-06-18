@@ -2,8 +2,7 @@ package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.dto.icon.icon.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
-import com.timeToast.timeToast.dto.icon.icon_group.response.member.*;
+import com.timeToast.timeToast.dto.icon.icon_group.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 
 import com.timeToast.timeToast.global.exception.NotFoundException;

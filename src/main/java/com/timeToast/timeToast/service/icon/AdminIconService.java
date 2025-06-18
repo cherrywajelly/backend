@@ -4,7 +4,7 @@ import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.dto.icon.icon_group.response.creator.IconGroupOverview;
+import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOverview;
 import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
 import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;

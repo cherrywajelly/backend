@@ -1,9 +1,8 @@
-package com.timeToast.timeToast.dto.icon.icon_group.response.creator;
+package com.timeToast.timeToast.dto.icon.icon_group.response;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.dto.icon.icon.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
 import lombok.Builder;
 
 import java.util.List;
