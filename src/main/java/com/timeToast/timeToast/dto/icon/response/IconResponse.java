@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.icon.icon;
+package com.timeToast.timeToast.dto.icon.response;
 
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import lombok.Builder;

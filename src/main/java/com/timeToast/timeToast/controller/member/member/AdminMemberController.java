@@ -1,12 +1,11 @@
 package com.timeToast.timeToast.controller.member.member;
 
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
@@ -66,10 +65,7 @@ public class AdminMemberController {
     public GiftToastDataManagerResponses getGiftToasts(@PathVariable final long memberId) {
         return adminMemberService.getMemberGiftToastInfo(memberId);
     }
-    @GetMapping("/api/v3/members/{memberId}/iconGroups")
-    public IconGroupManagerResponses getIconGroups(@PathVariable final long memberId) {
-        return adminMemberService.getMemberIconGroupInfo(memberId);
-    }
+
     @GetMapping("/api/v3/members/{memberId}/payments")
     public PaymentManagerResponses getPayment(@PathVariable final long memberId) {
         return adminMemberService.getMemberPaymentManagerInfo(memberId);
@@ -84,10 +80,6 @@ public class AdminMemberController {
         return memberService.getCreatorInfo(creatorId);
     }
 
-    @GetMapping("/api/v3/creators/{creatorId}/iconGroups")
-    public CreatorIconInfos getIconGroupsByCreator(@PathVariable long creatorId) {
-        return adminIconService.getIconGroupsByCreator(creatorId);
-    }
 
     @PostMapping("/api/v4/members/{memberId}/staffs")
     public MemberInfoResponse saveToStaff(@PathVariable final long memberId){

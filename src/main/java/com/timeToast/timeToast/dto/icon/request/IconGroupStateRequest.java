@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.icon.icon_group.request;
+package com.timeToast.timeToast.dto.icon.request;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 

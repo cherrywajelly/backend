@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.icon.icon.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.*;
+import com.timeToast.timeToast.dto.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -33,30 +33,30 @@ public class IconServiceImpl implements IconService {
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupDetailResponses getToastIconGroupsByUser(final long memberId){
+    public UserIconGroupDetailResponses getToastIconGroupsByUser(final long memberId){
         return getIconGroupsByUser(memberId,IconType.TOAST);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupDetailResponses getJamIconGroupsByUser(final long memberId) {
+    public UserIconGroupDetailResponses getJamIconGroupsByUser(final long memberId) {
         return getIconGroupsByUser(memberId,IconType.JAM);
     }
 
-    private IconGroupDetailResponses getIconGroupsByUser(final long memberId, final IconType iconType){
-        List<IconGroupDetail> iconGroupDetailResponses =
+    private UserIconGroupDetailResponses getIconGroupsByUser(final long memberId, final IconType iconType){
+        List<UserIconGroupDetail> userIconGroupDetailRespons =
                 iconGroupRepository.findAllIconGroupSummaryInfoMemberAndIconType(memberId, iconType)
                         .stream().map(
                                 iconGroupSummaryInfo -> {
                                     List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupSummaryInfo.iconGroupId())
                                             .getIcons().stream().map(IconResponse::from).toList();
-
-                                    return new IconGroupDetail(iconGroupSummaryInfo, true, iconResponses);
+                                    IconGroupDetail iconGroupDetail = new IconGroupDetail(iconGroupSummaryInfo,iconResponses);
+                                    return new UserIconGroupDetail(iconGroupDetail, true);
 
                                 }
                         ).toList();
 
-        return new IconGroupDetailResponses(iconGroupDetailResponses);
+        return new UserIconGroupDetailResponses(userIconGroupDetailRespons);
     }
 
     @Transactional(readOnly = true)
@@ -85,12 +85,13 @@ public class IconServiceImpl implements IconService {
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId) {
+    public UserIconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId) {
         IconGroupSummaryInfo iconGroupSummaryInfo =  iconGroupRepository.getIconGroupSummaryInfo(memberId,iconGroupId);
         boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId).isPresent();
         List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupId).getIcons()
                 .stream().map(IconResponse::from).toList();
-        return new IconGroupDetail(iconGroupSummaryInfo,isBuy,iconResponses);
+        IconGroupDetail iconGroupDetail = new IconGroupDetail(iconGroupSummaryInfo,iconResponses);
+        return new UserIconGroupDetail(iconGroupDetail,isBuy);
     }
 
 

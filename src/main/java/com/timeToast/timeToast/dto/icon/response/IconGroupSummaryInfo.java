@@ -1,5 +1,6 @@
-package com.timeToast.timeToast.dto.icon.icon_group.response;
+package com.timeToast.timeToast.dto.icon.response;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import lombok.Builder;
@@ -12,6 +13,7 @@ public record IconGroupSummaryInfo(
         String thumbnailImageUrl,
         String description,
         IconType iconType,
+        IconState iconState,
         int price
 
 ) {
@@ -24,6 +26,7 @@ public record IconGroupSummaryInfo(
                 .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
                 .description(iconGroup.getDescription())
                 .iconType(iconGroup.getIconType())
+                .iconState(iconGroup.getIconState())
                 .price(iconGroup.getPrice())
                 .build();
     }

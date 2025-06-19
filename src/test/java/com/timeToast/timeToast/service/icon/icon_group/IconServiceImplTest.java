@@ -4,10 +4,10 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.icon.icon.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetail;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupInfoResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupDetailResponses;
+import com.timeToast.timeToast.dto.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.response.UserIconGroupDetail;
+import com.timeToast.timeToast.dto.icon.response.IconGroupInfoResponses;
+import com.timeToast.timeToast.dto.icon.response.UserIconGroupDetailResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
@@ -115,9 +115,9 @@ public class IconServiceImplTest {
     void getToastIconGroupsByUser() {
         long memberId = 1L;
 
-        IconGroupDetailResponses iconGroupDetailResponses = iconGroupService.getToastIconGroupsByUser(memberId);
+        UserIconGroupDetailResponses userIconGroupDetailResponses = iconGroupService.getToastIconGroupsByUser(memberId);
 
-        assertThat(iconGroupDetailResponses).isNotNull();
+        assertThat(userIconGroupDetailResponses).isNotNull();
     }
 
     @Test
@@ -125,9 +125,9 @@ public class IconServiceImplTest {
     void getJamIconGroupsByUser() {
         long memberId = 1L;
 
-        IconGroupDetailResponses iconGroupDetailResponses = iconGroupService.getJamIconGroupsByUser(memberId);
+        UserIconGroupDetailResponses userIconGroupDetailResponses = iconGroupService.getJamIconGroupsByUser(memberId);
 
-        assertThat(iconGroupDetailResponses).isNotNull();
+        assertThat(userIconGroupDetailResponses).isNotNull();
     }
 
     @Test
@@ -160,9 +160,9 @@ public class IconServiceImplTest {
 
         when(iconGroupRepository.getById(iconGroupId)).thenReturn(iconGroup);
 
-        IconGroupDetail iconGroupDetail = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
+        UserIconGroupDetail userIconGroupDetail = iconGroupService.getIconGroupDetail(memberId,iconGroupId);
 
-        assertThat(iconGroupDetail).isNotNull();
+        assertThat(userIconGroupDetail).isNotNull();
     }
 
     @Test

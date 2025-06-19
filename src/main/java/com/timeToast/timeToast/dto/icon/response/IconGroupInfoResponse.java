@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.icon.icon_group.response;
+package com.timeToast.timeToast.dto.icon.response;
 
 public record IconGroupInfoResponse(
         IconGroupSummaryInfo iconGroupSummaryInfo,

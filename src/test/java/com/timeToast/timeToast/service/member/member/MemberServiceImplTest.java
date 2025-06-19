@@ -1,5 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
@@ -7,8 +9,8 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.response.*;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -34,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -324,7 +325,6 @@ public class MemberServiceImplTest {
         assertEquals(CreatorInfoResponse.from(creator), creatorInfoResponse);
     }
 
-    //TODO 개선
     @Test
     @DisplayName("제작자 리스트 조회")
     public void getCreators(){
@@ -332,16 +332,18 @@ public class MemberServiceImplTest {
         List<Member> creators = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
 
-        List<CreatorIconInfo> creatorIconInfoList = List.of(
-                CreatorIconInfo.builder()
-                        .title("title")
-                        .income(1000)
-                        .salesCount(1)
-                        .iconImageUrl(List.of("iconImageUrl"))
-                        .build()
-        );
-        CreatorIconInfos creatorIconInfos =  new CreatorIconInfos(1, 1000, 10,creatorIconInfoList);
-        when(adminIconService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, IconState.WAITING,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+        IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
+
+        IconGroupOverview iconGroupOverview = new IconGroupOverview(iconGroupSummaryInfo, iconResponses, iconGroupOrderInfo);
+
+        List<IconGroupOverview> iconGroupOverviews = List.of(iconGroupOverview);
+
+        CreatorIconGroupResponse creatorIconGroupResponse = new CreatorIconGroupResponse(iconGroupOverviews, 0, 0, 0, 0);
+
+        when(adminIconService.getIconGroupsByCreator(anyLong())).thenReturn(creatorIconGroupResponse);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();

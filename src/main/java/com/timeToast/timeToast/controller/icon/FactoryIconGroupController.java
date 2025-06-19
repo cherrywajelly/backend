@@ -1,9 +1,9 @@
 package com.timeToast.timeToast.controller.icon;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOverview;
+import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
+import com.timeToast.timeToast.dto.icon.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.response.IconGroupOverview;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.service.icon.AdminIconService;
@@ -30,8 +30,8 @@ public class FactoryIconGroupController {
     }
 
     @GetMapping("")
-    public CreatorProfileResponse getIconGroupOverviews(@Login LoginMember loginMember) {
-        return adminIconService.getIconGroupOverviews(loginMember.id());
+    public CreatorIconGroupResponse getIconGroupOverviews(@Login LoginMember loginMember) {
+        return adminIconService.getIconGroupsByCreator(loginMember.id());
     }
 
     @GetMapping("/{iconGroupId}")

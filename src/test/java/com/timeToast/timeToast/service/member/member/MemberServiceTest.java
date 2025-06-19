@@ -1,10 +1,13 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.icon.response.*;
 import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
 import com.timeToast.timeToast.dto.member.member.response.CreatorResponse;
@@ -18,7 +21,6 @@ import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
@@ -98,13 +100,22 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = new ArrayList<>();
-        creatorResponses.add(
-                new CreatorResponse(
+
+        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description",
+                IconType.TOAST, IconState.WAITING,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+        IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
+
+        IconGroupOverview iconGroupOverview = new IconGroupOverview(iconGroupSummaryInfo, iconResponses, iconGroupOrderInfo);
+
+        List<IconGroupOverview> iconGroupOverviews = List.of(iconGroupOverview);
+
+
+        List<CreatorResponse> creatorResponses = List.of(new CreatorResponse(
                         new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"),
-                        0,
-                        0,
-                        0));
+                        new CreatorIconGroupResponse(iconGroupOverviews, 10, 10, 100, 90)));
+
         return new CreatorResponses(creatorResponses);
     }
 

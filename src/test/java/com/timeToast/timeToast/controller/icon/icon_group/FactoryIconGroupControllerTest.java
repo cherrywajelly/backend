@@ -2,9 +2,8 @@ package com.timeToast.timeToast.controller.icon.icon_group;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.controller.icon.FactoryIconGroupController;
-import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
-import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.request.IconGroupPostRequest;
 import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.icon.icon_group.AdminIconServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -103,12 +101,12 @@ public class FactoryIconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImageUrl"),
                                         fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
                                         fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
-                                        fieldWithPath("iconGroupOverviews[].iconState").type(STRING).description("아이콘 그룹 상태"),
                                         fieldWithPath("iconGroupOverviews[].icons[].iconId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("iconGroupOverviews[].icons[].iconImageUrl").type(STRING).description("아이콘 imageUrl"),
-                                        fieldWithPath("iconGroupOverviews[].orderCount").type(NUMBER).description("아이콘 별 주문 갯수"),
-                                        fieldWithPath("iconGroupOverviews[].income").type(NUMBER).description("아이콘 별 판매 수익"),
+                                        fieldWithPath("iconGroupOverviews[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 주문 갯수"),
+                                        fieldWithPath("iconGroupOverviews[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
                                         fieldWithPath("totalIconCount").type(NUMBER).description("총 아이콘 갯수"),
                                         fieldWithPath("totalOrderCount").type(NUMBER).description("아이콘 총 판매 갯수"),
                                         fieldWithPath("totalIncome").type(NUMBER).description("아이콘 총 수익"),
@@ -146,12 +144,12 @@ public class FactoryIconGroupControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImageUrl"),
                                         fieldWithPath("iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
                                         fieldWithPath("iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
                                         fieldWithPath("iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
-                                        fieldWithPath("iconState").type(STRING).description("아이콘 그룹 상태"),
                                         fieldWithPath("icons[].iconId").type(NUMBER).description("아이콘 id"),
                                         fieldWithPath("icons[].iconImageUrl").type(STRING).description("아이콘 imageUrl"),
-                                        fieldWithPath("orderCount").type(NUMBER).description("아이콘 별 주문 갯수"),
-                                        fieldWithPath("income").type(NUMBER).description("아이콘 별 판매 수익")
+                                        fieldWithPath("iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 주문 갯수"),
+                                        fieldWithPath("iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익")
                                 )
                                 .build()
                         )));

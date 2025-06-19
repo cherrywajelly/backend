@@ -4,7 +4,6 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerRes
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
@@ -19,6 +18,5 @@ public interface AdminMemberService {
     ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId);
     EventToastDataManagerResponses getMemberEventToastInfo(final long memberId);
     GiftToastDataManagerResponses getMemberGiftToastInfo(final long memberId);
-    IconGroupManagerResponses getMemberIconGroupInfo(final long memberId);
     PaymentManagerResponses getMemberPaymentManagerInfo(final long memberId);
 }

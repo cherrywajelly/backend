@@ -5,7 +5,8 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -182,24 +183,16 @@ public class MemberServiceImpl implements MemberService{
         return MemberProfileResponse.from(member, isFollow);
     }
 
-    //TODO
     @Transactional(readOnly = true)
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = new ArrayList<>();
-        memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
-                .sorted(Comparator.comparing(Member::getNickname)).forEach(
-                        member -> {
-                            CreatorIconInfos creatorIconInfos = adminIconService.getIconGroupsByCreator(member.getId());
-                            creatorResponses.add(CreatorResponse.builder()
-                                    .creatorInfo(CreatorInfoResponse.from(member))
-                                    .totalIconCount(creatorIconInfos.totalIconCount())
-                                    .totalIncome(creatorIconInfos.totalIncome())
-                                    .salesIconCount(creatorIconInfos.salesIconCount())
-                                    .build());
-                        }
-
-                );
+        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname))
+                .map(member -> {
+                    CreatorIconGroupResponse creatorIconGroupResponse = adminIconService.getIconGroupsByCreator(member.getId());
+                    return new CreatorResponse(CreatorInfoResponse.from(member), creatorIconGroupResponse);
+                })
+                .toList();
         return new CreatorResponses(creatorResponses);
     }
 

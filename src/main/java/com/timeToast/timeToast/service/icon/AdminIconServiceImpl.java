@@ -2,27 +2,24 @@ package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
-import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
+import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
-import com.timeToast.timeToast.dto.icon.icon.IconResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupOverview;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.*;
-import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupPostRequest;
-import com.timeToast.timeToast.dto.icon.icon_group.request.IconGroupStateRequest;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorProfileResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
+import com.timeToast.timeToast.dto.icon.response.IconGroupOrderInfo;
+import com.timeToast.timeToast.dto.icon.response.IconResponse;
+import com.timeToast.timeToast.dto.icon.request.IconGroupPostRequest;
+import com.timeToast.timeToast.dto.icon.request.IconGroupStateRequest;
+import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
+import com.timeToast.timeToast.dto.icon.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.LongStream;
 
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.SLASH;
@@ -38,12 +36,22 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class AdminIconServiceImpl implements AdminIconService {
     private final IconGroupRepository iconGroupRepository;
     private  final MemberRepository memberRepository;
     private final PaymentRepository paymentRepository;
     private final FileUploadService fileUploadService;
+    private final IconMemberRepository iconMemberRepository;
+
+    public AdminIconServiceImpl(final IconGroupRepository iconGroupRepository, final MemberRepository memberRepository,
+                                final PaymentRepository paymentRepository, final FileUploadService fileUploadService,
+                                final IconMemberRepository iconMemberRepository) {
+        this.iconGroupRepository = iconGroupRepository;
+        this.memberRepository = memberRepository;
+        this.paymentRepository = paymentRepository;
+        this.fileUploadService = fileUploadService;
+        this.iconMemberRepository = iconMemberRepository;
+    }
 
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
@@ -84,10 +92,11 @@ public class AdminIconServiceImpl implements AdminIconService {
 
     @Transactional
     @Override
-    public IconGroupInfoResponse saveIconState(final IconGroupStateRequest iconGroupStateRequest){
+    public IconGroupSummaryInfo saveIconState(final IconGroupStateRequest iconGroupStateRequest){
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupStateRequest.iconGroupId());
+        Member creator = memberRepository.getById(iconGroup.getMemberId());
         iconGroup.updateIconState(iconGroupStateRequest.iconState());
-        return IconGroupInfoResponse.from(iconGroup);
+        return IconGroupSummaryInfo.from(iconGroup, creator.getNickname());
     }
 
     @Transactional(readOnly = true)
@@ -101,13 +110,13 @@ public class AdminIconServiceImpl implements AdminIconService {
 
     @Transactional(readOnly = true)
     @Override
-    public CreatorProfileResponse getIconGroupOverviews(final long memberId){
+    public CreatorIconGroupResponse getIconGroupsByCreator(final long memberId){
         Member member = memberRepository.getById(memberId);
 
         List<IconGroupOverview> iconGroupOverviews = iconGroupRepository.findAllByMemberId(memberId).stream()
                 .map(iconGroup -> getIconGroupOverviewByIconGroup(iconGroup, member.getNickname())).toList();
 
-        return CreatorProfileResponse.from(iconGroupOverviews);
+        return getCreatorProfileResponseFromIconGroupOverviews(iconGroupOverviews);
 
     }
 
@@ -116,86 +125,83 @@ public class AdminIconServiceImpl implements AdminIconService {
         List<Payment> payments = paymentRepository.findAllByItemId(iconGroup.getId());
         long totalRevenue = payments.stream().mapToLong(Payment::getAmount).sum();
 
-        return IconGroupOverview.from(IconGroupSummaryInfo.from(iconGroup,creatorName), iconGroup,payments.size(),totalRevenue);
+        List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
+        IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(payments.size(),totalRevenue);
+
+        return new IconGroupOverview(IconGroupSummaryInfo.from(iconGroup,creatorName), iconResponses, iconGroupOrderInfo);
+    }
+
+    private CreatorIconGroupResponse getCreatorProfileResponseFromIconGroupOverviews(List<IconGroupOverview> iconGroupOverviews){
+        return CreatorIconGroupResponse.builder()
+                .iconGroupOverviews(iconGroupOverviews)
+                .totalIconCount(iconGroupOverviews.size())
+                .totalOrderCount(iconGroupOverviews.stream().flatMapToLong(
+                        t -> LongStream.of(t.iconGroupOrderInfo().orderCount())).sum())
+                .totalIncome(iconGroupOverviews.stream().flatMapToLong(
+                        t -> LongStream.of(t.iconGroupOrderInfo().income())).sum())
+                .totalSettlement((long) (iconGroupOverviews.stream().flatMapToLong(
+                        t->LongStream.of(t.iconGroupOrderInfo().income())).sum() * 0.7))
+                .build();
     }
 
 
 
-
-
-    //TODO
     @Transactional(readOnly = true)
     @Override
-    public IconGroupInfoResponses getIconGroupForNonApproval() {
-        List<IconGroupInfoResponse> iconGroupNonApprovalResponses =
-                iconGroupRepository.findAllByIconState(IconState.WAITING)
-                        .stream()
-                        .map(IconGroupInfoResponse::from)
-                        .toList();
-
-        return new IconGroupInfoResponses(iconGroupNonApprovalResponses);
-    }
-    //TODO
-    @Transactional(readOnly = true)
-    @Override
-    public com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse getIconGroupDetail(final long iconGroupId){
+    public IconGroupDetail getIconGroupDetail(final long iconGroupId){
         IconGroup iconGroup = iconGroupRepository.getById(iconGroupId);
         Member creator = memberRepository.getById(iconGroup.getMemberId());
         List<IconResponse> iconResponses = iconGroup.getIcons().stream().map(IconResponse::from).toList();
-
-        return com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupDetailResponse.builder()
-                .thumbnailImageUrl(iconGroup.getThumbnailImageUrl())
-                .title(iconGroup.getName())
-                .creatorNickname(creator.getNickname())
-                .price(iconGroup.getPrice())
-                .iconState(iconGroup.getIconState())
-                .description(iconGroup.getDescription())
-                .icons(iconResponses)
-                .build();
+        IconGroupSummaryInfo iconGroupSummaryInfo = IconGroupSummaryInfo.from(iconGroup, creator.getNickname());
+        return new IconGroupDetail(iconGroupSummaryInfo, iconResponses);
 
     }
-    //TODO
+
     @Transactional(readOnly = true)
     @Override
-    public IconGroupAdminResponses getAllIconGroups(){
-        List<IconGroupAdminResponse> iconGroupAdminResponses = new ArrayList<>();
+    public IconGroupSummaryInfos getAllIconGroups(){
         List<IconGroup> iconGroups = iconGroupRepository.findAllByIconBuiltin(IconBuiltin.NONBUILTIN);
-        iconGroups.forEach(iconGroup -> {
+        List<IconGroupSummaryInfo> iconGroupSummaryInfos = iconGroups.stream().map(iconGroup -> {
             Member member = memberRepository.getById(iconGroup.getMemberId());
-            if (member != null) {
-                iconGroupAdminResponses.add(IconGroupAdminResponse.from(iconGroup,member.getNickname()));
-            }
-        });
-        return new IconGroupAdminResponses(iconGroupAdminResponses);
+            return IconGroupSummaryInfo.from(iconGroup, member.getNickname());
+        }).toList();
+
+        return new IconGroupSummaryInfos(iconGroupSummaryInfos);
     }
 
-    //TODO
     @Transactional(readOnly = true)
     @Override
-    public CreatorIconInfos getIconGroupsByCreator(final long creatorId) {
-        List<IconGroup> iconGroups = iconGroupRepository.findAllByMemberId(creatorId);
-        List<CreatorIconInfo> creatorIconInfos = new ArrayList<>();
-        iconGroups.forEach(
-                iconGroup ->
-                {
-                    int salesIconCount = paymentRepository.findAllByItemIdAndItemType(iconGroup.getId(), ItemType.ICON).size();
-                    creatorIconInfos.add(
-                            CreatorIconInfo.builder()
-                                    .title(iconGroup.getName())
-                                    .income(salesIconCount * iconGroup.getPrice())
-                                    .salesCount(salesIconCount)
-                                    .iconImageUrl(iconGroup.getIcons().stream().map(Icon::getIconImageUrl).toList())
-                                    .build()
-                    );
-                }
-        );
+    public IconGroupSummaryInfos getIconGroupForNonApproval() {
+        List<IconGroupSummaryInfo> iconGroupSummaryInfos = iconGroupRepository.findAllByIconState(IconState.WAITING)
+                .stream().map(iconGroup -> {
+                    Member member = memberRepository.getById(iconGroup.getMemberId());
+                    return IconGroupSummaryInfo.from(iconGroup, member.getNickname());
+                })
+                .toList();
 
-        return CreatorIconInfos.builder()
-                .salesIconCount(creatorIconInfos.stream().mapToInt(CreatorIconInfo::salesCount).sum())
-                .totalIncome(creatorIconInfos.stream().mapToInt(CreatorIconInfo::income).sum())
-                .totalIconCount(iconGroupRepository.findAllByMemberId(creatorId).size())
-                .creatorIconInfos(creatorIconInfos)
-                .build();
+        return new IconGroupSummaryInfos(iconGroupSummaryInfos);
+    }
+
+
+    //TODO query 최적화하기
+    @Transactional(readOnly = true)
+    @Override
+    public IconGroupDetailResponses getMemberIconGroupInfo(final long memberId) {
+        List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
+        List<IconGroupDetail> iconGroupDetails = iconMembers.stream()
+                .map(iconMember -> {
+
+                    IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
+                    Member creator = memberRepository.getById(iconGroup.getMemberId());
+                    List<IconResponse> icons = iconGroup.getIcons().stream()
+                            .map(IconResponse::from)
+                            .toList();
+
+                    IconGroupSummaryInfo iconGroupSummaryInfo = IconGroupSummaryInfo.from(iconGroup, creator.getNickname());
+                    return new IconGroupDetail(iconGroupSummaryInfo, icons);
+                })
+                .toList();
+        return new IconGroupDetailResponses(iconGroupDetails);
     }
 
 }

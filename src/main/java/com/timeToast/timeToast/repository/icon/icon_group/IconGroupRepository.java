@@ -4,10 +4,9 @@ import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.dto.icon.icon_group.response.IconGroupSummaryInfo;
+import com.timeToast.timeToast.dto.icon.response.IconGroupSummaryInfo;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IconGroupRepository {
     IconGroup save(final IconGroup iconGroup);
