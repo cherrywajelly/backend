@@ -13,7 +13,6 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.icon.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.response.*;
-import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;

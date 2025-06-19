@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdminMemberController {
     private final AdminMemberService adminMemberService;
     private final MemberService memberService;
-    private final AdminIconService adminIconService;
 
     @GetMapping("/api/v3/members")
     public MemberInfoResponses getMembersManager() {

@@ -30,7 +30,6 @@ import java.util.Optional;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DELETE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,21 +51,15 @@ public class IconServiceImplTest {
     private IconServiceImpl iconGroupService;
 
 
-    private Member member;
     private IconGroup iconGroup;
     private IconMember iconMember;
-    private Icon icon;
 
     @BeforeEach
     void setUp() {
         long memberId = 1L;
-        long iconGroupId = 1L;
-        String imageUrl = "imageUrl";
 
-        member = Member.builder().build();
         iconGroup = IconGroup.builder().memberId(memberId).build();
         iconMember = IconMember.builder().build();
-//        icon = Icon.builder().iconGroupId(iconGroupId).iconImageUrl(imageUrl).build();
     }
 
 

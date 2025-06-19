@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
@@ -81,9 +80,6 @@ public class AdminMemberServiceImplTest {
     @Mock
     private IconGroupRepository iconGroupRepository;
 
-
-    @Mock
-    private IconMemberRepository iconMemberRepository;
 
     @InjectMocks
     private AdminMemberServiceImpl managerService;
