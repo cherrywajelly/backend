@@ -332,18 +332,18 @@ public class MemberServiceImplTest {
         List<Member> creators = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
 
-        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+        IconGroupInfo iconGroupInfo = new IconGroupInfo(1L, "title",
                 "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, IconState.WAITING,100);
         List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
         IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
 
-        IconGroupOverview iconGroupOverview = new IconGroupOverview(iconGroupSummaryInfo, iconResponses, iconGroupOrderInfo);
+        CreatorIconGroup creatorIconGroup = new CreatorIconGroup(iconGroupInfo, iconResponses, iconGroupOrderInfo);
 
-        List<IconGroupOverview> iconGroupOverviews = List.of(iconGroupOverview);
+        List<CreatorIconGroup> creatorIconGroups = List.of(creatorIconGroup);
 
-        CreatorIconGroupResponse creatorIconGroupResponse = new CreatorIconGroupResponse(iconGroupOverviews, 0, 0, 0, 0);
+        CreatorIconGroupResponse creatorIconGroupResponse = new CreatorIconGroupResponse(creatorIconGroups, 0, 0, 0, 0);
 
-        when(adminIconService.getIconGroupsByCreator(anyLong())).thenReturn(creatorIconGroupResponse);
+        when(adminIconService.getCreatorIconGroups(anyLong())).thenReturn(creatorIconGroupResponse);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();

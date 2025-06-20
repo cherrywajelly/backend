@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public record IconGroupDetail(
-        IconGroupSummaryInfo iconGroupSummaryInfo,
+        IconGroupInfo iconGroupInfo,
         List<IconResponse> icons
 ) {
 }

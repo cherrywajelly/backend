@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.service.icon.icon_group;
+package com.timeToast.timeToast.service.icon;
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
@@ -18,7 +18,6 @@ import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.service.icon.AdminIconServiceImpl;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -211,21 +210,21 @@ public class AdminIconServiceImplTest {
         IconGroupStateRequest iconGroupStateRequest = new IconGroupStateRequest(1L, IconState.REGISTERED);
 
         // When
-        IconGroupSummaryInfo iconGroupSummaryInfo = iconGroupAdminService.saveIconState(iconGroupStateRequest);
+        IconGroupInfo iconGroupInfo = iconGroupAdminService.saveIconState(iconGroupStateRequest);
 
         // Then
-        assertEquals(iconGroup.getId(), iconGroupSummaryInfo.iconGroupId());
-        assertEquals(iconGroup.getName(), iconGroupSummaryInfo.title());
-        assertEquals(iconGroup.getThumbnailImageUrl(), iconGroupSummaryInfo.thumbnailImageUrl());
-        assertEquals(iconGroup.getIconType(), iconGroupSummaryInfo.iconType());
-        assertEquals(iconGroup.getIconState(), iconGroupSummaryInfo.iconState());
+        assertEquals(iconGroup.getId(), iconGroupInfo.iconGroupId());
+        assertEquals(iconGroup.getName(), iconGroupInfo.title());
+        assertEquals(iconGroup.getThumbnailImageUrl(), iconGroupInfo.thumbnailImageUrl());
+        assertEquals(iconGroup.getIconType(), iconGroupInfo.iconType());
+        assertEquals(iconGroup.getIconState(), iconGroupInfo.iconState());
     }
 
 
 
     @Test
     @DisplayName("아이콘 그룹 상세 조회 성공")
-    void getIconGroupOverview() {
+    void getCreatorIconGroup() {
         // Given
         Member creator = setUpCreator();
         ReflectionTestUtils.setField(creator, "id", 1L);
@@ -240,16 +239,16 @@ public class AdminIconServiceImplTest {
         when(paymentRepository.findAllByItemId(anyLong())).thenReturn(payments);
 
         // When
-        IconGroupOverview iconGroupOverview = iconGroupAdminService.getIconGroupOverview(creator.getId(), iconGroup.getId());
+        CreatorIconGroup creatorIconGroup = iconGroupAdminService.getCreatorIconGroup(creator.getId(), iconGroup.getId());
 
         // Then
-        assertThat(iconGroupOverview).isNotNull();
+        assertThat(creatorIconGroup).isNotNull();
     }
 
 
     @Test
     @DisplayName("creator의 icon group overviews 조회")
-    void getIconGroupsByCreator() {
+    void getCreatorIconGroups() {
         //given
         List<IconGroup> iconGroups = iconGroupList();
 
@@ -263,10 +262,10 @@ public class AdminIconServiceImplTest {
         when(paymentRepository.findAllByItemId(anyLong())).thenReturn(payments);
 
         //when
-        CreatorIconGroupResponse creatorIconGroupResponse = iconGroupAdminService.getIconGroupsByCreator(creator.getId());
+        CreatorIconGroupResponse creatorIconGroupResponse = iconGroupAdminService.getCreatorIconGroups(creator.getId());
 
         //then
-        assertEquals(iconGroups.size(), creatorIconGroupResponse.iconGroupOverviews().size());
+        assertEquals(iconGroups.size(), creatorIconGroupResponse.creatorIconGroups().size());
     }
 
     @Test
@@ -283,12 +282,12 @@ public class AdminIconServiceImplTest {
         when(memberRepository.getById(1L)).thenReturn(creator);
 
 
-        IconGroupSummaryInfo iconGroupSummaryInfo = IconGroupSummaryInfo.from(iconGroup, creator.getNickname());
+        IconGroupInfo iconGroupInfo = IconGroupInfo.from(iconGroup, creator.getNickname());
         // When
         IconGroupDetail iconGroupDetail = iconGroupAdminService.getIconGroupDetail(1L);
 
         // Then
-        assertEquals(iconGroupSummaryInfo, iconGroupDetail.iconGroupSummaryInfo());
+        assertEquals(iconGroupInfo, iconGroupDetail.iconGroupInfo());
         assertEquals(iconGroup.getIcons().size(), iconGroupDetail.icons().size());
 
     }
@@ -305,10 +304,10 @@ public class AdminIconServiceImplTest {
         when(memberRepository.getById(creator.getId())).thenReturn(creator);
 
         // When
-        IconGroupSummaryInfos iconGroupSummaryInfos = iconGroupAdminService.getAllIconGroups();
+        IconGroupInfos iconGroupInfos = iconGroupAdminService.getAllIconGroups();
 
         // Then
-        assertEquals(iconGroups.size(), iconGroupSummaryInfos.iconGroupSummaryInfos().size());
+        assertEquals(iconGroups.size(), iconGroupInfos.iconGroupInfos().size());
     }
 
     @Test
@@ -324,10 +323,10 @@ public class AdminIconServiceImplTest {
 
 
         // When
-        IconGroupSummaryInfos iconGroupSummaryInfos = iconGroupAdminService.getIconGroupForNonApproval();
+        IconGroupInfos iconGroupInfos = iconGroupAdminService.getIconGroupForNonApproval();
 
         // Then
-        assertEquals(iconGroups.size(), iconGroupSummaryInfos.iconGroupSummaryInfos().size());
+        assertEquals(iconGroups.size(), iconGroupInfos.iconGroupInfos().size());
     }
 
 

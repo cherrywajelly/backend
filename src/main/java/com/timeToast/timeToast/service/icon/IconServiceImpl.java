@@ -33,19 +33,9 @@ public class IconServiceImpl implements IconService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserIconGroupDetailResponses getToastIconGroupsByUser(final long memberId){
-        return getIconGroupsByUser(memberId,IconType.TOAST);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public UserIconGroupDetailResponses getJamIconGroupsByUser(final long memberId) {
-        return getIconGroupsByUser(memberId,IconType.JAM);
-    }
-
-    private UserIconGroupDetailResponses getIconGroupsByUser(final long memberId, final IconType iconType){
-        List<UserIconGroupDetail> userIconGroupDetailRespons =
-                iconGroupRepository.findAllIconGroupSummaryInfoMemberAndIconType(memberId, iconType)
+    public UserIconGroupResponses getUserIconGroups(final long memberId, final IconType iconType){
+        List<UserIconGroupDetail> userIconGroupDetailResponses =
+                iconGroupRepository.findAllIconGroupInfoByMemberIdAndIconType(memberId, iconType)
                         .stream().map(
                                 iconGroupSummaryInfo -> {
                                     List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupSummaryInfo.iconGroupId())
@@ -56,41 +46,30 @@ public class IconServiceImpl implements IconService {
                                 }
                         ).toList();
 
-        return new UserIconGroupDetailResponses(userIconGroupDetailRespons);
+        return new UserIconGroupResponses(userIconGroupDetailResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public IconGroupInfoResponses getAllToastsIconGroups(final long memberId) {
-        return getAllIconGroups(memberId, IconType.TOAST);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public IconGroupInfoResponses getAllJamsIconGroups(final long memberId) {
-        return getAllIconGroups(memberId, IconType.JAM);
-    }
-
-    private IconGroupInfoResponses getAllIconGroups(final long memberId, final IconType iconType){
+    public MarketIconGroupResponses getMarketIconGroups(final long memberId, final IconType iconType) {
         List<IconGroupInfoResponse> iconGroupInfoResponses =
-                iconGroupRepository.findAllIconGroupSummaryInfoWithNonBuiltinAndRegisteredByIconType(iconType).stream().map(
-                iconGroupSummaryInfo -> {
-                    boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupSummaryInfo.iconGroupId()).isPresent();
-                    return new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy);
-                }
-        ).collect(Collectors.toList());
-
-        return new IconGroupInfoResponses(iconGroupInfoResponses);
+                iconGroupRepository.findAllIconGroupInfoWithNonBuiltinAndRegisteredByIconType(iconType).stream().map(
+                        iconGroupSummaryInfo -> {
+                            boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupSummaryInfo.iconGroupId()).isPresent();
+                            return new IconGroupInfoResponse(iconGroupSummaryInfo, isBuy);
+                        }
+                ).collect(Collectors.toList());
+        return new MarketIconGroupResponses(iconGroupInfoResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserIconGroupDetail getIconGroupDetail(final long memberId, final long iconGroupId) {
-        IconGroupSummaryInfo iconGroupSummaryInfo =  iconGroupRepository.getIconGroupSummaryInfo(memberId,iconGroupId);
+        IconGroupInfo iconGroupInfo =  iconGroupRepository.getIconGroupInfo(memberId,iconGroupId);
         boolean isBuy = iconMemberRepository.findByMemberIdAndIconGroupId(memberId, iconGroupId).isPresent();
         List<IconResponse> iconResponses = iconGroupRepository.getById(iconGroupId).getIcons()
                 .stream().map(IconResponse::from).toList();
-        IconGroupDetail iconGroupDetail = new IconGroupDetail(iconGroupSummaryInfo,iconResponses);
+        IconGroupDetail iconGroupDetail = new IconGroupDetail(iconGroupInfo,iconResponses);
         return new UserIconGroupDetail(iconGroupDetail,isBuy);
     }
 

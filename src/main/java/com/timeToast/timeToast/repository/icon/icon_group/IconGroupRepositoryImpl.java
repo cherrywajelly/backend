@@ -6,7 +6,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.timeToast.timeToast.domain.enums.icon_group.*;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.dto.icon.response.IconGroupSummaryInfo;
+import com.timeToast.timeToast.dto.icon.response.IconGroupInfo;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -48,26 +48,21 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
     }
 
     @Override
-    public IconGroupSummaryInfo getIconGroupSummaryInfo(final long memberId, final long iconGroupId){
+    public IconGroupInfo getIconGroupInfo(final long memberId, final long iconGroupId){
         return queryFactory.select(
                     Projections.constructor(
-                            IconGroupSummaryInfo.class,
-                            iconGroup.id,
-                            iconGroup.name,
+                            IconGroupInfo.class,
+                            iconGroup.id, iconGroup.name,
                             ExpressionUtils.as(
                                     JPAExpressions.select(member.nickname)
                                             .from(member)
                                             .where(member.id.eq(iconGroup.memberId)),
                                     "creatorNickname"),
-                            iconGroup.thumbnailImageUrl,
-                            iconGroup.iconType,
-                            iconGroup.price
+                            iconGroup.thumbnailImageUrl, iconGroup.iconType, iconGroup.price
                     )
                 )
                 .from(iconGroup)
-                .where(iconGroup.iconState.eq(IconState.REGISTERED),
-                        iconGroup.id.eq(iconGroupId)
-                )
+                .where(iconGroup.iconState.eq(IconState.REGISTERED), iconGroup.id.eq(iconGroupId))
                 .fetchOne();
     }
 
@@ -81,55 +76,42 @@ public class IconGroupRepositoryImpl implements IconGroupRepository{
         return iconGroupJpaRepository.findAllByMemberId(memberId);
     }
 
-    //TODO 이름이 너무 길다
     @Override
-    public List<IconGroupSummaryInfo> findAllIconGroupSummaryInfoMemberAndIconType(final long memberId, final IconType iconType){
+    public List<IconGroupInfo> findAllIconGroupInfoByMemberIdAndIconType(final long memberId, final IconType iconType){
         return queryFactory.select(
                     Projections.constructor(
-                        IconGroupSummaryInfo.class,
-                        iconGroup.id,
-                        iconGroup.name,
+                        IconGroupInfo.class,
+                        iconGroup.id, iconGroup.name,
                         ExpressionUtils.as(
                                 JPAExpressions.select(member.nickname)
                                         .from(member)
                                         .where(member.id.eq(iconGroup.memberId)),
                                 "creatorNickname"),
-                        iconGroup.thumbnailImageUrl,
-                        iconGroup.iconType,
-                        iconGroup.price
+                        iconGroup.thumbnailImageUrl, iconGroup.iconType, iconGroup.price
                     )
                 )
                 .from(iconGroup)
                 .join(iconMember)
                 .on(iconGroup.id.eq(iconMember.iconGroupId))
-                .where(iconGroup.iconType.eq(iconType),
-                        iconGroup.iconState.eq(IconState.REGISTERED),
-                        iconMember.memberId.eq(memberId)
-                )
+                .where(iconGroup.iconType.eq(iconType), iconGroup.iconState.eq(IconState.REGISTERED), iconMember.memberId.eq(memberId))
                 .fetch();
     }
 
-    //TODO 이름이 너무 길다
     @Override
-    public List<IconGroupSummaryInfo> findAllIconGroupSummaryInfoWithNonBuiltinAndRegisteredByIconType(final IconType iconType){
+    public List<IconGroupInfo> findAllIconGroupInfoWithNonBuiltinAndRegisteredByIconType(final IconType iconType){
         return queryFactory.select(
                 Projections.constructor(
-                        IconGroupSummaryInfo.class,
-                        iconGroup.id,
-                        iconGroup.name,
+                        IconGroupInfo.class,
+                        iconGroup.id, iconGroup.name,
                         ExpressionUtils.as(
                                 JPAExpressions.select(member.nickname)
                                         .from(member)
                                         .where(member.id.eq(iconGroup.memberId)),
-                                "creatorNickname"),
-                        iconGroup.thumbnailImageUrl,
-                        iconGroup.iconType,
-                        iconGroup.price
-                        )
+                                "creatorNickname"), iconGroup.thumbnailImageUrl, iconGroup.iconType, iconGroup.price
+                )
                 )
                 .from(iconGroup)
-                .where(iconGroup.iconType.eq(iconType),
-                        iconGroup.iconBuiltin.eq(IconBuiltin.NONBUILTIN),
+                .where(iconGroup.iconType.eq(iconType), iconGroup.iconBuiltin.eq(IconBuiltin.NONBUILTIN),
                         iconGroup.iconState.eq(IconState.REGISTERED))
                 .fetch();
     }

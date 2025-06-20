@@ -101,20 +101,20 @@ public class MemberServiceTest implements MemberService{
     @Override
     public CreatorResponses getCreators() {
 
-        IconGroupSummaryInfo iconGroupSummaryInfo = new IconGroupSummaryInfo(1L, "title",
+        IconGroupInfo iconGroupInfo = new IconGroupInfo(1L, "title",
                 "creatorNickname", "thumbnailImageUrl", "description",
                 IconType.TOAST, IconState.WAITING,100);
         List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
         IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
 
-        IconGroupOverview iconGroupOverview = new IconGroupOverview(iconGroupSummaryInfo, iconResponses, iconGroupOrderInfo);
+        CreatorIconGroup creatorIconGroup = new CreatorIconGroup(iconGroupInfo, iconResponses, iconGroupOrderInfo);
 
-        List<IconGroupOverview> iconGroupOverviews = List.of(iconGroupOverview);
+        List<CreatorIconGroup> creatorIconGroups = List.of(creatorIconGroup);
 
 
         List<CreatorResponse> creatorResponses = List.of(new CreatorResponse(
                         new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"),
-                        new CreatorIconGroupResponse(iconGroupOverviews, 10, 10, 100, 90)));
+                        new CreatorIconGroupResponse(creatorIconGroups, 10, 10, 100, 90)));
 
         return new CreatorResponses(creatorResponses);
     }

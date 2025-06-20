@@ -19,7 +19,7 @@ public class IconRepositoryImpl implements IconRepository {
         return iconJpaRepository.findById(iconId).orElseThrow(() -> {
             log.warn("NotFoundException iconId={}", iconId);
             throw new NotFoundException(ICON_NOT_FOUND.getMessage());
-            });
+        });
     }
 
 }

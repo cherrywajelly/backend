@@ -189,7 +189,7 @@ public class MemberServiceImpl implements MemberService{
         List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
                 .sorted(Comparator.comparing(Member::getNickname))
                 .map(member -> {
-                    CreatorIconGroupResponse creatorIconGroupResponse = adminIconService.getIconGroupsByCreator(member.getId());
+                    CreatorIconGroupResponse creatorIconGroupResponse = adminIconService.getCreatorIconGroups(member.getId());
                     return new CreatorResponse(CreatorInfoResponse.from(member), creatorIconGroupResponse);
                 })
                 .toList();

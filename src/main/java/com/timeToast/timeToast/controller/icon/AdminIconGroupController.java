@@ -4,8 +4,8 @@ import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
 import com.timeToast.timeToast.dto.icon.request.IconGroupStateRequest;
 import com.timeToast.timeToast.dto.icon.response.IconGroupDetail;
 import com.timeToast.timeToast.dto.icon.response.IconGroupDetailResponses;
-import com.timeToast.timeToast.dto.icon.response.IconGroupSummaryInfo;
-import com.timeToast.timeToast.dto.icon.response.IconGroupSummaryInfos;
+import com.timeToast.timeToast.dto.icon.response.IconGroupInfo;
+import com.timeToast.timeToast.dto.icon.response.IconGroupInfos;
 import com.timeToast.timeToast.service.icon.AdminIconService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +19,12 @@ public class AdminIconGroupController {
     }
 
     @PostMapping("/api/v3/iconGroups")
-    public IconGroupSummaryInfo saveIconState(@RequestBody IconGroupStateRequest iconGroupStateRequest) {
+    public IconGroupInfo saveIconState(@RequestBody IconGroupStateRequest iconGroupStateRequest) {
         return adminIconService.saveIconState(iconGroupStateRequest);
     }
 
     @GetMapping("/api/v3/iconGroups")
-    public IconGroupSummaryInfos iconGroupList() {
+    public IconGroupInfos iconGroupList() {
         return adminIconService.getAllIconGroups();
     }
 
@@ -34,13 +34,13 @@ public class AdminIconGroupController {
     }
 
     @GetMapping("/api/v3/iconGroups/non-approval")
-    public IconGroupSummaryInfos iconGroupNonApproval() {
+    public IconGroupInfos iconGroupNonApproval() {
         return adminIconService.getIconGroupForNonApproval();
     }
 
     @GetMapping("/api/v3/iconGroups/creators/{creatorId}")
     public CreatorIconGroupResponse getIconGroupsByCreator(@PathVariable long creatorId) {
-        return adminIconService.getIconGroupsByCreator(creatorId);
+        return adminIconService.getCreatorIconGroups(creatorId);
     }
 
     @GetMapping("/api/v3/iconGroups/members/{memberId}")

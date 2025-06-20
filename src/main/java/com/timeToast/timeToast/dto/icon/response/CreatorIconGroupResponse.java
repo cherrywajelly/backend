@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 public record CreatorIconGroupResponse(
-        List<IconGroupOverview> iconGroupOverviews,
+        List<CreatorIconGroup> creatorIconGroups,
         long totalIconCount,
         long totalOrderCount,
         long totalIncome,

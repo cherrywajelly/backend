@@ -6,7 +6,7 @@ import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
 import lombok.Builder;
 
 @Builder
-public record IconGroupSummaryInfo(
+public record IconGroupInfo(
         long iconGroupId,
         String title,
         String creatorNickname,
@@ -18,8 +18,8 @@ public record IconGroupSummaryInfo(
 
 ) {
 
-    public static IconGroupSummaryInfo from(final IconGroup iconGroup, final String creatorNickname) {
-        return IconGroupSummaryInfo.builder()
+    public static IconGroupInfo from(final IconGroup iconGroup, final String creatorNickname) {
+        return IconGroupInfo.builder()
                 .iconGroupId(iconGroup.getId())
                 .title(iconGroup.getName())
                 .creatorNickname(creatorNickname)

@@ -16,12 +16,12 @@ public class IconMemberRepositoryImpl implements IconMemberRepository {
     private final IconMemberJpaRepository iconMemberJpaRepository;
 
     @Override
+    public IconMember save(final IconMember memberIcon) {
+        return iconMemberJpaRepository.save(memberIcon);
+    }
+    @Override
     public IconMember getById(final long memberIconId) { return iconMemberJpaRepository.findById(memberIconId).orElseThrow(() -> new NotFoundException(ICON_MEMBER_NOT_FOUND.getMessage())); }
 
-    @Override
-    public IconMember getByMemberIdAndIconGroupId(final long memberId, final long iconGroupId) {
-        return iconMemberJpaRepository.getByMemberIdAndIconGroupId(memberId, iconGroupId);
-    }
 
     @Override
     public Optional<IconMember> findByMemberIdAndIconGroupId(final long memberId, final long iconGroupId){
@@ -31,11 +31,6 @@ public class IconMemberRepositoryImpl implements IconMemberRepository {
     @Override
     public List<IconMember> findByMemberId(final long memberId){
         return iconMemberJpaRepository.findByMemberId(memberId);
-    }
-
-    @Override
-    public IconMember save(final IconMember memberIcon) {
-        return iconMemberJpaRepository.save(memberIcon);
     }
 
     @Override

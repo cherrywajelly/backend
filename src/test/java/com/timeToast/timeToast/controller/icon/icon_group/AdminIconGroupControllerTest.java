@@ -5,7 +5,7 @@ import com.timeToast.timeToast.controller.icon.AdminIconGroupController;
 import com.timeToast.timeToast.domain.enums.icon_group.IconState;
 import com.timeToast.timeToast.dto.icon.request.IconGroupStateRequest;
 import com.timeToast.timeToast.service.icon.AdminIconService;
-import com.timeToast.timeToast.service.icon.icon_group.AdminIconServiceTest;
+import com.timeToast.timeToast.service.icon.AdminIconServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +83,7 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("관리자 아이콘 그룹 단일 상세 조회",
                         pathParameters(
-                                parameterWithName("iconGroupId").description("iconGroup Id")
+                                parameterWithName("iconGroupId").description("아이콘 그룹 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("[어드민] 아이콘")
@@ -92,16 +92,16 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
-                                        fieldWithPath("iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
-                                        fieldWithPath("iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
-                                        fieldWithPath("iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 state"),
-                                        fieldWithPath("iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
-                                        fieldWithPath("icons[0].iconId").type(NUMBER).description("아이콘 Id"),
-                                        fieldWithPath("icons[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
+                                        fieldWithPath("iconGroupInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
+                                        fieldWithPath("iconGroupInfo.title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
+                                        fieldWithPath("iconGroupInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
+                                        fieldWithPath("iconGroupInfo.description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("iconGroupInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupInfo.iconState").type(STRING).description("아이콘 그룹 state"),
+                                        fieldWithPath("iconGroupInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
+                                        fieldWithPath("icons[].iconId").type(NUMBER).description("아이콘 Id"),
+                                        fieldWithPath("icons[].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
                                 .build()
                         )));
@@ -124,14 +124,14 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupSummaryInfos[].iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
-                                        fieldWithPath("iconGroupSummaryInfos[].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupSummaryInfos[].creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
-                                        fieldWithPath("iconGroupSummaryInfos[].thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
-                                        fieldWithPath("iconGroupSummaryInfos[].description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("iconGroupSummaryInfos[].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaryInfos[].iconState").type(STRING).description("아이콘 그룹 state"),
-                                        fieldWithPath("iconGroupSummaryInfos[].price").type(NUMBER).description("아이콘 그룹 가격")
+                                        fieldWithPath("iconGroupInfos[].iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
+                                        fieldWithPath("iconGroupInfos[].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupInfos[].creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
+                                        fieldWithPath("iconGroupInfos[].thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
+                                        fieldWithPath("iconGroupInfos[].description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("iconGroupInfos[].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupInfos[].iconState").type(STRING).description("아이콘 그룹 state"),
+                                        fieldWithPath("iconGroupInfos[].price").type(NUMBER).description("아이콘 그룹 가격")
                                 )
                                 .build()
                         )));
@@ -154,14 +154,14 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupSummaryInfos[].iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
-                                        fieldWithPath("iconGroupSummaryInfos[].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupSummaryInfos[].creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
-                                        fieldWithPath("iconGroupSummaryInfos[].thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
-                                        fieldWithPath("iconGroupSummaryInfos[].description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("iconGroupSummaryInfos[].iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupSummaryInfos[].iconState").type(STRING).description("아이콘 그룹 state"),
-                                        fieldWithPath("iconGroupSummaryInfos[].price").type(NUMBER).description("아이콘 그룹 가격")
+                                        fieldWithPath("iconGroupInfos[].iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
+                                        fieldWithPath("iconGroupInfos[].title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupInfos[].creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
+                                        fieldWithPath("iconGroupInfos[].thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
+                                        fieldWithPath("iconGroupInfos[].description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("iconGroupInfos[].iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupInfos[].iconState").type(STRING).description("아이콘 그룹 state"),
+                                        fieldWithPath("iconGroupInfos[].price").type(NUMBER).description("아이콘 그룹 가격")
                                 )
                                 .build()
                         )));
@@ -188,14 +188,14 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 state"),
-                                        fieldWithPath("iconGroupDetails[].iconGroupSummaryInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 Id"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.creatorNickname").type(STRING).description("아이콘 제작자 닉네임"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnailImage url"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.iconState").type(STRING).description("아이콘 그룹 state"),
+                                        fieldWithPath("iconGroupDetails[].iconGroupInfo.price").type(NUMBER).description("아이콘 그룹 가격"),
                                         fieldWithPath("iconGroupDetails[].icons[0].iconId").type(NUMBER).description("아이콘 Id"),
                                         fieldWithPath("iconGroupDetails[].icons[0].iconImageUrl").type(STRING).description("아이콘 이미지 url")
                                 )
@@ -223,18 +223,18 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("제작자 닉네임"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnail url"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupSummaryInfo.price").type(NUMBER).description("가격"),
-                                        fieldWithPath("iconGroupOverviews[].icons[].iconId").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("iconGroupOverviews[].icons[].iconImageUrl").type(STRING).description("아이콘 image url"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 판매 수"),
-                                        fieldWithPath("iconGroupOverviews[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.creatorNickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnail url"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupInfo.price").type(NUMBER).description("가격"),
+                                        fieldWithPath("creatorIconGroups[].icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("creatorIconGroups[].icons[].iconImageUrl").type(STRING).description("아이콘 image url"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 판매 수"),
+                                        fieldWithPath("creatorIconGroups[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
                                         fieldWithPath("totalIconCount").type(NUMBER).description("총 아이콘 수"),
                                         fieldWithPath("totalOrderCount").type(NUMBER).description("총 주문 수"),
                                         fieldWithPath("totalIncome").type(NUMBER).description("총 수익"),
@@ -243,8 +243,5 @@ public class AdminIconGroupControllerTest extends BaseControllerTests {
                                 .build()
                         )));
     }
-
-
-
 
 }

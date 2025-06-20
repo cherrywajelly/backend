@@ -1,8 +1,6 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.service.icon.AdminIconService;
-import com.timeToast.timeToast.service.icon.icon_group.AdminIconServiceTest;
 import com.timeToast.timeToast.service.member.member.*;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
@@ -26,11 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminMemberControllerTest extends BaseControllerTests {
     private final AdminMemberService adminMemberService = new AdminMemberServiceTest();
     private final MemberService memberService = new MemberServiceTest();
-    private final AdminIconService adminIconService = new AdminIconServiceTest();
 
     @Override
     protected Object initController() {
-        return new AdminMemberController(adminMemberService, memberService, adminIconService);
+        return new AdminMemberController(adminMemberService, memberService);
     }
 
     @DisplayName("최고 관리자는 staff로 지정할 수 있다.")
@@ -463,18 +460,18 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         fieldWithPath("creatorResponses[].creatorInfo.bank").type(STRING).description("은행"),
                                         fieldWithPath("creatorResponses[].creatorInfo.accountNumber").type(STRING).description("계좌번호"),
                                         fieldWithPath("creatorResponses[].creatorInfo.profileUrl").type(STRING).description("프로필 사진"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.creatorNickname").type(STRING).description("제작자 닉네임"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnail url"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.description").type(STRING).description("아이콘 그룹 설명"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupSummaryInfo.price").type(NUMBER).description("가격"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].icons[].iconId").type(NUMBER).description("아이콘 id"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].icons[].iconImageUrl").type(STRING).description("아이콘 image url"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 판매 수"),
-                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.iconGroupOverviews[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.creatorNickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnail url"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.price").type(NUMBER).description("가격"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].icons[].iconImageUrl").type(STRING).description("아이콘 image url"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 판매 수"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
                                         fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalIconCount").type(NUMBER).description("총 아이콘 수"),
                                         fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalOrderCount").type(NUMBER).description("총 주문 수"),
                                         fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalIncome").type(NUMBER).description("총 수익"),

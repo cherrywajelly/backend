@@ -5,8 +5,8 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record IconGroupOverview(
-        IconGroupSummaryInfo iconGroupSummaryInfo,
+public record CreatorIconGroup(
+        IconGroupInfo iconGroupInfo,
         List<IconResponse> icons,
         IconGroupOrderInfo iconGroupOrderInfo
 
