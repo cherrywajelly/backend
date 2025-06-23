@@ -5,7 +5,8 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -18,7 +19,7 @@ import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
@@ -41,18 +42,18 @@ public class MemberServiceImpl implements MemberService{
     private final PremiumRepository premiumRepository;
     private final PaymentRepository paymentRepository;
     private final FileUploadService fileUploadService;
-    private final IconGroupAdminService iconGroupAdminService;
+    private final AdminIconService adminIconService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
                              final PremiumRepository premiumRepository, final PaymentRepository paymentRepository,
-                             final FileUploadService fileUploadService, final IconGroupAdminService iconGroupAdminService) {
+                             final FileUploadService fileUploadService, final AdminIconService adminIconService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
         this.premiumRepository = premiumRepository;
         this.paymentRepository = paymentRepository;
         this.fileUploadService = fileUploadService;
-        this.iconGroupAdminService = iconGroupAdminService;
+        this.adminIconService = adminIconService;
     }
 
     @Value("${spring.cloud.oci.base-url}")
@@ -182,24 +183,16 @@ public class MemberServiceImpl implements MemberService{
         return MemberProfileResponse.from(member, isFollow);
     }
 
-    //TODO
     @Transactional(readOnly = true)
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = new ArrayList<>();
-        memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
-                .sorted(Comparator.comparing(Member::getNickname)).forEach(
-                        member -> {
-                            CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
-                            creatorResponses.add(CreatorResponse.builder()
-                                    .creatorInfo(CreatorInfoResponse.from(member))
-                                    .createdIconCount(creatorIconInfos.createdIconCount())
-                                    .totalRevenue(creatorIconInfos.totalRevenue())
-                                    .salesIconCount(creatorIconInfos.salesIconCount())
-                                    .build());
-                        }
-
-                );
+        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname))
+                .map(member -> {
+                    CreatorIconGroupResponse creatorIconGroupResponse = adminIconService.getCreatorIconGroups(member.getId());
+                    return new CreatorResponse(CreatorInfoResponse.from(member), creatorIconGroupResponse);
+                })
+                .toList();
         return new CreatorResponses(creatorResponses);
     }
 

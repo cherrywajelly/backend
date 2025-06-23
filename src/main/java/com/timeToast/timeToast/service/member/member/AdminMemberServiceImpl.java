@@ -2,9 +2,7 @@ package com.timeToast.timeToast.service.member.member;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
@@ -15,8 +13,6 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponse;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
@@ -148,22 +144,6 @@ public class AdminMemberServiceImpl implements AdminMemberService {
         return new GiftToastDataManagerResponses(giftToastManagerResponses);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
-        List<IconMember> iconMembers = iconMemberRepository.findByMemberId(memberId);
-        List<IconGroupManagerResponse> iconGroupManagerResponses = iconMembers.stream()
-                .map(iconMember -> {
-
-                    IconGroup iconGroup = iconGroupRepository.getById(iconMember.getIconGroupId());
-                    List<String> iconImages = iconGroup.getIcons().stream()
-                            .map(Icon::getIconImageUrl)
-                            .toList();
-                    return IconGroupManagerResponse.from(iconGroup.getName(), iconImages);
-                })
-                .toList();
-        return new IconGroupManagerResponses(iconGroupManagerResponses);
-    }
 
     @Transactional(readOnly = true)
     @Override

@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.payment;
 
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -10,6 +11,11 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.dto.payment.response.IconGroupMonthlyRevenue;
+import com.timeToast.timeToast.dto.payment.response.IconGroupMonthlyRevenues;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummaries;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummary;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;
@@ -33,10 +39,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 
@@ -123,6 +128,42 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.updatePaymentState(PaymentState.FAILURE);
         return new PaymentFailResponse(payment.getId(),payment.getOrderId(),"실패 했습니다.");
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+
+    }
+    //TODO
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, month)
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 
     @Override
@@ -281,4 +322,29 @@ public class PaymentServiceImpl implements PaymentService {
         return response.getStatusCode() == HttpStatus.OK;
     }
 
+    //TODO
+    @Transactional
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
+
+        if(year>LocalDate.now().getYear()){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+
+        for(int i=1; i<=LocalDate.now().getMonthValue(); i++){
+            Map<IconType, Long> revenueByIconType = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, i).stream().collect(Collectors.groupingBy(
+                    IconGroupPaymentSummaryDto::iconType,
+                    Collectors.summingLong(dto -> dto.totalCount()*dto.price())
+            ));
+            iconGroupMonthlyRevenues.add(IconGroupMonthlyRevenue.builder()
+                    .year(year)
+                    .month(i)
+                    .toastsRevenue(revenueByIconType.getOrDefault(IconType.TOAST, 0L))
+                    .jamsRevenue(revenueByIconType.getOrDefault(IconType.JAM, 0L))
+                    .build());
+        }
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
+    }
 }

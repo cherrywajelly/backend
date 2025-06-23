@@ -58,7 +58,7 @@ public class SearchControllerTest  extends BaseControllerTests {
                                 .responseFields(
                                         fieldWithPath("nextPage").type(NUMBER).description("다음 페이지"),
                                         fieldWithPath("size").type(NUMBER).description("요청 갯수"),
-                                        fieldWithPath("searchResponses[0].memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("searchResponses[0].memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("searchResponses[0].nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("searchResponses[0].profileUrl").type(STRING).description("사용자 프로필 url")
                                         )

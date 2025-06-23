@@ -19,17 +19,7 @@ public class IconRepositoryImpl implements IconRepository {
         return iconJpaRepository.findById(iconId).orElseThrow(() -> {
             log.warn("NotFoundException iconId={}", iconId);
             throw new NotFoundException(ICON_NOT_FOUND.getMessage());
-            });
+        });
     }
-
-//    @Override
-//    public Icon save(final Icon icon) {
-//        return iconJpaRepository.save(icon);
-//    }
-//
-//    @Override
-//    public void deleteById(final long iconId) {
-//        iconJpaRepository.deleteById(iconId);
-//    }
 
 }

@@ -4,7 +4,6 @@ import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
@@ -16,7 +15,6 @@ import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerRes
 import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
@@ -25,14 +23,12 @@ import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
 import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
-import com.timeToast.timeToast.repository.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,10 +43,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
@@ -86,9 +80,6 @@ public class AdminMemberServiceImplTest {
     @Mock
     private IconGroupRepository iconGroupRepository;
 
-
-    @Mock
-    private IconMemberRepository iconMemberRepository;
 
     @InjectMocks
     private AdminMemberServiceImpl managerService;
@@ -179,7 +170,7 @@ public class AdminMemberServiceImplTest {
 //    @Test
 //    @DisplayName("관리자 사용자 정보 조회 실패")
 //    public void getMemberInfoForManagerFail(){
-//        ReflectionTestUtils.setField(member, "id", 1L);
+//        ReflectionTestUtils.setField(member, "iconGroupId", 1L);
 //        when(memberRepository.getById(anyLong())).thenReturn(null);
 //
 //        NullPointerException exception = assertThrows(NullPointerException.class, ()-> managerService.g(1L));
@@ -188,7 +179,7 @@ public class AdminMemberServiceImplTest {
 //    @Test
 //    @DisplayName("관리자 사용자 정보 조회 성공")
 //    public void getMemberInfoForManagerSuccess(){
-//        ReflectionTestUtils.setField(member, "id", 1L);
+//        ReflectionTestUtils.setField(member, "iconGroupId", 1L);
 //        when(memberRepository.getById(anyLong())).thenReturn(member);
 //
 //        NullPointerException exception = assertThrows(NullPointerException.class, ()-> managerService.getMemberInfoForManager(1L));
@@ -260,18 +251,7 @@ public class AdminMemberServiceImplTest {
         assertThat(responses).isNotNull();
     }
 
-    @Test
-    @DisplayName("관리자 사용자 그룹 정보 조회 성공")
-    public void getIconGroupSuccess(){
-        ReflectionTestUtils.setField(member, "id", 1L);
-        when(iconMemberRepository.findByMemberId(anyLong())).thenReturn(List.of(iconMember));
-//        when(iconRepository.findAllByIconGroupId(anyLong())).thenReturn(List.of(icon));
-        when(iconGroupRepository.getById(anyLong())).thenReturn(iconGroup);
 
-        IconGroupManagerResponses responses = managerService.getMemberIconGroupInfo(1L);
-
-        assertThat(responses).isNotNull();
-    }
 
     @Test
     @DisplayName("관리자 사용자 그룹 정보 조회 성공")

@@ -226,7 +226,7 @@ public class FcmServiceImplTest {
 //        FcmPostRequest fcmPostRequest = FcmPostRequest.builder().fcmConstant(FcmConstant.EVENTTOASTOPENED).nickname("nickname").toastName("toastName").param(1L).build();
 //
 //        ReflectionTestUtils.setField(memberToken, "fcmToken", fcmToken);
-//        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
+//        ReflectionTestUtils.setField(eventToast, "iconGroupId", eventToastId);
 //
 //        when(eventToastRepository.getById(eventToastId)).thenReturn(eventToast);
 //        when(iconRepository.getById(iconId)).thenReturn(icon);

@@ -51,7 +51,7 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("giftToastManagerResponses[0].giftToastId").type(NUMBER).description("캡슐 토스트 id"),
+                                        fieldWithPath("giftToastManagerResponses[0].giftToastId").type(NUMBER).description("캡슐 토스트 iconGroupId"),
                                         fieldWithPath("giftToastManagerResponses[0].iconImageUrl").type(STRING).description("캡슐 토스트 아이콘 이미지"),
                                         fieldWithPath("giftToastManagerResponses[0].title").type(STRING).description("캡슐 토스트 이름"),
                                         fieldWithPath("giftToastManagerResponses[0].name").type(STRING).description("캡슐 토스트 작성 그룹"),
@@ -86,7 +86,7 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("giftToastId").type(NUMBER).description("캡슐 토스트 id"),
+                                        fieldWithPath("giftToastId").type(NUMBER).description("캡슐 토스트 iconGroupId"),
                                         fieldWithPath("iconImageUrl").type(STRING).description("캡슐 토스트 아이콘 이미지"),
                                         fieldWithPath("title").type(STRING).description("캡슐 토스트 이름"),
                                         fieldWithPath("name").type(STRING).description("캡슐 토스트 작성 그룹 이름"),
@@ -95,7 +95,7 @@ public class GiftToastAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("isOpened").type(BOOLEAN).description("캡슐 토스트 오픈 여부"),
                                         fieldWithPath("giftToastType").type(STRING).description("캡슐 토스트 타압 (GROUP | FRIEND | MINE)"),
                                         fieldWithPath("createdAt").type(STRING).description("캡슐 토스트 생성 날짜"),
-                                        fieldWithPath("toastPieceManagerResponses[0].toastPieceId").type(NUMBER).description("캡슐 토스트 조각 id"),
+                                        fieldWithPath("toastPieceManagerResponses[0].toastPieceId").type(NUMBER).description("캡슐 토스트 조각 iconGroupId"),
                                         fieldWithPath("toastPieceManagerResponses[0].iconImageUrl").type(STRING).description("캡슐 토스트 조각 아이콘 이미지 ㅕrl"),
                                         fieldWithPath("toastPieceManagerResponses[0].title").type(STRING).description("캡슐 토스트 조각 제목"),
                                         fieldWithPath("toastPieceManagerResponses[0].createdAt").type(STRING).description("캡슐 토스트 조각 생성 날짜"),

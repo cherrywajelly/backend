@@ -13,8 +13,6 @@ import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
 import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponse;
-import com.timeToast.timeToast.dto.icon.icon_group.response.admin.IconGroupManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponse;
@@ -93,13 +91,6 @@ public class AdminMemberServiceTest implements AdminMemberService {
         List<GiftToastDataManagerResponse> giftToastManagerResponses = new ArrayList<>();
         giftToastManagerResponses.add(new GiftToastDataManagerResponse("giftImage", "giftNickname"));
         return new GiftToastDataManagerResponses(giftToastManagerResponses);
-    }
-
-    @Override
-    public IconGroupManagerResponses getMemberIconGroupInfo(final long memberId) {
-        List<IconGroupManagerResponse> iconGroupManagerResponses = new ArrayList<>();
-        iconGroupManagerResponses.add(new IconGroupManagerResponse("iconname", List.of("iconimages")));
-        return new IconGroupManagerResponses(iconGroupManagerResponses);
     }
 
     @Override

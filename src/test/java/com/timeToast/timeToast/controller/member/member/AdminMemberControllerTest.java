@@ -1,8 +1,6 @@
 package com.timeToast.timeToast.controller.member.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminServiceTest;
 import com.timeToast.timeToast.service.member.member.*;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
@@ -26,11 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminMemberControllerTest extends BaseControllerTests {
     private final AdminMemberService adminMemberService = new AdminMemberServiceTest();
     private final MemberService memberService = new MemberServiceTest();
-    private final IconGroupAdminService iconGroupAdminService = new IconGroupAdminServiceTest();
 
     @Override
     protected Object initController() {
-        return new AdminMemberController(adminMemberService, memberService, iconGroupAdminService);
+        return new AdminMemberController(adminMemberService, memberService);
     }
 
     @DisplayName("최고 관리자는 staff로 지정할 수 있다.")
@@ -54,13 +51,13 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("역할"),
                                         fieldWithPath("loginType").type(STRING).description("로그인 타입"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
 
@@ -91,13 +88,13 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("역할"),
                                         fieldWithPath("loginType").type(STRING).description("로그인 타입"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
 
@@ -127,13 +124,13 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("역할"),
                                         fieldWithPath("loginType").type(STRING).description("로그인 타입"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
 
@@ -163,14 +160,14 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberManagerResponses[0].memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberManagerResponses[0].memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("memberManagerResponses[0].profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("memberManagerResponses[0].nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("memberManagerResponses[0].email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("memberManagerResponses[0].memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("memberManagerResponses[0].loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
-                                        fieldWithPath("memberManagerResponses[0].memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberManagerResponses[0].memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberManagerResponses[0].memberPremium.premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"),
                                         fieldWithPath("memberManagerResponses[0].memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자")
                                 )
@@ -224,13 +221,13 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("profileUrl").type(STRING).description("사용자 프로필 이미지 url"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("email").type(STRING).description("사용자 이메일"),
                                         fieldWithPath("memberRole").type(STRING).description("사용자 role"),
                                         fieldWithPath("loginType").type(STRING).description("사용자 소셜 계정 (KAKAO | GOOGLE)"),
-                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 id"),
+                                        fieldWithPath("memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
                                         fieldWithPath("memberPremium.premiumType").type(STRING).description("사용자 프리미엄 구독 정보 (BASIC | PREMIUM)"),
                                         fieldWithPath("memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자"))
                                 .build()
@@ -280,7 +277,7 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                 parameterWithName("memberId").description("사용자 Id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("[어드민] 멤버버")
+                                .tag("[어드민] 멤버")
                                 .summary("관리자 사용자 팔로잉 정보 조회")
                                 .requestHeaders(
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
@@ -405,33 +402,6 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자는 사용자가 소유한 아이콘의 정보를 조회할 수 있다.")
-    @WithMockCustomUser
-    @Test
-    void getIconGroups() throws Exception {
-
-        mockMvc.perform(
-                        get("/api/v3/members/{memberId}/iconGroups", 1L)
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("관리자 사용자 소유 아이콘 조회",
-                        pathParameters(
-                                parameterWithName("memberId").description("사용자 Id")
-                        ),
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("[어드민] 멤버")
-                                .summary("관리자 아이콘 정보 조회")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("iconGroupManagerResponses[0].iconGroupName").type(STRING).description("사용자의 아이콘 그룹 이름"),
-                                        fieldWithPath("iconGroupManagerResponses[0].iconImages[]").type(ARRAY).description("사용자의 아이콘 그룹 이미지")
-                                )
-                                .build()
-                        )));
-    }
 
     @DisplayName("관리자는 사용자의 결제 정보를 조회할 수 있다.")
     @WithMockCustomUser
@@ -486,13 +456,27 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("creatorResponses[0].creatorInfo.nickname").type(STRING).description("제작자 닉네임"),
-                                        fieldWithPath("creatorResponses[0].creatorInfo.bank").type(STRING).description("은행"),
-                                        fieldWithPath("creatorResponses[0].creatorInfo.accountNumber").type(STRING).description("계좌번호"),
-                                        fieldWithPath("creatorResponses[0].creatorInfo.profileUrl").type(STRING).description("프로필 사진"),
-                                        fieldWithPath("creatorResponses[0].salesIconCount").type(NUMBER).description("판매 아이콘 갯수"),
-                                        fieldWithPath("creatorResponses[0].totalRevenue").type(NUMBER).description("전체 수익"),
-                                        fieldWithPath("creatorResponses[0].createdIconCount").type(NUMBER).description("제작한 아이콘 갯수")
+                                        fieldWithPath("creatorResponses[].creatorInfo.nickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[].creatorInfo.bank").type(STRING).description("은행"),
+                                        fieldWithPath("creatorResponses[].creatorInfo.accountNumber").type(STRING).description("계좌번호"),
+                                        fieldWithPath("creatorResponses[].creatorInfo.profileUrl").type(STRING).description("프로필 사진"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconGroupId").type(NUMBER).description("아이콘 그룹 id"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.title").type(STRING).description("아이콘 그룹 제목"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.creatorNickname").type(STRING).description("제작자 닉네임"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.thumbnailImageUrl").type(STRING).description("아이콘 그룹 thumbnail url"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.description").type(STRING).description("아이콘 그룹 설명"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconType").type(STRING).description("아이콘 그룹 타입"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.iconState").type(STRING).description("아이콘 그룹 상태"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupInfo.price").type(NUMBER).description("가격"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].icons[].iconId").type(NUMBER).description("아이콘 id"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].icons[].iconImageUrl").type(STRING).description("아이콘 image url"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupOrderInfo.orderCount").type(NUMBER).description("아이콘 별 판매 수"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.creatorIconGroups[].iconGroupOrderInfo.income").type(NUMBER).description("아이콘 별 판매 수익"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalIconCount").type(NUMBER).description("총 아이콘 수"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalOrderCount").type(NUMBER).description("총 주문 수"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalIncome").type(NUMBER).description("총 수익"),
+                                        fieldWithPath("creatorResponses[].creatorIconGroupResponse.totalSettlement").type(NUMBER).description("총 정산액")
+
                                 )
                                 .build()
                         )));
@@ -527,35 +511,5 @@ public class AdminMemberControllerTest extends BaseControllerTests {
                         )));
     }
 
-    @DisplayName("관리자의 제작자의 모든 아이콘 그룹 조회")
-    @WithMockCustomUser
-    @Test
-    void getIconGroupsByCreator() throws Exception {
-        mockMvc.perform(
-                        get("/api/v3/creators/{creatorId}/iconGroups",1L)
-                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
-                )
-                .andExpect(status().isOk())
-                .andDo(document("관리자의 제작자의 전체 아이콘 상세 조회",
-                        pathParameters(
-                                parameterWithName("creatorId").description("제작자 Id")
-                        ),
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("[어드민] 멤버")
-                                .summary("관리자는 제작자의 전체 아이콘을 조회할 수 있다.")
-                                .requestHeaders(
-                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
-                                )
-                                .responseFields(
-                                        fieldWithPath("salesIconCount").type(NUMBER).description("전체 판매 갯수"),
-                                        fieldWithPath("totalRevenue").type(NUMBER).description("전체 수익"),
-                                        fieldWithPath("createdIconCount").type(NUMBER).description("제작 아이콘 수"),
-                                        fieldWithPath("creatorIconInfos[0].title").type(STRING).description("아이콘 그룹 제목"),
-                                        fieldWithPath("creatorIconInfos[0].revenue").type(NUMBER).description("아이콘 그룹 수익"),
-                                        fieldWithPath("creatorIconInfos[0].salesCount").type(NUMBER).description("아이콘 그룹 판매 갯수"),
-                                        fieldWithPath("creatorIconInfos[0].iconImageUrl").type(ARRAY).description("이미지 리스트")
-                                )
-                                .build()
-                        )));
-    }
+
 }

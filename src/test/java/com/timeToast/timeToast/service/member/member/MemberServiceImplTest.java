@@ -1,5 +1,7 @@
 package com.timeToast.timeToast.service.member.member;
 
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
@@ -7,8 +9,8 @@ import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfo;
-import com.timeToast.timeToast.dto.icon.icon.response.CreatorIconInfos;
+import com.timeToast.timeToast.dto.icon.response.*;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -18,7 +20,7 @@ import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
+import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -33,9 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +57,7 @@ public class MemberServiceImplTest {
     FileUploadService fileUploadService;
 
     @Mock
-    IconGroupAdminService iconGroupAdminService;
+    AdminIconService adminIconService;
 
     @InjectMocks
     MemberServiceImpl memberService;
@@ -325,7 +325,6 @@ public class MemberServiceImplTest {
         assertEquals(CreatorInfoResponse.from(creator), creatorInfoResponse);
     }
 
-    //TODO 개선
     @Test
     @DisplayName("제작자 리스트 조회")
     public void getCreators(){
@@ -333,16 +332,18 @@ public class MemberServiceImplTest {
         List<Member> creators = setUpCreators();
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
 
-        List<CreatorIconInfo> creatorIconInfoList = List.of(
-                CreatorIconInfo.builder()
-                        .title("title")
-                        .revenue(1000)
-                        .salesCount(1)
-                        .iconImageUrl(List.of("iconImageUrl"))
-                        .build()
-        );
-        CreatorIconInfos creatorIconInfos =  new CreatorIconInfos(1, 1000, 10,creatorIconInfoList);
-        when(iconGroupAdminService.getIconGroupsByCreator(any(Long.class))).thenReturn(creatorIconInfos);
+        IconGroupInfo iconGroupInfo = new IconGroupInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description", IconType.TOAST, IconState.WAITING,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+        IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
+
+        CreatorIconGroup creatorIconGroup = new CreatorIconGroup(iconGroupInfo, iconResponses, iconGroupOrderInfo);
+
+        List<CreatorIconGroup> creatorIconGroups = List.of(creatorIconGroup);
+
+        CreatorIconGroupResponse creatorIconGroupResponse = new CreatorIconGroupResponse(creatorIconGroups, 0, 0, 0, 0);
+
+        when(adminIconService.getCreatorIconGroups(anyLong())).thenReturn(creatorIconGroupResponse);
 
         //when
         CreatorResponses creatorResponses = memberService.getCreators();

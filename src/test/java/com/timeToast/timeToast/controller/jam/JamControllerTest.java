@@ -57,7 +57,7 @@ public class JamControllerTest extends BaseControllerTests {
                         requestPartBody("jamRequest"), // JSON 필드 문서화
                         requestPartFields("jamRequest",
                                 fieldWithPath("title").type(STRING).description("잼 제목"),
-                                fieldWithPath("iconId").type(NUMBER).description("잼 아이콘 id")
+                                fieldWithPath("iconId").type(NUMBER).description("잼 아이콘 iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 잼")
@@ -91,10 +91,10 @@ public class JamControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("eventToastId").description("조회할 이벤트 토스트 id")
+                                        parameterWithName("eventToastId").description("조회할 이벤트 토스트 iconGroupId")
                                 )
                                 .responseFields(
-                                        fieldWithPath("jamResponses[0].jamId").type(NUMBER).description("잼 id"),
+                                        fieldWithPath("jamResponses[0].jamId").type(NUMBER).description("잼 iconGroupId"),
                                         fieldWithPath("jamResponses[0].iconImageUrl").type(STRING).description("잼 아이콘 이미지"),
                                         fieldWithPath("jamResponses[0].nickname").type(STRING).description("잼 작성자 닉네임")
                                 )
@@ -121,7 +121,7 @@ public class JamControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("jamId").description("상세 조회할 잼 id")
+                                        parameterWithName("jamId").description("상세 조회할 잼 iconGroupId")
                                 )
                                 .responseFields(
                                         fieldWithPath("eventToastDataResponse.eventToastTitle").type(STRING).description("이벤트 토스트 제목"),
@@ -152,7 +152,7 @@ public class JamControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("잼 삭제",
                         pathParameters(
-                                parameterWithName("jamId").description("삭제하는 jam id")
+                                parameterWithName("jamId").description("삭제하는 jam iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 잼")

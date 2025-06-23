@@ -49,7 +49,7 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("inquiryResponses[0].inquiryId").type(NUMBER).description("문의사항 id"),
+                                        fieldWithPath("inquiryResponses[0].inquiryId").type(NUMBER).description("문의사항 iconGroupId"),
                                         fieldWithPath("inquiryResponses[0].title").type(STRING).description("문의사항 제목"),
                                         fieldWithPath("inquiryResponses[0].inquiryState").type(STRING).description("문의사항 작성 날짜")
                                 )
@@ -74,10 +74,10 @@ public class InquiryAdminControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_AUTH_CODE.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("inquiryId").description("상세조회할 문의사항 id")
+                                        parameterWithName("inquiryId").description("상세조회할 문의사항 iconGroupId")
                                 )
                                 .responseFields(
-                                        fieldWithPath("id").type(NUMBER).description("문의사항 id"),
+                                        fieldWithPath("id").type(NUMBER).description("문의사항 iconGroupId"),
                                         fieldWithPath("title").type(STRING).description("문의사항 제목"),
                                         fieldWithPath("inquiryState").type(STRING).description("문의사항 해결 타입"),
                                         fieldWithPath("createdAt").type(ARRAY).description("문의사항 작성 날짜"),
