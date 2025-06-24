@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.follow;
 
-import com.timeToast.timeToast.dto.follow.response.FollowResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowResponses;
+import com.timeToast.timeToast.domain.enums.follow.FollowType;
+import com.timeToast.timeToast.dto.follow.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -15,6 +15,7 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_DE
 import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class FollowServiceTest implements FollowService {
+
     @Override
     public Response saveFollow(long followingId, long memberId) {
         if(followingId == memberId || followingId == 3) {
@@ -28,16 +29,7 @@ public class FollowServiceTest implements FollowService {
 
 
     @Override
-    public FollowResponses findFollowerList(long memberId) {
-        List<FollowResponse> followResponses = new ArrayList<>();
-        followResponses.add(
-                FollowResponse.builder().memberId(0).nickname("nickname").memberProfileUrl("memberProfileUrl").build()
-        );
-        return new FollowResponses(followResponses);
-    }
-
-    @Override
-    public FollowResponses findFollowingList(long memberId) {
+    public FollowResponses findFollowList(final long memberId, final FollowType followType) {
         List<FollowResponse> followResponses = new ArrayList<>();
         followResponses.add(
                 FollowResponse.builder().memberId(0).nickname("nickname").memberProfileUrl("memberProfileUrl").build()

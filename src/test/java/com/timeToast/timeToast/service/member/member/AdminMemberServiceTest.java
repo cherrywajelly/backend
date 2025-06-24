@@ -7,10 +7,6 @@ import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
@@ -50,20 +46,6 @@ public class AdminMemberServiceTest implements AdminMemberService {
         return new MemberSummaryResponse(100, 50);
     }
 
-
-    @Override
-    public FollowManagerResponses getMemberFollowInfo(final long memberId) {
-        List<FollowManagerResponse> followManagerResponses = new ArrayList<>();
-        followManagerResponses.add(new FollowManagerResponse("followImage", "followNickname"));
-        return new FollowManagerResponses(followManagerResponses);
-    }
-
-    @Override
-    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
-        List<FollowingManagerResponse> followingManagerResponses = new ArrayList<>();
-        followingManagerResponses.add(new FollowingManagerResponse("followingImage", "followNickname"));
-        return new FollowingManagerResponses(followingManagerResponses);
-    }
 
     @Override
     public TeamDataManagerResponses getMemberTeamInfo(final long memberId) {

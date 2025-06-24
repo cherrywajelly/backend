@@ -4,16 +4,12 @@ import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.icon.icon_group.IconGroup;
-import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.domain.team.team.Team;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
@@ -21,10 +17,8 @@ import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.member.member.MemberRepository;
 import com.timeToast.timeToast.repository.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.premium.PremiumRepository;
@@ -58,9 +52,6 @@ public class AdminMemberServiceImplTest {
     @Mock
     private PremiumRepository premiumRepository;
 
-    @Mock
-    private FollowRepository followRepository;
-
 
     @Mock
     private PaymentRepository paymentRepository;
@@ -92,9 +83,6 @@ public class AdminMemberServiceImplTest {
     private Team team;
     private Icon icon;
     private IconGroup iconGroup;
-    private Follow follow;
-    private IconMember iconMember;
-
     @BeforeEach
     void setUp() {
         long memberId = 1L;
@@ -105,8 +93,6 @@ public class AdminMemberServiceImplTest {
         team = Team.builder().build();
         icon = Icon.builder().build();
         iconGroup = IconGroup.builder().name(name).build();
-        follow = Follow.builder().followerId(1L).build();
-        iconMember = IconMember.builder().build();
     }
 
     private Member setUpMember() {
@@ -185,30 +171,6 @@ public class AdminMemberServiceImplTest {
 //        NullPointerException exception = assertThrows(NullPointerException.class, ()-> managerService.getMemberInfoForManager(1L));
 //    }
 
-    @Test
-    @DisplayName("관리자 사용자 팔로우 정보 조회 성공")
-    public void getFollowSuccess(){
-        ReflectionTestUtils.setField(member, "id", 1L);
-
-        when(followRepository.findAllByFollowingId(1L)).thenReturn(List.of(follow));
-        when(memberRepository.getById(anyLong())).thenReturn(member);
-
-        FollowManagerResponses responses = managerService.getMemberFollowInfo(1L);
-
-        assertThat(responses).isNotNull();
-    }
-
-    @Test
-    @DisplayName("관리자 사용자 팔로잉 정보 조회 성공")
-    public void getFollowingSuccess(){
-        ReflectionTestUtils.setField(member, "id", 1L);
-
-        when(followRepository.findAllByFollowerId(1L)).thenReturn(List.of(follow));
-        when(memberRepository.getById(anyLong())).thenReturn(member);
-        FollowingManagerResponses responses = managerService.getMemberFollowingInfo(1L);
-
-        assertThat(responses).isNotNull();
-    }
 
     @Test
     @DisplayName("관리자 사용자 그룹 정보 조회 성공")

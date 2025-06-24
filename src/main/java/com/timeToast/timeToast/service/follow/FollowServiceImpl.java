@@ -1,11 +1,11 @@
 package com.timeToast.timeToast.service.follow;
 
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
+import com.timeToast.timeToast.domain.enums.follow.FollowType;
 import com.timeToast.timeToast.domain.follow.Follow;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
-import com.timeToast.timeToast.dto.follow.response.FollowResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowResponses;
+import com.timeToast.timeToast.dto.follow.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -56,6 +56,7 @@ public class FollowServiceImpl implements FollowService{
                         .followerId(memberId)
                         .build()
         );
+
         log.info("save follow {} by {}", saveFollow.getFollowingId(), saveFollow.getFollowerId());
 
         fcmService.sendMessageTo(
@@ -71,14 +72,31 @@ public class FollowServiceImpl implements FollowService{
 
     @Transactional(readOnly = true)
     @Override
-    public FollowResponses findFollowerList(final long memberId) {
-        return getFollowerResponses(followRepository.findAllByFollowingId(memberId));
+    public FollowResponses findFollowList(final long memberId, final FollowType followType) {
+        if(followType.equals(FollowType.FOLLOWING)) {
+            return getFollowResponses(followRepository.findAllByFollowerId(memberId), followType);
+        }else{
+            return getFollowResponses(followRepository.findAllByFollowingId(memberId), followType);
+        }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public FollowResponses findFollowingList(final long memberId) {
-        return getFollowingResponses(followRepository.findAllByFollowerId(memberId));
+    private FollowResponses getFollowResponses(final List<Follow> follows, final FollowType followType) {
+        List<FollowResponse> followResponses = new ArrayList<>();
+
+        follows.forEach(
+                follow -> {
+                    Optional<Member> findMember;
+                    if(followType.equals(FollowType.FOLLOWING)) {
+                        findMember = memberRepository.findById(follow.getFollowingId());
+                    }else{
+                        findMember = memberRepository.findById(follow.getFollowerId());
+                    }
+                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
+                }
+        );
+
+        followResponses.stream().sorted(Comparator.comparing(FollowResponse::nickname));
+        return new FollowResponses(followResponses);
     }
 
     @Transactional
@@ -104,35 +122,6 @@ public class FollowServiceImpl implements FollowService{
         log.info("delete follower {} by {}", findFollow.getFollowerId(), findFollow.getFollowingId());
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
 
-    }
-
-    private FollowResponses getFollowerResponses(final List<Follow> follows) {
-        List<FollowResponse> followResponses = new ArrayList<>();
-
-        follows.forEach(
-                follow -> {
-                    Optional<Member> findMember = memberRepository.findById(follow.getFollowerId());
-                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
-
-                }
-        );
-        followResponses.stream().sorted(Comparator.comparing(FollowResponse::nickname));
-
-        return new FollowResponses(followResponses);
-    }
-
-    private FollowResponses getFollowingResponses(final List<Follow> follows) {
-        List<FollowResponse> followResponses = new ArrayList<>();
-
-        follows.forEach(
-                follow -> {
-                    Optional<Member> findMember = memberRepository.findById(follow.getFollowingId());
-                    findMember.ifPresent(member -> followResponses.add(FollowResponse.from(member)));
-                }
-        );
-
-        followResponses.stream().sorted(Comparator.comparing(FollowResponse::nickname));
-        return new FollowResponses(followResponses);
     }
 
 }
