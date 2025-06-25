@@ -2,6 +2,7 @@ package com.timeToast.timeToast.Integration;
 
 import com.timeToast.timeToast.TimeToastApplication;
 import com.timeToast.timeToast.domain.enums.fcm.FcmConstant;
+import com.timeToast.timeToast.domain.enums.follow.FollowType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.dto.follow.response.FollowResponses;
@@ -47,7 +48,7 @@ public class FollowIntegrationTest extends TestContainerSupport {
 
         //login member
         Member member = memberRepository.getById(1L);
-        FollowResponses beforeFollowFollowingList = followService.findFollowingList(member.getId());
+        FollowResponses beforeFollowFollowingList = followService.findFollowList(member.getId(), FollowType.FOLLOWING);
 
         //search
         SearchRequest searchRequest = new SearchRequest(0, 10, "test");
@@ -58,7 +59,7 @@ public class FollowIntegrationTest extends TestContainerSupport {
         //save follow
         Member followMember = memberRepository.getById(searchResponses.searchResponses().get(0).memberId());
         Response response = followService.saveFollow(followMember.getId(),member.getId());
-        FollowResponses afterFollowFollowingList = followService.findFollowingList(member.getId());
+        FollowResponses afterFollowFollowingList = followService.findFollowList(member.getId(), FollowType.FOLLOWING);
 
         Assertions.assertEquals(StatusCode.OK.getStatusCode(),response.statusCode());
         Assertions.assertEquals(beforeFollowFollowingList.followResponses().size()+1, afterFollowFollowingList.followResponses().size());
@@ -76,18 +77,18 @@ public class FollowIntegrationTest extends TestContainerSupport {
 
         //login member
         Member member = memberRepository.getById(1L);
-        FollowResponses beforeFollowFollowingList = followService.findFollowingList(member.getId());
+        FollowResponses beforeFollowFollowingList = followService.findFollowList(member.getId(), FollowType.FOLLOW);
 
         //follow user
         if(!beforeFollowFollowingList.followResponses().isEmpty()){
             Member followMember = memberRepository.getById(beforeFollowFollowingList.followResponses().get(0).memberId());
-            FollowResponses beforeFollowerList = followService.findFollowerList(member.getId());
+            FollowResponses beforeFollowerList = followService.findFollowList(member.getId(), FollowType.FOLLOW);
 
 
             //delete follow
             Response response = followService.deleteFollowing(member.getId(),followMember.getId());
-            FollowResponses afterFollowFollowingList = followService.findFollowingList(member.getId());
-            FollowResponses afterFollowerList = followService.findFollowerList(member.getId());
+            FollowResponses afterFollowFollowingList = followService.findFollowList(member.getId(), FollowType.FOLLOW);
+            FollowResponses afterFollowerList = followService.findFollowList(member.getId(), FollowType.FOLLOW);
 
 
             Assertions.assertEquals(StatusCode.OK.getStatusCode(),response.statusCode());

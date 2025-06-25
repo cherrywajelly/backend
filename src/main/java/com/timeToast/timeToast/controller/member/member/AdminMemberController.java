@@ -3,13 +3,10 @@ package com.timeToast.timeToast.controller.member.member;
 import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
-import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.member.member.AdminMemberService;
 import com.timeToast.timeToast.service.member.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +31,6 @@ public class AdminMemberController {
     @GetMapping("/api/v3/members/{memberId}/info")
     public MemberInfoResponse getMemberInfo(@PathVariable final long memberId) {
         return memberService.getMemberInfo(memberId);
-    }
-
-    @GetMapping("/api/v3/members/{memberId}/follows")
-    public FollowManagerResponses getFollow(@PathVariable final long memberId) {
-        return adminMemberService.getMemberFollowInfo(memberId);
-    }
-
-    @GetMapping("/api/v3/members/{memberId}/followings")
-    public FollowingManagerResponses getFollowing(@PathVariable final long memberId) {
-        return adminMemberService.getMemberFollowingInfo(memberId);
     }
 
     @GetMapping("/api/v3/members/{memberId}/teams")
@@ -78,7 +65,6 @@ public class AdminMemberController {
     public CreatorInfoResponse getCreatorByCreatorId(@PathVariable long creatorId) {
         return memberService.getCreatorInfo(creatorId);
     }
-
 
     @PostMapping("/api/v4/members/{memberId}/staffs")
     public MemberInfoResponse saveToStaff(@PathVariable final long memberId){

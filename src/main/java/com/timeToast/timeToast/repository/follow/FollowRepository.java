@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FollowRepository {
-
     Follow save(final Follow follow);
     Optional<Follow> findById(final long followId);
     List<Follow> findAllByFollowingId(final long followingId);

@@ -7,10 +7,6 @@ import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponse;
 import com.timeToast.timeToast.dto.event_toast.response.EventToastDataManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowManagerResponses;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponse;
-import com.timeToast.timeToast.dto.follow.response.FollowingManagerResponses;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponse;
 import com.timeToast.timeToast.dto.gift_toast.response.GiftToastDataManagerResponses;
 import com.timeToast.timeToast.dto.member.member.response.*;
@@ -76,27 +72,6 @@ public class AdminMemberServiceImpl implements AdminMemberService {
                 .totalUserCount(memberRepository.findAllByMemberRole(MemberRole.USER).stream().count())
                 .totalCreatorCount(memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream().count())
                 .build();
-    }
-
-
-    @Transactional(readOnly = true)
-    @Override
-    public FollowManagerResponses getMemberFollowInfo(final long memberId) {
-        List<FollowManagerResponse> followManagerResponses = followRepository.findAllByFollowingId(memberId).stream()
-                .map(follow -> memberRepository.getById(follow.getFollowerId()))
-                .map(FollowManagerResponse::from)
-                .toList();
-        return new FollowManagerResponses(followManagerResponses);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public FollowingManagerResponses getMemberFollowingInfo(final long memberId) {
-        List<FollowingManagerResponse> followingManagerResponses = followRepository.findAllByFollowerId(memberId).stream()
-                .map(follow -> memberRepository.getById(follow.getFollowingId()))
-                .map(FollowingManagerResponse::from)
-                .toList();
-        return new FollowingManagerResponses(followingManagerResponses);
     }
 
     @Transactional(readOnly = true)
