@@ -95,7 +95,7 @@ public class FollowServiceImpl implements FollowService{
                 }
         );
 
-        followResponses.stream().sorted(Comparator.comparing(FollowResponse::nickname));
+        followResponses.sort(Comparator.comparing(FollowResponse::nickname));
         return new FollowResponses(followResponses);
     }
 
