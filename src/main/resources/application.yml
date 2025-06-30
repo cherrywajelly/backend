@@ -23,6 +23,8 @@ spring:
 
   jwt:
     key: ${JWT_KEY}
+    access_exp_time: ${JWT_ACCESS_EXP_TIME}
+    refresh_exp_time: ${JWT_REFRESH_EXP_TIME}
 
   h2:
     console:

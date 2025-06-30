@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-
-import javax.annotation.PostConstruct;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
+@EnableRedisRepositories(basePackages = {"com.timeToast.timeToast.repository.redis"})
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
@@ -17,12 +17,9 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
-
-
 
 }

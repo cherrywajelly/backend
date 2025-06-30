@@ -4,15 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.global.exception.CustomExceptionAdvice;
-import com.timeToast.timeToast.global.exception.GlobalExceptionHandler;
 import com.timeToast.timeToast.global.jwt.CustomUserDetailService;
 import com.timeToast.timeToast.global.jwt.JwtFilter;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.global.resolver.LoginMemberResolver;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +30,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 

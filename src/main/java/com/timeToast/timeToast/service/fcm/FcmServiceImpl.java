@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.*;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
 import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
@@ -15,12 +14,11 @@ import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.fcm.FcmRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.jpa.fcm.FcmRepository;
+import com.timeToast.timeToast.repository.jpa.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +50,6 @@ public class FcmServiceImpl implements FcmService {
     @Value("${fcm.credential}")
     private String fcmCredential;
 
-    private final MemberTokenRepository memberTokenRepository;
     private final FcmRepository fcmRepository;
     private final EventToastRepository eventToastRepository;
     private final IconRepository iconRepository;

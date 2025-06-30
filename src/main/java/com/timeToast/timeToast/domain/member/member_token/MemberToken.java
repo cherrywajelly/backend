@@ -1,31 +1,21 @@
 package com.timeToast.timeToast.domain.member.member_token;
 
 import com.timeToast.timeToast.domain.BaseTime;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-
-@Entity
+@RedisHash(value = "token", timeToLive = 604800)
 @Getter
-@Table(name = "member_token")
 public class MemberToken extends BaseTime {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_token_id")
-    private long id;
-
     private long memberId;
 
-    @Column(length = 350)
     private String jwt_refresh_token;
 
 
-
-    public MemberToken() {
-
-    }
 
     @Builder
     public MemberToken(final long memberId, final String jwt_refresh_token){

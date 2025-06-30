@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.member_token;
 
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +36,7 @@ class MemberTokenServiceImplTest {
     public void save(){
         //given
         MemberToken memberToken = setUpMemberToken();
-        when(memberTokenRepository.findByMemberId(any(Long.class))).thenReturn(Optional.of(memberToken));
+        when(memberTokenRepository.findById(any(Long.class))).thenReturn(Optional.of(memberToken));
 
         //when
         MemberToken memberToken1 = memberTokenService.save(1L,"refresh_token");

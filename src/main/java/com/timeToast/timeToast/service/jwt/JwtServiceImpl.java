@@ -3,14 +3,16 @@ package com.timeToast.timeToast.service.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.service.member_token.MemberTokenService;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +24,27 @@ import java.util.UUID;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.REFRESH_TOKEN_EXPIRED;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
-import static com.timeToast.timeToast.global.constant.TimeConstant.ONE_DAY;
 
 
 @Service
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
-    private final MemberTokenService memberJwtRefreshTokenService;
+    private final MemberTokenRepository memberTokenRepository;
     private final ObjectMapper objectMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtServiceImpl(final MemberTokenService memberJwtRefreshTokenService,
+    @Value("${spring.jwt.access_exp_time}")
+    private long accessExpTime;
+
+    @Value("${spring.jwt.refresh_exp_time}")
+    private long refreshExpTime;
+
+
+
+    public JwtServiceImpl(final MemberTokenRepository memberTokenRepository,
                           final ObjectMapper objectMapper, final JwtTokenProvider jwtTokenProvider) {
-        this.memberJwtRefreshTokenService = memberJwtRefreshTokenService;
+        this.memberTokenRepository = memberTokenRepository;
         this.objectMapper = objectMapper;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -43,9 +52,9 @@ public class JwtServiceImpl implements JwtService {
     @Transactional
     @Override
     public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
-        String accessToken = createToken(loginMember, 7*ONE_DAY.time());
-        String refreshToken = createToken(loginMember, 30*ONE_DAY.time());
-        memberJwtRefreshTokenService.save(loginMember.id(), refreshToken);
+        String accessToken = createToken(loginMember, accessExpTime);
+        String refreshToken = createToken(loginMember, refreshExpTime);
+        memberTokenRepository.save(new MemberToken(loginMember.id(), refreshToken));
         log.info("login by {}", loginMember.id());
         return LoginResponse.of(accessToken, refreshToken, isNew);
     }
@@ -54,7 +63,7 @@ public class JwtServiceImpl implements JwtService {
     private String createToken(final LoginMember loginMember, final long expired) {
 
         Date now = new Date();
-        Date expiredDate = new Date( now.getTime() + expired);
+        Date expiredDate = new Date(now.getTime() + expired);
 
         SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
 

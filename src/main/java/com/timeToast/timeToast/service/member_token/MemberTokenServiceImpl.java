@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.service.member_token;
 
 import com.timeToast.timeToast.domain.member.member_token.MemberToken;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,7 @@ public class MemberTokenServiceImpl implements MemberTokenService {
     @Transactional
     @Override
     public MemberToken save(long memberId, String refreshToken) {
-        Optional<MemberToken> findMemberJwtRefreshToken = memberTokenRepository.findByMemberId(memberId);
+        Optional<MemberToken> findMemberJwtRefreshToken = memberTokenRepository.findById(memberId);
         MemberToken memberJwtRefreshToken;
 
         if (findMemberJwtRefreshToken.isPresent()){
