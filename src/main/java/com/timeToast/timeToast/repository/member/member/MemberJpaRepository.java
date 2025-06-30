@@ -10,7 +10,7 @@ import java.util.List;
 public interface MemberJpaRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(final String email);
-    Optional<Member> findByNickname(final String nickname);
+    Optional<Member> findByFcmToken(final String token);
     List<Member> findAllByMemberRole(final MemberRole memberRole);
     boolean existsByNickname(final String nickname);
 }

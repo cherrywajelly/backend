@@ -68,9 +68,8 @@ public class FcmServiceImpl implements FcmService {
 
             fcmTokenValidation(memberId, token);
 
-            MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow(()-> new BadRequestException(INVALID_FCM_TOKEN.getMessage()));
-            memberToken.updateFcmToken(token);
-            memberTokenRepository.save(memberToken);
+            Member member = memberRepository.getById(memberId);
+            member.updateFcmToken(token);
 
             log.info("update fcm token");
 
@@ -83,13 +82,12 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public void fcmTokenValidation(final long memberId, final String token) {
-        Optional<MemberToken> memberToken = memberTokenRepository.findByFcmToken(token);
+        Optional<Member> member = memberRepository.findByFcmToken(token);
 
-        if (memberToken.isPresent()) {
-            if (memberToken.get().getMemberId() != memberId) {
-                memberToken.get().updateFcmToken(null);
-                memberTokenRepository.save(memberToken.get());
-                log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
+        if (member.isPresent()) {
+            if (member.get().getId() != memberId) {
+                member.get().updateFcmToken(null);
+                log.info("changed fcm token {} to {}", member.get().getId(), memberId);
             }
         }
     }
@@ -249,11 +247,11 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public Optional<FcmSendRequest> makeMessage(final long memberId, FcmPostRequest fcmPostRequest) {
-        Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
+        Optional<Member> member = memberRepository.findById(memberId);
         String token = "";
 
-        if (memberToken != null && memberToken.isPresent()) {
-            token = memberToken.get().getFcmToken();
+        if (member.isPresent()) {
+            token = member.get().getFcmToken();
         } else {
             token = null;
         }

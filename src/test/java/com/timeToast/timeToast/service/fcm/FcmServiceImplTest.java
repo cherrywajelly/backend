@@ -110,14 +110,13 @@ public class FcmServiceImplTest {
         long memberId = 1L;
         String token = "token";
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
-        when(memberTokenRepository.save(any(MemberToken.class))).thenReturn(memberToken);
+        when(memberRepository.getById(memberId)).thenReturn(member);
 
         // When
         Response response = fcmService.saveToken(memberId, token);
 
         // Then
-        assertThat(memberToken.getFcmToken()).isEqualTo(token);
+        assertThat(member.getFcmToken()).isEqualTo(token);
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
         assertThat(response.message()).isEqualTo(SUCCESS_POST.getMessage());
     }
@@ -129,16 +128,15 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 2L;
         String token = "token";
-        memberToken.updateFcmToken(token);
+        ReflectionTestUtils.setField(member, "id", memberId);
 
-        when(memberTokenRepository.findByFcmToken(token)).thenReturn(Optional.of(memberToken));
-        when(memberTokenRepository.save(any(MemberToken.class))).thenReturn(memberToken);
+        when(memberRepository.findByFcmToken(token)).thenReturn(Optional.of(member));
 
         // When
         fcmService.fcmTokenValidation(memberId, token);
 
         //then
-        assertNull(memberToken.getFcmToken());
+        assertNull(member.getFcmToken());
     }
 
     @Test
@@ -147,14 +145,14 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         String token = "token";
-
-        when(memberTokenRepository.findByFcmToken(token)).thenReturn(Optional.of(memberToken));
+        ReflectionTestUtils.setField(member, "id", memberId);
+        when(memberRepository.findByFcmToken(token)).thenReturn(Optional.of(member));
 
         // When
         fcmService.fcmTokenValidation(memberId, token);
 
         // Then
-        assertNull(memberToken.getFcmToken());
+        assertNull(member.getFcmToken());
     }
 
     @Test
@@ -276,9 +274,9 @@ public class FcmServiceImplTest {
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
 
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(memberRepository.getById(memberId)).thenReturn(member);
 
 
@@ -296,9 +294,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.of(memberToken));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(memberRepository.getById(memberId)).thenReturn(member);
 
         // When
@@ -314,9 +312,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.EVENTTOASTSPREAD).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
         when(memberRepository.getById(memberId)).thenReturn(member);
 
         // When
@@ -332,9 +330,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.EVENTTOASTOPENED).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -349,9 +347,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTCREATED).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -366,9 +364,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTOPENED).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
         // When
         Optional<FcmSendRequest> fcmSendRequest = fcmService.makeMessage(memberId, fcmPostRequest);
@@ -383,9 +381,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.GIFTTOASTBAKED).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
         when(memberRepository.getById(memberId)).thenReturn(member);
 
 
@@ -402,9 +400,9 @@ public class FcmServiceImplTest {
         // Given
         long memberId = 1L;
         FcmPostRequest fcmPostRequest = FcmPostRequest.builder().senderId(1L).param(1L).fcmConstant(FcmConstant.FOLLOW).build();
-        ReflectionTestUtils.setField(memberToken, "fcmToken", "fcm token");
+        ReflectionTestUtils.setField(member, "fcmToken", "fcm token");
 
-        when(memberTokenRepository.findByMemberId(memberId)).thenReturn(Optional.empty());
+        when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
         when(memberRepository.getById(memberId)).thenReturn(member);
 
 

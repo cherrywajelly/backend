@@ -18,4 +18,5 @@ public interface MemberRepository {
     List<Member> findAllByMemberRole(final MemberRole memberRole);
     void delete(final Member member);
     void deleteById(final long memberId);
+    Optional<Member> findByFcmToken(final String token);
 }

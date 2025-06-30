@@ -21,8 +21,7 @@ public class MemberToken extends BaseTime {
     @Column(length = 350)
     private String jwt_refresh_token;
 
-    @Column(length = 350)
-    private String fcmToken;
+
 
     public MemberToken() {
 
@@ -39,5 +38,5 @@ public class MemberToken extends BaseTime {
         this.jwt_refresh_token = jwt_refresh_token;
     }
 
-    public void updateFcmToken(final String fcmToken){ this.fcmToken = fcmToken; }
+
 }

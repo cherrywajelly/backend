@@ -81,4 +81,10 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public boolean existsByNickname(final String nickname) { return memberJpaRepository.existsByNickname(nickname);}
+
+    @Override
+    public Optional<Member> findByFcmToken(final String token) {
+        return memberJpaRepository.findByFcmToken(token);
+
+    }
 }

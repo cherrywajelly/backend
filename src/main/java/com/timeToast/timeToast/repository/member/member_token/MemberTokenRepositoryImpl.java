@@ -20,11 +20,6 @@ public class MemberTokenRepositoryImpl implements MemberTokenRepository {
         return memberTokenJpaRepository.save(memberJwtRefreshToken);
     }
 
-    @Override
-    public Optional<MemberToken> findByFcmToken(final String token) {
-        return memberTokenJpaRepository.findByFcmToken(token);
-
-    }
 
     @Override
     public Optional<MemberToken> findByMemberId(final long memberId) {
