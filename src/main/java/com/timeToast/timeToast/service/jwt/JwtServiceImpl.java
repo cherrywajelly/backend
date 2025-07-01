@@ -8,21 +8,24 @@ import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
+import com.timeToast.timeToast.repository.redis.RedisRepository;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR;
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.REFRESH_TOKEN_EXPIRED;
+import static com.timeToast.timeToast.global.constant.JwtExp.ACCESS_EXP;
+import static com.timeToast.timeToast.global.constant.JwtExp.REFRESH_EXP;
 import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 
 
@@ -31,20 +34,14 @@ import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 public class JwtServiceImpl implements JwtService {
 
     private final MemberTokenRepository memberTokenRepository;
+    private final RedisRepository redisRepository;
     private final ObjectMapper objectMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Value("${spring.jwt.access_exp_time}")
-    private long accessExpTime;
-
-    @Value("${spring.jwt.refresh_exp_time}")
-    private long refreshExpTime;
-
-
-
-    public JwtServiceImpl(final MemberTokenRepository memberTokenRepository,
+    public JwtServiceImpl(final MemberTokenRepository memberTokenRepository, final RedisRepository redisRepository,
                           final ObjectMapper objectMapper, final JwtTokenProvider jwtTokenProvider) {
         this.memberTokenRepository = memberTokenRepository;
+        this.redisRepository = redisRepository;
         this.objectMapper = objectMapper;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -52,11 +49,16 @@ public class JwtServiceImpl implements JwtService {
     @Transactional
     @Override
     public LoginResponse createJwts(final LoginMember loginMember, final boolean isNew) {
-        String accessToken = createToken(loginMember, accessExpTime);
-        String refreshToken = createToken(loginMember, refreshExpTime);
-        memberTokenRepository.save(new MemberToken(loginMember.id(), refreshToken));
+        String accessToken = createToken(loginMember, ACCESS_EXP);
+        String refreshToken = createToken(loginMember, REFRESH_EXP);
+        MemberToken memberToken = memberTokenRepository.save(new MemberToken(loginMember.id(), refreshToken));
+        redisRepository.setExpire(getKey(memberToken), Duration.ofMillis(REFRESH_EXP));
         log.info("login by {}", loginMember.id());
         return LoginResponse.of(accessToken, refreshToken, isNew);
+    }
+
+    private String getKey(final MemberToken memberToken){
+        return "token:"+memberToken.getMemberId();
     }
 
 
@@ -92,12 +94,12 @@ public class JwtServiceImpl implements JwtService {
 
             try {
                 LoginMember loginMember = objectMapper.readValue(claims, LoginMember.class);
-
                 return createJwts(loginMember, false);
 
             } catch (JsonProcessingException e) {
                 throw new InternalServerException(LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR.getMessage());
             }
+
         }else {
             throw new UnauthorizedException(REFRESH_TOKEN_EXPIRED.getMessage());
         }
