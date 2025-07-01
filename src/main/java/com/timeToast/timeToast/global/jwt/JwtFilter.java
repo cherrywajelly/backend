@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(token != null){
             //token 유효성 검사
-            if (token != null && jwtTokenProvider.validateToken(token)) {
+            if (jwtTokenProvider.validateToken(token)) {
                 // 토큰으로부터 유저 정보를 받아
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
 
@@ -54,8 +54,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 throw new UnauthorizedException(ACCESS_TOKEN_EXPIRED.getMessage());
             }
         }
-
-
 
         // 다음 Filter 실행
         filterChain.doFilter(request, response);

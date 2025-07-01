@@ -45,11 +45,5 @@ public class CustomUserDetailService implements UserDetailsService {
         } catch (JsonProcessingException e) {
             throw new InternalServerException(LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR.getMessage());
         }
-
-
-
-
     }
-
-
 }
