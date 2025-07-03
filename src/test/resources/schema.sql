@@ -27,14 +27,14 @@ CREATE TABLE memberPremium (
                          PRIMARY KEY (premium_id)
 );
 
-CREATE TABLE member_token (
-                              member_token_id BIGINT AUTO_INCREMENT,
-                              member_id BIGINT,
-                              jwt_refresh_token VARCHAR(350),
-                              created_at datetime,
-                              last_modified_at datetime,
-                              PRIMARY KEY (member_token_id)
-);
+-- CREATE TABLE member_token (
+--                               member_token_id BIGINT AUTO_INCREMENT,
+--                               member_id BIGINT,
+--                               jwt_refresh_token VARCHAR(350),
+--                               created_at datetime,
+--                               last_modified_at datetime,
+--                               PRIMARY KEY (member_token_id)
+-- );
 
 
 INSERT INTO memberPremium VALUES (1,"BASIC",0, 3, "베이직", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");

@@ -170,8 +170,7 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.20.3"
 	testImplementation "org.testcontainers:junit-jupiter:1.20.3"
 	testImplementation "org.testcontainers:mysql:1.20.3"
-
-
+	testImplementation 'com.redis:testcontainers-redis:2.2.2'
 	// oci
 	implementation 'com.oracle.oci.sdk:oci-java-sdk-common:2.8.1'
 	implementation 'com.oracle.oci.sdk:oci-java-sdk-objectstorage:2.8.1'

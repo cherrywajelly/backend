@@ -18,4 +18,11 @@ public class RedisRepositoryImpl implements RedisRepository {
     public void setExpire(String key, Duration ttl) {
         redisTemplate.expire(key, ttl);
     }
+
+    @Override
+    public long getExpire(String key) {
+        return redisTemplate.getExpire(key);
+    }
+
+
 }
