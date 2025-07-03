@@ -81,7 +81,6 @@ class JwtServiceImplTest {
     @DisplayName("refresh token 갱신 실패: 만료된 토큰")
     public void tokenRenewal(){
         //given
-        LoginMember loginMember = loginMemberSetup();
         ReflectionTestUtils.setField(jwtKey, "JWT_KEY", "uYk/J8WlWFI+RukF+sEq6HZT98lOozvW3Z8lcIvlkBY=");
 
         when(jwtTokenProvider.validateToken(anyString())).thenReturn(false);
