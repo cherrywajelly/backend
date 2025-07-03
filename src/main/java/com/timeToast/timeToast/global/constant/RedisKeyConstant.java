@@ -2,6 +2,7 @@ package com.timeToast.timeToast.global.constant;
 
 public enum RedisKeyConstant {
     MONTH_SIGNUP("month-signup"),
+    SIGN_UP("signup"),
     ROLE_USER("user"),
     ROLE_CREATOR("creator"),
 

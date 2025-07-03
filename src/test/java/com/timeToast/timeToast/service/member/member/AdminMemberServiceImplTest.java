@@ -250,7 +250,7 @@ public class AdminMemberServiceImplTest {
 
     @Test
     @DisplayName("관리자 전체 유저와 제작자 수 조회")
-    public void getMembersCountForManagers(){
+    public void getMemberSignUpInfo(){
         //given
         List<Member> users = List.of(setUpMember());
         List<Member> creators = setUpCreators();
@@ -259,11 +259,11 @@ public class AdminMemberServiceImplTest {
         when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
 
         //when
-        MemberSummaryResponse memberSummaryResponse = managerService.getMembersCountForManagers();
+        MemberSignUpInfo memberSignUpInfo = managerService.getMemberSignUpInfo();
 
         //then
-        Assertions.assertEquals(users.size(), memberSummaryResponse.totalUserCount());
-        Assertions.assertEquals(creators.size(), memberSummaryResponse.totalCreatorCount());
+        Assertions.assertEquals(users.size(), memberSignUpInfo.totalUserCount());
+        Assertions.assertEquals(creators.size(), memberSignUpInfo.totalCreatorCount());
 
     }
 

@@ -24,8 +24,8 @@ public class AdminMemberController {
     }
 
     @GetMapping("/api/v3/members/count")
-    public MemberSummaryResponse getMembersCountManager() {
-        return adminMemberService.getMembersCountForManagers();
+    public MemberSignUpInfo getMembersCountManager() {
+        return adminMemberService.getMemberSignUpInfo();
     }
 
     @GetMapping("/api/v3/members/{memberId}/info")

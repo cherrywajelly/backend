@@ -17,16 +17,15 @@ import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponse;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.jpa.follow.FollowRepository;
 import com.timeToast.timeToast.repository.jpa.gift_toast.gift_toast.GiftToastRepository;
 import com.timeToast.timeToast.repository.jpa.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.jpa.icon.icon_member.IconMemberRepository;
 import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.jpa.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.jpa.team.team.TeamRepository;
 import com.timeToast.timeToast.repository.jpa.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminMemberServiceImpl implements AdminMemberService {
     private final MemberRepository memberRepository;
-    private final FollowRepository followRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final PaymentRepository paymentRepository;
     private final TeamRepository teamRepository;
@@ -50,8 +48,8 @@ public class AdminMemberServiceImpl implements AdminMemberService {
     private final GiftToastRepository giftToastRepository;
     private final IconRepository iconRepository;
     private final IconGroupRepository iconGroupRepository;
-    private final IconMemberRepository iconMemberRepository;
     private final MemberService memberService;
+    private final RedisService redisService;
 
 
     @Transactional(readOnly = true)
@@ -67,11 +65,8 @@ public class AdminMemberServiceImpl implements AdminMemberService {
     }
 
     @Override
-    public MemberSummaryResponse getMembersCountForManagers() {
-        return MemberSummaryResponse.builder()
-                .totalUserCount(memberRepository.findAllByMemberRole(MemberRole.USER).stream().count())
-                .totalCreatorCount(memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream().count())
-                .build();
+    public MemberSignUpInfo getMemberSignUpInfo() {
+        return redisService.getTotalSignUp();
     }
 
     @Transactional(readOnly = true)
@@ -138,7 +133,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 
 
     public MemberItemDataResponse createItemData(ItemType itemType, long itemId) {
-        String itemTypeData = "";
+        String itemTypeData;
         List<String> images = new ArrayList<>();
         IconGroup iconGroup = iconGroupRepository.getById(itemId);
 
@@ -148,9 +143,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
         else {
             itemTypeData = iconGroup.getName();
             iconGroup.getIcons().forEach(
-                    icon -> {
-                        images.add(icon.getIconImageUrl());
-                    }
+                    icon -> images.add(icon.getIconImageUrl())
             );
         }
         return new MemberItemDataResponse(itemTypeData, images);

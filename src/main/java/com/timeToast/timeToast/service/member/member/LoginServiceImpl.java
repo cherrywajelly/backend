@@ -86,7 +86,7 @@ public class LoginServiceImpl implements LoginService {
                         .memberRole(memberRole)
                         .build()
         );
-        redisService.incrMonthSignUp(member);
+        redisService.incrSignUp(member);
         addBuiltinIcon(member);
         return jwtService.createJwts(LoginMember.from(member), true);
 
