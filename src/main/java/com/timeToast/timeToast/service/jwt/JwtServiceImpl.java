@@ -8,8 +8,8 @@ import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.repository.redis.RedisRepository;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.service.redis.RedisService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -34,14 +34,14 @@ import static com.timeToast.timeToast.global.constant.JwtKey.JWT_KEY;
 public class JwtServiceImpl implements JwtService {
 
     private final MemberTokenRepository memberTokenRepository;
-    private final RedisRepository redisRepository;
     private final ObjectMapper objectMapper;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisService redisService;
 
-    public JwtServiceImpl(final MemberTokenRepository memberTokenRepository, final RedisRepository redisRepository,
+    public JwtServiceImpl(final MemberTokenRepository memberTokenRepository, final RedisService redisService,
                           final ObjectMapper objectMapper, final JwtTokenProvider jwtTokenProvider) {
         this.memberTokenRepository = memberTokenRepository;
-        this.redisRepository = redisRepository;
+        this.redisService = redisService;
         this.objectMapper = objectMapper;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -52,7 +52,7 @@ public class JwtServiceImpl implements JwtService {
         String accessToken = createToken(loginMember, ACCESS_EXP);
         String refreshToken = createToken(loginMember, REFRESH_EXP);
         MemberToken memberToken = memberTokenRepository.save(new MemberToken(loginMember.id(), refreshToken));
-        redisRepository.setExpire(getKey(memberToken), Duration.ofMillis(REFRESH_EXP));
+        redisService.setExpireByKey(getKey(memberToken), Duration.ofMillis(REFRESH_EXP));
         log.info("login by {}", loginMember.id());
         return LoginResponse.of(accessToken, refreshToken, isNew);
     }

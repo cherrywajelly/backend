@@ -8,8 +8,8 @@ import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
-import com.timeToast.timeToast.repository.redis.RedisRepository;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.service.redis.RedisService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class JwtServiceImplTest {
     private MemberTokenRepository memberTokenRepository;
 
     @Mock
-    private RedisRepository redisRepository;
+    private RedisService redisService;
 
     @Mock
     private JwtKey jwtKey;
