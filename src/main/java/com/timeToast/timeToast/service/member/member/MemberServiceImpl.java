@@ -202,6 +202,4 @@ public class MemberServiceImpl implements MemberService{
         Member creator = memberRepository.getById(creatorId);
         return CreatorInfoResponse.from(creator);
     }
-
-
 }
