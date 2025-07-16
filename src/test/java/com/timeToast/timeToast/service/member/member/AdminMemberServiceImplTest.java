@@ -24,6 +24,7 @@ import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
 import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.repository.jpa.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.repository.jpa.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.redis.RedisService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,6 +78,9 @@ public class AdminMemberServiceImplTest {
 
     @Mock
     MemberServiceImpl memberService;
+
+    @Mock
+    RedisService redisService;
 
     private Member member;
     private Premium premium;
@@ -255,8 +259,8 @@ public class AdminMemberServiceImplTest {
         List<Member> users = List.of(setUpMember());
         List<Member> creators = setUpCreators();
 
-        when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(users);
-        when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
+        MemberSignUpInfo redisServiceReturn = new MemberSignUpInfo(users.size(), creators.size());
+        when(redisService.getTotalSignUp()).thenReturn(redisServiceReturn);
 
         //when
         MemberSignUpInfo memberSignUpInfo = managerService.getMemberSignUpInfo();
