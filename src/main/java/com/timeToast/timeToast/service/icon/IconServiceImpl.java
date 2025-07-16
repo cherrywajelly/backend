@@ -7,10 +7,10 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_member.IconMemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

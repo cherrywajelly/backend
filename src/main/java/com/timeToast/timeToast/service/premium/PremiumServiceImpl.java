@@ -6,9 +6,9 @@ import com.timeToast.timeToast.dto.premium.response.PremiumMonthlyRevenues;
 import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponse;
 import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponses;
 import com.timeToast.timeToast.global.exception.BadRequestException;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

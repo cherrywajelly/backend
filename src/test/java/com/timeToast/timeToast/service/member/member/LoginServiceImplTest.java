@@ -8,10 +8,11 @@ import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.premium.Premium;
 import com.timeToast.timeToast.dto.member.LoginResponse;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
+import com.timeToast.timeToast.service.redis.RedisService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,9 @@ public class LoginServiceImplTest {
 
     @Mock
     JwtService jwtService;
+
+    @Mock
+    RedisService redisService;
 
     @InjectMocks
     LoginServiceImpl loginService;

@@ -1,0 +1,16 @@
+package com.timeToast.timeToast.repository.jpa.member;
+
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
+import com.timeToast.timeToast.domain.member.member.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.List;
+
+public interface MemberJpaRepository extends JpaRepository<Member, Long> {
+
+    Optional<Member> findByEmail(final String email);
+    Optional<Member> findByFcmToken(final String token);
+    List<Member> findAllByMemberRole(final MemberRole memberRole);
+    boolean existsByNickname(final String nickname);
+}

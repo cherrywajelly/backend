@@ -15,10 +15,10 @@ import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
-import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.jpa.follow.FollowRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.icon.AdminIconService;
 import com.timeToast.timeToast.service.image.FileUploadService;
 
@@ -202,6 +202,4 @@ public class MemberServiceImpl implements MemberService{
         Member creator = memberRepository.getById(creatorId);
         return CreatorInfoResponse.from(creator);
     }
-
-
 }

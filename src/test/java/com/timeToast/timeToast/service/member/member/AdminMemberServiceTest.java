@@ -42,8 +42,8 @@ public class AdminMemberServiceTest implements AdminMemberService {
     }
 
     @Override
-    public MemberSummaryResponse getMembersCountForManagers() {
-        return new MemberSummaryResponse(100, 50);
+    public MemberSignUpInfo getMemberSignUpInfo() {
+        return new MemberSignUpInfo(100, 50);
     }
 
 

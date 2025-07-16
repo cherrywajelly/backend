@@ -8,8 +8,8 @@ import com.timeToast.timeToast.dto.icon.response.*;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_member.IconMemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class IconServiceImplTest {
-
 
     @Mock
     private IconGroupRepository iconGroupRepository;

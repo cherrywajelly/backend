@@ -50,6 +50,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
+
             // Bearer 검증
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(tokenKey).build().parseClaimsJws(token);
 

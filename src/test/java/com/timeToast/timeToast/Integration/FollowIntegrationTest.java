@@ -10,7 +10,7 @@ import com.timeToast.timeToast.dto.search.request.SearchRequest;
 import com.timeToast.timeToast.dto.search.response.SearchResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.service.fcm.FcmService;
 import com.timeToast.timeToast.service.follow.FollowService;
 import com.timeToast.timeToast.service.search.SearchService;

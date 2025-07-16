@@ -9,7 +9,7 @@ import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
 
 public interface AdminMemberService {
     MemberInfoResponses getMembersForManagers();
-    MemberSummaryResponse getMembersCountForManagers();
+    MemberSignUpInfo getMemberSignUpInfo();
     TeamDataManagerResponses getMemberTeamInfo(final long memberId);
     ShowcaseManagerResponses getMemberShowcaseInfo(final long memberId);
     EventToastDataManagerResponses getMemberEventToastInfo(final long memberId);

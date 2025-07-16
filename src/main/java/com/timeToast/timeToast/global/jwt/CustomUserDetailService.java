@@ -4,11 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.global.exception.InternalServerException;
-import com.timeToast.timeToast.global.exception.UnauthorizedException;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,11 +45,5 @@ public class CustomUserDetailService implements UserDetailsService {
         } catch (JsonProcessingException e) {
             throw new InternalServerException(LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR.getMessage());
         }
-
-
-
-
     }
-
-
 }

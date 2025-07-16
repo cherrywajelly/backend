@@ -41,9 +41,13 @@ public class Member extends BaseTime {
     @Nullable
     private String accountNumber;
 
+    //TODO 이후 확인 후 redis에 적합하면 memberToken으로 다시 이동
+    @Column(length = 350)
+    private String fcmToken;
+
     @Builder
     public Member(final Long premiumId, final String nickname, final String email, final String memberProfileUrl,
-                  final LoginType loginType, final MemberRole memberRole, final Bank bank, final String accountNumber) {
+                  final LoginType loginType, final MemberRole memberRole) {
         this.premiumId = premiumId;
         this.nickname = nickname;
         this.email = email;
@@ -73,4 +77,5 @@ public class Member extends BaseTime {
         this.accountNumber = accountNumber;
     }
 
+    public void updateFcmToken(final String fcmToken){ this.fcmToken = fcmToken; }
 }

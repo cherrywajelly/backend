@@ -16,14 +16,15 @@ import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.dto.team.response.TeamDataManagerResponses;
 import com.timeToast.timeToast.dto.payment.response.PaymentManagerResponses;
 import com.timeToast.timeToast.dto.showcase.response.ShowcaseManagerResponses;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
-import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.jpa.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.jpa.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.repository.jpa.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.service.redis.RedisService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,6 +78,9 @@ public class AdminMemberServiceImplTest {
 
     @Mock
     MemberServiceImpl memberService;
+
+    @Mock
+    RedisService redisService;
 
     private Member member;
     private Premium premium;
@@ -250,20 +254,20 @@ public class AdminMemberServiceImplTest {
 
     @Test
     @DisplayName("관리자 전체 유저와 제작자 수 조회")
-    public void getMembersCountForManagers(){
+    public void getMemberSignUpInfo(){
         //given
         List<Member> users = List.of(setUpMember());
         List<Member> creators = setUpCreators();
 
-        when(memberRepository.findAllByMemberRole(MemberRole.USER)).thenReturn(users);
-        when(memberRepository.findAllByMemberRole(MemberRole.CREATOR)).thenReturn(creators);
+        MemberSignUpInfo redisServiceReturn = new MemberSignUpInfo(users.size(), creators.size());
+        when(redisService.getTotalSignUp()).thenReturn(redisServiceReturn);
 
         //when
-        MemberSummaryResponse memberSummaryResponse = managerService.getMembersCountForManagers();
+        MemberSignUpInfo memberSignUpInfo = managerService.getMemberSignUpInfo();
 
         //then
-        Assertions.assertEquals(users.size(), memberSummaryResponse.totalUserCount());
-        Assertions.assertEquals(creators.size(), memberSummaryResponse.totalCreatorCount());
+        Assertions.assertEquals(users.size(), memberSignUpInfo.totalUserCount());
+        Assertions.assertEquals(creators.size(), memberSignUpInfo.totalCreatorCount());
 
     }
 

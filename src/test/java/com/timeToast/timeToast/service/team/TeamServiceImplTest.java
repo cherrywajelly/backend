@@ -18,9 +18,9 @@ import com.timeToast.timeToast.dto.team.response.TeamResponse;
 import com.timeToast.timeToast.dto.team.response.TeamResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.team.team.TeamRepository;
-import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.team.team.TeamRepository;
+import com.timeToast.timeToast.repository.jpa.team.team_member.TeamMemberRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
