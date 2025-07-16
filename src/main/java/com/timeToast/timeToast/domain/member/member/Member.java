@@ -47,7 +47,7 @@ public class Member extends BaseTime {
 
     @Builder
     public Member(final Long premiumId, final String nickname, final String email, final String memberProfileUrl,
-                  final LoginType loginType, final MemberRole memberRole, final Bank bank, final String accountNumber) {
+                  final LoginType loginType, final MemberRole memberRole) {
         this.premiumId = premiumId;
         this.nickname = nickname;
         this.email = email;
