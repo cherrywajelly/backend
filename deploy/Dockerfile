@@ -1,5 +1,5 @@
-FROM yny.ocir.io/axmpikvsv3z9/jdk AS jdk
-FROM yny.ocir.io/axmpikvsv3z9/jre AS jre
+FROM eclipse-temurin:17.0.12_7-jdk-jammy AS jdk
+FROM eclipse-temurin:17.0.12_7-jre-jammy AS jre
 
 FROM jdk AS builder
 WORKDIR /workspace
