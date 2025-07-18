@@ -8,7 +8,6 @@ COPY gradle gradle
 COPY settings.gradle .
 COPY build.gradle .
 COPY src src
-RUN sleep infinity
 RUN mkdir src/main/resources/firebase/ && \
     cp firebase-adminsdk.json src/main/resources/firebase/
 RUN chmod +x gradlew
