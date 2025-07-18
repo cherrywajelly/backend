@@ -9,7 +9,7 @@ COPY settings.gradle .
 COPY build.gradle .
 COPY src src
 RUN mkdir -p src/main/resources/firebase/ && \
-    cp /secret/firebase-adminsdk.json src/main/resources/firebase/
+    cp firebase-adminsdk.json src/main/resources/firebase/
 RUN chmod +x gradlew
 RUN ./gradlew bootJar -x test
 
@@ -26,5 +26,6 @@ COPY --from=extractor /workspace/extracted/spring-boot-loader ./
 COPY --from=extractor /workspace/extracted/snapshot-dependencies ./
 COPY --from=extractor /workspace/extracted/application ./
 COPY build/resources/main/ BOOT-INF/classes/
+COPY .oci /root/.oci
 CMD java org.springframework.boot.loader.launch.JarLauncher
 EXPOSE 8080
