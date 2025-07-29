@@ -1,8 +1,10 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastFriendResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMemberResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastOwnResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponse;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
 
@@ -14,7 +16,4 @@ public interface EventToastService {
     EventToastResponse getEventToast(final long memberId, final long eventToastId);
     void deleteAllEventToastByMemberId(final long memberId);
     Response deleteEventToast(final long memberId, final long eventToastId);
-    EventToastManagerResponses getEventToastsForManager();
-    EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId);
-    EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest);
 }

@@ -6,11 +6,9 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -240,54 +238,5 @@ public class EventToastServiceImpl implements EventToastService{
                 });
 
         log.info("update event toast's is open");
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public EventToastManagerResponses getEventToastsForManager() {
-        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
-        List<EventToast> eventToasts = eventToastRepository.findAll();
-
-        eventToasts.forEach(
-                eventToast -> {
-                    Icon icon = iconRepository.getById(eventToast.getIconId());
-                    Member member = memberRepository.getById(eventToast.getMemberId());
-                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname()));
-                }
-        );
-
-        return new EventToastManagerResponses(eventToastManagerResponses);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
-        EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Member member = memberRepository.getById(eventToast.getMemberId());
-        Icon icon = iconRepository.getById(eventToast.getIconId());
-
-        List<JamManagerResponse> jamManagerResponses = new ArrayList<>();
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
-        jams.forEach(
-                jam -> {
-                    Icon jamIcon = iconRepository.getById(jam.getIconId());
-                    Member jamMember = memberRepository.getById(jam.getMemberId());
-                    jamManagerResponses.add(JamManagerResponse.from(jam, jamIcon.getIconImageUrl(), jamMember.getNickname()));
-                }
-        );
-
-        return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
-    }
-
-    @Transactional
-    @Override
-    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
-        EventToast eventToast = eventToastRepository.getById(eventToastId);
-
-        eventToast.updateOpenedDateAndIsOpened(eventToastRequest.openedDate(), eventToastRequest.isOpened());
-        eventToastRepository.save(eventToast);
-
-        log.info("edit event toast");
-        return eventToastRequest;
     }
 }

@@ -1,15 +1,10 @@
 package com.timeToast.timeToast.service.event_toast;
 
-import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.*;
 import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponses;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
-import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
@@ -71,24 +66,5 @@ public class EventToastServiceTest implements EventToastService {
             throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
-    }
-
-    @Override
-    public EventToastManagerResponses getEventToastsForManager() {
-        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
-        eventToastManagerResponses.add(new EventToastManagerResponse(1L, "iconImageUrl", "title", "nickname", LocalDate.of(20204, 1, 1), true, LocalDate.of(2023, 1, 1)));
-        return new EventToastManagerResponses(eventToastManagerResponses);
-    }
-
-    @Override
-    public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
-        List<JamManagerResponse> jamManagerResponses = new ArrayList<>();
-        jamManagerResponses.add(new JamManagerResponse(1L, "iconImageUrl", "title", LocalDate.of(2024, 11, 11), "nickname"));
-        return new EventToastInfoManagerResponse(1L, "imageUrl", "title", "nickname", LocalDate.of(2024, 11, 11), true, LocalDate.of(2024, 11, 10), jamManagerResponses);
-    }
-
-    @Override
-    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
-       return eventToastRequest;
     }
 }

@@ -2,7 +2,10 @@ package com.timeToast.timeToast.controller.eventToast;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastFriendResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMemberResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastOwnResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;

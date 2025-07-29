@@ -6,7 +6,10 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastFriendResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMemberResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastOwnResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -29,7 +32,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -296,46 +298,5 @@ public class EventToastServiceImplTest {
 
         verify(jamRepository, times(1)).deleteAllByEventToastId(eventToast.getId());
         verify(eventToastRepository, times(1)).deleteById(eventToast.getId());
-    }
-
-    @Test
-    @DisplayName("관리자 이벤트 토스트 목록 조회 성공 ")
-    void getEventToastsManager() {
-        long iconId = 1L;
-        long memberId = 1L;
-        long eventToastId = 1L;
-        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
-        ReflectionTestUtils.setField(eventToast, "createdAt", LocalDateTime.of(2024, 1, 1, 0, 0));
-        ReflectionTestUtils.setField(eventToast, "isOpened", true);
-
-        when(eventToastRepository.findAll()).thenReturn(List.of(eventToast));
-        when(iconRepository.getById(iconId)).thenReturn(icon);
-        when(memberRepository.getById(memberId)).thenReturn(member);
-
-        EventToastManagerResponses eventToastManagerResponses = eventToastService.getEventToastsForManager();
-
-        assertThat(eventToastManagerResponses).isNotNull();
-    }
-
-    @Test
-    @DisplayName("관리자 이벤트 토스트 상세 조회 성공 ")
-    void getEventToastInfoForManager() {
-        long eventToastId = 1L;
-        long memberId = 1L;
-        long iconId = 1L;
-        ReflectionTestUtils.setField(jam, "createdAt", LocalDateTime.of(2024,1,1,0,0));
-        ReflectionTestUtils.setField(eventToast, "id", eventToastId);
-        ReflectionTestUtils.setField(eventToast, "createdAt", LocalDateTime.of(2024,1,1,0,0));
-
-        when(eventToastRepository.getById(eventToastId)).thenReturn(eventToast);
-        when(memberRepository.getById(memberId)).thenReturn(member);
-        when(iconRepository.getById(iconId)).thenReturn(icon);
-        when(jamRepository.findAllByEventToastId(eventToastId)).thenReturn(List.of(jam));
-        when(iconRepository.getById(iconId)).thenReturn(icon);
-        when(memberRepository.getById(memberId)).thenReturn(member);
-
-        EventToastInfoManagerResponse eventToastInfoManagerResponse = eventToastService.getEventToastInfoForManager(memberId);
-
-        assertThat(eventToastInfoManagerResponse).isNotNull();
     }
 }
