@@ -2,11 +2,10 @@ package com.timeToast.timeToast.dto.event_toast.response.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
-import com.timeToast.timeToast.dto.jam.response.JamResponse;
+import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import lombok.Builder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Builder
 public record EventToastResponse(
@@ -17,58 +16,39 @@ public record EventToastResponse(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
-        boolean isOpened,
-
-        String iconImageUrl,
-
-        long memberId,
-
-        String memberProfileUrl,
+        boolean isWritten,
 
         String nickname,
 
-        Integer jamCount,
+        String memberProfileUrl,
 
-        long dDay,
+        IconResponse icon,
 
-        boolean isWritten,
-
-        String description,
-
-        List<JamResponse> jams
+        long dDay
 ){
-    public static EventToastResponse fromEntity(final EventToast eventToast, final String iconImageUrl, final long memberId, final String memberProfileUrl, final String nickname, final Integer jamCount, final long dDay, final List<JamResponse> jams) {
+    public static EventToastResponse fromEntity(EventToast eventToast, final String nickname, final String memberProfileUrl, IconResponse icon, boolean isWritten, long dDay) {
         return EventToastResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
                 .openedDate(eventToast.getOpenedDate())
-                .isOpened(eventToast.isOpened())
-                .iconImageUrl(iconImageUrl)
-                .memberId(memberId)
-                .memberProfileUrl(memberProfileUrl)
                 .nickname(nickname)
-                .jamCount(jamCount)
+                .memberProfileUrl(memberProfileUrl)
+                .icon(icon)
+                .isWritten(isWritten)
                 .dDay(dDay)
-                .description(eventToast.getDescription())
-                .jams(jams)
                 .build();
     }
 
-    public static EventToastResponse of(EventToastResponse eventToastResponse, boolean isWritten) {
+    public static EventToastResponse ofEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean isWritten) {
         return EventToastResponse.builder()
-                .eventToastId(eventToastResponse.eventToastId())
-                .title(eventToastResponse.title())
-                .openedDate(eventToastResponse.openedDate())
-                .isOpened(eventToastResponse.isOpened())
-                .iconImageUrl(eventToastResponse.iconImageUrl())
-                .memberId(eventToastResponse.memberId())
-                .memberProfileUrl(eventToastResponse.memberProfileUrl())
-                .nickname(eventToastResponse.nickname())
-                .jamCount(eventToastResponse.jamCount())
-                .dDay(eventToastResponse.dDay())
-                .description(eventToastResponse.description())
+                .eventToastId(eventToast.getId())
+                .title(eventToast.getTitle())
+                .openedDate(eventToast.getOpenedDate())
+                .nickname(nickname)
+                .memberProfileUrl(memberProfileUrl)
+                .icon(icon)
                 .isWritten(isWritten)
-                .jams(eventToastResponse.jams())
                 .build();
     }
 }
+

@@ -6,10 +6,9 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.member.EventToastFriendResponses;
-import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMemberResponses;
-import com.timeToast.timeToast.dto.event_toast.response.member.EventToastOwnResponses;
-import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMyResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastDetailResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -117,14 +116,14 @@ public class EventToastServiceImplTest {
         when(eventToastRepository.findAllByMemberId(memberId)).thenReturn(List.of(eventToast));
         when(iconRepository.getById(eventToast.getIconId())).thenReturn(icon);
 
-        EventToastOwnResponses eventToastOwnResponses = eventToastService.getOwnEventToastList(memberId);
+        EventToastMyResponses eventToastMyResponses = eventToastService.getMyEventToastList(memberId);
 
-        assertThat(eventToastOwnResponses).isNotNull();
+        assertThat(eventToastMyResponses).isNotNull();
     }
 
     @Test
     @DisplayName("팔로우하고 있는 사용자의 이벤트 토스트 목록 조회 성공 - 잼 미작성")
-    void getEventToasts() {
+    void getEventToastsFromFollower() {
         long memberId = 1L;
         List<Follow> follows = List.of(follow);
 
@@ -137,9 +136,9 @@ public class EventToastServiceImplTest {
         when(iconRepository.getById(eventToast.getIconId())).thenReturn(icon);
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId())).thenReturn(Optional.empty());
 
-        EventToastFriendResponses eventToastFriendResponses = eventToastService.getEventToasts(memberId);
+        EventToastResponses eventToastResponses = eventToastService.getEventToastsFromFollower(memberId);
 
-        assertThat(eventToastFriendResponses).isNotNull();
+        assertThat(eventToastResponses).isNotNull();
     }
 
     @Test
@@ -158,9 +157,9 @@ public class EventToastServiceImplTest {
         when(memberRepository.getById(friendId)).thenReturn(friend);
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId())).thenReturn(Optional.empty());
 
-        EventToastMemberResponses eventToastMemberResponses = eventToastService.getMemberEventToastList(memberId, friendId);
+        EventToastResponses eventToastResponses = eventToastService.getEventToastsOfFollower(memberId, friendId);
 
-        assertThat(eventToastMemberResponses).isNotNull();
+        assertThat(eventToastResponses).isNotNull();
     }
 
     @Test
@@ -179,9 +178,9 @@ public class EventToastServiceImplTest {
         when(memberRepository.getById(friendId)).thenReturn(friend);
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId())).thenReturn(Optional.of(jam));
 
-        EventToastMemberResponses eventToastMemberResponses = eventToastService.getMemberEventToastList(memberId, friendId);
+        EventToastResponses eventToastResponses = eventToastService.getEventToastsOfFollower(memberId, friendId);
 
-        assertThat(eventToastMemberResponses).isNotNull();
+        assertThat(eventToastResponses).isNotNull();
     }
 
     @Test
@@ -202,9 +201,9 @@ public class EventToastServiceImplTest {
         when(iconRepository.getById(jam.getMemberId())).thenReturn(icon);
         when(memberRepository.getById(jam.getMemberId())).thenReturn(member);
 
-        EventToastResponse eventToastResponse = eventToastService.getEventToast(memberId, eventToastId);
+        EventToastDetailResponse eventToastDetailResponse = eventToastService.getEventToast(memberId, eventToastId);
 
-        assertThat(eventToastResponse).isNotNull();
+        assertThat(eventToastDetailResponse).isNotNull();
     }
 
     @Test
@@ -213,14 +212,14 @@ public class EventToastServiceImplTest {
         long memberId = 1L;
         long eventToastId = 1L;
         List<JamResponse> jams = List.of(new JamResponse(1L, icon.getIconImageUrl(), member.getNickname()));
-        EventToastResponse eventToastResponse = new EventToastResponse(eventToastId, eventToast.getTitle(), eventToast.getOpenedDate(), eventToast.isOpened(),
+        EventToastDetailResponse eventToastDetailResponse = new EventToastDetailResponse(eventToastId, eventToast.getTitle(), eventToast.getOpenedDate(), eventToast.isOpened(),
                 icon.getIconImageUrl(), eventToast.getMemberId(), member.getMemberProfileUrl(), member.getNickname(), 0, 0, false, "description", jams);
 
         when(jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId)).thenReturn(Optional.empty());
 
-        EventToastResponse updatedEventToastResponse = eventToastService.updateWritten(memberId, eventToastId, eventToastResponse);
+        EventToastDetailResponse updatedEventToastDetailResponse = eventToastService.updateWritten(memberId, eventToastId, eventToastDetailResponse);
 
-        assertThat(updatedEventToastResponse.isWritten()).isFalse();
+        assertThat(updatedEventToastDetailResponse.isWritten()).isFalse();
     }
 
 

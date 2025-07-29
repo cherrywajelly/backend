@@ -72,23 +72,23 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastOwnResponses getOwnEventToastList(final long memberId) {
+    public EventToastMyResponses getMyEventToastList(final long memberId) {
 
-        List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
+        List<EventToastMyResponse> eventToastMyRespons = new ArrayList<>();
         eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
-                    EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
-                    eventToastOwnResponses.add(eventToastOwnResponse);
+                    EventToastMyResponse eventToastMyResponse = EventToastMyResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
+                    eventToastMyRespons.add(eventToastMyResponse);
                 }
         );
-        return new EventToastOwnResponses(eventToastOwnResponses);
+        return new EventToastMyResponses(eventToastMyRespons);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastFriendResponses getEventToasts(final long memberId){
-        List<EventToastFriendResponse> eventToastFriendResponses = new ArrayList<>();
+    public EventToastResponses getEventToastsFromFollower(final long memberId){
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
 
         followRepository.findAllByFollowerId(memberId).forEach(
                 follow -> {
@@ -99,25 +99,25 @@ public class EventToastServiceImpl implements EventToastService{
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
                                 boolean isWritten = jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent();
 
-                                EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
                                         new IconResponse(icon.getId(), icon.getIconImageUrl()), isWritten, DDayCount.count(LocalDate.now(), eventToast.getOpenedDate()));
-                                eventToastFriendResponses.add(eventToastFriendResponse);
+                                eventToastResponses.add(eventToastResponse);
                             }
                     );
                 }
         );
 
-        eventToastFriendResponses.sort(Comparator.comparingLong(EventToastFriendResponse::dDay));
+        eventToastResponses.sort(Comparator.comparingLong(EventToastResponse::dDay));
 
-        return new EventToastFriendResponses(eventToastFriendResponses);
+        return new EventToastResponses(eventToastResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
+    public EventToastResponses getEventToastsOfFollower(final long memberId, final long friendId){
         List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).toList();
 
-        List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
 
         filterEventToasts(eventToasts, false).forEach(
                 eventToast -> {
@@ -125,21 +125,21 @@ public class EventToastServiceImpl implements EventToastService{
                     Member member = memberRepository.getById(friendId);
 
                     if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isEmpty()) {
-                        EventToastMemberResponse eventToastFriendResponse = EventToastMemberResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), false);
-                        eventToastMemberResponses.add(eventToastFriendResponse);
+                        EventToastResponse eventToastResponse = EventToastResponse.ofEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), false);
+                        eventToastResponses.add(eventToastResponse);
                     } else {
-                        EventToastMemberResponse eventToastFriendResponse = EventToastMemberResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), true);
-                        eventToastMemberResponses.add(eventToastFriendResponse);
+                        EventToastResponse eventToastResponse = EventToastResponse.ofEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), true);
+                        eventToastResponses.add(eventToastResponse);
                     }
                 }
         );
 
-        return new EventToastMemberResponses(eventToastMemberResponses);
+        return new EventToastResponses(eventToastResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
+    public EventToastDetailResponse getEventToast(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Icon icon = iconRepository.getById(eventToast.getIconId());
         Member member = memberRepository.getById(eventToast.getMemberId());
@@ -157,26 +157,26 @@ public class EventToastServiceImpl implements EventToastService{
                     }
             );
 
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+            EventToastDetailResponse eventToastDetailResponse = EventToastDetailResponse.fromEntity(eventToast, icon.getIconImageUrl(),
                     member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, jamResponses);
 
-            return updateWritten(memberId, eventToastId, eventToastResponse);
+            return updateWritten(memberId, eventToastId, eventToastDetailResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+            EventToastDetailResponse eventToastDetailResponse = EventToastDetailResponse.fromEntity(eventToast, icon.getIconImageUrl(),
                     member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, null);
-            return updateWritten(memberId, eventToastId, eventToastResponse);
+            return updateWritten(memberId, eventToastId, eventToastDetailResponse);
         }
 
     }
 
-    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastResponse){
+    public EventToastDetailResponse updateWritten(final long memberId, final long eventToastId, EventToastDetailResponse eventToastDetailResponse){
 
         if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).isEmpty()) {
-            return EventToastResponse.of(eventToastResponse, false);
+            return EventToastDetailResponse.of(eventToastDetailResponse, false);
         } else {
-            return EventToastResponse.of(eventToastResponse, true);
+            return EventToastDetailResponse.of(eventToastDetailResponse, true);
         }
     }
 
