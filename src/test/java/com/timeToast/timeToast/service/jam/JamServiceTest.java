@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.jam;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastJamResponse;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
 import com.timeToast.timeToast.dto.jam.response.JamDetailResponse;
@@ -35,12 +35,12 @@ public class JamServiceTest implements JamService {
 
     @Override
     public JamDetailResponse getJam(final long memberId, final long jamId){
-        EventToastDataResponse eventToastDataResponse = new EventToastDataResponse("e.title", "e.memberProfileUrl",
+        EventToastJamResponse eventToastJamResponse = new EventToastJamResponse("e.title", "e.memberProfileUrl",
                 "e.nickname", "e.iconImageUrl");
         JamDataResponse jamDataResponse = new JamDataResponse("j.iconImageUrl", "j.title", "j.memberProfileUrl",
                 "j.nickname", "j.contentUrl", "j.imageUrl", LocalDate.of(2024, 11, 11));
 
-        JamDetailResponse jamDetailResponse = new JamDetailResponse(eventToastDataResponse, jamDataResponse);
+        JamDetailResponse jamDetailResponse = new JamDetailResponse(eventToastJamResponse, jamDataResponse);
         return jamDetailResponse;
     }
 
