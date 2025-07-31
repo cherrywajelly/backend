@@ -20,6 +20,9 @@ public class CorsProperties {
     @Value("${cors.back-localhost}")
     private String backLocalHost;
 
+    @Value("${cors.edge-service}")
+    private String edgeService;
+
     @Value("${cors.service-dev}")
     private String serviceDev;
 

@@ -71,6 +71,7 @@ cors:
   dev: ${DEV}
   front-localhost: ${FRONT_LOCAL}
   back-localhost: ${BACK_LOCAL}
+  edge-service: ${EDGE_SERVICE}
   service-dev: ${SERVICE_DEV}
   back-dev: ${BACK_DEV}
   admin-dev: ${ADMIN_DEV}

@@ -81,6 +81,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 corsProperties.getFrontLocalHost(),
                 corsProperties.getBackLocalHost(),
+                corsProperties.getEdgeService(),
                 corsProperties.getServiceDev(),
                 corsProperties.getBackDev(),
                 corsProperties.getAdminDev(),
