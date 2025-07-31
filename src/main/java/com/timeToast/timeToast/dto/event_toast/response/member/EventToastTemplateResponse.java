@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.event_toast.response;
+package com.timeToast.timeToast.dto.event_toast.response.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

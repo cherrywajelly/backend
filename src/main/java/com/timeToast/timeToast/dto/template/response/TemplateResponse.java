@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.template.response;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastTemplateResponse;
 import lombok.Builder;
 
 @Builder

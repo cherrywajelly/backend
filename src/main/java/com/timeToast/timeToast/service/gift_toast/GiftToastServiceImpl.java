@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.service.gift_toast;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
-import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
 import com.timeToast.timeToast.domain.gift_toast.gift_toast_owner.GiftToastOwner;
 import com.timeToast.timeToast.domain.icon.icon.Icon;

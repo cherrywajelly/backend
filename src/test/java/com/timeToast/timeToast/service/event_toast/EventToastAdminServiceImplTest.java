@@ -4,8 +4,8 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.event_toast.response.admin.EventToastInfoManagerResponse;
-import com.timeToast.timeToast.dto.event_toast.response.admin.EventToastManagerResponses;
+import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastDetailResponse;
+import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastResponses;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
 import com.timeToast.timeToast.repository.jam.JamRepository;
@@ -77,9 +77,9 @@ public class EventToastAdminServiceImplTest {
         when(iconRepository.getById(iconId)).thenReturn(icon);
         when(memberRepository.getById(memberId)).thenReturn(member);
 
-        EventToastManagerResponses eventToastManagerResponses = eventToastAdminService.getEventToastsForManager();
+        ManagerEventToastResponses managerEventToastResponses = eventToastAdminService.getEventToastsForManager();
 
-        assertThat(eventToastManagerResponses).isNotNull();
+        assertThat(managerEventToastResponses).isNotNull();
     }
 
     @Test
@@ -99,8 +99,8 @@ public class EventToastAdminServiceImplTest {
         when(iconRepository.getById(iconId)).thenReturn(icon);
         when(memberRepository.getById(memberId)).thenReturn(member);
 
-        EventToastInfoManagerResponse eventToastInfoManagerResponse = eventToastAdminService.getEventToastInfoForManager(memberId);
+        ManagerEventToastDetailResponse managerEventToastDetailResponse = eventToastAdminService.getEventToastInfoForManager(memberId);
 
-        assertThat(eventToastInfoManagerResponse).isNotNull();
+        assertThat(managerEventToastDetailResponse).isNotNull();
     }
 }

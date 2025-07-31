@@ -53,11 +53,11 @@ public class CreatorServiceImpl implements CreatorService {
             IconGroupOrderedResponses iconGroupOrderedResponses = getIconOrderedResponse(memberId);
 
             long createdIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().count();
-            long selledIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
+            long soldIconCount = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::orderCount).sum();
             long revenue = iconGroupOrderedResponses.iconGroupOrderedResponses().stream().mapToLong(IconGroupOrderedResponse::income).sum();
             long settlement = (long) (revenue * 0.7);
 
-            return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, selledIconCount, revenue, settlement);
+            return new CreatorProfileResponse(creatorInfoResponse, iconGroupOrderedResponses, createdIconCount, soldIconCount, revenue, settlement);
         } else {
             throw new NotFoundException(INVALID_CREATOR_INFO.getMessage());
         }

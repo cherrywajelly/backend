@@ -5,9 +5,9 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.admin.EventToastInfoManagerResponse;
-import com.timeToast.timeToast.dto.event_toast.response.admin.EventToastManagerResponse;
-import com.timeToast.timeToast.dto.event_toast.response.admin.EventToastManagerResponses;
+import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastDetailResponse;
+import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastResponse;
+import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastResponses;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -33,24 +33,24 @@ public class EventToastAdminServiceImpl implements EventToastAdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastManagerResponses getEventToastsForManager() {
-        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
+    public ManagerEventToastResponses getEventToastsForManager() {
+        List<ManagerEventToastResponse> managerEventToastResponses = new ArrayList<>();
         List<EventToast> eventToasts = eventToastRepository.findAll();
 
         eventToasts.forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
                     Member member = memberRepository.getById(eventToast.getMemberId());
-                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname()));
+                    managerEventToastResponses.add(ManagerEventToastResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname()));
                 }
         );
 
-        return new EventToastManagerResponses(eventToastManagerResponses);
+        return new ManagerEventToastResponses(managerEventToastResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
+    public ManagerEventToastDetailResponse getEventToastInfoForManager(final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Member member = memberRepository.getById(eventToast.getMemberId());
         Icon icon = iconRepository.getById(eventToast.getIconId());
@@ -65,7 +65,7 @@ public class EventToastAdminServiceImpl implements EventToastAdminService {
                 }
         );
 
-        return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
+        return ManagerEventToastDetailResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
     }
 
     @Transactional

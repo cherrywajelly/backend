@@ -131,7 +131,7 @@ public class MemberCreatorAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("iconGroupOrderedResponses.iconGroupOrderedResponses[0].income").type(NUMBER).description("아이콘 판매 수익"),
                                         fieldWithPath("iconGroupOrderedResponses.iconGroupOrderedResponses[0].iconState").type(STRING).description("아이콘 등록 상태"),
                                         fieldWithPath("createdIconCount").type(NUMBER).description("제작한 아이콘 개수"),
-                                        fieldWithPath("selledIconCount").type(NUMBER).description("판매한 아이콘 개수"),
+                                        fieldWithPath("soldIconCount").type(NUMBER).description("판매한 아이콘 개수"),
                                         fieldWithPath("revenue").type(NUMBER).description("판매 수익"),
                                         fieldWithPath("settlement").type(NUMBER).description("정산 금액")
                                 )
