@@ -14,7 +14,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.ResponseWithId;
+import com.timeToast.timeToast.global.response.SuccessResponse;
 import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
@@ -55,7 +55,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+    public SuccessResponse saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
 
         if(eventToastPostRequest.title().length() > 20) {
             throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
@@ -66,13 +66,13 @@ public class EventToastServiceImpl implements EventToastService{
         }
 
         EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
-        log.info("save event toast");
-        return new ResponseWithId(eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+
+        return SuccessResponse.withId(memberId, eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastMyResponses getMyEventToastList(final long memberId) {
+    public EventToastMyResponses getMyEventToasts(final long memberId) {
 
         List<EventToastMyResponse> eventToastMyRespons = new ArrayList<>();
         eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
@@ -139,7 +139,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastDetailResponse getEventToast(final long memberId, final long eventToastId) {
+    public EventToastDetailResponse getEventToastDetail(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Icon icon = iconRepository.getById(eventToast.getIconId());
         Member member = memberRepository.getById(eventToast.getMemberId());
@@ -207,9 +207,8 @@ public class EventToastServiceImpl implements EventToastService{
         showcaseRepository.deleteAllByEventToastId(eventToastId);
         jamRepository.deleteAllByEventToastId(eventToastId);
         eventToastRepository.deleteById(eventToastId);
-        log.info("delete event toast");
 
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+        return SuccessResponse.withoutId(memberId, eventToastId, StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 

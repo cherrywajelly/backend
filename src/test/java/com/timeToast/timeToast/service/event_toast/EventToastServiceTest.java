@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.ResponseWithId;
+import com.timeToast.timeToast.global.response.SuccessResponse;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,12 +20,12 @@ import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_PO
 public class EventToastServiceTest implements EventToastService {
 
     @Override
-    public ResponseWithId saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
-        return new ResponseWithId(1L, StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+    public SuccessResponse saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId) {
+        return new SuccessResponse(1L, StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Override
-    public EventToastMyResponses getMyEventToastList(final long memberId) {
+    public EventToastMyResponses getMyEventToasts(final long memberId) {
         List<EventToastMyResponse> eventToastMyResponses = new ArrayList<>();
         eventToastMyResponses.add(new EventToastMyResponse(1, "title", LocalDate.of(2024, 11, 11), new IconResponse(1, "iconUrl")));
         return new EventToastMyResponses(eventToastMyResponses);
@@ -47,7 +47,7 @@ public class EventToastServiceTest implements EventToastService {
     }
 
     @Override
-    public EventToastDetailResponse getEventToast(final long memberId, final long eventToastId) {
+    public EventToastDetailResponse getEventToastDetail(final long memberId, final long eventToastId) {
         List<JamResponse> jamResponses = new ArrayList<>();
         jamResponses.add(new JamResponse(1, "title", "iconUrl"));
         EventToastDetailResponse eventToastDetailResponse = new EventToastDetailResponse(1, "title", LocalDate.of(2024, 11, 11),

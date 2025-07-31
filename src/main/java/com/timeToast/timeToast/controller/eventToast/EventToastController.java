@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMyRespo
 import com.timeToast.timeToast.dto.event_toast.response.member.EventToastDetailResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.ResponseWithId;
+import com.timeToast.timeToast.global.response.SuccessResponse;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -22,13 +22,13 @@ public class EventToastController {
     private final EventToastService eventToastService;
 
     @PostMapping("")
-    public ResponseWithId saveEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
+    public SuccessResponse saveEventToast(@Login LoginMember loginMember, @RequestBody EventToastPostRequest eventToastPostRequest) {
         return eventToastService.saveEventToast(eventToastPostRequest, loginMember.id());
     }
 
     @GetMapping("/member")
     public EventToastMyResponses getMyEventToasts(@Login LoginMember loginMember) {
-        return eventToastService.getMyEventToastList(loginMember.id());
+        return eventToastService.getMyEventToasts(loginMember.id());
     }
 
     //팔로우 하고 있는 타사용자의 이벤트 토스트 목록 조회
@@ -45,7 +45,7 @@ public class EventToastController {
 
     @GetMapping("/{eventToastId}")
     public EventToastDetailResponse getEventToastDetail(@Login LoginMember loginMember, @PathVariable final long eventToastId) {
-        return eventToastService.getEventToast(loginMember.id(), eventToastId);
+        return eventToastService.getEventToastDetail(loginMember.id(), eventToastId);
     }
 
     @DeleteMapping("/{eventToastId}")

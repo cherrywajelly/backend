@@ -13,7 +13,7 @@ import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.ResponseWithId;
+import com.timeToast.timeToast.global.response.SuccessResponse;
 import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.follow.FollowRepository;
 import com.timeToast.timeToast.repository.icon.icon.IconRepository;
@@ -98,7 +98,7 @@ public class EventToastServiceImplTest {
 
         when(eventToastRepository.save(any(EventToast.class))).thenReturn(eventToast);
 
-        ResponseWithId response = eventToastService.saveEventToast(eventToastPostRequest, memberId);
+        SuccessResponse response = eventToastService.saveEventToast(eventToastPostRequest, memberId);
 
         verify(eventToastRepository, times(1)).save(any(EventToast.class));
         assertThat(response.statusCode()).isEqualTo(StatusCode.OK.getStatusCode());
@@ -116,14 +116,14 @@ public class EventToastServiceImplTest {
         when(eventToastRepository.findAllByMemberId(memberId)).thenReturn(List.of(eventToast));
         when(iconRepository.getById(eventToast.getIconId())).thenReturn(icon);
 
-        EventToastMyResponses eventToastMyResponses = eventToastService.getMyEventToastList(memberId);
+        EventToastMyResponses eventToastMyResponses = eventToastService.getMyEventToasts(memberId);
 
         assertThat(eventToastMyResponses).isNotNull();
     }
 
     @Test
     @DisplayName("팔로우하고 있는 사용자의 이벤트 토스트 목록 조회 성공 - 잼 미작성")
-    void getEventToastsFromFollower() {
+    void getEventToastsFromFollowerDetail() {
         long memberId = 1L;
         List<Follow> follows = List.of(follow);
 
@@ -185,7 +185,7 @@ public class EventToastServiceImplTest {
 
     @Test
     @DisplayName("이벤트 토스트 상세 조회 성공")
-    void getEventToast() {
+    void getEventToastDetail() {
         long memberId = 1L;
         long eventToastId = 1L;
         long jamId = 1L;
@@ -201,7 +201,7 @@ public class EventToastServiceImplTest {
         when(iconRepository.getById(jam.getMemberId())).thenReturn(icon);
         when(memberRepository.getById(jam.getMemberId())).thenReturn(member);
 
-        EventToastDetailResponse eventToastDetailResponse = eventToastService.getEventToast(memberId, eventToastId);
+        EventToastDetailResponse eventToastDetailResponse = eventToastService.getEventToastDetail(memberId, eventToastId);
 
         assertThat(eventToastDetailResponse).isNotNull();
     }
