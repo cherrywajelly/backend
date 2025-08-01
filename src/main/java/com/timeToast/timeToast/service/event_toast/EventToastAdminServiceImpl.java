@@ -9,10 +9,10 @@ import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToas
 import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastResponse;
 import com.timeToast.timeToast.dto.event_toast.response.manager.ManagerEventToastResponses;
 import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.jam.JamRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.jpa.jam.JamRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
