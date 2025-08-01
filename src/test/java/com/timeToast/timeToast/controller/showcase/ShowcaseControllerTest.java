@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.controller.showcase;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.showcase.request.ShowcaseSaveRequest;
 import com.timeToast.timeToast.service.showcase.ShowcaseService;
 import com.timeToast.timeToast.service.showcase.ShowcaseServiceTest;
@@ -119,12 +118,12 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("showcaseEditResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("showcaseEditResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("showcaseEditResponses[0].iconUrl").type(STRING).description("아이콘 url"),
                                         fieldWithPath("showcaseEditResponses[0].title").type(STRING).description("제목"),
                                         fieldWithPath("showcaseEditResponses[0].openedDate").type(STRING).description("오픈 날짜"),
                                         fieldWithPath("showcaseEditResponses[0].isShowcase").type(BOOLEAN).description("진열장 등록 여부"),
-                                        fieldWithPath("showcaseEditResponses[0].showCaseId").type(NUMBER).description("진열장 등록시 id")
+                                        fieldWithPath("showcaseEditResponses[0].showCaseId").type(NUMBER).description("진열장 등록시 iconGroupId")
                                 )
                                 .build()
                         )));
@@ -150,7 +149,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("showcaseResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("showcaseResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("showcaseResponses[0].iconUrl").type(STRING).description("아이콘 url")
                                 )
                                 .build()
@@ -180,7 +179,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("showcaseResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("showcaseResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("showcaseResponses[0].iconUrl").type(STRING).description("아이콘 url")
                                 )
                                 .build()
@@ -201,7 +200,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isOk())
                 .andDo(document("진열장 삭제",
                         pathParameters(
-                                parameterWithName("showcaseId").description("showcase id")
+                                parameterWithName("showcaseId").description("showcase iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 진열장")
@@ -231,7 +230,7 @@ public class ShowcaseControllerTest extends BaseControllerTests {
                 .andExpect(status().isBadRequest())
                 .andDo(document("진열장 삭제 실패: 자신의 진열장 아님",
                         pathParameters(
-                                parameterWithName("showcaseId").description("showcase id")
+                                parameterWithName("showcaseId").description("showcase iconGroupId")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("유저 - 진열장")

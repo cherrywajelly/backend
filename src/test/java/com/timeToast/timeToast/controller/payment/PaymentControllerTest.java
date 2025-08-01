@@ -55,7 +55,7 @@ public class PaymentControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .requestFields(
-                                        fieldWithPath("itemId").type(NUMBER).description("아이콘 그룹 id/premium id"),
+                                        fieldWithPath("itemId").type(NUMBER).description("아이콘 그룹 iconGroupId/premium iconGroupId"),
                                         fieldWithPath("amount").type(NUMBER).description("가격"),
                                         fieldWithPath("itemType").type(STRING).description("아이템 종류 ICON/PREMIUM"),
                                         fieldWithPath("successUrl").type(STRING).description("successUrl"),
@@ -63,8 +63,8 @@ public class PaymentControllerTest extends BaseControllerTests {
 
                                         )
                                 .responseFields(
-                                        fieldWithPath("paymentId").type(NUMBER).description("결제 id"),
-                                        fieldWithPath("orderId").type(STRING).description("order id"),
+                                        fieldWithPath("paymentId").type(NUMBER).description("결제 iconGroupId"),
+                                        fieldWithPath("orderId").type(STRING).description("order iconGroupId"),
                                         fieldWithPath("orderName").type(STRING).description("주문 제목"),
                                         fieldWithPath("successUrl").type(STRING).description("successUrl"),
                                         fieldWithPath("failUrl").type(STRING).description("failUrl"),

@@ -2,9 +2,6 @@ package com.timeToast.timeToast.domain.event_toast;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.BaseTime;
-import com.timeToast.timeToast.domain.icon.icon.Icon;
-import com.timeToast.timeToast.domain.jam.Jam;
-import com.timeToast.timeToast.domain.member.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "event_toast")

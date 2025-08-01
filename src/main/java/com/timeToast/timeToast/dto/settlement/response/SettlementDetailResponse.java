@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.dto.settlement.response;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.monthSettlement.SettlementState;
 import lombok.Builder;
 
@@ -12,9 +12,9 @@ public record SettlementDetailResponse(
         int month,
         String creatorNickname,
         long salesIconCount,
-        long totalRevenue,
-        long settlement,
-        String bank,
+        long totalIncome,
+        long totalSettlement,
+        Bank bank,
         String accountNumber,
         SettlementState settlementState,
         List<SettlementIcon> settlementIcons

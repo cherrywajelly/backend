@@ -2,12 +2,12 @@ package com.timeToast.timeToast.service.withdrawal;
 
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.fcm.FcmRepository;
-import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
-import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.repository.jpa.fcm.FcmRepository;
+import com.timeToast.timeToast.repository.jpa.follow.FollowRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_member.IconMemberRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.jpa.showcase.ShowcaseRepository;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.gift_toast.GiftToastService;
 import com.timeToast.timeToast.service.team.TeamService;

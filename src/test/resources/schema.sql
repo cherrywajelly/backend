@@ -6,6 +6,9 @@ CREATE TABLE member (
                         nickname VARCHAR(255),
                         login_type VARCHAR(20),
                         member_role VARCHAR(20),
+                        bank VARCHAR(20),
+                        account_number VARCHAR(255) ,
+                        fcm_token VARCHAR(350),
                         created_at datetime,
                         last_modified_at datetime,
                         PRIMARY KEY (member_id)
@@ -13,7 +16,7 @@ CREATE TABLE member (
 
 
 
-CREATE TABLE premium (
+CREATE TABLE memberPremium (
                          premium_id BIGINT AUTO_INCREMENT,
                          premium_type VARCHAR(20),
                          price INT,
@@ -24,25 +27,24 @@ CREATE TABLE premium (
                          PRIMARY KEY (premium_id)
 );
 
-CREATE TABLE member_token (
-                              member_token_id BIGINT AUTO_INCREMENT,
-                              member_id BIGINT,
-                              jwt_refresh_token VARCHAR(350),
-                              fcm_token VARCHAR(350),
-                              created_at datetime,
-                              last_modified_at datetime,
-                              PRIMARY KEY (member_token_id)
-);
+-- CREATE TABLE member_token (
+--                               member_token_id BIGINT AUTO_INCREMENT,
+--                               member_id BIGINT,
+--                               jwt_refresh_token VARCHAR(350),
+--                               created_at datetime,
+--                               last_modified_at datetime,
+--                               PRIMARY KEY (member_token_id)
+-- );
 
 
-INSERT INTO premium VALUES (1,"BASIC",0, 3, "베이직", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO premium VALUES (2,"PREMIUM",5500, 10, "프리미엄", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO memberPremium VALUES (1,"BASIC",0, 3, "베이직", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO memberPremium VALUES (2,"PREMIUM",5500, 10, "프리미엄", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
-INSERT INTO member VALUES (1,1,"test1@email.com", "memberProfileUrl1", "user1", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (2,1,"test2@email.com", "memberProfileUrl2", "testNickname2", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
-INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "TimeToast", "GOOGLE", "CREATOR", "2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (1,1,"test1@email.com", "memberProfileUrl1", "user1", "GOOGLE", "USER", "KB", "account_number","fcm_token","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (2,1,"test2@email.com", "memberProfileUrl2", "testNickname2", "GOOGLE", "USER", "KB", "account_number","fcm_token","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (3,1,"test3@email.com", "memberProfileUrl3", "testNickname3", "GOOGLE", "USER", "KB", "account_number","fcm_token","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
+INSERT INTO member VALUES (4,1,"test4@email.com", "memberProfileUrl4", "TimeToast", "GOOGLE", "CREATOR", "KB", "account_number","fcm_token","2024-11-03 22:34:32.431779", "2024-11-03 22:34:32.431779");
 
 
 
@@ -246,15 +248,6 @@ CREATE TABLE inquiry (
                      created_at DATETIME,
                      last_modified_at DATETIME,
                      PRIMARY KEY (inquiry_id)
-);
-
-CREATE TABLE creator_account (
-    creator_account_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id BIGINT NOT NULL,
-    bank VARCHAR(20) NOT NULL,
-    account_number VARCHAR(255) NOT NULL,
-    created_at DATETIME,
-    last_modified_at DATETIME
 );
 
 

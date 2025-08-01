@@ -1,10 +1,13 @@
 package com.timeToast.timeToast.domain.member.member;
 
 import com.timeToast.timeToast.domain.BaseTime;
+import com.timeToast.timeToast.domain.enums.member.Bank;
 import com.timeToast.timeToast.domain.enums.member.LoginType;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
+
+import javax.annotation.Nullable;
 
 @Entity
 @Table(name = "member")
@@ -31,9 +34,20 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
+    @Enumerated(EnumType.STRING)
+    @Nullable
+    private Bank bank;
+
+    @Nullable
+    private String accountNumber;
+
+    //TODO 이후 확인 후 redis에 적합하면 memberToken으로 다시 이동
+    @Column(length = 350)
+    private String fcmToken;
+
     @Builder
     public Member(final Long premiumId, final String nickname, final String email, final String memberProfileUrl,
-                  final LoginType loginType, final MemberRole memberRole){
+                  final LoginType loginType, final MemberRole memberRole) {
         this.premiumId = premiumId;
         this.nickname = nickname;
         this.email = email;
@@ -58,4 +72,10 @@ public class Member extends BaseTime {
         this.memberRole = memberRole;
     }
 
+    public void updateAccount(final Bank bank, final String accountNumber) {
+        this.bank = bank;
+        this.accountNumber = accountNumber;
+    }
+
+    public void updateFcmToken(final String fcmToken){ this.fcmToken = fcmToken; }
 }

@@ -1,36 +1,30 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.creator_account.CreatorAccount;
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
-import com.timeToast.timeToast.dto.creator.response.*;
-import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.dto.icon.response.CreatorIconGroupResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.ConflictException;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.util.StringValidator;
-import com.timeToast.timeToast.repository.creator_account.CreatorAccountRepository;
-import com.timeToast.timeToast.repository.follow.FollowRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
-import com.timeToast.timeToast.repository.team.team_member.TeamMemberRepository;
+import com.timeToast.timeToast.repository.jpa.follow.FollowRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
+import com.timeToast.timeToast.service.icon.AdminIconService;
+import com.timeToast.timeToast.service.image.FileUploadService;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
 import static com.timeToast.timeToast.global.constant.FileConstant.*;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 import static com.timeToast.timeToast.global.constant.SuccessConstant.VALID_NICKNAME;
-
-import com.timeToast.timeToast.service.icon.icon_group.IconGroupAdminService;
-import com.timeToast.timeToast.service.image.FileUploadService;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -45,51 +39,66 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
-    private final TeamMemberRepository teamMemberRepository;
-    private final FileUploadService fileUploadService;
     private final PremiumRepository premiumRepository;
-    private final CreatorAccountRepository creatorAccountRepository;
     private final PaymentRepository paymentRepository;
-    private final IconGroupAdminService iconGroupAdminService;
+    private final FileUploadService fileUploadService;
+    private final AdminIconService adminIconService;
 
     public MemberServiceImpl(final MemberRepository memberRepository, final FollowRepository followRepository,
-                             final TeamMemberRepository teamMemberRepository, final FileUploadService fileUploadService,
-                             final PremiumRepository premiumRepository, final CreatorAccountRepository creatorAccountRepository,
-                             final PaymentRepository paymentRepository, final IconGroupAdminService iconGroupAdminService) {
+                             final PremiumRepository premiumRepository, final PaymentRepository paymentRepository,
+                             final FileUploadService fileUploadService, final AdminIconService adminIconService) {
 
         this.memberRepository = memberRepository;
         this.followRepository = followRepository;
-        this.teamMemberRepository = teamMemberRepository;
-        this.fileUploadService = fileUploadService;
         this.premiumRepository = premiumRepository;
-        this.creatorAccountRepository = creatorAccountRepository;
         this.paymentRepository = paymentRepository;
-        this.iconGroupAdminService = iconGroupAdminService;
+        this.fileUploadService = fileUploadService;
+        this.adminIconService = adminIconService;
     }
 
     @Value("${spring.cloud.oci.base-url}")
     private String baseUrl;
 
+    @Transactional
+    @Override
+    public MemberInfoResponse saveToStaff(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.STAFF);
+        return getMemberInfo(member.getId());
+    }
 
     @Transactional
     @Override
-    public MemberInfoResponse saveProfileImageByLogin(final long memberId, final MultipartFile profileImage) {
+    public MemberInfoResponse saveToCreators(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.CREATOR);
+        return getMemberInfo(member.getId());
+    }
+
+    @Transactional
+    @Override
+    public MemberInfoResponse saveToUser(final long memberId) {
+        Member member = updateRole(memberId, MemberRole.USER);
+        return getMemberInfo(member.getId());
+    }
+
+
+    private Member updateRole(final long memberId, final MemberRole role) {
+        Member member = memberRepository.getById(memberId);
+        member.updateMemberRole(role);
+        return member;
+    }
+
+    @Transactional
+    @Override
+    public MemberInfoResponse saveProfileImage(final long memberId, final MultipartFile profileImage) {
         Member member = memberRepository.getById(memberId);
 
         String url = baseUrl + MEMBER.value() + SLASH.value() + IMAGE.value() + SLASH.value() + memberId;
         String profileImageUrl = fileUploadService.uploadfile(profileImage,url);
 
         member.updateProfileUrl(profileImageUrl);
-        return MemberInfoResponse.from(member);
-    }
 
-    @Transactional
-    @Override
-    public MemberInfoResponse postNickname(final String nickname, final long memberId){
-        nicknameCheck(nickname);
-        Member member = memberRepository.getById(memberId);
-        member.updateNickname(nickname);
-        return MemberInfoResponse.from(member);
+        MemberPremium memberPremium = getMemberPremiumByMember(member);
+        return MemberInfoResponse.from(member, memberPremium);
     }
 
     @Transactional(readOnly = true)
@@ -104,93 +113,53 @@ public class MemberServiceImpl implements MemberService{
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
 
-        if((!StringValidator.stringValidation(nickname))||nickname.length()>10){
+        if(!StringValidator.nicknameValidation(nickname)){
             throw new BadRequestException(INVALID_NICKNAME.getMessage());
         }
+    }
+
+    @Transactional
+    @Override
+    public MemberInfoResponse saveNickname(final String nickname, final long memberId){
+        Member member = memberRepository.getById(memberId);
+        updateNicknameByMember(member, nickname);
+        MemberPremium memberPremium = getMemberPremiumByMember(member);
+        return MemberInfoResponse.from(member, memberPremium);
+    }
+
+    private void updateNicknameByMember(final Member member, final String nickname) {
+        nicknameCheck(nickname);
+        member.updateNickname(nickname);
+    }
+
+    @Transactional
+    @Override
+    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final CreatorAccount creatorAccount) {
+        Member creator = memberRepository.getById(creatorId);
+        updateCreatorAccount(creator, creatorAccount);
+        return CreatorInfoResponse.from(creator);
+    }
+
+    private void updateCreatorAccount(final Member creator, final CreatorAccount creatorAccount) {
+        creator.updateAccount(creatorAccount.bank(), creatorAccount.accountNumber());
     }
 
     @Transactional(readOnly = true)
     @Override
     public MemberInfoResponse getMemberInfo(final long memberId) {
         Member member = memberRepository.getById(memberId);
-        return MemberInfoResponse.from(member);
+        MemberPremium memberPremium = getMemberPremiumByMember(member);
+        return MemberInfoResponse.from(member, memberPremium);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public MemberProfileResponse getMemberProfileByLogin(final long memberId) {
-        return getMemberProfile(memberId, memberId);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public MemberProfileResponse getMemberProfile(final long loginId, final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        return MemberProfileResponse.builder()
-                .nickname(member.getNickname())
-                .profileUrl(member.getMemberProfileUrl())
-                .followingCount(followRepository.findAllByFollowerId(memberId).size())
-                .followerCount(followRepository.findAllByFollowingId(memberId).size())
-                .teamCount(teamMemberRepository.findAllByMemberId(memberId).size())
-                .isFollow(followRepository.findByFollowingIdAndFollowerId(memberId, loginId).isPresent())
-                .build();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = new ArrayList<>();
-        memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
-                .sorted(Comparator.comparing(Member::getNickname)).forEach(
-                        member -> {
-                            CreatorIconInfos creatorIconInfos = iconGroupAdminService.getIconGroupsByCreator(member.getId());
-                            creatorResponses.add(CreatorResponse.builder()
-                                    .memberId(member.getId())
-                                    .profileUrl(member.getMemberProfileUrl())
-                                    .nickname(member.getNickname())
-                                    .createdIconCount(creatorIconInfos.createdIconCount())
-                                    .totalRevenue(creatorIconInfos.totalRevenue())
-                                    .salesIconCount(creatorIconInfos.salesIconCount())
-                                    .build());
-                        }
-
-                );
-        return new CreatorResponses(creatorResponses);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public CreatorDetailResponse getCreatorByCreatorId(final long creatorId) {
-        if(!memberRepository.getById(creatorId).getMemberRole().equals(MemberRole.CREATOR)){
-            throw new BadRequestException(INVALID_CREATOR.getMessage());
-        }
-
-        Member member = memberRepository.getById(creatorId);
-        String creatorAccount = null;
-        Bank bank = null;
-        Optional<CreatorAccount> findCreatorAccount = creatorAccountRepository.findByMemberId(creatorId);
-        if(findCreatorAccount.isPresent()){
-            bank = findCreatorAccount.get().getBank();
-            creatorAccount = findCreatorAccount.get().getAccountNumber();
-        }
-
-        return CreatorDetailResponse.builder()
-                .profileUrl(member.getMemberProfileUrl())
-                .nickname(member.getNickname())
-                .bank(bank.value())
-                .accountNumber(creatorAccount)
-                .build();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public MemberPremium getMemberPremium(final long memberId) {
-        Member member = memberRepository.getById(memberId);
-        Premium premium = premiumRepository.getById(member.getPremiumId());
+    public MemberPremium getMemberPremiumByMember(final Member member) {
+       Premium premium = premiumRepository.getById(member.getPremiumId());
 
         LocalDate expiredDate = null;
         if(premium.getPremiumType().equals(PremiumType.PREMIUM)){
-            Optional<Payment> payment = paymentRepository.findRecentPremiumByMemberId(memberId);
+            Optional<Payment> payment = paymentRepository.findRecentPremiumByMemberId(member.getId());
             if(payment.isPresent()){
                 expiredDate = payment.get().getExpiredDate();
             }
@@ -199,29 +168,38 @@ public class MemberServiceImpl implements MemberService{
         return MemberPremium.from(premium,expiredDate);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
+    public MemberProfileResponse getMemberProfile(final long memberId) {
+        return getMemberProfile(memberId, memberId);
+    }
 
-        for (Bank bank : Bank.values()) {
-            if (bank.value().equals(creatorRequest.creatorAccountResponse().bank())) {
-                Optional<CreatorAccount> creatorAccount = creatorAccountRepository.findByBankAndAccountNumber(bank, creatorRequest.creatorAccountResponse().accountNumber());
+    @Transactional(readOnly = true)
+    @Override
+    public MemberProfileResponse getMemberProfile(final long loginId, final long memberId) {
+        Member member = memberRepository.getById(memberId);
+        boolean isFollow = followRepository.findByFollowingIdAndFollowerId(memberId, loginId).isPresent();
 
-                if (creatorAccount.isEmpty()) {
-                    Member member = memberRepository.getById(creatorId);
-                    member.updateNickname(creatorRequest.nickname());
-                    saveProfileImageByLogin(creatorId, profile);
-                    memberRepository.save(member);
+        return MemberProfileResponse.from(member, isFollow);
+    }
 
-                    CreatorAccount newCreatorAccount = CreatorRequest.toCreatorAccount(creatorRequest, bank, creatorId);
-                    creatorAccountRepository.save(newCreatorAccount);
-                    return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-                } else {
-                    return new Response(StatusCode.BAD_REQUEST.getStatusCode(), ACCOUNT_ALREADY_EXIST.getMessage());
-                }
-            }
-        }
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorResponses getCreators() {
+        List<CreatorResponse> creatorResponses = memberRepository.findAllByMemberRole(MemberRole.CREATOR).stream()
+                .sorted(Comparator.comparing(Member::getNickname))
+                .map(member -> {
+                    CreatorIconGroupResponse creatorIconGroupResponse = adminIconService.getCreatorIconGroups(member.getId());
+                    return new CreatorResponse(CreatorInfoResponse.from(member), creatorIconGroupResponse);
+                })
+                .toList();
+        return new CreatorResponses(creatorResponses);
+    }
 
-        return new Response(StatusCode.BAD_REQUEST.getStatusCode(), INVALID_CREATOR.getMessage());
+    @Transactional(readOnly = true)
+    @Override
+    public CreatorInfoResponse getCreatorInfo(final long creatorId) {
+        Member creator = memberRepository.getById(creatorId);
+        return CreatorInfoResponse.from(creator);
     }
 }

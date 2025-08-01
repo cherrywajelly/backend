@@ -18,7 +18,6 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -118,8 +117,8 @@ public class ToastPieceControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastInfo.openedDate").type(STRING).description("opened date"),
                                         fieldWithPath("giftToastInfo.createdDate").type(STRING).description("created date"),
                                         fieldWithPath("giftToastInfo.isOpened").type(BOOLEAN).description("open 여부"),
-                                        fieldWithPath("toastPieceResponse.memberId").type(NUMBER).description("member id"),
-                                        fieldWithPath("toastPieceResponse.toastPieceId").type(NUMBER).description("toastPiece id"),
+                                        fieldWithPath("toastPieceResponse.memberId").type(NUMBER).description("member iconGroupId"),
+                                        fieldWithPath("toastPieceResponse.toastPieceId").type(NUMBER).description("toastPiece iconGroupId"),
                                         fieldWithPath("toastPieceResponse.nickname").type(STRING).description("닉네임"),
                                         fieldWithPath("toastPieceResponse.profileUrl").type(STRING).description("프로필 url"),
                                         fieldWithPath("toastPieceResponse.iconImageUrl").type(STRING).description("토스트 조각 이미지 url"),

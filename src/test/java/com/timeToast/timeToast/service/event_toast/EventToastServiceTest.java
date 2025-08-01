@@ -1,8 +1,8 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
+import com.timeToast.timeToast.dto.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.event_toast.response.member.*;
-import com.timeToast.timeToast.dto.icon.icon.response.IconResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;

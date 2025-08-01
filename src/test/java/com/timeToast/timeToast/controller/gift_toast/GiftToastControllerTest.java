@@ -326,7 +326,6 @@ public class GiftToastControllerTest extends BaseControllerTests {
     @Test
     void getGiftToast() throws Exception {
 
-
         mockMvc.perform(
                         get("/api/v1/giftToasts/{giftToastId}", 1L)
                                 .header(AUTHORIZATION,USER_ACCESS_TOKEN)
@@ -361,10 +360,15 @@ public class GiftToastControllerTest extends BaseControllerTests {
                                         fieldWithPath("giftToastTeamMember.isWrittenMembers[0].nickname").type(STRING).description("nickname"),
                                         fieldWithPath("giftToastTeamMember.isWrittenMembers[0].profileUrl").type(STRING).description("profile url"),
                                         fieldWithPath("giftToastTeamMember.isWrittenMembers[0].email").type(STRING).description("email"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].memberRole").type(STRING).description("역할"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].loginType").type(STRING).description("로그인 타입"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].memberPremium.premiumId").type(NUMBER).description("프리미엄 iconGroupId"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].memberPremium.premiumType").type(STRING).description("프리미엄 종류"),
+                                        fieldWithPath("giftToastTeamMember.isWrittenMembers[0].memberPremium.expiredDate").type(STRING).description("프리미엄 만료일자"),
                                         fieldWithPath("dDay").type(NUMBER).description("D-day"),
                                         fieldWithPath("toastPieceResponses.giftToastId").type(NUMBER).description("giftToastId"),
-                                        fieldWithPath("toastPieceResponses.toastPieceResponses[0].memberId").type(NUMBER).description("member id"),
-                                        fieldWithPath("toastPieceResponses.toastPieceResponses[0].toastPieceId").type(NUMBER).description("toastPiece id"),
+                                        fieldWithPath("toastPieceResponses.toastPieceResponses[0].memberId").type(NUMBER).description("member iconGroupId"),
+                                        fieldWithPath("toastPieceResponses.toastPieceResponses[0].toastPieceId").type(NUMBER).description("toastPiece iconGroupId"),
                                         fieldWithPath("toastPieceResponses.toastPieceResponses[0].nickname").type(STRING).description("nickname"),
                                         fieldWithPath("toastPieceResponses.toastPieceResponses[0].profileUrl").type(STRING).description("profile url"),
                                         fieldWithPath("toastPieceResponses.toastPieceResponses[0].iconImageUrl").type(STRING).description("icon image url"),

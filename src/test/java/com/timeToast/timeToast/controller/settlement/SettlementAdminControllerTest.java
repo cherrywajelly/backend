@@ -98,7 +98,7 @@ public class SettlementAdminControllerTest extends BaseControllerTests {
                                         parameterWithName("month").description("month")
                                 )
                                 .responseFields(
-                                        fieldWithPath("settlementResponses[0].memberId").type(NUMBER).description("제작자 id"),
+                                        fieldWithPath("settlementResponses[0].memberId").type(NUMBER).description("제작자 iconGroupId"),
                                         fieldWithPath("settlementResponses[0].nickname").type(STRING).description("제작자 nickname"),
                                         fieldWithPath("settlementResponses[0].profileUrl").type(STRING).description("제작자 프로필 이미지"),
                                         fieldWithPath("settlementResponses[0].settlementState").type(STRING).description("정산 승인 상태")
@@ -138,13 +138,13 @@ public class SettlementAdminControllerTest extends BaseControllerTests {
                                         fieldWithPath("month").type(NUMBER).description("month"),
                                         fieldWithPath("creatorNickname").type(STRING).description("제작자 닉네임"),
                                         fieldWithPath("salesIconCount").type(NUMBER).description("판매한 아이콘 수"),
-                                        fieldWithPath("totalRevenue").type(NUMBER).description("전체 수익"),
-                                        fieldWithPath("settlement").type(NUMBER).description("정산금"),
+                                        fieldWithPath("totalIncome").type(NUMBER).description("전체 수익"),
+                                        fieldWithPath("totalSettlement").type(NUMBER).description("정산금"),
                                         fieldWithPath("bank").type(STRING).description("은행"),
                                         fieldWithPath("accountNumber").type(STRING).description("계좌번호"),
                                         fieldWithPath("settlementState").type(STRING).description("정산 승인 상태"),
                                         fieldWithPath("settlementIcons[0].title").type(STRING).description("아이콘 제목"),
-                                        fieldWithPath("settlementIcons[0].revenue").type(NUMBER).description("아이콘 별 수익"),
+                                        fieldWithPath("settlementIcons[0].income").type(NUMBER).description("아이콘 별 수익"),
                                         fieldWithPath("settlementIcons[0].salesCount").type(NUMBER).description("아이콘 별 판매 수량"),
                                         fieldWithPath("settlementIcons[0].settlementState").type(STRING).description("아이콘 별 정산 승인 상태")
                                         )

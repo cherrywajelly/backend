@@ -10,6 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class TestContainerSupport  {
     private static final String MYSQL_IMAGE = "mysql:8.0.36";
 
+
     private static final JdbcDatabaseContainer MYSQL;
 
     static {

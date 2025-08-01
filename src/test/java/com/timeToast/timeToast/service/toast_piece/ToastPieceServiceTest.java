@@ -1,9 +1,6 @@
 package com.timeToast.timeToast.service.toast_piece;
 
-import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
-import com.timeToast.timeToast.dto.gift_toast.response.GiftToastInfo;
 import com.timeToast.timeToast.dto.toast_piece.request.ToastPieceRequest;
-import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceDetailResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponse;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceResponses;
 import com.timeToast.timeToast.dto.toast_piece.response.ToastPieceSaveResponse;
@@ -15,7 +12,6 @@ import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

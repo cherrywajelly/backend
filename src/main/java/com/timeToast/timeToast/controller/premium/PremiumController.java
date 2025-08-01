@@ -2,8 +2,8 @@ package com.timeToast.timeToast.controller.premium;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.premium.response.PremiumMonthlyRevenues;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponses;
-import com.timeToast.timeToast.dto.premium.response.PremiumResponse;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponses;
+import com.timeToast.timeToast.dto.premium.response.PremiumInfoResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.service.premium.PremiumService;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,12 @@ public class PremiumController {
     }
 
     @PostMapping("/api/v1/premiums/{premiumId}")
-    public PremiumResponse savePremium(@Login final LoginMember loginMember, @PathVariable final long premiumId){
+    public PremiumInfoResponse savePremium(@Login final LoginMember loginMember, @PathVariable final long premiumId){
         return premiumService.savePremium(loginMember.id(), premiumId);
     }
 
     @GetMapping("/api/v1/premiums")
-    public PremiumResponses getPremiums(){
+    public PremiumInfoResponses getPremiums(){
         return premiumService.getPremium();
     }
 

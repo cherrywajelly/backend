@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.gift_toast;
 
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastFriendRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastGroupRequest;
 import com.timeToast.timeToast.dto.gift_toast.request.GiftToastMineRequest;

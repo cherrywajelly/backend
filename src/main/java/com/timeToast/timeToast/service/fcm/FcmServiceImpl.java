@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.*;
 import com.timeToast.timeToast.domain.fcm.Fcm;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.fcm.requset.*;
 import com.timeToast.timeToast.dto.fcm.response.FcmDataResponse;
 import com.timeToast.timeToast.dto.fcm.response.FcmLinkResponse;
@@ -15,12 +14,11 @@ import com.timeToast.timeToast.dto.fcm.response.FcmResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.fcm.FcmRepository;
-import com.timeToast.timeToast.repository.gift_toast.gift_toast.GiftToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.member.member_token.MemberTokenRepository;
+import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.jpa.fcm.FcmRepository;
+import com.timeToast.timeToast.repository.jpa.gift_toast.gift_toast.GiftToastRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +50,6 @@ public class FcmServiceImpl implements FcmService {
     @Value("${fcm.credential}")
     private String fcmCredential;
 
-    private final MemberTokenRepository memberTokenRepository;
     private final FcmRepository fcmRepository;
     private final EventToastRepository eventToastRepository;
     private final IconRepository iconRepository;
@@ -68,9 +65,8 @@ public class FcmServiceImpl implements FcmService {
 
             fcmTokenValidation(memberId, token);
 
-            MemberToken memberToken = memberTokenRepository.findByMemberId(memberId).orElseThrow(()-> new BadRequestException(INVALID_FCM_TOKEN.getMessage()));
-            memberToken.updateFcmToken(token);
-            memberTokenRepository.save(memberToken);
+            Member member = memberRepository.getById(memberId);
+            member.updateFcmToken(token);
 
             log.info("update fcm token");
 
@@ -83,13 +79,12 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public void fcmTokenValidation(final long memberId, final String token) {
-        Optional<MemberToken> memberToken = memberTokenRepository.findByFcmToken(token);
+        Optional<Member> member = memberRepository.findByFcmToken(token);
 
-        if (memberToken.isPresent()) {
-            if (memberToken.get().getMemberId() != memberId) {
-                memberToken.get().updateFcmToken(null);
-                memberTokenRepository.save(memberToken.get());
-                log.info("changed fcm token {} to {}", memberToken.get().getMemberId(), memberId);
+        if (member.isPresent()) {
+            if (member.get().getId() != memberId) {
+                member.get().updateFcmToken(null);
+                log.info("changed fcm token {} to {}", member.get().getId(), memberId);
             }
         }
     }
@@ -249,11 +244,11 @@ public class FcmServiceImpl implements FcmService {
 
     @Transactional
     public Optional<FcmSendRequest> makeMessage(final long memberId, FcmPostRequest fcmPostRequest) {
-        Optional<MemberToken> memberToken = memberTokenRepository.findByMemberId(memberId);
+        Optional<Member> member = memberRepository.findById(memberId);
         String token = "";
 
-        if (memberToken != null && memberToken.isPresent()) {
-            token = memberToken.get().getFcmToken();
+        if (member.isPresent()) {
+            token = member.get().getFcmToken();
         } else {
             token = null;
         }

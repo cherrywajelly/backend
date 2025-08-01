@@ -1,7 +1,7 @@
 package com.timeToast.timeToast.dto.gift_toast.request;
 
 import com.timeToast.timeToast.domain.enums.gift_toast.GiftToastType;
-import com.timeToast.timeToast.domain.gift_toast.gift_toast.GiftToast;
+import com.timeToast.timeToast.domain.giftToast.gift_toast.GiftToast;
 
 import java.time.LocalDate;
 

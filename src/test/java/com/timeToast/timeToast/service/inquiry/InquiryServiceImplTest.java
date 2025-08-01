@@ -7,7 +7,7 @@ import com.timeToast.timeToast.dto.inquiry.response.InquiryDetailResponse;
 import com.timeToast.timeToast.dto.inquiry.response.InquiryResponses;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.inquiry.InquiryRepository;
+import com.timeToast.timeToast.repository.jpa.inquiry.InquiryRepository;
 import com.timeToast.timeToast.service.image.FileUploadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

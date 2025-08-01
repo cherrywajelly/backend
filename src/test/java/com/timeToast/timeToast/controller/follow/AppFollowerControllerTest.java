@@ -1,0 +1,349 @@
+package com.timeToast.timeToast.controller.follow;
+
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.timeToast.timeToast.service.follow.FollowService;
+import com.timeToast.timeToast.service.follow.FollowServiceTest;
+import com.timeToast.timeToast.util.BaseControllerTests;
+import com.timeToast.timeToast.util.WithMockCustomUser;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static com.timeToast.timeToast.util.TestConstant.TEST_ACCESS_TOKEN;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+public class AppFollowerControllerTest extends BaseControllerTests {
+
+    private final FollowService followService = new FollowServiceTest();
+
+    @Override
+    protected Object initController() {
+        return new AppFollowController(followService);
+    }
+
+
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void saveFollow() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/follows/followings/{memberId}", 2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 사용자의 팔로우 정보 저장",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로우 정보 저장")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. : 실패 - 본인 팔로우")
+    @WithMockCustomUser
+    @Test
+    void saveFollowFail() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/follows/followings/{memberId}", 3)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("팔로우 정보 저장 실패: 본인 팔로우",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("사용자를 팔로우 하기")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("자기 자신은 팔로우 할 수 없습니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("사용자의 memberId로 팔로우 할 수 있다. : 실패 - 재요청")
+    @WithMockCustomUser
+    @Test
+    void saveFollowAlreadyExists() throws Exception {
+
+        mockMvc.perform(
+                        post("/api/v1/follows/followings/{memberId}", 4)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("팔로우 정보 저장 실패: 재요청",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("사용자를 팔로우 하기")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("400"),
+                                        fieldWithPath("message").type(STRING).description("이미 등록된 팔로우 정보입니다.")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자의 팔로잉 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowingList() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followings")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로잉 리스트 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로잉 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[].memberId").type(NUMBER).description("사용자 Id"),
+                                        fieldWithPath("followResponses[].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("특정 사용자의 팔로잉 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowingListByMemberId() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followings/{memberId}", 1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로잉 리스트 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로잉 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[].memberId").type(NUMBER).description("사용자 Id"),
+                                        fieldWithPath("followResponses[].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자의 팔로워 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowerList() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followers")
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로워 리스트 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로워 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[].memberId").type(NUMBER).description("사용자 Id"),
+                                        fieldWithPath("followResponses[].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("특정 사용자의 팔로워 리스트를 조회할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void findFollowerListByMemberId() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/v1/follows/followers/{memberId}", 1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로워 리스트 조회",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워 대상의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로워 리스트 조회")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("followResponses[].memberId").type(NUMBER).description("사용자Id"),
+                                        fieldWithPath("followResponses[].nickname").type(STRING).description("닉네임"),
+                                        fieldWithPath("followResponses[].memberProfileUrl").type(STRING).description("사용자 프로필 url")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자가 팔로잉을 삭제할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollowing() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followings/{memberId}",1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 유저의 팔로잉 삭제",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로잉의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로잉 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자가 팔로잉을 삭제할 수 있다. - 실패: 팔로우 정보 찾을 수 없음.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollowingFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followings/{memberId}",2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("팔로잉 삭제 실패: 팔로우 정보 찾을 수 없음.",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로잉의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로잉 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자가 자신의 팔로워 삭제할 수 있다.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollower() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followers/{memberId}",1)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("팔로워 삭제",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로워 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+    @DisplayName("로그인한 사용자가 자신의 팔로워 삭제할 수 있다. - 실패: 팔로우 정보 찾을 수 없음.")
+    @WithMockCustomUser
+    @Test
+    void deleteFollowerFail() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/v1/follows/followers/{memberId}",2)
+                                .header(AUTHORIZATION, USER_ACCESS_TOKEN)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("팔로워 삭제 실패: 팔로우 정보 찾을 수 없음.",
+                        pathParameters(
+                                parameterWithName("memberId").description("팔로워의 memberId")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("[앱] 팔로우")
+                                .summary("로그인한 사용자의 팔로워 삭제")
+                                .requestHeaders(
+                                        headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("메시지")
+                                )
+                                .build()
+
+                        )));
+    }
+
+
+
+}

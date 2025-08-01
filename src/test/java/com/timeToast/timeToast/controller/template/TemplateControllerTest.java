@@ -54,7 +54,7 @@ public class TemplateControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .requestFields(
-                                        fieldWithPath("eventToastId").type(NUMBER).description("공유할 이벤트 토스트 id"),
+                                        fieldWithPath("eventToastId").type(NUMBER).description("공유할 이벤트 토스트 iconGroupId"),
                                         fieldWithPath("text").type(STRING).description("작성할 텍스트")
                                 )
                                 .responseFields(
@@ -83,7 +83,7 @@ public class TemplateControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("eventToastId").description("공유할 이벤트 토스트 id")
+                                        parameterWithName("eventToastId").description("공유할 이벤트 토스트 iconGroupId")
                                 )
                                 .responseFields(
                                         fieldWithPath("eventToastTemplateResponse.title").type(STRING).description("공유할 이벤트 토스트 제목"),

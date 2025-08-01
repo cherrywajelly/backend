@@ -1,13 +1,18 @@
 package com.timeToast.timeToast.service.member.member;
 
-import com.timeToast.timeToast.domain.enums.creator_account.Bank;
+import com.timeToast.timeToast.domain.enums.icon_group.IconState;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
+import com.timeToast.timeToast.domain.enums.member.Bank;
+import com.timeToast.timeToast.domain.enums.member.LoginType;
+import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
-import com.timeToast.timeToast.dto.creator.response.CreatorDetailResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponse;
-import com.timeToast.timeToast.dto.creator.response.CreatorResponses;
-import com.timeToast.timeToast.dto.member.member.request.CreatorRequest;
-import com.timeToast.timeToast.dto.member.member.response.MemberInfoResponse;
-import com.timeToast.timeToast.dto.member.member.response.MemberProfileResponse;
+import com.timeToast.timeToast.domain.member.member.Member;
+import com.timeToast.timeToast.dto.icon.response.*;
+import com.timeToast.timeToast.dto.member.member.request.CreatorAccount;
+import com.timeToast.timeToast.dto.member.member.response.CreatorInfoResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponse;
+import com.timeToast.timeToast.dto.member.member.response.CreatorResponses;
+import com.timeToast.timeToast.dto.member.member.response.*;
 import com.timeToast.timeToast.dto.premium.response.MemberPremium;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.constant.SuccessConstant;
@@ -16,25 +21,47 @@ import com.timeToast.timeToast.global.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.NICKNAME_CONFLICT;
-import static com.timeToast.timeToast.global.constant.SuccessConstant.SUCCESS_POST;
 
 public class MemberServiceTest implements MemberService{
 
+    private MemberPremium setMockMemberPremium(){
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    }
+
+    private MemberPremium getMemberPremium() {
+        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    }
     @Override
-    public MemberInfoResponse saveProfileImageByLogin(long memberId, MultipartFile profileImage) {
-        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
+    public MemberInfoResponse saveToStaff(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.STAFF, LoginType.GOOGLE, getMemberPremium());
     }
 
     @Override
-    public MemberInfoResponse postNickname(String nickname, long memberId) {
+    public MemberInfoResponse saveToCreators(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.CREATOR,LoginType.GOOGLE, getMemberPremium());
+    }
+
+    @Override
+    public MemberInfoResponse saveToUser(long memberId) {
+        return new MemberInfoResponse(1L, "nickname", "memberProfileUrl", "email",MemberRole.USER,LoginType.GOOGLE, getMemberPremium());
+    }
+
+    @Override
+    public MemberInfoResponse saveProfileImage(long memberId, MultipartFile profileImage) {
+        return new MemberInfoResponse(1L, "nickname","profileUrl",
+                "email",  MemberRole.USER,LoginType.GOOGLE, setMockMemberPremium());
+    }
+
+    @Override
+    public MemberInfoResponse saveNickname(String nickname, long memberId) {
         if(nickname.equals("conflictNickname")){
             throw new ConflictException(NICKNAME_CONFLICT.getMessage());
         }
-        return new MemberInfoResponse(1L, "nickname","profileUrl","email");
+        return new MemberInfoResponse(1L, "nickname","profileUrl",
+                "email", MemberRole.USER,LoginType.GOOGLE,  setMockMemberPremium());
     }
 
     @Override
@@ -47,48 +74,55 @@ public class MemberServiceTest implements MemberService{
 
     @Override
     public MemberInfoResponse getMemberInfo(long memberId) {
-
-        return new MemberInfoResponse(1L,"nickname","profileUrl","email");
+        return new MemberInfoResponse(1L,"nickname","profileUrl",
+                "email", MemberRole.USER,LoginType.GOOGLE, setMockMemberPremium());
     }
 
     @Override
-    public MemberProfileResponse getMemberProfileByLogin(long memberId) {
-        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+    public MemberPremium getMemberPremiumByMember(Member member) {
+        return setMockMemberPremium();
+    }
+
+    @Override
+    public MemberProfileResponse getMemberProfile(long memberId) {
+        return new MemberProfileResponse("nickname", "profileUrl",  false);
     }
 
     @Override
     public MemberProfileResponse getMemberProfile(long loginId, long memberId) {
-        return new MemberProfileResponse("nickname", "profileUrl", 0,0,1, false);
+        return new MemberProfileResponse("nickname", "profileUrl", false);
     }
 
     @Override
-    public CreatorDetailResponse getCreatorByCreatorId(final long creatorId){
-        return new CreatorDetailResponse("profileUrl", "nickname", Bank.IBK.value(),"accountNumber");
+    public CreatorInfoResponse getCreatorInfo(final long creatorId){
+        return new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl");
     }
 
     @Override
     public CreatorResponses getCreators() {
-        List<CreatorResponse> creatorResponses = new ArrayList<>();
-        creatorResponses.add(
-                CreatorResponse.builder()
-                        .memberId(1L)
-                        .profileUrl("profileUrl")
-                        .nickname("nickname")
-                        .salesIconCount(10)
-                        .totalRevenue(100)
-                        .createdIconCount(10)
-                        .build()
-        );
-        return new CreatorResponses(creatorResponses) ;
+
+        IconGroupInfo iconGroupInfo = new IconGroupInfo(1L, "title",
+                "creatorNickname", "thumbnailImageUrl", "description",
+                IconType.TOAST, IconState.WAITING,100);
+        List<IconResponse> iconResponses = List.of(new IconResponse(1L, "iconImageUrl"));
+        IconGroupOrderInfo iconGroupOrderInfo = new IconGroupOrderInfo(10, 100);
+
+        CreatorIconGroup creatorIconGroup = new CreatorIconGroup(iconGroupInfo, iconResponses, iconGroupOrderInfo);
+
+        List<CreatorIconGroup> creatorIconGroups = List.of(creatorIconGroup);
+
+
+        List<CreatorResponse> creatorResponses = List.of(new CreatorResponse(
+                        new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl"),
+                        new CreatorIconGroupResponse(creatorIconGroups, 10, 10, 100, 90)));
+
+        return new CreatorResponses(creatorResponses);
     }
 
     @Override
-    public MemberPremium getMemberPremium(final long memberId) {
-        return new MemberPremium(1L, PremiumType.BASIC, LocalDate.now());
+    public CreatorInfoResponse saveCreatorInfo(final long creatorId, final CreatorAccount creatorAccount) {
+        return new CreatorInfoResponse("nickname",Bank.IBK,"accountNumber","profileUrl");
     }
 
-    @Override
-    public Response saveCreatorInfo(final long creatorId, final MultipartFile profile, final CreatorRequest creatorRequest) {
-        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
-    }
+
 }

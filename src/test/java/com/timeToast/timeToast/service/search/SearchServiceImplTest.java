@@ -3,7 +3,7 @@ package com.timeToast.timeToast.service.search;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.search.request.SearchRequest;
 import com.timeToast.timeToast.dto.search.response.SearchResponses;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,6 +2,7 @@ package com.timeToast.timeToast.service.payment;
 
 
 import com.timeToast.timeToast.domain.enums.icon_group.IconBuiltin;
+import com.timeToast.timeToast.domain.enums.icon_group.IconType;
 import com.timeToast.timeToast.domain.enums.payment.ItemType;
 import com.timeToast.timeToast.domain.enums.payment.PaymentState;
 import com.timeToast.timeToast.domain.enums.premium.PremiumType;
@@ -10,18 +11,23 @@ import com.timeToast.timeToast.domain.icon.icon_member.IconMember;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.payment.Payment;
 import com.timeToast.timeToast.domain.premium.Premium;
+import com.timeToast.timeToast.dto.payment.response.IconGroupMonthlyRevenue;
+import com.timeToast.timeToast.dto.payment.response.IconGroupMonthlyRevenues;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummaries;
+import com.timeToast.timeToast.dto.payment.response.IconGroupSummary;
+import com.timeToast.timeToast.dto.payment.IconGroupPaymentSummaryDto;
 import com.timeToast.timeToast.dto.payment.request.PaymentSaveRequest;
 import com.timeToast.timeToast.dto.payment.request.PaymentSuccessRequest;
 import com.timeToast.timeToast.dto.payment.response.*;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
-import com.timeToast.timeToast.repository.icon.icon_group.IconGroupRepository;
-import com.timeToast.timeToast.repository.icon.icon_member.IconMemberRepository;
-import com.timeToast.timeToast.repository.member.member.MemberRepository;
-import com.timeToast.timeToast.repository.payment.PaymentRepository;
-import com.timeToast.timeToast.repository.premium.PremiumRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_group.IconGroupRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon_member.IconMemberRepository;
+import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
+import com.timeToast.timeToast.repository.jpa.payment.PaymentRepository;
+import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
@@ -31,17 +37,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.*;
-import static com.timeToast.timeToast.global.config.TossConfig.TOSS_CONFIRM_URL;
-import static com.timeToast.timeToast.global.config.TossConfig.TOSS_SECRET_KEY;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -52,8 +54,11 @@ public class PaymentServiceImpl implements PaymentService {
     private final MemberRepository memberRepository;
     private final IconMemberRepository iconMemberRepository;
 
+    @Value("${payment.toss.confirm-url}")
+    private String TOSS_CONFIRM_URL;
 
-
+    @Value("${payment.toss.secret-key}")
+    private String TOSS_SECRET_KEY;
 
     public PaymentServiceImpl(final PaymentRepository paymentRepository, final IconGroupRepository iconGroupRepository,
                               final PremiumRepository premiumRepository, final MemberRepository memberRepository,
@@ -68,7 +73,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public PaymentSaveResponse savePayment(final long memberId, final PaymentSaveRequest paymentSaveRequest) {
-
         String orderName = verifyPaymentSaveRequest(memberId,paymentSaveRequest);
 
         Payment payment = PaymentSaveRequest.to(memberId, paymentSaveRequest);
@@ -124,6 +128,42 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.updatePaymentState(PaymentState.FAILURE);
         return new PaymentFailResponse(payment.getId(),payment.getOrderId(),"실패 했습니다.");
+    }
+
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummary() {
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findPaymentSummaryDto()
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
+
+    }
+    //TODO
+    @Transactional
+    @Override
+    public IconGroupSummaries iconGroupSummaryByYearMonth(int year, int month) {
+        if(year<2000 || month<1 || month>12){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        if(YearMonth.of(year,month).isAfter(YearMonth.now())){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupSummary> iconGroupSummaries = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, month)
+                .stream().sorted(Comparator.comparing(IconGroupPaymentSummaryDto::totalCount).reversed())
+                .limit(3)
+                .map(paymentSummaryDto ->
+                        new IconGroupSummary(paymentSummaryDto.itemName(), paymentSummaryDto.iconType(), paymentSummaryDto.totalCount()))
+                .toList();
+
+        return new IconGroupSummaries(iconGroupSummaries);
     }
 
     @Override
@@ -267,7 +307,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(Base64.getEncoder().encodeToString(TOSS_SECRET_KEY.getBytes(StandardCharsets.UTF_8)));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -283,4 +322,29 @@ public class PaymentServiceImpl implements PaymentService {
         return response.getStatusCode() == HttpStatus.OK;
     }
 
+    //TODO
+    @Transactional
+    @Override
+    public IconGroupMonthlyRevenues iconGroupMonthlyRevenue(final int year) {
+
+        if(year>LocalDate.now().getYear()){
+            throw new BadRequestException(INVALID_YEAR_MONTH.getMessage());
+        }
+
+        List<IconGroupMonthlyRevenue> iconGroupMonthlyRevenues = new ArrayList<>();
+
+        for(int i=1; i<=LocalDate.now().getMonthValue(); i++){
+            Map<IconType, Long> revenueByIconType = paymentRepository.findIconGroupPaymentSummaryDtoByYearMonth(year, i).stream().collect(Collectors.groupingBy(
+                    IconGroupPaymentSummaryDto::iconType,
+                    Collectors.summingLong(dto -> dto.totalCount()*dto.price())
+            ));
+            iconGroupMonthlyRevenues.add(IconGroupMonthlyRevenue.builder()
+                    .year(year)
+                    .month(i)
+                    .toastsRevenue(revenueByIconType.getOrDefault(IconType.TOAST, 0L))
+                    .jamsRevenue(revenueByIconType.getOrDefault(IconType.JAM, 0L))
+                    .build());
+        }
+        return new IconGroupMonthlyRevenues(iconGroupMonthlyRevenues);
+    }
 }

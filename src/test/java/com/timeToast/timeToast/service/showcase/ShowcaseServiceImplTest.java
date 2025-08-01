@@ -12,9 +12,9 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.repository.event_toast.EventToastRepository;
-import com.timeToast.timeToast.repository.icon.icon.IconRepository;
-import com.timeToast.timeToast.repository.showcase.ShowcaseRepository;
+import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
+import com.timeToast.timeToast.repository.jpa.icon.icon.IconRepository;
+import com.timeToast.timeToast.repository.jpa.showcase.ShowcaseRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +66,6 @@ public class ShowcaseServiceImplTest {
 
     private Icon iconSetup(){
         return Icon.builder()
-                .iconGroupId(1L)
                 .iconImageUrl("iconImageUrl")
                 .build();
     }

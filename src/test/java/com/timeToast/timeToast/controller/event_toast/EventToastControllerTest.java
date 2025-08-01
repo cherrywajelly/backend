@@ -1,7 +1,6 @@
 package com.timeToast.timeToast.controller.event_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.timeToast.timeToast.controller.eventToast.EventToastController;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
 import com.timeToast.timeToast.service.event_toast.EventToastService;
 import com.timeToast.timeToast.service.event_toast.EventToastServiceTest;
@@ -63,7 +62,7 @@ public class EventToastControllerTest extends BaseControllerTests {
 
                                 )
                                 .responseFields(
-                                        fieldWithPath("id").type(NUMBER).description("저장한 이벤트 토스트의 id 값"),
+                                        fieldWithPath("id").type(NUMBER).description("저장한 이벤트 토스트의 iconGroupId 값"),
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("메시지")
                                 )
@@ -89,10 +88,10 @@ public class EventToastControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastMyResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastMyResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("eventToastMyResponses[0].title").type(STRING).description("이벤트 토스트 제목"),
                                         fieldWithPath("eventToastMyResponses[0].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
-                                        fieldWithPath("eventToastMyResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
+                                        fieldWithPath("eventToastMyResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 iconGroupId"),
                                         fieldWithPath("eventToastMyResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
                                 )
                                 .build()
@@ -117,18 +116,17 @@ public class EventToastControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("memberId").description("타유저 member id")
+                                        parameterWithName("memberId").description("타유저 member iconGroupId")
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastResponses[0].eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("eventToastResponses[0].title").type(STRING).description("이벤트 토스트 제목"),
                                         fieldWithPath("eventToastResponses[0].openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
-                                        fieldWithPath("eventToastResponses[0].nickname").type(STRING).description("조회 대상 닉네임"),
+                                        fieldWithPath("eventToastResponses[0].isWritten").type(BOOLEAN).description("사용자가 타사용자에게 잼을 바른 여부"),
+                                        fieldWithPath("eventToastResponses[0].nickname").type(STRING).description("조회 대상 사용자 닉네임"),
                                         fieldWithPath("eventToastResponses[0].memberProfileUrl").type(STRING).description("조회 대상 프로필 이미지"),
-                                        fieldWithPath("eventToastResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 id"),
-                                        fieldWithPath("eventToastResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지"),
-                                        fieldWithPath("eventToastResponses[0].isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부"),
-                                        fieldWithPath("eventToastResponses[0].dDay").type(NUMBER).description("d-day")
+                                        fieldWithPath("eventToastResponses[0].icon.iconId").type(NUMBER).description("이벤트 토스트의 아이콘 iconGroupId"),
+                                        fieldWithPath("eventToastResponses[0].icon.iconImageUrl").type(STRING).description("이벤트 토스트의 아이콘 이미지")
                                 )
                                 .build()
                         )));
@@ -186,22 +184,22 @@ public class EventToastControllerTest extends BaseControllerTests {
                                         headerWithName(AUTHORIZATION).description(TEST_ACCESS_TOKEN.value())
                                 )
                                 .pathParameters(
-                                        parameterWithName("eventToastId").description("상세 조회하는 이벤트 토스트 id")
+                                        parameterWithName("eventToastId").description("상세 조회하는 이벤트 토스트 iconGroupId")
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastId").type(NUMBER).description("이벤트 토스트 id"),
+                                        fieldWithPath("eventToastId").type(NUMBER).description("이벤트 토스트 iconGroupId"),
                                         fieldWithPath("title").type(STRING).description("이벤트 토스트 제목"),
                                         fieldWithPath("openedDate").type(STRING).description("이벤트 토스트 개봉 날짜"),
                                         fieldWithPath("isOpened").type(BOOLEAN).description("이벤트 토스트 개봉 여부"),
                                         fieldWithPath("iconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
-                                        fieldWithPath("memberId").type(NUMBER).description("사용자 id"),
+                                        fieldWithPath("memberId").type(NUMBER).description("사용자 iconGroupId"),
                                         fieldWithPath("memberProfileUrl").type(STRING).description("사용자 프로필 이미지"),
                                         fieldWithPath("description").type(STRING).description("설명"),
                                         fieldWithPath("nickname").type(STRING).description("사용자 닉네임"),
                                         fieldWithPath("jamCount").type(NUMBER).description("이벤트 토스트에 발른 잼 개수"),
                                         fieldWithPath("dDay").type(NUMBER).description("이벤트 토스트 개봉까지 남은 날짜"),
                                         fieldWithPath("isWritten").type(BOOLEAN).description("이벤트 토스트에 잼을 바른 여부"),
-                                        fieldWithPath("jams[].jamId").type(NUMBER).description("이벤트 토스트에 발린 잼의 id"),
+                                        fieldWithPath("jams[].jamId").type(NUMBER).description("이벤트 토스트에 발린 잼의 iconGroupId"),
                                         fieldWithPath("jams[].iconImageUrl").type(STRING).description("이벤트 토스트에 발린 잼의 아이콘 이미지"),
                                         fieldWithPath("jams[].nickname").type(STRING).description("이벤트 토스트에 잼을 바른 사용자의 닉네임")
                                 )
