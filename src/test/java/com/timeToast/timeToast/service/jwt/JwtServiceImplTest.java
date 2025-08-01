@@ -46,7 +46,6 @@ class JwtServiceImplTest {
 
     private LoginMember loginMemberSetup(){
         return LoginMember.builder()
-                .email("test@gmail.com")
                 .id(1L)
                 .role(MemberRole.USER)
                 .build();
@@ -83,7 +82,7 @@ class JwtServiceImplTest {
         //given
         ReflectionTestUtils.setField(jwtKey, "JWT_KEY", "uYk/J8WlWFI+RukF+sEq6HZT98lOozvW3Z8lcIvlkBY=");
 
-        when(jwtTokenProvider.validateToken(anyString())).thenReturn(false);
+        when(jwtService.validateToken(anyString())).thenReturn(false);
 
         String refreshToken = "refreshToken";
 
