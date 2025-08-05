@@ -2,6 +2,7 @@ package com.timeToast.timeToast.global.jwt;
 
 import com.timeToast.timeToast.domain.enums.member.MemberRole;
 import com.timeToast.timeToast.domain.member.member.LoginMember;
+import com.timeToast.timeToast.global.exception.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_TOKEN_FORMAT;
+
 
 @Slf4j
 public class AuthFilter extends OncePerRequestFilter {
@@ -27,14 +30,20 @@ public class AuthFilter extends OncePerRequestFilter {
 
         if(userId != null && role != null){
             long id = Long.parseLong(userId);
-            MemberRole memberRole = MemberRole.from(role);
 
-            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
+            try {
+                MemberRole memberRole = MemberRole.valueOf(role.toUpperCase());
 
-            request.setAttribute("LoginMember", LoginMember.builder().id(id).role(memberRole).build());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userId, null, authorities);
+
+                request.setAttribute("LoginMember", LoginMember.builder().id(id).role(memberRole).build());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (Exception e) {
+                throw new UnauthorizedException(INVALID_TOKEN_FORMAT.getMessage());
+            }
+
         }
 
         // 다음 Filter 실행
