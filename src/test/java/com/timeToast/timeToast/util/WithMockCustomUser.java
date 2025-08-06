@@ -15,5 +15,4 @@ public @interface WithMockCustomUser {
     String userNickname() default "test nickname";
     MemberRole userRole() default MemberRole.USER;
 
-
 }

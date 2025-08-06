@@ -17,6 +17,7 @@ import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.redis.RedisService;
+import com.timeToast.timeToast.service.redis.RedisStreamService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +35,19 @@ public class LoginServiceImpl implements LoginService {
 
     private final JwtService jwtService;
     private final RedisService redisService;
+    private final RedisStreamService redisStreamService;
     private final MemberRepository memberRepository;
     private final IconGroupRepository iconGroupRepository;
     private final IconMemberRepository iconMemberRepository;
     private final PremiumRepository premiumRepository;
 
     public LoginServiceImpl(final JwtService jwtService, final RedisService redisService,
+                            final RedisStreamService redisStreamService,
                             final MemberRepository memberRepository, final PremiumRepository premiumRepository,
                             final IconGroupRepository iconGroupRepository, final IconMemberRepository iconMemberRepository) {
         this.jwtService = jwtService;
         this.redisService = redisService;
+        this.redisStreamService = redisStreamService;
         this.memberRepository = memberRepository;
         this.iconGroupRepository = iconGroupRepository;
         this.iconMemberRepository = iconMemberRepository;
@@ -86,7 +90,8 @@ public class LoginServiceImpl implements LoginService {
                         .memberRole(memberRole)
                         .build()
         );
-        redisService.incrSignUp(member);
+//        redisService.incrSignUp(member);
+        redisStreamService.memberJoinedPublish(member);
         addBuiltinIcon(member);
         return jwtService.createJwts(LoginMember.from(member), true);
 

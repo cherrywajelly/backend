@@ -14,7 +14,7 @@ public class MockSpringSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        req.setAttribute("LoginMember", LoginMember.builder().id(1).email("test email").role(MemberRole.USER).build());
+        req.setAttribute("LoginMember", LoginMember.builder().id(1).role(MemberRole.USER).build());
         chain.doFilter(req, res);
     }
 

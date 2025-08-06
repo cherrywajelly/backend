@@ -3,14 +3,10 @@ package com.timeToast.timeToast.global.config;
 import com.timeToast.timeToast.global.constant.CorsProperties;
 import com.timeToast.timeToast.global.jwt.JwtAccessDeniedHandler;
 import com.timeToast.timeToast.global.jwt.JwtAuthenticationEntryPoint;
-import com.timeToast.timeToast.global.jwt.JwtFilter;
-import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
+import com.timeToast.timeToast.global.jwt.AuthFilter;
 import jakarta.servlet.Filter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,11 +22,9 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final CorsProperties corsProperties;
 
-    public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CorsProperties corsProperties) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public SecurityConfig(final CorsProperties corsProperties) {
         this.corsProperties = corsProperties;
     }
 
@@ -67,7 +61,7 @@ public class SecurityConfig {
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
-                .addFilterAt((Filter) new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt((Filter) new AuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling( exceptionHandling -> exceptionHandling
                                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                                         .accessDeniedHandler(new JwtAccessDeniedHandler())
@@ -81,6 +75,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 corsProperties.getFrontLocalHost(),
                 corsProperties.getBackLocalHost(),
+                corsProperties.getEdgeService(),
                 corsProperties.getServiceDev(),
                 corsProperties.getBackDev(),
                 corsProperties.getAdminDev(),
