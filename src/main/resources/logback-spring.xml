@@ -29,7 +29,6 @@
 
 <!--            <includeMdcKeyName>traceId</includeMdcKeyName>-->
 <!--            <includeMdcKeyName>userId</includeMdcKeyName>-->
-<!--            <includeMdcKeyName>requestId</includeMdcKeyName>-->
 <!--        </encoder>-->
 <!--    </appender>-->
 

@@ -76,6 +76,7 @@ cors:
   dev: ${DEV}
   front-localhost: ${FRONT_LOCAL}
   back-localhost: ${BACK_LOCAL}
+  edge-service: ${EDGE_SERVICE}
   service-dev: ${SERVICE_DEV}
   back-dev: ${BACK_DEV}
   admin-dev: ${ADMIN_DEV}
@@ -121,9 +122,9 @@ management:
   tracing:
     sampling:
       probability: 1.0
-  otlp:
-    tracing:
-      endpoint: http://localhost:4318/v1/traces
+#  otlp:
+#    tracing:
+#      endpoint: http://localhost:4318/v1/traces
 
 stream:
   key:
