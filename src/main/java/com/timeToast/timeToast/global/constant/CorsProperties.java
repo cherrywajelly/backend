@@ -8,39 +8,13 @@ import org.springframework.stereotype.Component;
 @Getter
 public class CorsProperties {
 
-    @Value("cors.local")
-    private String local;
+    @Value("${cors.app-front}")
+    private String appFront;
 
-    @Value("cors.dev")
-    private String dev;
+    @Value("${cors.creator-front}")
+    private String creatorFront;
 
-    @Value("${cors.front-localhost}")
-    private String frontLocalHost;
+    @Value("${cors.admin-front}")
+    private String adminFront;
 
-    @Value("${cors.back-localhost}")
-    private String backLocalHost;
-
-    @Value("${cors.edge-service}")
-    private String edgeService;
-
-    @Value("${cors.service-dev}")
-    private String serviceDev;
-
-    @Value("${cors.back-dev}")
-    private String backDev;
-
-    @Value("${cors.admin-dev}")
-    private String adminDev;
-
-    @Value("${cors.creator-dev}")
-    private String creatorDev;
-
-    @Value("${cors.service-prod}")
-    private String serviceProd;
-
-    @Value("${cors.admin-prod}")
-    private String adminProd;
-
-    @Value("${cors.creator-prod}")
-    private String creatorProd;
 }

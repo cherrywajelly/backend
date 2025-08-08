@@ -24,14 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
                 .allowedOriginPatterns(
-                        corsProperties.getDev(),
-                        corsProperties.getLocal(),
-                        corsProperties.getServiceDev(),
-                        corsProperties.getServiceProd(),
-                        corsProperties.getAdminDev(),
-                        corsProperties.getAdminProd(),
-                        corsProperties.getCreatorDev(),
-                        corsProperties.getCreatorProd()
+                        corsProperties.getAppFront(),
+                        corsProperties.getCreatorFront(),
+                        corsProperties.getAdminFront()
                 )
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
