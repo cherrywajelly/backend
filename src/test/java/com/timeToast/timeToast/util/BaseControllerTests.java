@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.timeToast.timeToast.global.exception.CustomExceptionAdvice;
-import com.timeToast.timeToast.global.jwt.CustomUserDetailService;
-import com.timeToast.timeToast.global.jwt.JwtFilter;
-import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
+import com.timeToast.timeToast.global.jwt.AuthFilter;
 import com.timeToast.timeToast.global.resolver.LoginMemberResolver;
 import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -59,9 +56,7 @@ public abstract class BaseControllerTests extends TestContainerSupport{
     @BeforeEach
     void setUp(final RestDocumentationContextProvider provider) {
 
-        UserDetailsService customUserDetailService = new CustomUserDetailService( memberRepository,memberTokenRepository, new ObjectMapper());
-        JwtTokenProvider tokenProvider = new JwtTokenProvider(customUserDetailService);
-        JwtFilter jwtFilter = new JwtFilter(tokenProvider);
+        AuthFilter authFilter = new AuthFilter();
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(initController())
                 .apply(SecurityMockMvcConfigurers.springSecurity(new MockSpringSecurityFilter()))

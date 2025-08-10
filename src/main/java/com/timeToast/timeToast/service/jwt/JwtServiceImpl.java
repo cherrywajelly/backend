@@ -7,9 +7,11 @@ import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.exception.InternalServerException;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
-import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.service.redis.RedisService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -35,15 +37,13 @@ public class JwtServiceImpl implements JwtService {
 
     private final MemberTokenRepository memberTokenRepository;
     private final ObjectMapper objectMapper;
-    private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
 
     public JwtServiceImpl(final MemberTokenRepository memberTokenRepository, final RedisService redisService,
-                          final ObjectMapper objectMapper, final JwtTokenProvider jwtTokenProvider) {
+                          final ObjectMapper objectMapper) {
         this.memberTokenRepository = memberTokenRepository;
         this.redisService = redisService;
         this.objectMapper = objectMapper;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Transactional
@@ -89,8 +89,8 @@ public class JwtServiceImpl implements JwtService {
     @Transactional
     @Override
     public LoginResponse tokenRenewal(final String refreshToken) {
-        if(jwtTokenProvider.validateToken(refreshToken)){
-            String claims = jwtTokenProvider.getUserClaims(refreshToken);
+        if(validateToken(refreshToken)){
+            String claims = getUserClaims(refreshToken);
 
             try {
                 LoginMember loginMember = objectMapper.readValue(claims, LoginMember.class);
@@ -104,4 +104,26 @@ public class JwtServiceImpl implements JwtService {
             throw new UnauthorizedException(REFRESH_TOKEN_EXPIRED.getMessage());
         }
     }
+
+    public String getUserClaims(String token) {
+        SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
+        return Jwts.parser().setSigningKey(tokenKey).parseClaimsJws(token).getBody().getSubject();
+
+    }
+
+
+    public boolean validateToken(String token) {
+        try {
+            SecretKey tokenKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(JWT_KEY));
+
+            // Bearer 검증
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(tokenKey).build().parseClaimsJws(token);
+
+            // 만료되었을 시 false
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 }

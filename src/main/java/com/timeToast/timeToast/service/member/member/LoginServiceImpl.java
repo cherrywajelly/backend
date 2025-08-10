@@ -17,7 +17,10 @@ import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.redis.RedisService;
+import com.timeToast.timeToast.service.redis.RedisStreamService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,21 +32,25 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 
+@Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
 
     private final JwtService jwtService;
     private final RedisService redisService;
+    private final RedisStreamService redisStreamService;
     private final MemberRepository memberRepository;
     private final IconGroupRepository iconGroupRepository;
     private final IconMemberRepository iconMemberRepository;
     private final PremiumRepository premiumRepository;
 
     public LoginServiceImpl(final JwtService jwtService, final RedisService redisService,
+                            final RedisStreamService redisStreamService,
                             final MemberRepository memberRepository, final PremiumRepository premiumRepository,
                             final IconGroupRepository iconGroupRepository, final IconMemberRepository iconMemberRepository) {
         this.jwtService = jwtService;
         this.redisService = redisService;
+        this.redisStreamService = redisStreamService;
         this.memberRepository = memberRepository;
         this.iconGroupRepository = iconGroupRepository;
         this.iconMemberRepository = iconMemberRepository;
@@ -86,8 +93,11 @@ public class LoginServiceImpl implements LoginService {
                         .memberRole(memberRole)
                         .build()
         );
-        redisService.incrSignUp(member);
+//        redisService.incrSignUp(member);
+        redisStreamService.memberJoinedPublish(member);
         addBuiltinIcon(member);
+        MDC.put("userId", String.valueOf(member.getId()));
+        log.info("success signup: loginType={}", loginType);
         return jwtService.createJwts(LoginMember.from(member), true);
 
     }

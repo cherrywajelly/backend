@@ -95,9 +95,14 @@ public enum ExceptionConstant {
 
     INVALID_REQUEST("잘못된 요청입니다"),
     INVALID_STRING_FORMAT("잘못된 형식의 문자열입니다."),
+
     //login
     INVALID_USER("권한이 없는 유저입니다."),
-    LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다.");
+    LOGIN_INTERCEPTOR_JSON_PROCESSING_ERROR("로그인한 회원의 정보를 JSON으로 파싱할 수 없습니다."),
+
+
+    //redis
+    MEMBER_JOIN_STREAM_PUBLISH_FAIL("멤버 가입 스트림 발행에 실패했습니다.");
 
     private final String message;
 
