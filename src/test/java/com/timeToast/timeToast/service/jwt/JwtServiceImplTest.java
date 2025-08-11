@@ -7,9 +7,9 @@ import com.timeToast.timeToast.domain.member.member_token.MemberToken;
 import com.timeToast.timeToast.dto.member.LoginResponse;
 import com.timeToast.timeToast.global.constant.JwtKey;
 import com.timeToast.timeToast.global.exception.UnauthorizedException;
-import com.timeToast.timeToast.global.jwt.JwtTokenProvider;
 import com.timeToast.timeToast.repository.redis.member_token.MemberTokenRepository;
 import com.timeToast.timeToast.service.redis.RedisService;
+import com.timeToast.timeToast.service.redis.RedisStreamService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,15 +38,12 @@ class JwtServiceImplTest {
     @Mock
     private ObjectMapper objectMapper;
 
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
 
     @InjectMocks
     private JwtServiceImpl jwtService;
 
     private LoginMember loginMemberSetup(){
         return LoginMember.builder()
-                .email("test@gmail.com")
                 .id(1L)
                 .role(MemberRole.USER)
                 .build();
@@ -82,8 +79,6 @@ class JwtServiceImplTest {
     public void tokenRenewal(){
         //given
         ReflectionTestUtils.setField(jwtKey, "JWT_KEY", "uYk/J8WlWFI+RukF+sEq6HZT98lOozvW3Z8lcIvlkBY=");
-
-        when(jwtTokenProvider.validateToken(anyString())).thenReturn(false);
 
         String refreshToken = "refreshToken";
 

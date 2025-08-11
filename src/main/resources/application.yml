@@ -67,17 +67,9 @@ spring:
 
 
 cors:
-  local: ${LOCAL}
-  dev: ${DEV}
-  front-localhost: ${FRONT_LOCAL}
-  back-localhost: ${BACK_LOCAL}
-  service-dev: ${SERVICE_DEV}
-  back-dev: ${BACK_DEV}
-  admin-dev: ${ADMIN_DEV}
-  creator-dev: ${CREATOR_DEV}
-  service-prod: ${SERVICE_PROD}
-  admin-prod: ${ADMIN_PROD}
-  creator-prod: ${CREATOR_PROD}
+  app-front: ${APP_FRONT}
+  creator-front: ${CREATOR_FRONT}
+  admin-front: ${ADMIN_FRONT}
 
 
 fcm:
@@ -111,3 +103,7 @@ payment:
   toss:
     confirm-url: ${TOSS_CONFIRM_URL}
     secret-key: ${TOSS_TEST_SECRET_KEY}
+
+stream:
+  key:
+    member-joined: ${MEMBER_JOINED_KEY}

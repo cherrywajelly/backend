@@ -13,6 +13,7 @@ import com.timeToast.timeToast.repository.jpa.member.MemberRepository;
 import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.redis.RedisService;
+import com.timeToast.timeToast.service.redis.RedisStreamService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +45,9 @@ public class LoginServiceImplTest {
 
     @Mock
     RedisService redisService;
+
+    @Mock
+    private RedisStreamService redisStreamService;
 
     @InjectMocks
     LoginServiceImpl loginService;
