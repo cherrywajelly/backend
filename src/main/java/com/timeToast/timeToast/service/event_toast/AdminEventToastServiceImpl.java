@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EventToastAdminServiceImpl implements EventToastAdminService {
+public class AdminEventToastServiceImpl implements AdminEventToastService {
 
     private final EventToastRepository eventToastRepository;
     private final MemberRepository memberRepository;

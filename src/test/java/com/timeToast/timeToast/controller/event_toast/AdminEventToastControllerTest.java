@@ -2,8 +2,8 @@ package com.timeToast.timeToast.controller.event_toast;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.service.event_toast.EventToastAdminService;
-import com.timeToast.timeToast.service.event_toast.EventToastAdminServiceTest;
+import com.timeToast.timeToast.service.event_toast.AdminEventToastService;
+import com.timeToast.timeToast.service.event_toast.AdminEventToastServiceTest;
 import com.timeToast.timeToast.util.BaseControllerTests;
 import com.timeToast.timeToast.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -25,12 +25,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class EventToastAdminControllerTest extends BaseControllerTests {
-    private final EventToastAdminService eventToastAdminServicee = new EventToastAdminServiceTest();
+public class AdminEventToastControllerTest extends BaseControllerTests {
+    private final AdminEventToastService adminEventToastServicee = new AdminEventToastServiceTest();
 
     @Override
     protected Object initController() {
-        return new EventToastAdminController(eventToastAdminServicee);
+        return new AdminEventToastController(adminEventToastServicee);
     }
 
     @DisplayName("관리자는 이벤트 토스트의 목록을 조회할 수 있다.")

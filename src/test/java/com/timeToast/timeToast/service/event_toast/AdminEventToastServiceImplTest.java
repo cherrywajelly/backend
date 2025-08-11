@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EventToastAdminServiceImplTest {
+public class AdminEventToastServiceImplTest {
     @Mock
     private EventToastRepository eventToastRepository;
 
@@ -41,7 +41,7 @@ public class EventToastAdminServiceImplTest {
     private JamRepository jamRepository;
 
     @InjectMocks
-    private EventToastAdminServiceImpl eventToastAdminService;
+    private AdminEventToastServiceImpl adminEventToastService;
 
     private EventToast eventToast;
     private Member member;
@@ -77,7 +77,7 @@ public class EventToastAdminServiceImplTest {
         when(iconRepository.getById(iconId)).thenReturn(icon);
         when(memberRepository.getById(memberId)).thenReturn(member);
 
-        ManagerEventToastResponses managerEventToastResponses = eventToastAdminService.getEventToastsForManager();
+        ManagerEventToastResponses managerEventToastResponses = adminEventToastService.getEventToastsForManager();
 
         assertThat(managerEventToastResponses).isNotNull();
     }
@@ -99,7 +99,7 @@ public class EventToastAdminServiceImplTest {
         when(iconRepository.getById(iconId)).thenReturn(icon);
         when(memberRepository.getById(memberId)).thenReturn(member);
 
-        ManagerEventToastDetailResponse managerEventToastDetailResponse = eventToastAdminService.getEventToastInfoForManager(memberId);
+        ManagerEventToastDetailResponse managerEventToastDetailResponse = adminEventToastService.getEventToastInfoForManager(memberId);
 
         assertThat(managerEventToastDetailResponse).isNotNull();
     }

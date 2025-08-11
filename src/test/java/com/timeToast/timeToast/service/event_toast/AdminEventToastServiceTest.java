@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventToastAdminServiceTest implements EventToastAdminService{
+public class AdminEventToastServiceTest implements AdminEventToastService {
     @Override
     public ManagerEventToastResponses getEventToastsForManager() {
         List<ManagerEventToastResponse> managerEventToastResponses = new ArrayList<>();
