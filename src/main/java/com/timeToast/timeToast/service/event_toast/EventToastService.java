@@ -5,10 +5,10 @@ import com.timeToast.timeToast.dto.event_toast.response.member.EventToastRespons
 import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMyResponses;
 import com.timeToast.timeToast.dto.event_toast.response.member.EventToastDetailResponse;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.SuccessResponse;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 
 public interface EventToastService {
-    SuccessResponse saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId);
+    ResponseWithId saveEventToast(EventToastPostRequest eventToastPostRequest, final long memberId);
     EventToastMyResponses getMyEventToasts(final long memberId);
     EventToastResponses getEventToastsOfFollower(final long memberId, final long friendId);
     EventToastResponses getEventToastsFromFollower(final long memberId);

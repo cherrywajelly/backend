@@ -14,7 +14,7 @@ import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
 import com.timeToast.timeToast.global.exception.NotFoundException;
 import com.timeToast.timeToast.global.response.Response;
-import com.timeToast.timeToast.global.response.SuccessResponse;
+import com.timeToast.timeToast.global.response.ResponseWithId;
 import com.timeToast.timeToast.global.util.DDayCount;
 import com.timeToast.timeToast.repository.jpa.event_toast.EventToastRepository;
 import com.timeToast.timeToast.repository.jpa.follow.FollowRepository;
@@ -55,7 +55,7 @@ public class EventToastServiceImpl implements EventToastService{
 
     @Transactional
     @Override
-    public SuccessResponse saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
+    public ResponseWithId saveEventToast(final EventToastPostRequest eventToastPostRequest, final long memberId) {
 
         if(eventToastPostRequest.title().length() > 20) {
             throw new BadRequestException(INVALID_STRING_FORMAT.getMessage());
@@ -67,7 +67,8 @@ public class EventToastServiceImpl implements EventToastService{
 
         EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
 
-        return SuccessResponse.withId(memberId, eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
+        log.info("save eventToast {} by {}", eventToast.getId(), memberId);
+        return new ResponseWithId(eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
@@ -208,7 +209,8 @@ public class EventToastServiceImpl implements EventToastService{
         jamRepository.deleteAllByEventToastId(eventToastId);
         eventToastRepository.deleteById(eventToastId);
 
-        return SuccessResponse.withoutId(memberId, eventToastId, StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
+        log.info("delete eventToast {} by {}", eventToastId, memberId);
+        return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
 
