@@ -2,7 +2,9 @@ package com.timeToast.timeToast.controller.event_toast;
 
 import com.timeToast.timeToast.domain.member.member.LoginMember;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastMyResponses;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastDetailResponse;
 import com.timeToast.timeToast.global.annotation.Login;
 import com.timeToast.timeToast.global.response.Response;
 import com.timeToast.timeToast.global.response.ResponseWithId;
@@ -25,23 +27,25 @@ public class EventToastController {
     }
 
     @GetMapping("/member")
-    public EventToastOwnResponses getOwnEventToastList(@Login LoginMember loginMember) {
-        return eventToastService.getOwnEventToastList(loginMember.id());
+    public EventToastMyResponses getMyEventToasts(@Login LoginMember loginMember) {
+        return eventToastService.getMyEventToasts(loginMember.id());
     }
 
-    @GetMapping("/member/{memberId}")
-    public EventToastMemberResponses getMemberEventToastList(@Login LoginMember loginMember, @PathVariable final long memberId) {
-        return eventToastService.getMemberEventToastList(loginMember.id(), memberId);
-    }
-
+    //팔로우 하고 있는 타사용자의 이벤트 토스트 목록 조회
     @GetMapping("/follow/following")
-    public EventToastFriendResponses getFriendEventToastList(@Login LoginMember loginMember) {
-        return eventToastService.getEventToasts(loginMember.id());
+    public EventToastResponses getFollowerEventToasts(@Login LoginMember loginMember) {
+        return eventToastService.getEventToastsFromFollower(loginMember.id());
+    }
+
+    //타사용자 마이페이지의 이벤트 토스트 목록 조회
+    @GetMapping("/member/{memberId}")
+    public EventToastResponses getEventToasts(@Login LoginMember loginMember, @PathVariable final long memberId) {
+        return eventToastService.getEventToastsOfFollower(loginMember.id(), memberId);
     }
 
     @GetMapping("/{eventToastId}")
-    public EventToastResponse getEventToast(@Login LoginMember loginMember, @PathVariable final long eventToastId) {
-        return eventToastService.getEventToast(loginMember.id(), eventToastId);
+    public EventToastDetailResponse getEventToastDetail(@Login LoginMember loginMember, @PathVariable final long eventToastId) {
+        return eventToastService.getEventToastDetail(loginMember.id(), eventToastId);
     }
 
     @DeleteMapping("/{eventToastId}")
@@ -50,3 +54,4 @@ public class EventToastController {
     }
 
 }
+

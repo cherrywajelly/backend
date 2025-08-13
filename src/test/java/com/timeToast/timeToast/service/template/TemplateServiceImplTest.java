@@ -4,7 +4,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.domain.template.Template;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastTemplateResponse;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;

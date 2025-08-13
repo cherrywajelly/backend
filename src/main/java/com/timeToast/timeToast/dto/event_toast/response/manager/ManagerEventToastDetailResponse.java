@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.event_toast.response;
+package com.timeToast.timeToast.dto.event_toast.response.manager;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
-public record EventToastInfoManagerResponse (
+public record ManagerEventToastDetailResponse(
     long eventToastId,
     String iconImageUrl,
     String title,
@@ -21,8 +21,8 @@ public record EventToastInfoManagerResponse (
     LocalDate createdAt,
     List<JamManagerResponse> jamManagerResponses
 ){
-    public static EventToastInfoManagerResponse from(final EventToast eventToast, final String iconImageUrl, final String nickname, final List<JamManagerResponse> jamManagerResponses){
-        return EventToastInfoManagerResponse.builder()
+    public static ManagerEventToastDetailResponse from(final EventToast eventToast, final String iconImageUrl, final String nickname, final List<JamManagerResponse> jamManagerResponses){
+        return ManagerEventToastDetailResponse.builder()
                 .eventToastId(eventToast.getId())
                 .iconImageUrl(iconImageUrl)
                 .title(eventToast.getTitle())
