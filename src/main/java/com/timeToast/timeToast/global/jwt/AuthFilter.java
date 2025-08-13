@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,6 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userId, null, authorities);
 
                 request.setAttribute("LoginMember", LoginMember.builder().id(id).role(memberRole).build());
+                MDC.put("userId", userId);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
                 throw new UnauthorizedException(INVALID_TOKEN_FORMAT.getMessage());

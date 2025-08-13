@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: record-service
   profiles:
     active: ${PROFILE}
 
@@ -103,6 +105,14 @@ payment:
   toss:
     confirm-url: ${TOSS_CONFIRM_URL}
     secret-key: ${TOSS_TEST_SECRET_KEY}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+#  otlp:
+#    tracing:
+#      endpoint: http://localhost:4318/v1/traces
 
 stream:
   key:
