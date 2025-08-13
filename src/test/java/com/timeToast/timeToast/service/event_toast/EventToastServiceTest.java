@@ -1,10 +1,8 @@
 package com.timeToast.timeToast.service.event_toast;
 
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
 import com.timeToast.timeToast.dto.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.*;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.NotFoundException;
@@ -27,34 +25,34 @@ public class EventToastServiceTest implements EventToastService {
     }
 
     @Override
-    public EventToastOwnResponses getOwnEventToastList(final long memberId) {
-        List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
-        eventToastOwnResponses.add(new EventToastOwnResponse(1, "title", LocalDate.of(2024, 11, 11), new IconResponse(1, "iconUrl")));
-        return new EventToastOwnResponses(eventToastOwnResponses);
+    public EventToastMyResponses getMyEventToasts(final long memberId) {
+        List<EventToastMyResponse> eventToastMyResponses = new ArrayList<>();
+        eventToastMyResponses.add(new EventToastMyResponse(1, "title", LocalDate.of(2024, 11, 11), new IconResponse(1, "iconUrl")));
+        return new EventToastMyResponses(eventToastMyResponses);
     }
 
     @Override
-    public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
-        List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
-        eventToastMemberResponses.add(new EventToastMemberResponse(1, "title", LocalDate.of(2024, 11, 11), false, "nickname", "imageUrl", new IconResponse(1, "iconUrl")));
-        return new EventToastMemberResponses(eventToastMemberResponses);
+    public EventToastResponses getEventToastsOfFollower(final long memberId, final long friendId){
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
+        eventToastResponses.add(new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11), false, "nickname", "imageUrl", new IconResponse(1, "iconUrl"), 0));
+        return new EventToastResponses(eventToastResponses);
     }
 
 
     @Override
-    public EventToastFriendResponses getEventToasts(final long memberId){
-        List<EventToastFriendResponse> eventToastResponses = new ArrayList<>();
-        eventToastResponses.add(new EventToastFriendResponse(1, "title", LocalDate.of(2024, 11, 11), "nickname", "profileImageUrl", new IconResponse(1, "iconUrl"), false, 5));
-        return new EventToastFriendResponses(eventToastResponses);
+    public EventToastResponses getEventToastsFromFollower(final long memberId){
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
+        eventToastResponses.add(new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11), false, "nickname", "profileImageUrl", new IconResponse(1, "iconUrl"), 5));
+        return new EventToastResponses(eventToastResponses);
     }
 
     @Override
-    public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
+    public EventToastDetailResponse getEventToastDetail(final long memberId, final long eventToastId) {
         List<JamResponse> jamResponses = new ArrayList<>();
         jamResponses.add(new JamResponse(1, "title", "iconUrl"));
-        EventToastResponse eventToastResponse = new EventToastResponse(1, "title", LocalDate.of(2024, 11, 11),
+        EventToastDetailResponse eventToastDetailResponse = new EventToastDetailResponse(1, "title", LocalDate.of(2024, 11, 11),
                 false, "iconUrl", 1, "profileUrl", "nickname", 0, 1, false, "description",jamResponses);
-        return eventToastResponse;
+        return eventToastDetailResponse;
     }
 
     @Override
@@ -68,24 +66,5 @@ public class EventToastServiceTest implements EventToastService {
             throw new NotFoundException(EVENT_TOAST_NOT_FOUND.getMessage());
         }
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
-    }
-
-    @Override
-    public EventToastManagerResponses getEventToastsForManager() {
-        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
-        eventToastManagerResponses.add(new EventToastManagerResponse(1L, "iconImageUrl", "title", "nickname", LocalDate.of(20204, 1, 1), true, LocalDate.of(2023, 1, 1)));
-        return new EventToastManagerResponses(eventToastManagerResponses);
-    }
-
-    @Override
-    public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
-        List<JamManagerResponse> jamManagerResponses = new ArrayList<>();
-        jamManagerResponses.add(new JamManagerResponse(1L, "iconImageUrl", "title", LocalDate.of(2024, 11, 11), "nickname"));
-        return new EventToastInfoManagerResponse(1L, "imageUrl", "title", "nickname", LocalDate.of(2024, 11, 11), true, LocalDate.of(2024, 11, 10), jamManagerResponses);
-    }
-
-    @Override
-    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
-       return eventToastRequest;
     }
 }

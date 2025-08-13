@@ -5,7 +5,7 @@ import com.timeToast.timeToast.domain.event_toast.EventToast;
 import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastJamResponse;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.jam.request.JamRequest;
 import com.timeToast.timeToast.dto.jam.response.JamDataResponse;
@@ -108,6 +108,7 @@ public class JamServiceImpl implements JamService {
     }
 
 
+    //TODO 반환 dto 수정 필요
     @Transactional(readOnly = true)
     @Override
     public JamDetailResponse getJam(final long memberId, final long jamId){
@@ -124,10 +125,10 @@ public class JamServiceImpl implements JamService {
         Icon eventToastIcon = iconRepository.getById(eventToast.getIconId());
         Icon jamIcon = iconRepository.getById(jam.getIconId());
 
-        EventToastDataResponse eventToastDataResponse = EventToastDataResponse.fromEntity(eventToast, eventToastMember.getNickname(), eventToastMember.getMemberProfileUrl(), eventToastIcon.getIconImageUrl());
+        EventToastJamResponse eventToastJamResponse = EventToastJamResponse.fromEntity(eventToast, eventToastMember.getNickname(), eventToastMember.getMemberProfileUrl(), eventToastIcon.getIconImageUrl());
         JamDataResponse jamDataResponse = JamDataResponse.fromEntity(jam, jamIcon.getIconImageUrl(), jamMember.getMemberProfileUrl(), jamMember.getNickname());
 
-        return new JamDetailResponse(eventToastDataResponse, jamDataResponse);
+        return new JamDetailResponse(eventToastJamResponse, jamDataResponse);
 
     }
 

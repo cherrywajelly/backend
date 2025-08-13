@@ -124,10 +124,10 @@ public class JamControllerTest extends BaseControllerTests {
                                         parameterWithName("jamId").description("상세 조회할 잼 iconGroupId")
                                 )
                                 .responseFields(
-                                        fieldWithPath("eventToastDataResponse.eventToastTitle").type(STRING).description("이벤트 토스트 제목"),
-                                        fieldWithPath("eventToastDataResponse.eventToastMemberProfile").type(STRING).description("이벤트 토스트 작성자 프로필"),
-                                        fieldWithPath("eventToastDataResponse.eventToastNickname").type(STRING).description("이벤트 토스트 작성자 닉네임"),
-                                        fieldWithPath("eventToastDataResponse.eventToastIconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
+                                        fieldWithPath("eventToastJamResponse.eventToastTitle").type(STRING).description("이벤트 토스트 제목"),
+                                        fieldWithPath("eventToastJamResponse.eventToastMemberProfile").type(STRING).description("이벤트 토스트 작성자 프로필"),
+                                        fieldWithPath("eventToastJamResponse.eventToastNickname").type(STRING).description("이벤트 토스트 작성자 닉네임"),
+                                        fieldWithPath("eventToastJamResponse.eventToastIconImageUrl").type(STRING).description("이벤트 토스트 아이콘 이미지"),
                                         fieldWithPath("jamDataResponse.jamIconImageUrl").type(STRING).description("잼 아이콘 이미지"),
                                         fieldWithPath("jamDataResponse.jamTitle").type(STRING).description("잼 제목"),
                                         fieldWithPath("jamDataResponse.jamMemberProfileUrl").type(STRING).description("잼 작성자 프로필 이미지"),

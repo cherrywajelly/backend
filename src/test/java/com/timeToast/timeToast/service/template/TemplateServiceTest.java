@@ -1,6 +1,6 @@
 package com.timeToast.timeToast.service.template;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastTemplateResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastTemplateResponse;
 import com.timeToast.timeToast.dto.template.request.TemplateSaveRequest;
 import com.timeToast.timeToast.dto.template.response.TemplateResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;

@@ -52,8 +52,8 @@ public class SecurityConfig {
                             request.requestMatchers("/api/v1/login/**","/api/v1/members/refreshToken").permitAll().
                                     requestMatchers("/api/v1/**").hasAnyRole("MANAGER","STAFF","CREATOR","USER");
 
-                            request.requestMatchers("/h2-console/**", "/actuator/**", "/api/swagger-ui/** ",
-                                    "/docs/**", "/v3/api-docs/**", "/swagger-ui/**","/api-docs/**").permitAll();
+                            request.requestMatchers( "/actuator/**", "/docs/**", "/v3/api-docs/**",
+                                    "/swagger-ui/**","/api-docs/**").permitAll();
 
                             request.anyRequest().authenticated();
 
@@ -73,16 +73,9 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                corsProperties.getFrontLocalHost(),
-                corsProperties.getBackLocalHost(),
-                corsProperties.getEdgeService(),
-                corsProperties.getServiceDev(),
-                corsProperties.getBackDev(),
-                corsProperties.getAdminDev(),
-                corsProperties.getCreatorDev(),
-                corsProperties.getServiceProd(),
-                corsProperties.getAdminProd(),
-                corsProperties.getCreatorProd()
+                corsProperties.getAppFront(),
+                corsProperties.getCreatorFront(),
+                corsProperties.getAdminFront()
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

@@ -6,11 +6,9 @@ import com.timeToast.timeToast.domain.icon.icon.Icon;
 import com.timeToast.timeToast.domain.jam.Jam;
 import com.timeToast.timeToast.domain.member.member.Member;
 import com.timeToast.timeToast.dto.event_toast.request.EventToastPostRequest;
-import com.timeToast.timeToast.dto.event_toast.request.EventToastRequest;
-import com.timeToast.timeToast.dto.event_toast.response.*;
+import com.timeToast.timeToast.dto.event_toast.response.member.*;
 import com.timeToast.timeToast.dto.fcm.requset.FcmPostRequest;
 import com.timeToast.timeToast.dto.icon.response.IconResponse;
-import com.timeToast.timeToast.dto.jam.response.JamManagerResponse;
 import com.timeToast.timeToast.dto.jam.response.JamResponse;
 import com.timeToast.timeToast.global.constant.StatusCode;
 import com.timeToast.timeToast.global.exception.BadRequestException;
@@ -68,29 +66,30 @@ public class EventToastServiceImpl implements EventToastService{
         }
 
         EventToast eventToast = eventToastRepository.save(eventToastPostRequest.toEntity(eventToastPostRequest, memberId));
-        log.info("save event toast");
+
+        log.info("save eventToast {} by {}", eventToast.getId(), memberId);
         return new ResponseWithId(eventToast.getId(), StatusCode.OK.getStatusCode(), SUCCESS_POST.getMessage());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastOwnResponses getOwnEventToastList(final long memberId) {
+    public EventToastMyResponses getMyEventToasts(final long memberId) {
 
-        List<EventToastOwnResponse> eventToastOwnResponses = new ArrayList<>();
+        List<EventToastMyResponse> eventToastMyRespons = new ArrayList<>();
         eventToastRepository.findAllByMemberId(memberId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).forEach(
                 eventToast -> {
                     Icon icon = iconRepository.getById(eventToast.getIconId());
-                    EventToastOwnResponse eventToastOwnResponse = EventToastOwnResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
-                    eventToastOwnResponses.add(eventToastOwnResponse);
+                    EventToastMyResponse eventToastMyResponse = EventToastMyResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()));
+                    eventToastMyRespons.add(eventToastMyResponse);
                 }
         );
-        return new EventToastOwnResponses(eventToastOwnResponses);
+        return new EventToastMyResponses(eventToastMyRespons);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastFriendResponses getEventToasts(final long memberId){
-        List<EventToastFriendResponse> eventToastFriendResponses = new ArrayList<>();
+    public EventToastResponses getEventToastsFromFollower(final long memberId){
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
 
         followRepository.findAllByFollowerId(memberId).forEach(
                 follow -> {
@@ -101,25 +100,25 @@ public class EventToastServiceImpl implements EventToastService{
                                 Icon icon = iconRepository.getById(eventToast.getIconId());
                                 boolean isWritten = jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isPresent();
 
-                                EventToastFriendResponse eventToastFriendResponse = EventToastFriendResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
+                                EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, member.getNickname(), member.getMemberProfileUrl(),
                                         new IconResponse(icon.getId(), icon.getIconImageUrl()), isWritten, DDayCount.count(LocalDate.now(), eventToast.getOpenedDate()));
-                                eventToastFriendResponses.add(eventToastFriendResponse);
+                                eventToastResponses.add(eventToastResponse);
                             }
                     );
                 }
         );
 
-        eventToastFriendResponses.sort(Comparator.comparingLong(EventToastFriendResponse::dDay));
+        eventToastResponses.sort(Comparator.comparingLong(EventToastResponse::dDay));
 
-        return new EventToastFriendResponses(eventToastFriendResponses);
+        return new EventToastResponses(eventToastResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastMemberResponses getMemberEventToastList(final long memberId, final long friendId){
+    public EventToastResponses getEventToastsOfFollower(final long memberId, final long friendId){
         List<EventToast> eventToasts = eventToastRepository.findAllByMemberId(friendId).stream().sorted(Comparator.comparing(EventToast::getCreatedAt).reversed()).toList();
 
-        List<EventToastMemberResponse> eventToastMemberResponses = new ArrayList<>();
+        List<EventToastResponse> eventToastResponses = new ArrayList<>();
 
         filterEventToasts(eventToasts, false).forEach(
                 eventToast -> {
@@ -127,21 +126,21 @@ public class EventToastServiceImpl implements EventToastService{
                     Member member = memberRepository.getById(friendId);
 
                     if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToast.getId()).isEmpty()) {
-                        EventToastMemberResponse eventToastFriendResponse = EventToastMemberResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), false);
-                        eventToastMemberResponses.add(eventToastFriendResponse);
+                        EventToastResponse eventToastResponse = EventToastResponse.ofEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), false);
+                        eventToastResponses.add(eventToastResponse);
                     } else {
-                        EventToastMemberResponse eventToastFriendResponse = EventToastMemberResponse.fromEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), true);
-                        eventToastMemberResponses.add(eventToastFriendResponse);
+                        EventToastResponse eventToastResponse = EventToastResponse.ofEntity(eventToast, new IconResponse(icon.getId(), icon.getIconImageUrl()), member.getNickname(), member.getMemberProfileUrl(), true);
+                        eventToastResponses.add(eventToastResponse);
                     }
                 }
         );
 
-        return new EventToastMemberResponses(eventToastMemberResponses);
+        return new EventToastResponses(eventToastResponses);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public EventToastResponse getEventToast(final long memberId, final long eventToastId) {
+    public EventToastDetailResponse getEventToastDetail(final long memberId, final long eventToastId) {
         EventToast eventToast = eventToastRepository.getById(eventToastId);
         Icon icon = iconRepository.getById(eventToast.getIconId());
         Member member = memberRepository.getById(eventToast.getMemberId());
@@ -159,26 +158,26 @@ public class EventToastServiceImpl implements EventToastService{
                     }
             );
 
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+            EventToastDetailResponse eventToastDetailResponse = EventToastDetailResponse.fromEntity(eventToast, icon.getIconImageUrl(),
                     member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, jamResponses);
 
-            return updateWritten(memberId, eventToastId, eventToastResponse);
+            return updateWritten(memberId, eventToastId, eventToastDetailResponse);
         }
         else {
             long dDay = ChronoUnit.DAYS.between(LocalDate.now(), eventToast.getOpenedDate());
-            EventToastResponse eventToastResponse = EventToastResponse.fromEntity(eventToast, icon.getIconImageUrl(),
+            EventToastDetailResponse eventToastDetailResponse = EventToastDetailResponse.fromEntity(eventToast, icon.getIconImageUrl(),
                     member.getId(), member.getMemberProfileUrl(), member.getNickname(), jams.size(), dDay, null);
-            return updateWritten(memberId, eventToastId, eventToastResponse);
+            return updateWritten(memberId, eventToastId, eventToastDetailResponse);
         }
 
     }
 
-    public EventToastResponse updateWritten(final long memberId, final long eventToastId, EventToastResponse eventToastResponse){
+    public EventToastDetailResponse updateWritten(final long memberId, final long eventToastId, EventToastDetailResponse eventToastDetailResponse){
 
         if (jamRepository.findByMemberIdAndEventToastId(memberId, eventToastId).isEmpty()) {
-            return EventToastResponse.of(eventToastResponse, false);
+            return EventToastDetailResponse.of(eventToastDetailResponse, false);
         } else {
-            return EventToastResponse.of(eventToastResponse, true);
+            return EventToastDetailResponse.of(eventToastDetailResponse, true);
         }
     }
 
@@ -209,8 +208,8 @@ public class EventToastServiceImpl implements EventToastService{
         showcaseRepository.deleteAllByEventToastId(eventToastId);
         jamRepository.deleteAllByEventToastId(eventToastId);
         eventToastRepository.deleteById(eventToastId);
-        log.info("delete event toast");
 
+        log.info("delete eventToast {} by {}", eventToastId, memberId);
         return new Response(StatusCode.OK.getStatusCode(), SUCCESS_DELETE.getMessage());
     }
 
@@ -240,54 +239,5 @@ public class EventToastServiceImpl implements EventToastService{
                 });
 
         log.info("update event toast's is open");
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public EventToastManagerResponses getEventToastsForManager() {
-        List<EventToastManagerResponse> eventToastManagerResponses = new ArrayList<>();
-        List<EventToast> eventToasts = eventToastRepository.findAll();
-
-        eventToasts.forEach(
-                eventToast -> {
-                    Icon icon = iconRepository.getById(eventToast.getIconId());
-                    Member member = memberRepository.getById(eventToast.getMemberId());
-                    eventToastManagerResponses.add(EventToastManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname()));
-                }
-        );
-
-        return new EventToastManagerResponses(eventToastManagerResponses);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public EventToastInfoManagerResponse getEventToastInfoForManager(final long eventToastId) {
-        EventToast eventToast = eventToastRepository.getById(eventToastId);
-        Member member = memberRepository.getById(eventToast.getMemberId());
-        Icon icon = iconRepository.getById(eventToast.getIconId());
-
-        List<JamManagerResponse> jamManagerResponses = new ArrayList<>();
-        List<Jam> jams = jamRepository.findAllByEventToastId(eventToastId);
-        jams.forEach(
-                jam -> {
-                    Icon jamIcon = iconRepository.getById(jam.getIconId());
-                    Member jamMember = memberRepository.getById(jam.getMemberId());
-                    jamManagerResponses.add(JamManagerResponse.from(jam, jamIcon.getIconImageUrl(), jamMember.getNickname()));
-                }
-        );
-
-        return EventToastInfoManagerResponse.from(eventToast, icon.getIconImageUrl(), member.getNickname(), jamManagerResponses);
-    }
-
-    @Transactional
-    @Override
-    public EventToastRequest editEventToast(final long eventToastId, final EventToastRequest eventToastRequest) {
-        EventToast eventToast = eventToastRepository.getById(eventToastId);
-
-        eventToast.updateOpenedDateAndIsOpened(eventToastRequest.openedDate(), eventToastRequest.isOpened());
-        eventToastRepository.save(eventToast);
-
-        log.info("edit event toast");
-        return eventToastRequest;
     }
 }

@@ -18,7 +18,9 @@ import com.timeToast.timeToast.repository.jpa.premium.PremiumRepository;
 import com.timeToast.timeToast.service.jwt.JwtService;
 import com.timeToast.timeToast.service.redis.RedisService;
 import com.timeToast.timeToast.service.redis.RedisStreamService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import static com.timeToast.timeToast.global.constant.ExceptionConstant.INVALID_
 import static com.timeToast.timeToast.global.constant.ExceptionConstant.MEMBER_NOT_FOUND;
 
 
+@Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -93,6 +96,8 @@ public class LoginServiceImpl implements LoginService {
 //        redisService.incrSignUp(member);
         redisStreamService.memberJoinedPublish(member);
         addBuiltinIcon(member);
+        MDC.put("userId", String.valueOf(member.getId()));
+        log.info("success signup: loginType={}", loginType);
         return jwtService.createJwts(LoginMember.from(member), true);
 
     }

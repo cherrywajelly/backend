@@ -1,18 +1,19 @@
 package com.timeToast.timeToast.dto.jam.response;
 
-import com.timeToast.timeToast.dto.event_toast.response.EventToastDataResponse;
+import com.timeToast.timeToast.dto.event_toast.response.member.EventToastJamResponse;
 import lombok.Builder;
 
+//TODO 삭제 필요
 @Builder
 public record JamDetailResponse(
 
-        EventToastDataResponse eventToastDataResponse,
+        EventToastJamResponse eventToastJamResponse,
         JamDataResponse jamDataResponse
 
 ){
-    public static JamDetailResponse of(EventToastDataResponse eventToastDataResponse, JamDataResponse jamDataResponse) {
+    public static JamDetailResponse of(EventToastJamResponse eventToastJamResponse, JamDataResponse jamDataResponse) {
         return JamDetailResponse.builder()
-                .eventToastDataResponse(eventToastDataResponse)
+                .eventToastJamResponse(eventToastJamResponse)
                 .jamDataResponse(jamDataResponse)
                 .build();
     }

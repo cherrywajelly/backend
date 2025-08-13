@@ -1,4 +1,4 @@
-package com.timeToast.timeToast.dto.event_toast.response;
+package com.timeToast.timeToast.dto.event_toast.response.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.timeToast.timeToast.domain.event_toast.EventToast;
@@ -8,7 +8,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record EventToastMemberResponse(
+public record EventToastMyResponse(
         long eventToastId,
 
         String title,
@@ -16,23 +16,14 @@ public record EventToastMemberResponse(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate openedDate,
 
-        boolean isWritten,
-
-        String nickname,
-
-        String memberProfileUrl,
-
         IconResponse icon
 ){
-    public static EventToastMemberResponse fromEntity(EventToast eventToast, IconResponse icon, final String nickname, String memberProfileUrl, boolean isWritten) {
-        return EventToastMemberResponse.builder()
+    public static EventToastMyResponse fromEntity(EventToast eventToast, IconResponse icon){
+        return EventToastMyResponse.builder()
                 .eventToastId(eventToast.getId())
                 .title(eventToast.getTitle())
                 .openedDate(eventToast.getOpenedDate())
-                .nickname(nickname)
-                .memberProfileUrl(memberProfileUrl)
                 .icon(icon)
-                .isWritten(isWritten)
                 .build();
     }
 }

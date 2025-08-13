@@ -103,7 +103,7 @@ jacocoTestCoverageVerification {
 openapi3 {
 	servers = [
 			{ url = 'https://dev-back.timetoast.app' },
-			{ url = 'http://localhost:8080' }
+			{ url = 'http://localhost:9000' }
 	]
 	title = 'TimeToast API 문서'
 	description = 'TimeToast API Docs'
